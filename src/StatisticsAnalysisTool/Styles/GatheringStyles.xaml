@@ -72,6 +72,25 @@
         <Setter Property="Margin" Value="0,0,8,0" />
     </Style>
 
+    <Style x:Key="Gathering.SummaryIcon" TargetType="{x:Type Image}" BasedOn="{StaticResource Dashboard.SummaryImage}">
+        <Setter Property="Width" Value="38" />
+        <Setter Property="Height" Value="38" />
+        <Setter Property="Stretch" Value="Uniform" />
+    </Style>
+
+    <Style x:Key="Gathering.SummaryName" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    </Style>
+
+    <Style x:Key="Gathering.ResourceTabContent" TargetType="{x:Type ContentControl}">
+        <Setter Property="Margin" Value="0,8,0,0" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+    </Style>
+
     <Style x:Key="Gathering.DetailCard" TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.Section}">
         <Setter Property="MinHeight" Value="230" />
         <Setter Property="Padding" Value="12,10" />
@@ -171,23 +190,23 @@
                                 </StackPanel.Style>
                                 <StackPanel Orientation="Horizontal" Width="90">
                                     <Image Style="{StaticResource Gathering.Image.Pickaxe.Box}" ToolTip="{Binding TranslationTotal, FallbackValue='TOTAL'}" />
-                                    <TextBlock Text="{Binding GainedTotalAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                    <TextBlock Text="{Binding GainedTotalAmount, IsAsync=True, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Width="90">
                                     <Image Style="{StaticResource Gathering.Image.Pickaxe}" ToolTip="{Binding TranslationStandard, FallbackValue='STANDARD'}" />
-                                    <TextBlock Text="{Binding GainedStandardAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                    <TextBlock Text="{Binding GainedStandardAmount, IsAsync=True, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Width="100">
                                     <Image Style="{StaticResource Gathering.Image.Pickaxe.Bonus}" ToolTip="{Binding TranslationBonus, FallbackValue='BONUS'}" />
-                                    <TextBlock Text="{Binding GainedBonusAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                    <TextBlock Text="{Binding GainedBonusAmount, IsAsync=True, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Width="100">
                                     <Image Style="{StaticResource Gathering.Image.Pickaxe.Premium}" ToolTip="{Binding TranslationPremium, FallbackValue='PREMIUM'}" />
-                                    <TextBlock Text="{Binding GainedPremiumBonusAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                    <TextBlock Text="{Binding GainedPremiumBonusAmount, IsAsync=True, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Width="100">
                                     <Image Style="{StaticResource Gathering.Image.Pickaxe.Repeat}" ToolTip="{Binding TranslationAmountOfMiningProcesses, FallbackValue='AMOUNT__OF__MINING__PROCESSES'}" />
-                                    <TextBlock Text="{Binding MiningProcesses, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                    <TextBlock Text="{Binding MiningProcesses, IsAsync=True, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Width="130">
                                     <Image Style="{StaticResource Icon.Silver}" ToolTip="{Binding TranslationTotalMarketValue, FallbackValue='TOTAL__MARKET__VALUE'}" />
@@ -210,7 +229,7 @@
                                 </StackPanel.Style>
                                 <StackPanel Orientation="Horizontal" Width="90">
                                     <Image Style="{StaticResource Gathering.Image.FishingLure.Box}" ToolTip="{Binding TranslationTotal, FallbackValue='TOTAL'}" />
-                                    <TextBlock Text="{Binding GainedTotalAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                    <TextBlock Text="{Binding GainedTotalAmount, IsAsync=True, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Width="130">
                                     <Image Style="{StaticResource Icon.Silver}" ToolTip="{Binding TranslationTotalMarketValue, FallbackValue='TOTAL__MARKET__VALUE'}" />
@@ -256,23 +275,23 @@
                                 </StackPanel.Style>
                                 <StackPanel Orientation="Horizontal" Width="90">
                                     <Image Style="{StaticResource Gathering.Image.Pickaxe.Box}" ToolTip="{Binding TranslationTotal, FallbackValue='TOTAL'}" />
-                                    <TextBlock Text="{Binding GainedTotalAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                    <TextBlock Text="{Binding GainedTotalAmount, IsAsync=True, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Width="90">
                                     <Image Style="{StaticResource Gathering.Image.Pickaxe}" ToolTip="{Binding TranslationStandard, FallbackValue='STANDARD'}" />
-                                    <TextBlock Text="{Binding GainedStandardAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                    <TextBlock Text="{Binding GainedStandardAmount, IsAsync=True, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Width="100">
                                     <Image Style="{StaticResource Gathering.Image.Pickaxe.Bonus}" ToolTip="{Binding TranslationBonus, FallbackValue='BONUS'}" />
-                                    <TextBlock Text="{Binding GainedBonusAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                    <TextBlock Text="{Binding GainedBonusAmount, IsAsync=True, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Width="100">
                                     <Image Style="{StaticResource Gathering.Image.Pickaxe.Premium}" ToolTip="{Binding TranslationPremium, FallbackValue='PREMIUM'}" />
-                                    <TextBlock Text="{Binding GainedPremiumBonusAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                    <TextBlock Text="{Binding GainedPremiumBonusAmount, IsAsync=True, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Width="100">
                                     <Image Style="{StaticResource Gathering.Image.Pickaxe.Repeat}" ToolTip="{Binding TranslationAmountOfMiningProcesses, FallbackValue='AMOUNT__OF__MINING__PROCESSES'}" />
-                                    <TextBlock Text="{Binding MiningProcesses, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                    <TextBlock Text="{Binding MiningProcesses, IsAsync=True, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Width="130">
                                     <Image Style="{StaticResource Icon.Silver}" ToolTip="{Binding TranslationTotalMarketValue, FallbackValue='TOTAL__MARKET__VALUE'}" />
@@ -296,7 +315,7 @@
                                 </StackPanel.Style>
                                 <StackPanel Orientation="Horizontal" Width="90">
                                     <Image Style="{StaticResource Gathering.Image.FishingLure.Box}" ToolTip="{Binding TranslationTotal, FallbackValue='TOTAL'}" />
-                                    <TextBlock Text="{Binding GainedTotalAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                    <TextBlock Text="{Binding GainedTotalAmount, IsAsync=True, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Width="130">
                                     <Image Style="{StaticResource Icon.Silver}" ToolTip="{Binding TranslationTotalMarketValue, FallbackValue='TOTAL__MARKET__VALUE'}" />
@@ -328,23 +347,23 @@
                         <StackPanel Orientation="Horizontal">
                             <StackPanel Orientation="Horizontal" Width="90">
                                 <Image Style="{StaticResource Gathering.Image.Pickaxe.Box}" ToolTip="{Binding TranslationTotal, FallbackValue='TOTAL'}" />
-                                <TextBlock Text="{Binding GainedTotalAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                <TextBlock Text="{Binding GainedTotalAmount, IsAsync=True, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Width="90">
                                 <Image Style="{StaticResource Gathering.Image.Pickaxe}" ToolTip="{Binding TranslationStandard, FallbackValue='STANDARD'}" />
-                                <TextBlock Text="{Binding GainedStandardAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                <TextBlock Text="{Binding GainedStandardAmount, IsAsync=True, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Width="100">
                                 <Image Style="{StaticResource Gathering.Image.Pickaxe.Bonus}" ToolTip="{Binding TranslationBonus, FallbackValue='BONUS'}" />
-                                <TextBlock Text="{Binding GainedBonusAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                <TextBlock Text="{Binding GainedBonusAmount, IsAsync=True, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Width="100">
                                 <Image Style="{StaticResource Gathering.Image.Pickaxe.Premium}" ToolTip="{Binding TranslationPremium, FallbackValue='PREMIUM'}" />
-                                <TextBlock Text="{Binding GainedPremiumBonusAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                <TextBlock Text="{Binding GainedPremiumBonusAmount, IsAsync=True, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Width="100">
                                 <Image Style="{StaticResource Gathering.Image.Pickaxe.Repeat}" ToolTip="{Binding TranslationAmountOfMiningProcesses, FallbackValue='AMOUNT__OF__MINING__PROCESSES'}" />
-                                <TextBlock Text="{Binding MiningProcesses, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                <TextBlock Text="{Binding MiningProcesses, IsAsync=True, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                             </StackPanel>
                         </StackPanel>
                     </DockPanel>
@@ -366,23 +385,23 @@
                         <StackPanel Orientation="Horizontal">
                             <StackPanel Orientation="Horizontal" Width="90">
                                 <Image Style="{StaticResource Gathering.Image.Pickaxe.Box}" ToolTip="{Binding TranslationTotal, FallbackValue='TOTAL'}" />
-                                <TextBlock Text="{Binding GainedTotalAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                <TextBlock Text="{Binding GainedTotalAmount, IsAsync=True, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Width="90">
                                 <Image Style="{StaticResource Gathering.Image.Pickaxe}" ToolTip="{Binding TranslationStandard, FallbackValue='STANDARD'}" />
-                                <TextBlock Text="{Binding GainedStandardAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                <TextBlock Text="{Binding GainedStandardAmount, IsAsync=True, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Width="100">
                                 <Image Style="{StaticResource Gathering.Image.Pickaxe.Bonus}" ToolTip="{Binding TranslationBonus, FallbackValue='BONUS'}" />
-                                <TextBlock Text="{Binding GainedBonusAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                <TextBlock Text="{Binding GainedBonusAmount, IsAsync=True, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Width="100">
                                 <Image Style="{StaticResource Gathering.Image.Pickaxe.Premium}" ToolTip="{Binding TranslationPremium, FallbackValue='PREMIUM'}" />
-                                <TextBlock Text="{Binding GainedPremiumBonusAmount, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                <TextBlock Text="{Binding GainedPremiumBonusAmount, IsAsync=True, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Width="100">
                                 <Image Style="{StaticResource Gathering.Image.Pickaxe.Repeat}" ToolTip="{Binding TranslationAmountOfMiningProcesses, FallbackValue='AMOUNT__OF__MINING__PROCESSES'}" />
-                                <TextBlock Text="{Binding MiningProcesses, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                                <TextBlock Text="{Binding MiningProcesses, IsAsync=True, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                             </StackPanel>
                         </StackPanel>
                     </DockPanel>
@@ -420,17 +439,17 @@
                 <ContentControl Visibility="{Binding MostGatheredClusterVisibility}" Content="{Binding MostGatheredCluster}" ContentTemplate="{StaticResource MostGatheredClusterTemplate}" />
 
                 <TextBlock Style="{StaticResource Gathering.Stats.TitleText}" Text="{Binding TranslationTotalResources}" />
-                <TextBlock Text="{Binding TotalResources, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                <TextBlock Text="{Binding TotalResources, IsAsync=True, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
 
                 <TextBlock Style="{StaticResource Gathering.Stats.TitleText}" Text="{Binding TranslationTotalMiningProcesses}" />
-                <TextBlock Text="{Binding TotalMiningProcesses, IsAsync=True}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
+                <TextBlock Text="{Binding TotalMiningProcesses, IsAsync=True, StringFormat=N0, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
             </StackPanel>
         </Grid>
     </DataTemplate>
 
     <DataTemplate x:Key="HideTemplate" DataType="{x:Type gathering:GatheringStats}">
-        <StackPanel Orientation="Vertical">
-            <StackPanel Orientation="Horizontal">
+        <DockPanel LastChildFill="True">
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                 <StackPanel Orientation="Vertical" Width="200">
                     <TextBlock Style="{StaticResource Gathering.Stats.TitleText}" Text="{Binding TranslationResourceValue}" />
                     <StackPanel Orientation="Horizontal">
@@ -448,22 +467,20 @@
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
-            <StackPanel Orientation="Vertical">
-                <controls:VirtualizingItemsControl ItemsSource="{Binding GatheredHide, IsAsync=True, Mode=OneWay}"
+            <controls:VirtualizingItemsControl Margin="0,8,0,0" ItemsSource="{Binding GatheredHide, IsAsync=True, Mode=OneWay}"
                                                    ItemTemplate="{StaticResource GatheredItemStatsTemplate}" 
                                                    VirtualizingPanel.CacheLengthUnit="Item"
                                                    VirtualizingPanel.CacheLength="10,10"
                                                    VirtualizingPanel.ScrollUnit="Pixel"
                                                    VirtualizingPanel.VirtualizationMode="Recycling"
-                                                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                                   ScrollViewer.VerticalScrollBarVisibility="Disabled" />
-            </StackPanel>
-        </StackPanel>
+                                                   ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                   ScrollViewer.VerticalScrollBarVisibility="Auto" />
+        </DockPanel>
     </DataTemplate>
 
     <DataTemplate x:Key="OreTemplate" DataType="{x:Type gathering:GatheringStats}">
-        <StackPanel Orientation="Vertical">
-            <StackPanel Orientation="Horizontal">
+        <DockPanel LastChildFill="True">
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                 <StackPanel Orientation="Vertical" Width="200">
                     <TextBlock Style="{StaticResource Gathering.Stats.TitleText}" Text="{Binding TranslationResourceValue}" />
                     <StackPanel Orientation="Horizontal">
@@ -481,22 +498,20 @@
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
-            <StackPanel Orientation="Vertical">
-                <controls:VirtualizingItemsControl ItemsSource="{Binding GatheredOre, IsAsync=True, Mode=OneWay}"
+            <controls:VirtualizingItemsControl Margin="0,8,0,0" ItemsSource="{Binding GatheredOre, IsAsync=True, Mode=OneWay}"
                                                    ItemTemplate="{StaticResource GatheredItemStatsTemplate}" 
                                                    VirtualizingPanel.CacheLengthUnit="Item"
                                                    VirtualizingPanel.CacheLength="10,10"
                                                    VirtualizingPanel.ScrollUnit="Pixel"
                                                    VirtualizingPanel.VirtualizationMode="Recycling"
-                                                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                                   ScrollViewer.VerticalScrollBarVisibility="Disabled" />
-            </StackPanel>
-        </StackPanel>
+                                                   ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                   ScrollViewer.VerticalScrollBarVisibility="Auto" />
+        </DockPanel>
     </DataTemplate>
 
     <DataTemplate x:Key="RockTemplate" DataType="{x:Type gathering:GatheringStats}">
-        <StackPanel Orientation="Vertical">
-            <StackPanel Orientation="Horizontal">
+        <DockPanel LastChildFill="True">
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                 <StackPanel Orientation="Vertical" Width="200">
                     <TextBlock Style="{StaticResource Gathering.Stats.TitleText}" Text="{Binding TranslationResourceValue}" />
                     <StackPanel Orientation="Horizontal">
@@ -514,22 +529,20 @@
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
-            <StackPanel Orientation="Vertical">
-                <controls:VirtualizingItemsControl ItemsSource="{Binding GatheredRock, IsAsync=True, Mode=OneWay}"
+            <controls:VirtualizingItemsControl Margin="0,8,0,0" ItemsSource="{Binding GatheredRock, IsAsync=True, Mode=OneWay}"
                                                        ItemTemplate="{StaticResource GatheredItemStatsTemplate}" 
                                                        VirtualizingPanel.CacheLengthUnit="Item"
                                                        VirtualizingPanel.CacheLength="10,10"
                                                        VirtualizingPanel.ScrollUnit="Pixel"
                                                        VirtualizingPanel.VirtualizationMode="Recycling"
-                                                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                                       ScrollViewer.VerticalScrollBarVisibility="Disabled" />
-            </StackPanel>
-        </StackPanel>
+                                                       ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                       ScrollViewer.VerticalScrollBarVisibility="Auto" />
+        </DockPanel>
     </DataTemplate>
 
     <DataTemplate x:Key="FiberTemplate" DataType="{x:Type gathering:GatheringStats}">
-        <StackPanel Orientation="Vertical">
-            <StackPanel Orientation="Horizontal">
+        <DockPanel LastChildFill="True">
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                 <StackPanel Orientation="Vertical" Width="200">
                     <TextBlock Style="{StaticResource Gathering.Stats.TitleText}" Text="{Binding TranslationResourceValue}" />
                     <StackPanel Orientation="Horizontal">
@@ -547,22 +560,20 @@
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
-            <StackPanel Orientation="Vertical">
-                <controls:VirtualizingItemsControl ItemsSource="{Binding GatheredFiber, IsAsync=True, Mode=OneWay}"
+            <controls:VirtualizingItemsControl Margin="0,8,0,0" ItemsSource="{Binding GatheredFiber, IsAsync=True, Mode=OneWay}"
                                                        ItemTemplate="{StaticResource GatheredItemStatsTemplate}" 
                                                        VirtualizingPanel.CacheLengthUnit="Item"
                                                        VirtualizingPanel.CacheLength="10,10"
                                                        VirtualizingPanel.ScrollUnit="Pixel"
                                                        VirtualizingPanel.VirtualizationMode="Recycling"
-                                                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                                       ScrollViewer.VerticalScrollBarVisibility="Disabled" />
-            </StackPanel>
-        </StackPanel>
+                                                       ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                       ScrollViewer.VerticalScrollBarVisibility="Auto" />
+        </DockPanel>
     </DataTemplate>
 
     <DataTemplate x:Key="WoodTemplate" DataType="{x:Type gathering:GatheringStats}">
-        <StackPanel Orientation="Vertical">
-            <StackPanel Orientation="Horizontal">
+        <DockPanel LastChildFill="True">
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                 <StackPanel Orientation="Vertical" Width="200">
                     <TextBlock Style="{StaticResource Gathering.Stats.TitleText}" Text="{Binding TranslationResourceValue}" />
                     <StackPanel Orientation="Horizontal">
@@ -580,22 +591,20 @@
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
-            <StackPanel Orientation="Vertical">
-                <controls:VirtualizingItemsControl ItemsSource="{Binding GatheredWood, IsAsync=True, Mode=OneWay}"
+            <controls:VirtualizingItemsControl Margin="0,8,0,0" ItemsSource="{Binding GatheredWood, IsAsync=True, Mode=OneWay}"
                                                    ItemTemplate="{StaticResource GatheredItemStatsTemplate}" 
                                                    VirtualizingPanel.CacheLengthUnit="Item"
                                                    VirtualizingPanel.CacheLength="10,10"
                                                    VirtualizingPanel.ScrollUnit="Pixel"
                                                    VirtualizingPanel.VirtualizationMode="Recycling"
-                                                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                                   ScrollViewer.VerticalScrollBarVisibility="Disabled" />
-            </StackPanel>
-        </StackPanel>
+                                                   ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                   ScrollViewer.VerticalScrollBarVisibility="Auto" />
+        </DockPanel>
     </DataTemplate>
 
     <DataTemplate x:Key="FishingTemplate" DataType="{x:Type gathering:GatheringStats}">
-        <StackPanel Orientation="Vertical">
-            <StackPanel Orientation="Horizontal">
+        <DockPanel LastChildFill="True">
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                 <StackPanel Orientation="Vertical" Width="200">
                     <TextBlock Style="{StaticResource Gathering.Stats.TitleText}" Text="{Binding TranslationResourceValue}" />
                     <StackPanel Orientation="Horizontal">
@@ -613,17 +622,15 @@
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
-            <StackPanel Orientation="Vertical">
-                <controls:VirtualizingItemsControl ItemsSource="{Binding GatheredFish, IsAsync=True, Mode=OneWay}"
+            <controls:VirtualizingItemsControl Margin="0,8,0,0" ItemsSource="{Binding GatheredFish, IsAsync=True, Mode=OneWay}"
                                                    ItemTemplate="{StaticResource GatheredItemStatsTemplate}" 
                                                    VirtualizingPanel.CacheLengthUnit="Item"
                                                    VirtualizingPanel.CacheLength="10,10"
                                                    VirtualizingPanel.ScrollUnit="Pixel"
                                                    VirtualizingPanel.VirtualizationMode="Recycling"
-                                                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                                   ScrollViewer.VerticalScrollBarVisibility="Disabled" />
-            </StackPanel>
-        </StackPanel>
+                                                   ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                   ScrollViewer.VerticalScrollBarVisibility="Auto" />
+        </DockPanel>
     </DataTemplate>
 
 </ResourceDictionary>
