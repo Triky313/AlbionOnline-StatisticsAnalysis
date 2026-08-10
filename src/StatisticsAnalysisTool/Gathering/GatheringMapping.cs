@@ -8,6 +8,7 @@ public static class GatheringMapping
     {
         return new GatheredDto()
         {
+            SessionId = gathered.SessionId,
             Timestamp = gathered.TimestampUtc,
             UniqueItemName = gathered.UniqueName,
             EstimatedMarketValueInternal = gathered.EstimatedMarketValue.InternalValue,
@@ -27,6 +28,7 @@ public static class GatheringMapping
     {
         return new Gathered()
         {
+            SessionId = gathered.SessionId,
             TimestampUtc = gathered.Timestamp,
             UniqueName = gathered.UniqueItemName,
             EstimatedMarketValue = FixPoint.FromInternalValue(gathered.EstimatedMarketValueInternal),

@@ -66,6 +66,76 @@
         <Setter Property="Margin" Value="0,5,0,0"/>
     </Style>
 
+
+    <Style x:Key="Gathering.SummaryCard" TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.SummaryCard}">
+        <Setter Property="MinWidth" Value="190" />
+        <Setter Property="Margin" Value="0,0,8,0" />
+    </Style>
+
+    <Style x:Key="Gathering.DetailCard" TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.Section}">
+        <Setter Property="MinHeight" Value="230" />
+        <Setter Property="Padding" Value="12,10" />
+    </Style>
+
+    <Style x:Key="Gathering.ChartCard" TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.Section}">
+        <Setter Property="MinHeight" Value="330" />
+        <Setter Property="Padding" Value="12,10" />
+    </Style>
+
+    <Style x:Key="Gathering.ListCard" TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.Section}">
+        <Setter Property="MinHeight" Value="285" />
+        <Setter Property="Padding" Value="0,10,0,0" />
+    </Style>
+
+    <Style x:Key="Gathering.CardTitle" TargetType="{x:Type TextBlock}">
+        <Setter Property="Margin" Value="0,0,0,9" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    </Style>
+
+    <Style x:Key="Gathering.DetailRow" TargetType="{x:Type Border}">
+        <Setter Property="MinHeight" Value="31" />
+        <Setter Property="Padding" Value="2,4" />
+        <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.4}" />
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
+    </Style>
+
+    <Style x:Key="Gathering.DetailLabel" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    </Style>
+
+    <Style x:Key="Gathering.DetailValue" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="12.5" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+    </Style>
+
+    <Style x:Key="Gathering.TableHeader" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.3}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    </Style>
+
+    <Style x:Key="Gathering.TableText" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="11.5" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    </Style>
+
+    <Style x:Key="Gathering.TableValue" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource Gathering.TableText}">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+    </Style>
     <DataTemplate x:Key="GatheredItemTemplate" DataType="{x:Type gathering:Gathered}">
         <Grid Height="50">
             <Border Style="{StaticResource Container.Border}">
@@ -148,9 +218,6 @@
                                                Style="{StaticResource Gathering.TextBlock.CollectionFragment.Numbers}" />
                                 </StackPanel>
                             </StackPanel>
-                            <Grid Margin="0 -2 0 0" Height="18" Width="18" HorizontalAlignment="Right">
-                                <CheckBox Width="auto" Height="auto" IsChecked="{Binding IsSelectedForDeletion, IsAsync=True, FallbackValue=false}" ToolTip="{Binding TranslationSelectToDelete, IsAsync=True}" />
-                            </Grid>
                         </DockPanel>
                     </StackPanel>
                 </DockPanel>

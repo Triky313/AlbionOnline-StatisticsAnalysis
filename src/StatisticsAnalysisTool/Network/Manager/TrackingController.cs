@@ -329,7 +329,7 @@ public class TrackingController : ITrackingController
             TreasureController.SaveInFileAsync(),
             StatisticController.SaveInFileAsync(),
             DungeonController.SaveInFileAsync(),
-            GatheringController.SaveInFileAsync(true),
+            GatheringController.SaveInFileAsync(),
             OpenWorldController.SaveInFileAsync(),
             GuildController.SaveInFileAsync(),
             CombatController.SaveInFileAsync(),

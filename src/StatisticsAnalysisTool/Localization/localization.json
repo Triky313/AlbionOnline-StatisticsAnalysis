@@ -48271,6 +48271,344 @@
           "seg": "Compared with the previous period"
         }
       ]
+    },
+    {
+      "tuid": "OVERVIEW",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Übersicht"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Overview"
+        }
+      ]
+    },
+    {
+      "tuid": "BEST_RESOURCE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Beste Ressource"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Best resource"
+        }
+      ]
+    },
+    {
+      "tuid": "TOP_MAP",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Top-Map"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top map"
+        }
+      ]
+    },
+    {
+      "tuid": "UNIQUE_RESOURCE_TYPES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Einzigartige Ressourcentypen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Unique resource types"
+        }
+      ]
+    },
+    {
+      "tuid": "BEST_GATHERING_MAP",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Beste Sammel-Map"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Best gathering map"
+        }
+      ]
+    },
+    {
+      "tuid": "TOTAL_RESOURCES_GATHERED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Insgesamt gesammelte Ressourcen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total resources gathered"
+        }
+      ]
+    },
+    {
+      "tuid": "TOTAL_GATHERING_PROCESSES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gesamte Sammelvorgänge"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total gathering processes"
+        }
+      ]
+    },
+    {
+      "tuid": "AVERAGE_RESOURCE_VALUE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Durchschnittlicher Ressourcenwert"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Average resource value"
+        }
+      ]
+    },
+    {
+      "tuid": "BEST_SINGLE_GATHERING",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Wertvollster einzelner Sammelvorgang"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Best single gathering"
+        }
+      ]
+    },
+    {
+      "tuid": "TIMES_GATHERED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Sammelvorgänge"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Times gathered"
+        }
+      ]
+    },
+    {
+      "tuid": "TOTAL_AMOUNT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gesamtmenge"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total amount"
+        }
+      ]
+    },
+    {
+      "tuid": "TOTAL_VALUE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gesamtwert"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total value"
+        }
+      ]
+    },
+    {
+      "tuid": "AVERAGE_VALUE_PER_GATHER",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Durchschnittswert pro Sammelvorgang"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Average value per gather"
+        }
+      ]
+    },
+    {
+      "tuid": "GATHERING_TIME",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Sammelzeit"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Gathering time"
+        }
+      ]
+    },
+    {
+      "tuid": "RESOURCE_VALUE_BY_TYPE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Ressourcenwert nach Typ"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Resource value by type"
+        }
+      ]
+    },
+    {
+      "tuid": "GATHERING_ACTIVITY_OVER_TIME",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Sammelaktivität im Zeitverlauf"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Gathering activity over time"
+        }
+      ]
+    },
+    {
+      "tuid": "GATHERING_ACTIVITY_BY_LOCATION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Sammelaktivität nach Ort"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Gathering activity by location"
+        }
+      ]
+    },
+    {
+      "tuid": "RESOURCE_TYPES_GATHERED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gesammelte Ressourcentypen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Resource types gathered"
+        }
+      ]
+    },
+    {
+      "tuid": "TOP_GATHERED_RESOURCES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Meistgesammelte Ressourcen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top gathered resources"
+        }
+      ]
+    },
+    {
+      "tuid": "RECENT_GATHERINGS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Letzte Sammelvorgänge"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Recent gatherings"
+        }
+      ]
+    },
+    {
+      "tuid": "RESOURCE_TYPE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Ressourcentyp"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Resource type"
+        }
+      ]
+    },
+    {
+      "tuid": "AMOUNT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Menge"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Amount"
+        }
+      ]
+    },
+    {
+      "tuid": "PERCENT_OF_TOTAL",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Anteil am Gesamtwert"
+        },
+        {
+          "lang": "en-US",
+          "seg": "% of total"
+        }
+      ]
+    },
+    {
+      "tuid": "MAP",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Map"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Map"
+        }
+      ]
+    },
+    {
+      "tuid": "NO_DATA",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Keine Daten"
+        },
+        {
+          "lang": "en-US",
+          "seg": "No data"
+        }
+      ]
+    },
+    {
+      "tuid": "OTHER_MAPS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Andere Maps"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Other maps"
+        }
+      ]
     }
   ]
 }
