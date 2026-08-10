@@ -580,7 +580,7 @@ public class TradeMonitoringBindings : BaseViewModel
         }
     } = GridLength.Auto;
 
-    public Visibility FilteringIsRunningIconVisibility
+    public Visibility FilteringIsRunningVisibility
     {
         get;
         set
@@ -676,7 +676,7 @@ public class TradeMonitoringBindings : BaseViewModel
                 return;
             }
 
-            FilteringIsRunningIconVisibility = Visibility.Visible;
+            FilteringIsRunningVisibility = Visibility.Visible;
             previousCancellationTokenSource = _cancellationTokenSource;
             currentCancellationTokenSource = new CancellationTokenSource();
             currentCancellationToken = currentCancellationTokenSource.Token;
@@ -760,7 +760,7 @@ public class TradeMonitoringBindings : BaseViewModel
                     return;
                 }
 
-                FilteringIsRunningIconVisibility = Visibility.Collapsed;
+                FilteringIsRunningVisibility = Visibility.Collapsed;
                 _cancellationTokenSource = null;
             });
 

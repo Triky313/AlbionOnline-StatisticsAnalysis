@@ -242,13 +242,20 @@
                 <WrapPanel Grid.Row="0" VerticalAlignment="Bottom">
                     <StackPanel Width="220" Margin="0,0,12,8">
                         <TextBlock Text="{Binding Translation.Search, FallbackValue=SEARCH}" Style="{StaticResource App.FilterLabel}" />
-                        <Grid>
+                        <Grid MinHeight="34">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <fa5:ImageAwesome Grid.Column="0" Icon="Solid_Search" Width="15" Height="15" Margin="0,0,8,0" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.2}" />
-                            <TextBox Grid.Column="1" Height="32" Text="{Binding TradeMonitoringBindings.TradesSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="SearchText_TextChanged" />
+                            <fa5:ImageAwesome Grid.Column="0" Icon="Solid_Search" Width="15" Height="15" Margin="0,0,8,0" VerticalAlignment="Center" 
+                                              Foreground="{StaticResource SolidColorBrush.Text.2}" />
+                            <TextBox Grid.Row="0" Grid.Column="1" Height="32" Text="{Binding TradeMonitoringBindings.TradesSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                     TextChanged="SearchText_TextChanged" />
+                            <ProgressBar Grid.Row="1" Grid.Column="1" Height="2" IsIndeterminate="True" Visibility="{Binding TradeMonitoringBindings.FilteringIsRunningVisibility}" />
                         </Grid>
                     </StackPanel>
 
@@ -292,10 +299,6 @@
                             Click="FilterReset_Click">
                         <fa5:ImageAwesome Icon="Solid_Redo" Width="14" Height="14" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                     </Button>
-
-                    <fa5:ImageAwesome Width="20" Height="20" Margin="0,10,12,0"
-                                      Visibility="{Binding TradeMonitoringBindings.FilteringIsRunningIconVisibility}"
-                                      Style="{StaticResource LoadingIconStyle}" />
 
                     <Button Height="32" MinWidth="190" Margin="0,20,8,8"
                             Content="{Binding Translation.DeleteSelectedTrades, FallbackValue=DELETE__SELECTED__TRADES}"
@@ -388,8 +391,7 @@
             <TabItem Header="{Binding Translation.TradeOverview, FallbackValue=TRADE_OVERVIEW}">
                 <ScrollViewer Margin="8,8,8,0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                     <StackPanel MinWidth="1025">
-                        <ContentControl ContentTemplate="{StaticResource MailStatsObjectTemplate}"
-                                        Content="{Binding TradeMonitoringBindings.TradeStatsObject}" />
+                        <ContentControl ContentTemplate="{StaticResource MailStatsObjectTemplate}" Content="{Binding TradeMonitoringBindings.TradeStatsObject}" />
 
                         <Grid Margin="0,8,0,0">
                             <Grid.ColumnDefinitions>
@@ -397,38 +399,26 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
-                            <Border Margin="0,0,4,0"
-                                    Padding="12"
-                                    Style="{StaticResource Dashboard.Card}">
-                                <ContentControl ContentTemplate="{StaticResource ManuallyMailMenuTemplate}"
-                                                Content="{Binding TradeMonitoringBindings.ManuallyTradeMenuObject}" />
+                            <Border Margin="0,0,4,0" Padding="12" Style="{StaticResource Dashboard.Card}">
+                                <ContentControl ContentTemplate="{StaticResource ManuallyMailMenuTemplate}" Content="{Binding TradeMonitoringBindings.ManuallyTradeMenuObject}" />
                             </Border>
 
-                            <Border Grid.Column="1"
-                                    Margin="4,0,0,0"
-                                    Padding="12"
-                                    Style="{StaticResource Dashboard.Card}">
-                                <ContentControl ContentTemplate="{StaticResource TradeExportTemplate}"
-                                                Content="{Binding TradeMonitoringBindings.TradeExportTemplateObject}" />
+                            <Border Grid.Column="1" Margin="4,0,0,0" Padding="12" Style="{StaticResource Dashboard.Card}">
+                                <ContentControl ContentTemplate="{StaticResource TradeExportTemplate}" Content="{Binding TradeMonitoringBindings.TradeExportTemplateObject}" />
                             </Border>
                         </Grid>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="{Binding Translation.ProfitOverTime, FallbackValue=PROFIT_OVER_TIME}">
-                <ScrollViewer x:Name="DiagramsScrollViewer"
-                              Margin="8"
-                              HorizontalScrollBarVisibility="Auto"
-                              VerticalScrollBarVisibility="Auto">
+                <ScrollViewer x:Name="DiagramsScrollViewer" Margin="8" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                     <Grid MinWidth="1025">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <Border Margin="0,0,4,0"
-                                Padding="12"
-                                Style="{StaticResource Dashboard.Section}">
+                        <Border Margin="0,0,4,0" Padding="12" Style="{StaticResource Dashboard.Section}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
@@ -439,9 +429,7 @@
                                 <TextBlock Text="{Binding TradeMonitoringBindings.ProfitOverTimeChartTitle, FallbackValue=PROFIT_OVER_TIME}"
                                            Style="{StaticResource Dashboard.SectionTitle}" />
 
-                                <StackPanel Grid.Row="1"
-                                            Margin="0,10,0,10"
-                                            Orientation="Horizontal">
+                                <StackPanel Grid.Row="1" Margin="0,10,0,10" Orientation="Horizontal">
                                     <ComboBox Width="160"
                                               ItemsSource="{Binding TradeMonitoringBindings.ProfitOverTimeAggregationFilters}"
                                               SelectedValue="{Binding TradeMonitoringBindings.SelectedProfitOverTimeAggregation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -450,9 +438,7 @@
                                               SelectionChanged="ProfitOverTimeAggregation_OnSelectionChanged" />
                                 </StackPanel>
 
-                                <Border Grid.Row="2"
-                                        Padding="6"
-                                        Style="{StaticResource Dashboard.Card}">
+                                <Border Grid.Row="2" Padding="6" Style="{StaticResource Dashboard.Card}">
                                     <wpf:CartesianChart Background="Transparent"
                                                         DrawMarginFrame="{x:Null}"
                                                         FindingStrategy="ExactMatchTakeClosest"
@@ -956,7 +942,7 @@
 
         <Grid Grid.Row="0" Grid.RowSpan="4" Panel.ZIndex="10"
               Visibility="{Binding TradeMonitoringBindings.IsTradeMonitoringPopupVisible, FallbackValue=Collapsed}"
-              Margin="8,80,8,0" Background="{StaticResource SolidColorBrush.Background.2}">
+              Margin="8,140,8,0" Background="{StaticResource SolidColorBrush.Background.2}">
             <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
                 <DockPanel Margin="0,0,0,16">
                     <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">

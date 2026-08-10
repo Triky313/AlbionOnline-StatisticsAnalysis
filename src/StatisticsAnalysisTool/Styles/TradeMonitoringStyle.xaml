@@ -178,9 +178,9 @@
     </Style>
 
     <Style x:Key="Trade.Statistics.SummaryCard" TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.Card}">
-        <Setter Property="Height" Value="104" />
+        <Setter Property="Height" Value="90" />
         <Setter Property="Margin" Value="0,0,8,0" />
-        <Setter Property="Padding" Value="14,12" />
+        <Setter Property="Padding" Value="8,8" />
     </Style>
 
     <Style x:Key="Trade.Statistics.SummaryValue" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource Dashboard.SummaryValue}">
@@ -250,17 +250,12 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid Width="48" Height="48" VerticalAlignment="Center">
-                            <Ellipse Fill="{StaticResource SolidColorBrush.Accent.Green.3}" Opacity="0.08"
-                                     Stroke="{StaticResource SolidColorBrush.Accent.Green.3}" StrokeThickness="1" />
-                            <fa5:ImageAwesome Width="21" Height="21" Icon="Solid_HandHoldingUsd"
-                                              Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" />
+                            <Ellipse Fill="{StaticResource SolidColorBrush.Accent.Green.3}" Opacity="0.08" Stroke="{StaticResource SolidColorBrush.Accent.Green.3}" StrokeThickness="1" />
+                            <fa5:ImageAwesome Width="21" Height="21" Icon="Solid_HandHoldingUsd" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" />
                         </Grid>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                            <TextBlock Text="{Binding TranslationTotalSales, FallbackValue=TOTAL_SALES}"
-                                       Style="{StaticResource Dashboard.SummaryTitle}" />
-                            <ContentControl Content="{Binding TotalSalesSummary}"
-                                            ContentTemplate="{StaticResource Trade.Statistics.SummaryMetricTemplate}"
-                                            HorizontalContentAlignment="Stretch" />
+                            <TextBlock Text="{Binding TranslationTotalSales, FallbackValue=TOTAL_SALES}" Style="{StaticResource Dashboard.SummaryTitle}" />
+                            <ContentControl Content="{Binding TotalSalesSummary}" ContentTemplate="{StaticResource Trade.Statistics.SummaryMetricTemplate}" HorizontalContentAlignment="Stretch" />
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -272,10 +267,8 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid Width="48" Height="48" VerticalAlignment="Center">
-                            <Ellipse Fill="{StaticResource SolidColorBrush.Accent.Red.3}" Opacity="0.08"
-                                     Stroke="{StaticResource SolidColorBrush.Accent.Red.3}" StrokeThickness="1" />
-                            <fa5:ImageAwesome Width="21" Height="21" Icon="Solid_ShoppingCart"
-                                              Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" />
+                            <Ellipse Fill="{StaticResource SolidColorBrush.Accent.Red.3}" Opacity="0.08" Stroke="{StaticResource SolidColorBrush.Accent.Red.3}" StrokeThickness="1" />
+                            <fa5:ImageAwesome Width="21" Height="21" Icon="Solid_ShoppingCart" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" />
                         </Grid>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
                             <TextBlock Text="{Binding TranslationTotalPurchases, FallbackValue=TOTAL_PURCHASES}"
@@ -341,8 +334,7 @@
                     </Grid.RowDefinitions>
 
                     <Border Padding="14,0" BorderBrush="{StaticResource SolidColorBrush.Background.4}" BorderThickness="0,0,0,1">
-                        <TextBlock VerticalAlignment="Center"
-                                   Text="{Binding TranslationTradeStatistics, FallbackValue=TRADE_STATISTICS}"
+                        <TextBlock Text="{Binding TranslationTradeStatistics, FallbackValue=TRADE_STATISTICS}"
                                    Style="{StaticResource Dashboard.SectionTitle}" />
                     </Border>
 
