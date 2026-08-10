@@ -50,7 +50,7 @@
     </Style>
 
     <Style x:Key="Settings.Footer" TargetType="{x:Type Border}">
-        <Setter Property="Height" Value="70" />
+        <Setter Property="Height" Value="80" />
         <Setter Property="Padding" Value="10,20" />
         <Setter Property="Margin" Value="10,0,10,0" />
         <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.2}" />

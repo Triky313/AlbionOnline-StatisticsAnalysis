@@ -58,19 +58,19 @@ public sealed class DashboardChartRangeOption
             },
             new DashboardChartRangeOption()
             {
-                Name = LocalizationController.Translation("LAST_7_DAYS"),
+                Name = $"7 {LocalizationController.Translation("DAYS")}",
                 BucketCount = 7,
                 Unit = DashboardChartRangeUnit.Day
             },
             new DashboardChartRangeOption()
             {
-                Name = LocalizationController.Translation("LAST_30_DAYS"),
+                Name = $"30 {LocalizationController.Translation("DAYS")}",
                 BucketCount = 30,
                 Unit = DashboardChartRangeUnit.Day
             },
             new DashboardChartRangeOption()
             {
-                Name = LocalizationController.Translation("LAST_365_DAYS"),
+                Name = $"365 {LocalizationController.Translation("DAYS")}",
                 BucketCount = 365,
                 Unit = DashboardChartRangeUnit.Day
             }
