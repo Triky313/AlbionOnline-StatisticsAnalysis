@@ -8,6 +8,7 @@
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:common="clr-namespace:StatisticsAnalysisTool.Common"
              xmlns:crafting="clr-namespace:StatisticsAnalysisTool.Crafting"
+             xmlns:translation="clr-namespace:StatisticsAnalysisTool.Models.TranslationModel"
              xmlns:enum="clr-namespace:StatisticsAnalysisTool.Enumerations"
              mc:Ignorable="d"
              d:DesignHeight="1100"
@@ -969,76 +970,104 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <Grid Grid.Row="0">
-                        <StackPanel Orientation="Vertical">
-                            <Grid>
-                                <TextBox Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ItemSearchTextBoxStyle}" />
+                    <Border Grid.Row="0" Style="{StaticResource App.TopFilterCard}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
-                                <Grid Width="24" Height="22" Margin="235,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
-                                    <fa5:ImageAwesome Icon="Solid_Redo" Foreground="{StaticResource SolidColorBrush.Text.1}" MouseUp="FilterReset_MouseUp" />
-                                </Grid>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <fa5:ImageAwesome Grid.Column="0" Icon="Solid_Search" Width="16" Height="16" Margin="0,0,9,0"
+                                                  VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.2}" />
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Style="{StaticResource ItemSearchTextBoxStyle}" />
+                                <Button Grid.Column="2" Width="32" Height="32" Margin="6,0,0,0" Padding="0"
+                                        ToolTip="{x:Static translation:MainWindowTranslation.ResetFilters}"
+                                        Style="{StaticResource Style.Button.Neutral}"
+                                        Click="FilterReset_Click">
+                                    <fa5:ImageAwesome Icon="Solid_Redo" Width="14" Height="14" IsHitTestVisible="False"
+                                                      Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                </Button>
                             </Grid>
-                            <StackPanel Orientation="Horizontal">
-                                <ComboBox ItemsSource="{Binding ItemShopCategories}"
-                                          SelectedItem="{Binding SelectedItemShopCategory, Mode=TwoWay}"
-                                          SelectedValuePath="Id"
-                                          DisplayMemberPath="DisplayName"
-                                          HorizontalAlignment="Left"
-                                          Margin="10,5,5,5"
-                                          VerticalAlignment="Top"
-                                          Width="150" />
-                                <ComboBox ItemsSource="{Binding ItemSubCategories1}"
-                                          SelectedItem="{Binding SelectedItemShopSubCategory1, Mode=TwoWay}"
-                                          SelectedValuePath="Id"
-                                          DisplayMemberPath="DisplayName"
-                                          HorizontalAlignment="Left"
-                                          Margin="5,5"
-                                          VerticalAlignment="Top"
-                                          Width="150" />
-                                <ComboBox ItemsSource="{Binding ItemSubCategories2}"
-                                          SelectedItem="{Binding SelectedItemShopSubCategory2, Mode=TwoWay}"
-                                          SelectedValuePath="Id"
-                                          DisplayMemberPath="DisplayName"
-                                          HorizontalAlignment="Left"
-                                          Margin="5,5"
-                                          VerticalAlignment="Top"
-                                          Width="150" />
-                                <ComboBox ItemsSource="{Binding ItemSubCategories3}"
-                                          SelectedItem="{Binding SelectedItemShopSubCategory3, Mode=TwoWay}"
-                                          SelectedValuePath="Id"
-                                          DisplayMemberPath="DisplayName"
-                                          HorizontalAlignment="Left"
-                                          Margin="5,5"
-                                          VerticalAlignment="Top"
-                                          Width="150" />
-                                <ComboBox ItemsSource="{Binding ItemTiers}"
-                                          SelectedValue="{Binding SelectedItemTier, Mode=TwoWay}"
-                                          SelectedValuePath="Key"
-                                          DisplayMemberPath="Value"
-                                          HorizontalAlignment="Left"
-                                          Margin="5,5"
-                                          MinWidth="70" />
-                                <ComboBox ItemsSource="{Binding ItemLevels}"
-                                          SelectedValue="{Binding SelectedItemLevel, Mode=TwoWay}"
-                                          SelectedValuePath="Key"
-                                          DisplayMemberPath="Value"
-                                          HorizontalAlignment="Left"
-                                          Margin="5,5"
-                                          MinWidth="70" />
-                                <ComboBox ItemsSource="{Binding ItemQualities}"
-                                          SelectedValue="{Binding SelectedQualityLevel, Mode=TwoWay}"
-                                          SelectedValuePath="Key"
-                                          DisplayMemberPath="Value"
-                                          HorizontalAlignment="Left"
-                                          Margin="5,5"
-                                          MinWidth="120" />
-                            </StackPanel>
-                            <DockPanel Margin="10,0,0,5">
-                                <TextBlock Text="{Binding MarketStatusText}" Foreground="{StaticResource SolidColorBrush.Text.3}" />
-                                <TextBlock Text="{Binding ItemCounterText}" Foreground="{StaticResource SolidColorBrush.Text.3}" HorizontalAlignment="Right" DockPanel.Dock="Right" />
-                            </DockPanel>
-                        </StackPanel>
-                    </Grid>
+
+                            <UniformGrid Grid.Row="1" Columns="7" Margin="-4,10,-4,0">
+                                <StackPanel Style="{StaticResource ItemSearch.FilterField}">
+                                    <TextBlock Text="{x:Static translation:MainWindowTranslation.ShopCategory}"
+                                               Style="{StaticResource App.FilterLabel}" />
+                                    <ComboBox ItemsSource="{Binding ItemShopCategories}"
+                                              SelectedItem="{Binding SelectedItemShopCategory, Mode=TwoWay}"
+                                              SelectedValuePath="Id" DisplayMemberPath="DisplayName"
+                                              Style="{StaticResource ItemSearch.FilterComboBox}" />
+                                </StackPanel>
+                                <StackPanel Style="{StaticResource ItemSearch.FilterField}">
+                                    <TextBlock Text="{x:Static translation:MainWindowTranslation.ShopSubCategory1}"
+                                               Style="{StaticResource App.FilterLabel}" />
+                                    <ComboBox ItemsSource="{Binding ItemSubCategories1}"
+                                              SelectedItem="{Binding SelectedItemShopSubCategory1, Mode=TwoWay}"
+                                              SelectedValuePath="Id" DisplayMemberPath="DisplayName"
+                                              Style="{StaticResource ItemSearch.FilterComboBox}" />
+                                </StackPanel>
+                                <StackPanel Style="{StaticResource ItemSearch.FilterField}">
+                                    <TextBlock Text="{x:Static translation:MainWindowTranslation.ShopSubCategory2}"
+                                               Style="{StaticResource App.FilterLabel}" />
+                                    <ComboBox ItemsSource="{Binding ItemSubCategories2}"
+                                              SelectedItem="{Binding SelectedItemShopSubCategory2, Mode=TwoWay}"
+                                              SelectedValuePath="Id" DisplayMemberPath="DisplayName"
+                                              Style="{StaticResource ItemSearch.FilterComboBox}" />
+                                </StackPanel>
+                                <StackPanel Style="{StaticResource ItemSearch.FilterField}">
+                                    <TextBlock Text="{x:Static translation:MainWindowTranslation.ShopSubCategory3}"
+                                               Style="{StaticResource App.FilterLabel}" />
+                                    <ComboBox ItemsSource="{Binding ItemSubCategories3}"
+                                              SelectedItem="{Binding SelectedItemShopSubCategory3, Mode=TwoWay}"
+                                              SelectedValuePath="Id" DisplayMemberPath="DisplayName"
+                                              Style="{StaticResource ItemSearch.FilterComboBox}" />
+                                </StackPanel>
+                                <StackPanel Style="{StaticResource ItemSearch.FilterField}">
+                                    <TextBlock Text="{x:Static translation:MainWindowTranslation.Tier}"
+                                               Style="{StaticResource App.FilterLabel}" />
+                                    <ComboBox ItemsSource="{Binding ItemTiers}"
+                                              SelectedValue="{Binding SelectedItemTier, Mode=TwoWay}"
+                                              SelectedValuePath="Key" DisplayMemberPath="Value"
+                                              Style="{StaticResource ItemSearch.FilterComboBox}" />
+                                </StackPanel>
+                                <StackPanel Style="{StaticResource ItemSearch.FilterField}">
+                                    <TextBlock Text="{x:Static translation:MainWindowTranslation.Level}"
+                                               Style="{StaticResource App.FilterLabel}" />
+                                    <ComboBox ItemsSource="{Binding ItemLevels}"
+                                              SelectedValue="{Binding SelectedItemLevel, Mode=TwoWay}"
+                                              SelectedValuePath="Key" DisplayMemberPath="Value"
+                                              Style="{StaticResource ItemSearch.FilterComboBox}" />
+                                </StackPanel>
+                                <StackPanel Style="{StaticResource ItemSearch.FilterField}">
+                                    <TextBlock Text="{x:Static crafting:BlackMarketBindings.TranslationQuality}"
+                                               Style="{StaticResource App.FilterLabel}" />
+                                    <ComboBox ItemsSource="{Binding ItemQualities}"
+                                              SelectedValue="{Binding SelectedQualityLevel, Mode=TwoWay}"
+                                              SelectedValuePath="Key" DisplayMemberPath="Value"
+                                              Style="{StaticResource ItemSearch.FilterComboBox}" />
+                                </StackPanel>
+                            </UniformGrid>
+
+                            <Border Grid.Row="2" BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                                    BorderThickness="0,1,0,0" Padding="0,8,0,0">
+                                <DockPanel>
+                                    <TextBlock Text="{Binding MarketStatusText}" Foreground="{StaticResource SolidColorBrush.Text.3}" />
+                                    <TextBlock Text="{Binding ItemCounterText}" Foreground="{StaticResource SolidColorBrush.Text.3}"
+                                               HorizontalAlignment="Right" DockPanel.Dock="Right" />
+                                </DockPanel>
+                            </Border>
+                        </Grid>
+                    </Border>
 
                     <ListView Grid.Row="1"
                               ItemsSource="{Binding ItemsView}"

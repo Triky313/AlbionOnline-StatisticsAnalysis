@@ -351,7 +351,7 @@ public partial class CraftingControl
         CloseSellPriceOptions();
     }
 
-    private void FilterReset_MouseUp(object sender, MouseButtonEventArgs e)
+    private void FilterReset_Click(object sender, RoutedEventArgs e)
     {
         if (DataContext is not MainWindowViewModel mainWindowViewModel)
         {
