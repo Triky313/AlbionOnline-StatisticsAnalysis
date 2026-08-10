@@ -308,39 +308,40 @@
                             <Grid Margin="0,0,0,8">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="8" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
+                                <Border Grid.ColumnSpan="2" Style="{StaticResource Dashboard.ContentRankingCard}" />
 
-                                <Border Grid.Column="0" Style="{StaticResource Dashboard.ContentRankingCard}">
+                                <Border Grid.Column="0"
+                                        MinWidth="350"
+                                        BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                                        BorderThickness="0,0,1,0">
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="*" />
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
-                                        <Grid Style="{StaticResource Dashboard.SectionHeader}" MouseLeftButtonDown="FameContentRankingToggle_OnMouseLeftButtonDown">
+                                        <Grid Style="{StaticResource Dashboard.SectionHeader}" MouseLeftButtonDown="ContentRankingToggle_OnMouseLeftButtonDown">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <Image Source="../Resources/fame.png" Width="22" Height="22" Margin="13,0,9,0" />
                                             <TextBlock Grid.Column="1"
                                                        Text="{Binding DashboardBindings.TranslationTopFameSources, FallbackValue=TOP_FAME_SOURCES}"
                                                        Style="{StaticResource Dashboard.ContentRankingTitle}" />
-                                            <fa5:ImageAwesome Grid.Column="2" Icon="{Binding DashboardBindings.FameContentRankingToggleIcon, FallbackValue=Solid_Minus}" Style="{StaticResource Dashboard.SectionToggleIcon}" />
                                         </Grid>
                                         <ItemsControl Grid.Row="1"
                                                       Margin="13,10,13,0"
-                                                      Visibility="{Binding DashboardBindings.FameContentRankingVisibility}"
+                                                      Visibility="{Binding DashboardBindings.ContentRankingVisibility}"
                                                       ItemsSource="{Binding DashboardBindings.FameContentRanking}"
                                                       ItemTemplate="{StaticResource Dashboard.ContentRankingItemTemplate}" />
                                         <Border Grid.Row="2"
                                                 Margin="13,8,13,12"
                                                 Padding="0,9,0,0"
                                                 BorderBrush="{StaticResource SolidColorBrush.Background.4}"
-                                                Visibility="{Binding DashboardBindings.FameContentRankingVisibility}"
+                                                Visibility="{Binding DashboardBindings.ContentRankingVisibility}"
                                                 BorderThickness="0,1,0,0">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
@@ -357,14 +358,14 @@
                                     </Grid>
                                 </Border>
 
-                                <Border Grid.Column="2" Style="{StaticResource Dashboard.ContentRankingCard}">
+                                <Border Grid.Column="1" MinWidth="350">
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="*" />
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
-                                        <Grid Style="{StaticResource Dashboard.SectionHeader}" MouseLeftButtonDown="SilverContentRankingToggle_OnMouseLeftButtonDown">
+                                        <Grid Style="{StaticResource Dashboard.SectionHeader}" MouseLeftButtonDown="ContentRankingToggle_OnMouseLeftButtonDown">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -374,18 +375,18 @@
                                             <TextBlock Grid.Column="1"
                                                        Text="{Binding DashboardBindings.TranslationTopSilverSources, FallbackValue=TOP_SILVER_SOURCES}"
                                                        Style="{StaticResource Dashboard.ContentRankingTitle}" />
-                                            <fa5:ImageAwesome Grid.Column="2" Icon="{Binding DashboardBindings.SilverContentRankingToggleIcon, FallbackValue=Solid_Minus}" Style="{StaticResource Dashboard.SectionToggleIcon}" />
+                                            <fa5:ImageAwesome Grid.Column="2" Icon="{Binding DashboardBindings.ContentRankingToggleIcon, FallbackValue=Solid_Minus}" Style="{StaticResource Dashboard.SectionToggleIcon}" />
                                         </Grid>
                                         <ItemsControl Grid.Row="1"
                                                       Margin="13,10,13,0"
-                                                      Visibility="{Binding DashboardBindings.SilverContentRankingVisibility}"
+                                                      Visibility="{Binding DashboardBindings.ContentRankingVisibility}"
                                                       ItemsSource="{Binding DashboardBindings.SilverContentRanking}"
                                                       ItemTemplate="{StaticResource Dashboard.ContentRankingItemTemplate}" />
                                         <Border Grid.Row="2"
                                                 Margin="13,8,13,12"
                                                 Padding="0,9,0,0"
                                                 BorderBrush="{StaticResource SolidColorBrush.Background.4}"
-                                                Visibility="{Binding DashboardBindings.SilverContentRankingVisibility}"
+                                                Visibility="{Binding DashboardBindings.ContentRankingVisibility}"
                                                 BorderThickness="0,1,0,0">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>

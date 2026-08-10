@@ -165,33 +165,18 @@ public partial class DashboardControl
         }
     }
 
-    private void FameContentRankingToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    private void ContentRankingToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         var vm = (MainWindowViewModel) DataContext;
-        if (vm.DashboardBindings.FameContentRankingVisibility == Visibility.Visible)
+        if (vm.DashboardBindings.ContentRankingVisibility == Visibility.Visible)
         {
-            vm.DashboardBindings.FameContentRankingVisibility = Visibility.Collapsed;
-            vm.DashboardBindings.FameContentRankingToggleIcon = EFontAwesomeIcon.Solid_Plus;
+            vm.DashboardBindings.ContentRankingVisibility = Visibility.Collapsed;
+            vm.DashboardBindings.ContentRankingToggleIcon = EFontAwesomeIcon.Solid_Plus;
         }
         else
         {
-            vm.DashboardBindings.FameContentRankingVisibility = Visibility.Visible;
-            vm.DashboardBindings.FameContentRankingToggleIcon = EFontAwesomeIcon.Solid_Minus;
-        }
-    }
-
-    private void SilverContentRankingToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-    {
-        var vm = (MainWindowViewModel) DataContext;
-        if (vm.DashboardBindings.SilverContentRankingVisibility == Visibility.Visible)
-        {
-            vm.DashboardBindings.SilverContentRankingVisibility = Visibility.Collapsed;
-            vm.DashboardBindings.SilverContentRankingToggleIcon = EFontAwesomeIcon.Solid_Plus;
-        }
-        else
-        {
-            vm.DashboardBindings.SilverContentRankingVisibility = Visibility.Visible;
-            vm.DashboardBindings.SilverContentRankingToggleIcon = EFontAwesomeIcon.Solid_Minus;
+            vm.DashboardBindings.ContentRankingVisibility = Visibility.Visible;
+            vm.DashboardBindings.ContentRankingToggleIcon = EFontAwesomeIcon.Solid_Minus;
         }
     }
 

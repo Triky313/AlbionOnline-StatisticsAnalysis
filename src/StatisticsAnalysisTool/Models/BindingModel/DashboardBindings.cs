@@ -29,11 +29,10 @@ public class DashboardBindings : BaseViewModel
         FactionSummaryVisibility = SettingsController.CurrentSettings.IsFactionSummaryVisible ? Visibility.Visible : Visibility.Collapsed;
         FactionSummaryToggleIcon = SettingsController.CurrentSettings.IsFactionSummaryVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
 
-        FameContentRankingVisibility = SettingsController.CurrentSettings.IsFameContentRankingVisible ? Visibility.Visible : Visibility.Collapsed;
-        FameContentRankingToggleIcon = SettingsController.CurrentSettings.IsFameContentRankingVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
-
-        SilverContentRankingVisibility = SettingsController.CurrentSettings.IsSilverContentRankingVisible ? Visibility.Visible : Visibility.Collapsed;
-        SilverContentRankingToggleIcon = SettingsController.CurrentSettings.IsSilverContentRankingVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
+        var isContentRankingVisible = SettingsController.CurrentSettings.IsFameContentRankingVisible
+                                      || SettingsController.CurrentSettings.IsSilverContentRankingVisible;
+        ContentRankingVisibility = isContentRankingVisible ? Visibility.Visible : Visibility.Collapsed;
+        ContentRankingToggleIcon = isContentRankingVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
 
         LootedChestsStatsVisibility = SettingsController.CurrentSettings.IsLootedChestsStatsVisible ? Visibility.Visible : Visibility.Collapsed;
         LootedChestsStatsToggleIcon = SettingsController.CurrentSettings.IsLootedChestsStatsVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
@@ -171,39 +170,20 @@ public class DashboardBindings : BaseViewModel
         }
     }
 
-    public Visibility FameContentRankingVisibility
+    public Visibility ContentRankingVisibility
     {
         get;
         set
         {
             field = value;
-            SettingsController.CurrentSettings.IsFameContentRankingVisible = value == Visibility.Visible;
+            var isVisible = value == Visibility.Visible;
+            SettingsController.CurrentSettings.IsFameContentRankingVisible = isVisible;
+            SettingsController.CurrentSettings.IsSilverContentRankingVisible = isVisible;
             OnPropertyChanged();
         }
     }
 
-    public EFontAwesomeIcon FameContentRankingToggleIcon
-    {
-        get;
-        set
-        {
-            field = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public Visibility SilverContentRankingVisibility
-    {
-        get;
-        set
-        {
-            field = value;
-            SettingsController.CurrentSettings.IsSilverContentRankingVisible = value == Visibility.Visible;
-            OnPropertyChanged();
-        }
-    }
-
-    public EFontAwesomeIcon SilverContentRankingToggleIcon
+    public EFontAwesomeIcon ContentRankingToggleIcon
     {
         get;
         set
