@@ -288,7 +288,10 @@ public class MainWindowViewModel : BaseViewModel
         Settings.Default.Save();
     }
 
-    public async Task InitMainWindowDataAsync()
+    public async Task InitMainWindowDataAsync(
+        Action<double, string> reportProgress = null,
+        double progressStart = 0,
+        double progressEnd = 100)
     {
 #if DEBUG
         DebugModeVisibility = Visibility.Visible;
@@ -303,8 +306,11 @@ public class MainWindowViewModel : BaseViewModel
 
         ItemsView = new ListCollectionView(ItemController.Items);
         InitAlerts();
-        await LoadUserDataForActiveServerAsync();
+        var userDataProgressEnd = progressStart + (progressEnd - progressStart) * 0.95;
+        await LoadUserDataForActiveServerAsync(reportProgress, progressStart, userDataProgressEnd);
+        reportProgress?.Invoke(userDataProgressEnd, LocalizationController.Translation("TRACKING"));
         LoggingBindings.Init();
+        reportProgress?.Invoke(progressEnd, LocalizationController.Translation("TRACKING"));
 
         LoadIconVisibility = Visibility.Hidden;
         IsFilterResetEnabled = true;
@@ -365,7 +371,10 @@ public class MainWindowViewModel : BaseViewModel
         MainStatusBindings.SetServerLocation(currentServerLocation);
     }
 
-    public async Task LoadUserDataForActiveServerAsync()
+    public async Task LoadUserDataForActiveServerAsync(
+        Action<double, string> reportProgress = null,
+        double progressStart = 0,
+        double progressEnd = 100)
     {
         if (!AppDataPaths.IsUserDataAvailable)
         {
@@ -375,21 +384,30 @@ public class MainWindowViewModel : BaseViewModel
 
         Log.Information("Loading Albion user data. Server={Server}, Directory={Directory}", AppDataPaths.ActiveUserDataServerLocation, AppDataPaths.UserDataDirectory);
 
+        const int totalTaskCount = 16;
+        double GetProgress(int completedTaskCount) => progressStart + completedTaskCount / (double) totalTaskCount * (progressEnd - progressStart);
+
         ResetItemUserDataState();
+        reportProgress?.Invoke(GetProgress(0), Settings.Default.FavoriteItemsFileName);
         await ItemController.SetFavoriteItemsFromLocalFileAsync();
 
         AlertManager.StopAllAlerts();
+        reportProgress?.Invoke(GetProgress(1), Settings.Default.ActiveAlertsFileName);
         await AlertManager.LoadFromFileAsync();
 
+        var trackingProgressStart = GetProgress(2);
+        var trackingProgressEnd = GetProgress(15);
         if (ServiceLocator.IsServiceInDictionary<TrackingController>())
         {
-            await ServiceLocator.Resolve<TrackingController>().LoadDataAsync();
+            await ServiceLocator.Resolve<TrackingController>().LoadDataAsync(reportProgress, trackingProgressStart, trackingProgressEnd);
         }
 
+        reportProgress?.Invoke(trackingProgressEnd, Settings.Default.EstimatedMarketValueFileName);
         await EstimatedMarketValueController.SetAllEstimatedMarketValuesToItemsAsync();
         ItemsView?.Refresh();
         LoggingBindings.RefreshLootComparatorSaves();
         Log.Information("Albion user data loaded. Server={Server}, Directory={Directory}", AppDataPaths.ActiveUserDataServerLocation, AppDataPaths.UserDataDirectory);
+        reportProgress?.Invoke(progressEnd, Settings.Default.EstimatedMarketValueFileName);
     }
 
     private void ResetItemUserDataState()

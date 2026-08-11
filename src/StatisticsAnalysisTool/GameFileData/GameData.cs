@@ -27,22 +27,35 @@ public static class GameData
 {
     private const int FileBufferSize = 65536;
 
-    public static async Task<bool> InitializeMainGameDataFilesAsync(ServerType serverType)
+    public static async Task<bool> InitializeMainGameDataFilesAsync(
+        ServerType serverType,
+        Action<double, string> reportProgress = null,
+        double progressStart = 0,
+        double progressEnd = 100)
     {
         if (string.IsNullOrEmpty(SettingsController.CurrentSettings.MainGameFolderPath))
         {
-            return await GetMainGameDataWithDialogAsync(serverType);
+            return await GetMainGameDataWithDialogAsync(serverType, reportProgress, progressStart, progressEnd);
         }
 
         if (!Extractor.IsValidMainGameFolder(SettingsController.CurrentSettings?.MainGameFolderPath ?? string.Empty, serverType))
         {
-            return await GetMainGameDataWithDialogAsync(serverType);
+            return await GetMainGameDataWithDialogAsync(serverType, reportProgress, progressStart, progressEnd);
         }
 
-        return await GetMainGameDataAsync(SettingsController.CurrentSettings?.MainGameFolderPath, serverType);
+        return await GetMainGameDataAsync(
+            SettingsController.CurrentSettings?.MainGameFolderPath,
+            serverType,
+            reportProgress,
+            progressStart,
+            progressEnd);
     }
 
-    public static async Task<bool> GetMainGameDataWithDialogAsync(ServerType serverType)
+    public static async Task<bool> GetMainGameDataWithDialogAsync(
+        ServerType serverType,
+        Action<double, string> reportProgress = null,
+        double progressStart = 0,
+        double progressEnd = 100)
     {
         var dialogWindow = new GameDataPreparationWindow();
         var dialogResult = dialogWindow.ShowDialog();
@@ -53,22 +66,28 @@ public static class GameData
             var mainGameFolderPath = gameDataPreparationWindowViewModel.Path;
 
             SettingsController.CurrentSettings.MainGameFolderPath = mainGameFolderPath;
-            return await GetMainGameDataAsync(SettingsController.CurrentSettings.MainGameFolderPath, serverType);
+            return await GetMainGameDataAsync(
+                SettingsController.CurrentSettings.MainGameFolderPath,
+                serverType,
+                reportProgress,
+                progressStart,
+                progressEnd);
         }
 
         return false;
     }
 
-    public static async Task<bool> GetMainGameDataAsync(string mainGameFolderPath, ServerType serverType)
+    public static async Task<bool> GetMainGameDataAsync(
+        string mainGameFolderPath,
+        ServerType serverType,
+        Action<double, string> reportProgress = null,
+        double progressStart = 0,
+        double progressEnd = 100)
     {
         Extractor extractor = null;
-        ToolLoadingWindow toolLoadingWindow = null;
 
         try
         {
-            var toolLoadingWindowViewModel = new ToolLoadingWindowViewModel();
-            toolLoadingWindow = new ToolLoadingWindow(toolLoadingWindowViewModel);
-            toolLoadingWindow.Show();
 
             var tempDirPath = AppDataPaths.TempDirectory;
             var gameFilesDirPath = AppDataPaths.GameFilesDirectory;
@@ -79,23 +98,23 @@ public static class GameData
             DirectoryController.CreateDirectoryWhenNotExists(tempDirPath);
             DirectoryController.CreateDirectoryWhenNotExists(gameFilesDirPath);
 
-            List<Func<Task>> extractionTaskFactories = [];
+            List<(string Name, Func<Task> TaskFactory)> extractionTaskFactories = [];
 
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "localization.xml"), mainGameFolderPath, serverType, "localization"))
             {
-                extractionTaskFactories.Add(() => extractor.ExtractGameDataFromXmlAsync(gameFilesDirPath, ["localization"]));
+                extractionTaskFactories.Add(("localization.xml", () => extractor.ExtractGameDataFromXmlAsync(gameFilesDirPath, ["localization"])));
             }
 
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "indexedItems.json"), mainGameFolderPath, serverType, "items")
                 || Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "items.json"), mainGameFolderPath, serverType, "items"))
             {
-                extractionTaskFactories.Add(() => extractor.ExtractIndexedItemGameDataAsync(gameFilesDirPath, "indexedItems.json"));
-                extractionTaskFactories.Add(() => extractor.ExtractGameDataAsync(gameFilesDirPath, ["items"]));
+                extractionTaskFactories.Add(("indexedItems.json", () => extractor.ExtractIndexedItemGameDataAsync(gameFilesDirPath, "indexedItems.json")));
+                extractionTaskFactories.Add(("items.json", () => extractor.ExtractGameDataAsync(gameFilesDirPath, ["items"])));
             }
 
             if (Extractor.IsBinFileNewer(Path.Combine(gameFilesDirPath, "spells.xml"), mainGameFolderPath, serverType, "spells"))
             {
-                extractionTaskFactories.Add(() => extractor.ExtractGameDataFromXmlAsync(gameFilesDirPath, ["spells"]));
+                extractionTaskFactories.Add(("spells.xml", () => extractor.ExtractGameDataFromXmlAsync(gameFilesDirPath, ["spells"])));
             }
 
             var mobsModifiedFilePath = Path.Combine(gameFilesDirPath, "mobs-modified.json");
@@ -127,37 +146,47 @@ public static class GameData
 
             if (fileNamesToLoad.Count > 0)
             {
-                extractionTaskFactories.Add(() => extractor.ExtractGameDataAsync(tempDirPath, fileNamesToLoad.ToArray()));
+                var extractionTaskName = string.Join(", ", fileNamesToLoad.Select(Path.GetFileName));
+                extractionTaskFactories.Add((extractionTaskName, () => extractor.ExtractGameDataAsync(tempDirPath, fileNamesToLoad.ToArray())));
             }
 
-            List<Func<Task>> loadTaskFactories =
+            List<(string Name, Func<Task> TaskFactory)> loadTaskFactories =
             [
-                LoadItemGameDataAsync,
-                async () => await MobsData.LoadDataAsync().ConfigureAwait(false),
-                async () => await MistsData.LoadDataAsync().ConfigureAwait(false),
-                async () => await WorldData.LoadDataAsync().ConfigureAwait(false),
-                async () => await CraftingLocationData.LoadDataAsync().ConfigureAwait(false),
-                async () => await HideoutData.LoadDataAsync().ConfigureAwait(false),
-                async () => await SpellData.LoadDataAsync().ConfigureAwait(false),
-                () => LoadGameLocalizationsAsync(extractor, gameFilesDirPath)
+                ("indexedItems.json, items.json", LoadItemGameDataAsync),
+                ("mobs-modified.json", async () => await MobsData.LoadDataAsync().ConfigureAwait(false)),
+                ("mists-modified.json", async () => await MistsData.LoadDataAsync().ConfigureAwait(false)),
+                ("world-modified.json", async () => await WorldData.LoadDataAsync().ConfigureAwait(false)),
+                (CraftingLocationData.ModifiedFileName, async () => await CraftingLocationData.LoadDataAsync().ConfigureAwait(false)),
+                (HideoutData.ModifiedFileName, async () => await HideoutData.LoadDataAsync().ConfigureAwait(false)),
+                ("spells.xml", async () => await SpellData.LoadDataAsync().ConfigureAwait(false)),
+                ("localization.xml", () => LoadGameLocalizationsAsync(extractor, gameFilesDirPath))
             ];
 
             int totalTasks = extractionTaskFactories.Count + loadTaskFactories.Count;
             int completedTasks = 0;
 
-            void UpdateProgress()
+            void UpdateProgress(string currentTaskName)
             {
-                completedTasks++;
-                toolLoadingWindowViewModel.ProgressBarValue = (completedTasks / (double) totalTasks) * 100;
+                var progress = progressStart + completedTasks / (double) totalTasks * (progressEnd - progressStart);
+                reportProgress?.Invoke(progress, currentTaskName);
             }
 
-            foreach (var taskFactory in extractionTaskFactories)
+            foreach (var (name, taskFactory) in extractionTaskFactories)
             {
+                UpdateProgress(name);
                 await taskFactory();
-                UpdateProgress();
+                completedTasks++;
+                UpdateProgress(name);
             }
 
-            await RunTaskFactoriesInParallelAsync(loadTaskFactories, UpdateProgress);
+            await RunTaskFactoriesInParallelAsync(
+                loadTaskFactories,
+                UpdateProgress,
+                currentTaskName =>
+                {
+                    completedTasks++;
+                    UpdateProgress(currentTaskName);
+                });
 
             return true;
         }
@@ -171,7 +200,6 @@ public static class GameData
         finally
         {
             extractor?.Dispose();
-            toolLoadingWindow?.Close();
         }
     }
 
@@ -193,17 +221,29 @@ public static class GameData
         await LocalizationController.SetGameLocalizationsFromXmlFileAsync(localizationFilePath).ConfigureAwait(false);
     }
 
-    private static async Task RunTaskFactoriesInParallelAsync(IReadOnlyCollection<Func<Task>> taskFactories, Action onTaskCompleted)
+    private static async Task RunTaskFactoriesInParallelAsync(
+        IReadOnlyCollection<(string Name, Func<Task> TaskFactory)> taskFactories,
+        Action<string> onTasksStarted,
+        Action<string> onTaskCompleted)
     {
-        var runningTasks = taskFactories.Select(taskFactory => taskFactory()).ToList();
+        var runningTasks = taskFactories
+            .Select(taskFactory => (taskFactory.Name, Task: taskFactory.TaskFactory()))
+            .ToList();
+
+        if (runningTasks.Count > 0)
+        {
+            onTasksStarted(runningTasks[0].Name);
+        }
 
         while (runningTasks.Count > 0)
         {
-            var completedTask = await Task.WhenAny(runningTasks);
-            runningTasks.Remove(completedTask);
+            var completedTask = await Task.WhenAny(runningTasks.Select(x => x.Task));
+            var completedTaskIndex = runningTasks.FindIndex(x => x.Task == completedTask);
+            var completedTaskName = runningTasks[completedTaskIndex].Name;
+            runningTasks.RemoveAt(completedTaskIndex);
 
             await completedTask;
-            onTaskCompleted();
+            onTaskCompleted(runningTasks.Count > 0 ? runningTasks[0].Name : completedTaskName);
         }
     }
 

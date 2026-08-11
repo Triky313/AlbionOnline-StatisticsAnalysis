@@ -16,6 +16,7 @@ using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.PacketProviders;
 using StatisticsAnalysisTool.OpenWorld;
 using StatisticsAnalysisTool.Party;
+using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.StorageHistory;
 using StatisticsAnalysisTool.Trade;
 using StatisticsAnalysisTool.Trade.Mails;
@@ -340,23 +341,58 @@ public class TrackingController : ITrackingController
         );
     }
 
-    public async Task LoadDataAsync()
+    public async Task LoadDataAsync(
+        Action<double, string> reportProgress = null,
+        double progressStart = 0,
+        double progressEnd = 100)
     {
-        await Task.WhenAll(
-            EstimatedMarketValueController.LoadFromFileAsync(),
-            StatisticController.LoadFromFileAsync(),
-            TradeController.LoadFromFileAsync(),
-            TreasureController.LoadFromFileAsync(),
-            DungeonController.LoadDungeonFromFileAsync(),
-            GatheringController.LoadFromFileAsync(),
-            OpenWorldController.LoadFromFileAsync(),
-            VaultController.LoadFromFileAsync(),
-            GuildController.LoadFromFileAsync(),
-            CombatController.LoadFromFileAsync(),
-            MarketController.LoadFromFileAsync(),
-            ClusterController.LoadMapHistoryFromFileAsync(),
-            CraftingController.LoadFromFileAsync()
-        );
+        List<(string Name, Func<Task> TaskFactory)> loadTaskFactories =
+        [
+            (Settings.Default.EstimatedMarketValueFileName, EstimatedMarketValueController.LoadFromFileAsync),
+            ("statistics-*.json", StatisticController.LoadFromFileAsync),
+            (Settings.Default.TradesFileName, TradeController.LoadFromFileAsync),
+            (Settings.Default.TreasureStatsFileName, TreasureController.LoadFromFileAsync),
+            (Settings.Default.DungeonRunsFileName, DungeonController.LoadDungeonFromFileAsync),
+            (Settings.Default.GatheringFileName, GatheringController.LoadFromFileAsync),
+            ("OpenWorldMobKills.json", OpenWorldController.LoadFromFileAsync),
+            (Settings.Default.VaultsFileName, VaultController.LoadFromFileAsync),
+            (Settings.Default.GuildFileName, GuildController.LoadFromFileAsync),
+            (Settings.Default.DamageMeterSnapshotsFileName, CombatController.LoadFromFileAsync),
+            (Settings.Default.MarketFileName, MarketController.LoadFromFileAsync),
+            (Settings.Default.MapHistoryFileName, ClusterController.LoadMapHistoryFromFileAsync),
+            ("Craftings.json", CraftingController.LoadFromFileAsync)
+        ];
+
+        var activeTaskNames = loadTaskFactories.Select(x => x.Name).ToList();
+        var completedTaskCount = 0;
+        var syncRoot = new object();
+
+        reportProgress?.Invoke(progressStart, activeTaskNames[0]);
+
+        async Task LoadAndReportAsync(string taskName, Func<Task> taskFactory)
+        {
+            try
+            {
+                await taskFactory();
+            }
+            finally
+            {
+                string currentTaskName;
+                double progress;
+
+                lock (syncRoot)
+                {
+                    activeTaskNames.Remove(taskName);
+                    completedTaskCount++;
+                    currentTaskName = activeTaskNames.FirstOrDefault() ?? taskName;
+                    progress = progressStart + completedTaskCount / (double) loadTaskFactories.Count * (progressEnd - progressStart);
+                }
+
+                reportProgress?.Invoke(progress, currentTaskName);
+            }
+        }
+
+        await Task.WhenAll(loadTaskFactories.Select(x => LoadAndReportAsync(x.Name, x.TaskFactory)));
     }
 
     public bool ExistIndispensableInfos => ClusterController.CurrentCluster != null && EntityController.ExistLocalEntity();
