@@ -460,9 +460,12 @@ public class LootController : ILootController
             lootedItem.ItemIndex,
             lootedItem.Quantity,
             unitValue);
-        _trackingController.StatisticController.AddCombatLootValue(
-            lootedFromName,
-            Math.Max(0, unitValue) * lootedItem.Quantity);
+        if (!MobController.IsMob(lootedFromName))
+        {
+            _trackingController.StatisticController.AddCombatLootValue(
+                lootedFromName,
+                Math.Max(0, unitValue) * lootedItem.Quantity);
+        }
     }
 
     private bool TryGetLocalPlayerCurrentBodyLoot(Guid containerGuid, Guid userInteractGuid, out IdentifiedBody identifiedBody)

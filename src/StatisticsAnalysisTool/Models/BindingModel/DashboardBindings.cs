@@ -1064,6 +1064,7 @@ public class DashboardBindings : BaseViewModel
     public static string TranslationSoloKills => LocalizationController.Translation("SOLO_KILLS");
     public static string TranslationDeaths => LocalizationController.Translation("DEATHS");
     public static string TranslationKillDeathRatio => GetCombatTranslation("KILL_DEATH_RATIO", "K/D-Verh\u00E4ltnis", "K/D ratio");
+    public static string TranslationPlayerCorpseLoot => GetCombatTranslation("PLAYER_CORPSE_LOOT", "Loot aus Spielerleichen", "Player corpse loot");
     public static string TranslationTopKillLocations => GetCombatTranslation("TOP_KILL_LOCATIONS", "Top-T\u00F6tungsorte", "Top kill locations");
     public static string TranslationTopDeathLocations => GetCombatTranslation("TOP_DEATH_LOCATIONS", "Top-Todesorte", "Top death locations");
     public static string TranslationRecentKillsDeaths => GetCombatTranslation("RECENT_KILLS_DEATHS", "Letzte T\u00F6tungen und Tode", "Recent kills & deaths");

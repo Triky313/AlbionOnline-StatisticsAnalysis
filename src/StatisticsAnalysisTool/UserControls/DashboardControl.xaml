@@ -475,7 +475,7 @@
 
                     <TabItem Header="{Binding DashboardBindings.TranslationCombatTitle, FallbackValue=COMBAT}">
                         <StackPanel Margin="0,8,0,0">
-                            <UniformGrid Rows="1" Columns="3" Margin="0,0,0,8">
+                            <UniformGrid Rows="1" Columns="4" Margin="0,0,0,8">
                                 <Border Style="{StaticResource Dashboard.CombatMetricCard}">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -504,7 +504,7 @@
                                     </Grid>
                                 </Border>
 
-                                <Border Style="{StaticResource Dashboard.CombatMetricCard}" Margin="0">
+                                <Border Style="{StaticResource Dashboard.CombatMetricCard}">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
@@ -514,6 +514,20 @@
                                         <StackPanel Grid.Column="1">
                                             <TextBlock Text="{Binding DashboardBindings.TranslationKillDeathRatio, FallbackValue=K/D RATIO}" Style="{StaticResource Dashboard.CombatMetricTitle}" />
                                             <TextBlock Text="{Binding DashboardBindings.CombatStatistics.KillDeathRatio, StringFormat='{}{0:N2}', FallbackValue=0}" Style="{StaticResource Dashboard.CombatMetricValue}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+
+                                <Border Style="{StaticResource Dashboard.CombatMetricCard}" Margin="0">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="../Resources/silver.png" Width="34" Height="34" Margin="0,0,12,0" />
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="{Binding DashboardBindings.TranslationPlayerCorpseLoot, FallbackValue=PLAYER CORPSE LOOT}" Style="{StaticResource Dashboard.CombatMetricTitle}" />
+                                            <TextBlock Text="{Binding DashboardBindings.CombatStatistics.TotalKillLootValue, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dashboard.CombatMetricValue}" />
                                         </StackPanel>
                                     </Grid>
                                 </Border>
