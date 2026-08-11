@@ -190,6 +190,9 @@
     <Resource Include="Assets\chest_locked.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\combat_swords.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\crafting_description_image001.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -263,6 +266,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\map_blue_icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\map_orange_icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\map_red_icon.png">
@@ -404,6 +410,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\skull.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\skull_blue.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\skull_gold.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\skull_green.png">
@@ -744,6 +756,7 @@
     <None Remove="Assets\butterfly_uncommon.png" />
     <None Remove="Assets\checkpoint.png" />
     <None Remove="Assets\chest_locked.png" />
+    <None Remove="Assets\combat_swords.png" />
     <None Remove="Assets\crafting_description_image001.png" />
     <None Remove="Assets\crafting_description_image002.png" />
     <None Remove="Assets\currupted_dungeon.png" />
@@ -769,6 +782,7 @@
     <None Remove="Assets\loot_cpmparator_slot_red.png" />
     <None Remove="Assets\map_black_icon.png" />
     <None Remove="Assets\map_blue_icon.png" />
+    <None Remove="Assets\map_orange_icon.png" />
     <None Remove="Assets\map_red_icon.png" />
     <None Remove="Assets\map_white_icon.png" />
     <None Remove="Assets\map_yellow_icon.png" />
@@ -816,6 +830,8 @@
     <None Remove="Assets\shiny_uncommon.png" />
     <None Remove="Assets\siphoned_energy_description01.jpg" />
     <None Remove="Assets\skull.png" />
+    <None Remove="Assets\skull_blue.png" />
+    <None Remove="Assets\skull_gold.png" />
     <None Remove="Assets\skull_green.png" />
     <None Remove="Assets\skull_red.png" />
     <None Remove="Assets\static_chest.png" />
