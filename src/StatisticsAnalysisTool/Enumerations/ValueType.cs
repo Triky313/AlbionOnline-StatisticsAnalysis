@@ -19,5 +19,7 @@ public enum ValueType
     ItemQualityRerollAttempt,
     AwakenedWeaponCosts,
     AwakenedWeaponTraitUpgrade,
-    AwakenedWeaponTraitUpgradeProc
+    AwakenedWeaponTraitUpgradeProc,
+    PlayerKill,
+    PlayerDeath
 }

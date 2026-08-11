@@ -24,4 +24,8 @@ public sealed class StatisticEntry
     public DateTime LootAreaEnteredAtUtc { get; set; }
     public TreasureRarity TreasureRarity { get; set; }
     public ItemQuality ItemQuality { get; set; } = ItemQuality.Unknown;
+    public string CombatAreaIndex { get; set; } = string.Empty;
+    public ClusterType CombatAreaClusterType { get; set; }
+    public string CombatOpponentName { get; set; } = string.Empty;
+    public double CombatLootValue { get; set; }
 }

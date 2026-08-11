@@ -195,7 +195,11 @@ public sealed class StatisticSessionStorage
             LootAreaIndex = entry.LootAreaIndex,
             LootAreaClusterType = entry.LootAreaClusterType,
             LootAreaEnteredAtUtc = entry.LootAreaEnteredAtUtc,
-            ItemQuality = entry.ItemQuality
+            ItemQuality = entry.ItemQuality,
+            CombatAreaIndex = entry.CombatAreaIndex,
+            CombatAreaClusterType = entry.CombatAreaClusterType,
+            CombatOpponentName = entry.CombatOpponentName,
+            CombatLootValue = entry.CombatLootValue
         };
     }
 }

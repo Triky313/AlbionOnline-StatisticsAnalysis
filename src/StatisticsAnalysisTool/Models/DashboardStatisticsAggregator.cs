@@ -19,6 +19,7 @@ public sealed class DashboardStatisticsAggregator
     private readonly List<(Guid SessionId, DateTime OccurredAtUtc, ValueType ValueType, double Value, ItemQuality ItemQuality, int ItemQuantity)> _economyEntries = [];
     private readonly List<StatisticEntry> _lootEntries = [];
     private readonly List<StatisticEntry> _lootedChestEntries = [];
+    private readonly List<StatisticEntry> _combatEntries = [];
 
     public DashboardStatisticsAggregator(DashboardStatistics statistics)
     {
@@ -248,6 +249,29 @@ public sealed class DashboardStatisticsAggregator
         }
     }
 
+    public IReadOnlyList<StatisticEntry> GetCombatEntries(
+        IReadOnlyCollection<DateTime> bucketStarts,
+        DashboardChartRangeUnit unit,
+        Guid? sessionId,
+        DashboardContentType? contentType)
+    {
+        if (bucketStarts == null || bucketStarts.Count == 0)
+        {
+            return [];
+        }
+
+        var validBuckets = bucketStarts.ToHashSet();
+
+        lock (_syncRoot)
+        {
+            return _combatEntries
+                .Where(entry => (!sessionId.HasValue || entry.SessionId == sessionId.Value)
+                                && validBuckets.Contains(GetBucketStart(entry.OccurredAtUtc, unit))
+                                && MatchesContentFilter(contentType, entry.MapType, entry.DungeonMode, entry.ClusterMode))
+                .ToList();
+        }
+    }
+
     private static bool MatchesContentFilter(
         DashboardContentType? selectedContentType,
         MapType mapType,
@@ -308,6 +332,11 @@ public sealed class DashboardStatisticsAggregator
                 entry.Value,
                 entry.ItemQuality,
                 entry.ItemQuantity));
+        }
+
+        if (entry.ValueType is ValueType.PlayerKill or ValueType.PlayerDeath)
+        {
+            _combatEntries.Add(entry);
         }
 
         if (entry.ValueType == ValueType.RepairCosts)

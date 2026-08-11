@@ -582,6 +582,101 @@
         </Border>
     </DataTemplate>
 
+    <Style x:Key="Dashboard.CombatMetricCard" TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.SummaryCard}">
+        <Setter Property="MinHeight" Value="96" />
+        <Setter Property="Margin" Value="0,0,8,0" />
+        <Setter Property="Padding" Value="14,12" />
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.3}" />
+    </Style>
+
+    <Style x:Key="Dashboard.CombatMetricTitle" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="Dashboard.CombatMetricValue" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="25" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="Dashboard.CombatCardTitle" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="Dashboard.CombatColumnHeader" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.5}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="Dashboard.CombatRowText" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    </Style>
+
+    <DataTemplate x:Key="Dashboard.CombatLocationItemTemplate" DataType="{x:Type models:DashboardCombatLocationItem}">
+        <Grid MinHeight="39" Margin="0,0,0,2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="27" />
+                <RowDefinition Height="6" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="28" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="125" />
+                <ColumnDefinition Width="100" />
+            </Grid.ColumnDefinitions>
+            <Image Width="18" Height="18" Source="{Binding IconSource}" VerticalAlignment="Center" />
+            <TextBlock Grid.Column="1" Text="{Binding Name}" Style="{StaticResource Dashboard.CombatRowText}" Margin="0,0,8,0" />
+            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <TextBlock Text="{Binding Count, StringFormat='{}{0:N0}', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}" Style="{StaticResource Dashboard.CombatRowText}" />
+                <TextBlock Text=" (" Style="{StaticResource Dashboard.CombatRowText}" />
+                <TextBlock Text="{Binding SharePercentage, StringFormat='{}{0:N1}%'}" Style="{StaticResource Dashboard.CombatRowText}" />
+                <TextBlock Text=")" Style="{StaticResource Dashboard.CombatRowText}" />
+            </StackPanel>
+            <TextBlock Grid.Column="3" Text="{Binding EstimatedLootValue, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dashboard.CombatRowText}" TextAlignment="Right" />
+            <ProgressBar Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Value="{Binding BarPercentage, Mode=OneWay}" Foreground="{StaticResource SolidColorBrush.Accent.Green.2}" Style="{StaticResource Dashboard.ContentRankingBar}" />
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="Dashboard.CombatEventItemTemplate" DataType="{x:Type models:DashboardCombatEventItem}">
+        <Border MinHeight="34" BorderBrush="{StaticResource SolidColorBrush.Background.4}" BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="115" />
+                    <ColumnDefinition Width="90" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="110" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding RelativeTime}" Style="{StaticResource Dashboard.CombatRowText}" />
+                <TextBlock Grid.Column="1" Text="{Binding Result}" FontWeight="SemiBold" VerticalAlignment="Center">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.2}" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsKill}" Value="False">
+                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBlock Grid.Column="2" Text="{Binding MapName}" Style="{StaticResource Dashboard.CombatRowText}" Margin="0,0,12,0" />
+                <TextBlock Grid.Column="3" Text="{Binding OpponentName}" Style="{StaticResource Dashboard.CombatRowText}" />
+                <TextBlock Grid.Column="4" Text="{Binding EstimatedValue, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dashboard.CombatRowText}" TextAlignment="Right" />
+            </Grid>
+        </Border>
+    </DataTemplate>
+
     <DataTemplate x:Key="KillDeathStatsTemplate" DataType="{x:Type bindingModel:DashboardBindings}">
         <Grid>
             <Grid.RowDefinitions>

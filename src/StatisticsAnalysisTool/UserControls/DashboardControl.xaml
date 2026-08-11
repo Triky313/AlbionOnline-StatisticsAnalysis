@@ -475,6 +475,175 @@
 
                     <TabItem Header="{Binding DashboardBindings.TranslationCombatTitle, FallbackValue=COMBAT}">
                         <StackPanel Margin="0,8,0,0">
+                            <UniformGrid Rows="1" Columns="3" Margin="0,0,0,8">
+                                <Border Style="{StaticResource Dashboard.CombatMetricCard}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="/Assets/combat_swords.png" Width="34" Height="34" Margin="0,0,12,0" />
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="{Binding DashboardBindings.TranslationKills, FallbackValue=KILLS}" Style="{StaticResource Dashboard.CombatMetricTitle}" />
+                                            <TextBlock Text="{Binding DashboardBindings.CombatStatistics.KillCount, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.CombatMetricValue}" Foreground="{StaticResource SolidColorBrush.Accent.Green.2}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+
+                                <Border Style="{StaticResource Dashboard.CombatMetricCard}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="/Assets/skull_red.png" Width="34" Height="34" Margin="0,0,12,0" />
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="{Binding DashboardBindings.TranslationDeaths, FallbackValue=DEATHS}" Style="{StaticResource Dashboard.CombatMetricTitle}" />
+                                            <TextBlock Text="{Binding DashboardBindings.CombatStatistics.DeathCount, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.CombatMetricValue}" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+
+                                <Border Style="{StaticResource Dashboard.CombatMetricCard}" Margin="0">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="/Assets/skull_blue.png" Width="34" Height="34" Margin="0,0,12,0" />
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="{Binding DashboardBindings.TranslationKillDeathRatio, FallbackValue=K/D RATIO}" Style="{StaticResource Dashboard.CombatMetricTitle}" />
+                                            <TextBlock Text="{Binding DashboardBindings.CombatStatistics.KillDeathRatio, StringFormat='{}{0:N2}', FallbackValue=0}" Style="{StaticResource Dashboard.CombatMetricValue}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </UniformGrid>
+
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Border Grid.Column="0" Style="{StaticResource Dashboard.Section}" Margin="0,0,4,0" Padding="12,10">
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                            <Image Source="/Assets/combat_swords.png" Width="24" Height="24" Margin="0,0,8,0" />
+                                            <TextBlock Text="{Binding DashboardBindings.TranslationTopKillLocations, FallbackValue=TOP KILL LOCATIONS}" Style="{StaticResource Dashboard.CombatCardTitle}" />
+                                        </StackPanel>
+                                        <Grid Height="24">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="28" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="125" />
+                                                <ColumnDefinition Width="100" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="1" Text="{Binding DashboardBindings.TranslationMap, FallbackValue=MAP}" Style="{StaticResource Dashboard.CombatColumnHeader}" />
+                                            <TextBlock Grid.Column="2" Text="{Binding DashboardBindings.TranslationKills, FallbackValue=KILLS}" Style="{StaticResource Dashboard.CombatColumnHeader}" TextAlignment="Right" />
+                                            <TextBlock Grid.Column="3" Text="{Binding DashboardBindings.TranslationEstimatedValueShort, FallbackValue=EST. VALUE}" Style="{StaticResource Dashboard.CombatColumnHeader}" TextAlignment="Right" />
+                                        </Grid>
+                                        <ItemsControl ItemsSource="{Binding DashboardBindings.CombatStatistics.TopKillLocations}" ItemTemplate="{StaticResource Dashboard.CombatLocationItemTemplate}" />
+                                        <Border Margin="0,5,0,0" Padding="0,7,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.4}" BorderThickness="0,1,0,0">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="28" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="125" />
+                                                    <ColumnDefinition Width="100" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="1" Text="{Binding DashboardBindings.TranslationTotal, FallbackValue=TOTAL}" Style="{StaticResource Dashboard.CombatRowText}" FontWeight="SemiBold" />
+                                                <TextBlock Grid.Column="2" Text="{Binding DashboardBindings.CombatStatistics.KillCount, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.CombatRowText}" FontWeight="SemiBold" TextAlignment="Right" />
+                                                <TextBlock Grid.Column="3" Text="{Binding DashboardBindings.CombatStatistics.TotalKillLootValue, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dashboard.CombatRowText}" FontWeight="SemiBold" TextAlignment="Right" />
+                                            </Grid>
+                                        </Border>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Grid.Column="1" Style="{StaticResource Dashboard.Section}" Margin="4,0,0,0" Padding="12,10">
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                            <Image Source="/Assets/skull_red.png" Width="24" Height="24" Margin="0,0,8,0" />
+                                            <TextBlock Text="{Binding DashboardBindings.TranslationTopDeathLocations, FallbackValue=TOP DEATH LOCATIONS}" Style="{StaticResource Dashboard.CombatCardTitle}" />
+                                        </StackPanel>
+                                        <Grid Height="24">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="28" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="125" />
+                                                <ColumnDefinition Width="100" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="1" Text="{Binding DashboardBindings.TranslationMap, FallbackValue=MAP}" Style="{StaticResource Dashboard.CombatColumnHeader}" />
+                                            <TextBlock Grid.Column="2" Text="{Binding DashboardBindings.TranslationDeaths, FallbackValue=DEATHS}" Style="{StaticResource Dashboard.CombatColumnHeader}" TextAlignment="Right" />
+                                            <TextBlock Grid.Column="3" Text="{Binding DashboardBindings.TranslationEstimatedValueShort, FallbackValue=EST. VALUE}" Style="{StaticResource Dashboard.CombatColumnHeader}" TextAlignment="Right" />
+                                        </Grid>
+                                        <ItemsControl ItemsSource="{Binding DashboardBindings.CombatStatistics.TopDeathLocations}" ItemTemplate="{StaticResource Dashboard.CombatLocationItemTemplate}" />
+                                        <Border Margin="0,5,0,0" Padding="0,7,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.4}" BorderThickness="0,1,0,0">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="28" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="125" />
+                                                    <ColumnDefinition Width="100" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="1" Text="{Binding DashboardBindings.TranslationTotal, FallbackValue=TOTAL}" Style="{StaticResource Dashboard.CombatRowText}" FontWeight="SemiBold" />
+                                                <TextBlock Grid.Column="2" Text="{Binding DashboardBindings.CombatStatistics.DeathCount, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.CombatRowText}" FontWeight="SemiBold" TextAlignment="Right" />
+                                                <TextBlock Grid.Column="3" Text="{Binding DashboardBindings.CombatStatistics.TotalDeathLootValue, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dashboard.CombatRowText}" FontWeight="SemiBold" TextAlignment="Right" />
+                                            </Grid>
+                                        </Border>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+
+                            <Border Style="{StaticResource Dashboard.Section}" Margin="0,0,0,8" Padding="12,10">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <Image Source="/Assets/skull_gold.png" Width="24" Height="24" Margin="0,0,12,0" />
+                                        <TextBlock Text="{Binding DashboardBindings.TranslationRecentKillsDeaths, FallbackValue=RECENT KILLS &amp; DEATHS}" Style="{StaticResource Dashboard.CombatCardTitle}" />
+                                    </StackPanel>
+                                    <Grid Height="25">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="115" />
+                                            <ColumnDefinition Width="90" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="110" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding DashboardBindings.TranslationTime, FallbackValue=TIME}" Style="{StaticResource Dashboard.CombatColumnHeader}" />
+                                        <TextBlock Grid.Column="1" Text="{Binding DashboardBindings.TranslationResult, FallbackValue=RESULT}" Style="{StaticResource Dashboard.CombatColumnHeader}" />
+                                        <TextBlock Grid.Column="2" Text="{Binding DashboardBindings.TranslationMap, FallbackValue=MAP}" Style="{StaticResource Dashboard.CombatColumnHeader}" />
+                                        <TextBlock Grid.Column="3" Text="{Binding DashboardBindings.TranslationTargetKiller, FallbackValue=TARGET / KILLER}" Style="{StaticResource Dashboard.CombatColumnHeader}" />
+                                        <TextBlock Grid.Column="4" Text="{Binding DashboardBindings.TranslationEstimatedValueShort, FallbackValue=EST. VALUE}" Style="{StaticResource Dashboard.CombatColumnHeader}" TextAlignment="Right" />
+                                    </Grid>
+                                    <ListBox MaxHeight="340"
+                                             Padding="0"
+                                             Background="Transparent"
+                                             BorderThickness="0"
+                                             Focusable="False"
+                                             ItemsSource="{Binding DashboardBindings.CombatStatistics.RecentEvents}"
+                                             ItemTemplate="{StaticResource Dashboard.CombatEventItemTemplate}"
+                                             ScrollViewer.CanContentScroll="True"
+                                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                             VirtualizingPanel.IsVirtualizing="True"
+                                             VirtualizingPanel.VirtualizationMode="Recycling">
+                                        <ListBox.ItemContainerStyle>
+                                            <Style TargetType="{x:Type ListBoxItem}">
+                                                <Setter Property="Padding" Value="0" />
+                                                <Setter Property="Margin" Value="0" />
+                                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                                <Setter Property="IsTabStop" Value="False" />
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                                            <ContentPresenter />
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </ListBox.ItemContainerStyle>
+                                    </ListBox>
+                                </StackPanel>
+                            </Border>
                             <Border Style="{StaticResource Dashboard.Section}" Margin="0,0,0,8">
                                 <DockPanel LastChildFill="True">
                                     <Grid DockPanel.Dock="Top" Style="{StaticResource Dashboard.SectionHeader}" MouseLeftButtonDown="KillDeathToggle_OnMouseLeftButtonDown">
@@ -483,8 +652,7 @@
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
-                                        <Image Source="/Assets/skull.png" Width="22" Height="22" Margin="12,0,10,0" />
-                                        <TextBlock Grid.Column="1" Text="{Binding DashboardBindings.KillsDeathsText, FallbackValue=KILLS_DEATHS}" Style="{StaticResource Dashboard.SectionTitle}" />
+                                        <TextBlock Grid.Column="1" Margin="10,0" Text="{Binding DashboardBindings.KillsDeathsText, FallbackValue=KILLS_DEATHS}" Style="{StaticResource Dashboard.SectionTitle}" />
                                         <fa5:ImageAwesome Grid.Column="2" Icon="{Binding DashboardBindings.KillDeathStatsToggleIcon, FallbackValue=Solid_Minus}" Style="{StaticResource Dashboard.SectionToggleIcon}" />
                                     </Grid>
                                     <Border BorderBrush="{StaticResource SolidColorBrush.Background.4}" BorderThickness="0,1,0,0" Visibility="{Binding DashboardBindings.KillDeathStatsVisibility}">

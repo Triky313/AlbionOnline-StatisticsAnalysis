@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
+using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Models;
 
@@ -100,6 +101,39 @@ public class DashboardStatistics
         }
     }
 
+    public bool TryAddCombatLootValue(
+        Guid sessionId,
+        string opponentName,
+        double value,
+        DateTime earliestOccurredAtUtc)
+    {
+        if (sessionId == Guid.Empty
+            || string.IsNullOrWhiteSpace(opponentName)
+            || !double.IsFinite(value)
+            || value <= 0)
+        {
+            return false;
+        }
+
+        lock (_syncRoot)
+        {
+            var killEntry = Entries
+                .Where(entry => entry.SessionId == sessionId
+                                && entry.ValueType == ValueType.PlayerKill
+                                && entry.OccurredAtUtc >= earliestOccurredAtUtc
+                                && string.Equals(entry.CombatOpponentName, opponentName, StringComparison.OrdinalIgnoreCase))
+                .OrderByDescending(entry => entry.OccurredAtUtc)
+                .FirstOrDefault();
+            if (killEntry == null)
+            {
+                return false;
+            }
+
+            killEntry.CombatLootValue += value;
+            return true;
+        }
+    }
+
     public bool RemoveSession(Guid sessionId)
     {
         lock (_syncRoot)
@@ -138,7 +172,11 @@ public class DashboardStatistics
                         LootAreaClusterType = x.LootAreaClusterType,
                         LootAreaEnteredAtUtc = x.LootAreaEnteredAtUtc,
                         TreasureRarity = x.TreasureRarity,
-                        ItemQuality = x.ItemQuality
+                        ItemQuality = x.ItemQuality,
+                        CombatAreaIndex = x.CombatAreaIndex,
+                        CombatAreaClusterType = x.CombatAreaClusterType,
+                        CombatOpponentName = x.CombatOpponentName,
+                        CombatLootValue = x.CombatLootValue
                     })
                     .ToList(),
                 Sessions = Sessions.Select(CloneSession).ToList()

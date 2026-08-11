@@ -16,6 +16,7 @@ public class DiedEventHandler(TrackingController trackingController) : EventPack
     {
         trackingController.DungeonController?.SetDiedIfInDungeon(new DiedObject(value.Died, value.KilledBy, value.KilledByGuild));
         trackingController.PartyController.PlayerHasDied(value.Died);
+        trackingController.StatisticController.AddPlayerDeath(value.Died, value.KilledBy);
 
         if (trackingController.IsKillTrackingEnabled)
         {

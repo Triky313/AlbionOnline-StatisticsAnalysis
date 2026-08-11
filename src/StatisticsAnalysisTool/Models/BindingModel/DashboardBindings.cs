@@ -794,6 +794,7 @@ public class DashboardBindings : BaseViewModel
     } = new();
 
     public DashboardLootStatistics LootStatistics { get; } = new();
+    public DashboardCombatStatistics CombatStatistics { get; } = new();
 
     #endregion
 
@@ -1062,6 +1063,16 @@ public class DashboardBindings : BaseViewModel
     public static string TranslationKills => LocalizationController.Translation("KILLS");
     public static string TranslationSoloKills => LocalizationController.Translation("SOLO_KILLS");
     public static string TranslationDeaths => LocalizationController.Translation("DEATHS");
+    public static string TranslationKillDeathRatio => GetCombatTranslation("KILL_DEATH_RATIO", "K/D-Verh\u00E4ltnis", "K/D ratio");
+    public static string TranslationTopKillLocations => GetCombatTranslation("TOP_KILL_LOCATIONS", "Top-T\u00F6tungsorte", "Top kill locations");
+    public static string TranslationTopDeathLocations => GetCombatTranslation("TOP_DEATH_LOCATIONS", "Top-Todesorte", "Top death locations");
+    public static string TranslationRecentKillsDeaths => GetCombatTranslation("RECENT_KILLS_DEATHS", "Letzte T\u00F6tungen und Tode", "Recent kills & deaths");
+    public static string TranslationTime => LocalizationController.Translation("TIME");
+    public static string TranslationResult => GetCombatTranslation("RESULT", "Ergebnis", "Result");
+    public static string TranslationMap => LocalizationController.Translation("MAP");
+    public static string TranslationTargetKiller => GetCombatTranslation("TARGET_KILLER", "Ziel / Killer", "Target / Killer");
+    public static string TranslationEstimatedValueShort => GetCombatTranslation("ESTIMATED_VALUE_SHORT", "Gesch. Wert", "Est. value");
+    public static string TranslationTotal => LocalizationController.Translation("TOTAL");
     public static string TranslationLastUpdate => LocalizationController.Translation("LAST_UPDATE");
     public static string TranslationDataFromAlbionOnlineServers => LocalizationController.Translation("DATA_FROM_ALBION_ONLINE_SERVERS");
     public static string TranslationAverageItemPowerWhenKilling => LocalizationController.Translation("AVERAGE_ITEM_POWER_WHEN_KILLING");
@@ -1118,4 +1129,17 @@ public class DashboardBindings : BaseViewModel
     public static string TranslationAverageRepairCostPerSession => LocalizationController.Translation("AVERAGE_REPAIR_COST_PER_SESSION");
     public static string TranslationHighestRepairCost => LocalizationController.Translation("HIGHEST_REPAIR_COST");
     public static string TranslationFactionStanding => LocalizationController.Translation("FACTION_STANDING");
+    private static string GetCombatTranslation(string key, string germanText, string englishText)
+    {
+        var translation = LocalizationController.Translation(key);
+        if (!string.Equals(translation, key, StringComparison.Ordinal))
+        {
+            return translation;
+        }
+
+        var cultureName = SettingsController.CurrentSettings.CurrentCultureIetfLanguageTag ?? string.Empty;
+        return cultureName.StartsWith("de", StringComparison.OrdinalIgnoreCase)
+            ? germanText
+            : englishText;
+    }
 }

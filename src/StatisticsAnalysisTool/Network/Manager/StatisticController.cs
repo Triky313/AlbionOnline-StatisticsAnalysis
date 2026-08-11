@@ -30,6 +30,7 @@ namespace StatisticsAnalysisTool.Network.Manager;
 public class StatisticController
 {
     private static readonly TimeSpan DashboardChartRefreshDelay = TimeSpan.FromMilliseconds(500);
+    private static readonly TimeSpan CombatLootAssociationWindow = TimeSpan.FromMinutes(30);
     private const int DashboardContentRankingLimit = 8;
 
     private readonly TrackingController _trackingController;
@@ -364,6 +365,114 @@ public class StatisticController
         UpdateDailyChart();
     }
 
+    public void AddPlayerKill(string killedPlayerName)
+    {
+        if (string.IsNullOrWhiteSpace(killedPlayerName))
+        {
+            return;
+        }
+
+        AddPlayerCombatEvent(ValueType.PlayerKill, killedPlayerName);
+    }
+
+    public void AddPlayerDeath(string diedPlayerName, string killedByName)
+    {
+        var localPlayerName = _trackingController.EntityController.LocalUserData.Username;
+        if (string.IsNullOrWhiteSpace(localPlayerName)
+            || !string.Equals(diedPlayerName, localPlayerName, StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+
+        AddPlayerCombatEvent(ValueType.PlayerDeath, killedByName);
+    }
+
+    private void AddPlayerCombatEvent(ValueType valueType, string opponentName)
+    {
+        if (!_trackingController.IsTrackingAllowedByMainCharacter())
+        {
+            return;
+        }
+
+        var mapType = ClusterController.CurrentCluster.MapType;
+        var dungeonMode = ResolveDungeonMode(mapType);
+        var combatAreaIndex = ResolveLootAreaIndex(mapType, dungeonMode);
+        var combatAreaClusterType = mapType == MapType.CorruptedDungeon
+            ? ClusterType.Corrupted
+            : string.IsNullOrWhiteSpace(combatAreaIndex)
+                ? ClusterType.Unknown
+                : WorldData.GetClusterTypeByIndex(combatAreaIndex);
+        var nowUtc = DateTime.UtcNow;
+
+        lock (_syncRoot)
+        {
+            var session = _dashboardStatistics.GetActiveSession();
+            if (session == null)
+            {
+                Log.Debug(
+                    "Combat event discarded because no active session exists. ValueType={ValueType}",
+                    valueType);
+                return;
+            }
+
+            var statisticEntry = new StatisticEntry
+            {
+                SessionId = session.Id,
+                OccurredAtUtc = nowUtc,
+                ValueType = valueType,
+                Value = 1,
+                MapType = mapType,
+                DungeonMode = dungeonMode,
+                ClusterMode = ClusterController.CurrentCluster.ClusterMode,
+                CombatAreaIndex = combatAreaIndex,
+                CombatAreaClusterType = combatAreaClusterType,
+                CombatOpponentName = opponentName ?? string.Empty
+            };
+
+            _dashboardStatistics.Add(statisticEntry);
+            _statisticsAggregator.Add(statisticEntry);
+            MarkSessionDirtyInternal(session.Id);
+        }
+
+        UpdateDailyChart();
+    }
+
+    public void AddCombatLootValue(string lootedFromName, double value)
+    {
+        if (string.IsNullOrWhiteSpace(lootedFromName)
+            || !double.IsFinite(value)
+            || value <= 0
+            || !_trackingController.IsTrackingAllowedByMainCharacter())
+        {
+            return;
+        }
+
+        var wasUpdated = false;
+        lock (_syncRoot)
+        {
+            var session = _dashboardStatistics.GetActiveSession();
+            if (session == null)
+            {
+                return;
+            }
+
+            wasUpdated = _dashboardStatistics.TryAddCombatLootValue(
+                session.Id,
+                lootedFromName,
+                value,
+                DateTime.UtcNow.Subtract(CombatLootAssociationWindow));
+            if (wasUpdated)
+            {
+                MarkSessionDirtyInternal(session.Id);
+            }
+        }
+
+        if (wasUpdated)
+        {
+            UpdateDailyChart();
+        }
+    }
+
     public void AddLootedChest(TreasureRarity treasureRarity)
     {
         if (treasureRarity == TreasureRarity.Unknown
@@ -617,6 +726,7 @@ public class StatisticController
             _mainWindowViewModel.SelectedDashboardSessionFilter?.SessionId,
             _mainWindowViewModel.SelectedDashboardContentFilter?.ContentType);
         UpdateDashboardSummary(selectedRange, chartBuckets, aggregatedValues);
+        UpdateDashboardCombatStatistics(selectedRange, currentRangeBucketStarts);
         UpdateDashboardLootStatistics(
             selectedRange,
             currentRangeBucketStarts,
@@ -886,6 +996,149 @@ public class StatisticController
         return eligibleItemCount > 0
             ? successfulItemCount * 100d / eligibleItemCount
             : 0;
+    }
+
+    private void UpdateDashboardCombatStatistics(
+        DashboardChartRangeOption selectedRange,
+        IReadOnlyCollection<DateTime> currentRangeBucketStarts)
+    {
+        var entries = _statisticsAggregator.GetCombatEntries(
+            currentRangeBucketStarts,
+            selectedRange.Unit,
+            _mainWindowViewModel.SelectedDashboardSessionFilter?.SessionId,
+            _mainWindowViewModel.SelectedDashboardContentFilter?.ContentType);
+        var kills = entries.Where(entry => entry.ValueType == ValueType.PlayerKill).ToArray();
+        var deaths = entries.Where(entry => entry.ValueType == ValueType.PlayerDeath).ToArray();
+        var combatStatistics = _mainWindowViewModel.DashboardBindings.CombatStatistics;
+
+        combatStatistics.KillCount = kills.LongLength;
+        combatStatistics.DeathCount = deaths.LongLength;
+        combatStatistics.KillDeathRatio = deaths.Length > 0
+            ? (double) kills.Length / deaths.Length
+            : kills.Length;
+        combatStatistics.TotalKillLootValue = kills.Sum(entry => entry.CombatLootValue);
+        combatStatistics.TotalDeathLootValue = deaths.Sum(entry => entry.CombatLootValue);
+
+        ReplaceDashboardItems(
+            combatStatistics.TopKillLocations,
+            CreateCombatLocations(kills, ValueType.PlayerKill));
+        ReplaceDashboardItems(
+            combatStatistics.TopDeathLocations,
+            CreateCombatLocations(deaths, ValueType.PlayerDeath));
+        combatStatistics.ReplaceRecentEvents(
+            entries
+                .OrderByDescending(entry => entry.OccurredAtUtc)
+                .Select(entry =>
+                {
+                    var isKill = entry.ValueType == ValueType.PlayerKill;
+                    return new DashboardCombatEventItem(
+                        FormatRelativeTime(entry.OccurredAtUtc),
+                        isKill
+                            ? TranslateCombatText("KILL", "T\u00F6tung", "Kill")
+                            : TranslateCombatText("DEATH", "Tod", "Death"),
+                        isKill,
+                        ResolveCombatAreaName(entry),
+                        string.IsNullOrWhiteSpace(entry.CombatOpponentName) ? "\u2014" : entry.CombatOpponentName,
+                        entry.CombatLootValue);
+                })
+                .ToArray());
+    }
+
+    private static IReadOnlyCollection<DashboardCombatLocationItem> CreateCombatLocations(
+        IReadOnlyCollection<StatisticEntry> entries,
+        ValueType valueType)
+    {
+        var locations = entries
+            .Where(entry => entry.ValueType == valueType)
+            .GroupBy(entry => new
+            {
+                entry.DungeonMode,
+                AreaIndex = entry.CombatAreaIndex ?? string.Empty,
+                entry.CombatAreaClusterType
+            })
+            .Select(group => new
+            {
+                FirstEntry = group.First(),
+                Count = group.LongCount(),
+                EstimatedLootValue = group.Sum(entry => entry.CombatLootValue)
+            })
+            .OrderByDescending(location => location.Count)
+            .ThenBy(location => ResolveCombatAreaName(location.FirstEntry), StringComparer.CurrentCultureIgnoreCase)
+            .ToArray();
+        var totalCount = locations.Sum(location => location.Count);
+        var maximumCount = locations.Select(location => location.Count).DefaultIfEmpty(0).Max();
+
+        return locations
+            .Select(location => new DashboardCombatLocationItem(
+                ResolveCombatAreaName(location.FirstEntry),
+                location.Count,
+                totalCount > 0 ? location.Count * 100d / totalCount : 0,
+                maximumCount > 0 ? location.Count * 100d / maximumCount : 0,
+                location.EstimatedLootValue,
+                location.FirstEntry.CombatAreaClusterType))
+            .ToArray();
+    }
+
+    private static string ResolveCombatAreaName(StatisticEntry entry)
+    {
+        var areaName = ResolveLootAreaName(entry.DungeonMode, entry.CombatAreaIndex ?? string.Empty);
+        return string.IsNullOrWhiteSpace(areaName)
+            ? LocalizationController.Translation("UNKNOWN")
+            : areaName;
+    }
+
+    private static string FormatRelativeTime(DateTime occurredAtUtc)
+    {
+        var elapsed = DateTime.UtcNow - occurredAtUtc;
+        if (elapsed < TimeSpan.FromMinutes(1))
+        {
+            return TranslateCombatText("JUST_NOW", "Gerade eben", "Just now");
+        }
+
+        if (elapsed < TimeSpan.FromHours(1))
+        {
+            return TranslateRelativeTime("MINUTES_AGO", Math.Max(1, (int) elapsed.TotalMinutes), "vor {value} Min.", "{value} min ago");
+        }
+
+        if (elapsed < TimeSpan.FromDays(1))
+        {
+            return TranslateRelativeTime("HOURS_AGO", Math.Max(1, (int) elapsed.TotalHours), "vor {value} Std.", "{value} h ago");
+        }
+
+        return TranslateRelativeTime("DAYS_AGO", Math.Max(1, (int) elapsed.TotalDays), "vor {value} T.", "{value} d ago");
+    }
+
+    private static string TranslateRelativeTime(
+        string translationKey,
+        int value,
+        string germanText,
+        string englishText)
+    {
+        var formattedValue = value.ToString(CultureInfo.CurrentCulture);
+        var translation = LocalizationController.Translation(
+            translationKey,
+            ["value"],
+            [formattedValue]);
+        if (!string.Equals(translation, translationKey, StringComparison.Ordinal))
+        {
+            return translation;
+        }
+
+        return TranslateCombatText(translationKey, germanText, englishText)
+            .Replace("{value}", formattedValue, StringComparison.Ordinal);
+    }
+
+    private static string TranslateCombatText(string translationKey, string germanText, string englishText)
+    {
+        var translation = LocalizationController.Translation(translationKey);
+        if (!string.Equals(translation, translationKey, StringComparison.Ordinal))
+        {
+            return translation;
+        }
+
+        return CultureInfo.CurrentCulture.TwoLetterISOLanguageName.Equals("de", StringComparison.OrdinalIgnoreCase)
+            ? germanText
+            : englishText;
     }
 
     private void UpdateDashboardLootStatistics(

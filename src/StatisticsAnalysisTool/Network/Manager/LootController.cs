@@ -388,7 +388,7 @@ public class LootController : ILootController
             return;
         }
 
-        RecordDashboardLoot(itemObjectId, lootedItem);
+        RecordDashboardLoot(itemObjectId, lootedItem, identifiedBody.Name);
         await AddLootAsync(new Loot()
         {
             IsSilver = false,
@@ -426,7 +426,7 @@ public class LootController : ILootController
                 continue;
             }
 
-            RecordDashboardLoot(itemObjectId, lootedItem);
+            RecordDashboardLoot(itemObjectId, lootedItem, identifiedBody.Name);
             await AddLootAsync(new Loot()
             {
                 IsSilver = false,
@@ -439,7 +439,7 @@ public class LootController : ILootController
         }
     }
 
-    private void RecordDashboardLoot(long itemObjectId, DiscoveredItem lootedItem)
+    private void RecordDashboardLoot(long itemObjectId, DiscoveredItem lootedItem, string lootedFromName)
     {
         if (itemObjectId <= 0
             || lootedItem == null
@@ -460,6 +460,9 @@ public class LootController : ILootController
             lootedItem.ItemIndex,
             lootedItem.Quantity,
             unitValue);
+        _trackingController.StatisticController.AddCombatLootValue(
+            lootedFromName,
+            Math.Max(0, unitValue) * lootedItem.Quantity);
     }
 
     private bool TryGetLocalPlayerCurrentBodyLoot(Guid containerGuid, Guid userInteractGuid, out IdentifiedBody identifiedBody)
