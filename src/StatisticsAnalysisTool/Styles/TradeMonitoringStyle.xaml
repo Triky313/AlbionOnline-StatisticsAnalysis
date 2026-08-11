@@ -228,7 +228,8 @@
     <DataTemplate x:Key="Trade.Statistics.SummaryMetricTemplate" DataType="{x:Type models:DashboardSummaryMetric}">
         <StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding Value, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}"
+                <TextBlock Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ContentControl}}}"
+                           Text="{Binding Value, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}"
                            Style="{StaticResource Trade.Statistics.SummaryValue}" />
                 <Image Width="17" Height="17" Margin="6,1,0,0" VerticalAlignment="Center" Source="../Resources/silver.png" />
             </StackPanel>
@@ -255,7 +256,10 @@
                         </Grid>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
                             <TextBlock Text="{Binding TranslationTotalSales, FallbackValue=TOTAL_SALES}" Style="{StaticResource Dashboard.SummaryTitle}" />
-                            <ContentControl Content="{Binding TotalSalesSummary}" ContentTemplate="{StaticResource Trade.Statistics.SummaryMetricTemplate}" HorizontalContentAlignment="Stretch" />
+                            <ContentControl Content="{Binding TotalSalesSummary}"
+                                            ContentTemplate="{StaticResource Trade.Statistics.SummaryMetricTemplate}"
+                                            Foreground="{StaticResource SolidColorBrush.Accent.Green.1}"
+                                            HorizontalContentAlignment="Stretch" />
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -275,6 +279,7 @@
                                        Style="{StaticResource Dashboard.SummaryTitle}" />
                             <ContentControl Content="{Binding TotalPurchasesSummary}"
                                             ContentTemplate="{StaticResource Trade.Statistics.SummaryMetricTemplate}"
+                                            Foreground="{StaticResource SolidColorBrush.Accent.Red.1}"
                                             HorizontalContentAlignment="Stretch" />
                         </StackPanel>
                     </Grid>
@@ -289,14 +294,13 @@
                         <Grid Width="48" Height="48" VerticalAlignment="Center">
                             <Ellipse Fill="{StaticResource SolidColorBrush.Accent.Blue.3}" Opacity="0.08"
                                      Stroke="{StaticResource SolidColorBrush.Accent.Blue.3}" StrokeThickness="1" />
-                            <fa5:ImageAwesome Width="21" Height="21" Icon="Solid_ExchangeAlt"
-                                              Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                            <fa5:ImageAwesome Width="21" Height="21" Icon="Solid_ExchangeAlt" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
                         </Grid>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                            <TextBlock Text="{Binding TranslationTradeVolume, FallbackValue=TRADE_VOLUME}"
-                                       Style="{StaticResource Dashboard.SummaryTitle}" />
+                            <TextBlock Text="{Binding TranslationTradeVolume, FallbackValue=TRADE_VOLUME}" Style="{StaticResource Dashboard.SummaryTitle}" />
                             <ContentControl Content="{Binding TradeVolumeSummary}"
                                             ContentTemplate="{StaticResource Trade.Statistics.SummaryMetricTemplate}"
+                                            Foreground="{StaticResource SolidColorBrush.Accent.Blue.1}"
                                             HorizontalContentAlignment="Stretch" />
                         </StackPanel>
                     </Grid>
@@ -309,17 +313,24 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid Width="48" Height="48" VerticalAlignment="Center">
-                            <Ellipse Fill="{StaticResource SolidColorBrush.Accent.Green.3}" Opacity="0.08"
-                                     Stroke="{StaticResource SolidColorBrush.Accent.Green.3}" StrokeThickness="1" />
-                            <fa5:ImageAwesome Width="21" Height="21" Icon="Solid_ChartLine"
-                                              Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" />
+                            <Ellipse Fill="{StaticResource SolidColorBrush.Accent.Green.3}" Opacity="0.08" Stroke="{StaticResource SolidColorBrush.Accent.Green.3}" StrokeThickness="1" />
+                            <fa5:ImageAwesome Width="21" Height="21" Icon="Solid_ChartLine" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" />
                         </Grid>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                            <TextBlock Text="{Binding TranslationProfit, FallbackValue=PROFIT}"
-                                       Style="{StaticResource Dashboard.SummaryTitle}" />
-                            <ContentControl Content="{Binding ProfitSummary}"
-                                            ContentTemplate="{StaticResource Trade.Statistics.SummaryMetricTemplate}"
-                                            HorizontalContentAlignment="Stretch" />
+                            <TextBlock Text="{Binding TranslationProfit, FallbackValue=PROFIT}" Style="{StaticResource Dashboard.SummaryTitle}" />
+                            <ContentControl Content="{Binding ProfitSummary}" ContentTemplate="{StaticResource Trade.Statistics.SummaryMetricTemplate}"
+                                            HorizontalContentAlignment="Stretch">
+                                <ContentControl.Style>
+                                    <Style TargetType="{x:Type ContentControl}">
+                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.1}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ProfitSummary.IsValueNegative}" Value="True">
+                                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.1}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ContentControl.Style>
+                            </ContentControl>
                         </StackPanel>
                     </Grid>
                 </Border>

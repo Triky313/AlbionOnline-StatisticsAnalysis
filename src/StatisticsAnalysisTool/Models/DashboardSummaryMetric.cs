@@ -14,6 +14,7 @@ public sealed class DashboardSummaryMetric : BaseViewModel
         {
             field = value;
             OnPropertyChanged();
+            OnPropertyChanged(nameof(IsValueNegative));
         }
     }
 
@@ -49,6 +50,7 @@ public sealed class DashboardSummaryMetric : BaseViewModel
 
     public bool IsIncrease => _difference > 0;
     public bool IsDecrease => _difference < 0;
+    public bool IsValueNegative => Value < 0;
     public string ChangeIndicator => IsIncrease ? "\u25B2" : IsDecrease ? "\u25BC" : "\u2014";
     public string ChangePercentageText => $"{ChangePercentage:+0.00;-0.00;0.00}%";
 
