@@ -23,7 +23,13 @@ public sealed class TradeLocationStatisticsService
 
         foreach (var trade in trades ?? [])
         {
-            if (trade == null || !accumulators.TryGetValue(trade.Location, out var accumulator))
+            if (trade == null)
+            {
+                continue;
+            }
+
+            var statisticsLocation = TradeMarketLocationResolver.Resolve(trade.Location);
+            if (!accumulators.TryGetValue(statisticsLocation, out var accumulator))
             {
                 continue;
             }

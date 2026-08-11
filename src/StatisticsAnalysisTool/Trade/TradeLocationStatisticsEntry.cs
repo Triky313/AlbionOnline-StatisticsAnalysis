@@ -25,6 +25,8 @@ public sealed class TradeLocationStatisticsEntry
 
     public double TaxPaid { get; init; }
 
+    public double TaxPaidDisplayValue => TaxPaid == 0d ? 0d : -TaxPaid;
+
     public string MostTradedCategory { get; init; } = string.Empty;
 
     public bool IsNetProfitNegative => NetProfit < 0d;

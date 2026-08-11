@@ -869,8 +869,8 @@
                                                 <TextBlock Grid.Column="5"
                                                            HorizontalAlignment="Right"
                                                            VerticalAlignment="Center"
-                                                           Foreground="{StaticResource SolidColorBrush.Accent.Green.3}"
-                                                           Text="{Binding TaxPaid, StringFormat='{}{0:N0}'}" />
+                                                           Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
+                                                           Text="{Binding TaxPaidDisplayValue, StringFormat='{}{0:N0}'}" />
                                                 <TextBlock Grid.Column="6"
                                                            Margin="18,0,0,0"
                                                            VerticalAlignment="Center"
@@ -887,12 +887,8 @@
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="{Binding Translation.Settings, FallbackValue=SETTINGS}">
-                <ScrollViewer Margin="8"
-                              HorizontalScrollBarVisibility="Auto"
-                              VerticalScrollBarVisibility="Auto">
-                    <ContentControl MinWidth="1025"
-                                    ContentTemplate="{StaticResource MailOptionsObjectTemplate}"
-                                    Content="{Binding TradeMonitoringBindings.TradeOptionsObject}" />
+                <ScrollViewer Margin="8" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <ContentControl MinWidth="1025" ContentTemplate="{StaticResource MailOptionsObjectTemplate}" Content="{Binding TradeMonitoringBindings.TradeOptionsObject}" />
                 </ScrollViewer>
             </TabItem>
 

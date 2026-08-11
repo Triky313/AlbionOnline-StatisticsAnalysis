@@ -25,15 +25,8 @@
                             CornerRadius="3"
                             TextBlock.Foreground="{TemplateBinding Foreground}">
                         <DockPanel Margin="9,3">
-                            <TextBlock Text="&#xE70D;"
-                                       FontFamily="Segoe MDL2 Assets"
-                                       FontSize="8"
-                                       Margin="8,0,0,0"
-                                       VerticalAlignment="Center"
-                                       DockPanel.Dock="Right" />
-                            <ContentPresenter HorizontalAlignment="Left"
-                                              VerticalAlignment="Center"
-                                              RecognizesAccessKey="True" />
+                            <TextBlock Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" FontSize="8" Margin="8,0,0,0" VerticalAlignment="Center" DockPanel.Dock="Right" />
+                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" RecognizesAccessKey="True" />
                         </DockPanel>
                     </Border>
                     <ControlTemplate.Triggers>

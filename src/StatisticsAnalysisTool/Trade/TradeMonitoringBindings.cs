@@ -1284,7 +1284,8 @@ public class TradeMonitoringBindings : BaseViewModel
             return true;
         }
 
-        return selectedLocations.Contains(trade.Location);
+        var groupedLocation = TradeMarketLocationResolver.Resolve(trade.Location);
+        return selectedLocations.Contains(groupedLocation);
     }
 
     private Task<List<Trade>> GetFilteredTradeSnapshotAsync()
