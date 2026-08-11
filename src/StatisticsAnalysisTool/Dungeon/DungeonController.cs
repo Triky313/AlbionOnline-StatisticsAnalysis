@@ -4,7 +4,6 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Dungeon.Models;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -890,17 +889,21 @@ public sealed class DungeonController
             AppDataPaths.UserDataFile(Settings.Default.DungeonRunsFileName));
 
         var dungeonsToAdd = new List<DungeonBaseFragment>();
+        var invalidDungeonCount = 0;
         foreach (DungeonDto dungeonDto in dungeons)
         {
-            try
+            if (!DungeonMapping.TryMapping(dungeonDto, out var dungeon))
             {
-                dungeonsToAdd.Add(DungeonMapping.Mapping(dungeonDto));
+                invalidDungeonCount++;
+                continue;
             }
-            catch (MappingException e)
-            {
-                DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            }
+
+            dungeonsToAdd.Add(dungeon);
+        }
+
+        if (invalidDungeonCount > 0)
+        {
+            Log.Warning("Skipped {invalidDungeonCount} invalid dungeon records while loading user data.", invalidDungeonCount);
         }
 
         _mainWindowViewModel.DungeonBindings.Dungeons.Clear();

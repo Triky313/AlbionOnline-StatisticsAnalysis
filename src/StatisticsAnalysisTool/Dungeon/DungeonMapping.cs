@@ -1,6 +1,5 @@
 ﻿using StatisticsAnalysisTool.Dungeon.Models;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Exceptions;
 using System.Linq;
 
 namespace StatisticsAnalysisTool.Dungeon;
@@ -86,9 +85,9 @@ public class DungeonMapping
         return dto;
     }
 
-    public static DungeonBaseFragment Mapping(DungeonDto dto)
+    public static bool TryMapping(DungeonDto dto, out DungeonBaseFragment dungeon)
     {
-        return dto.Mode switch
+        dungeon = dto?.Mode switch
         {
             DungeonMode.Solo or DungeonMode.Standard or DungeonMode.Avalon => new RandomDungeonFragment(dto),
             DungeonMode.Corrupted => new CorruptedFragment(dto),
@@ -98,8 +97,10 @@ public class DungeonMapping
             DungeonMode.MistsDungeon => new MistsDungeonFragment(dto),
             DungeonMode.AbyssalDepths => new AbyssalDepthsFragment(dto),
             DungeonMode.DragonArea => new DragonAreaFragment(dto),
-            _ => throw new MappingException("Unknown dungeon mode")
+            _ => null
         };
+
+        return dungeon is not null;
     }
 
     public static PointOfInterest Mapping(DungeonEventDto dto)
