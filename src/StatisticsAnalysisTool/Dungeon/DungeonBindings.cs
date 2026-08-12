@@ -1,4 +1,3 @@
-using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Dungeon.Models;
@@ -19,17 +18,8 @@ namespace StatisticsAnalysisTool.Dungeon;
 
 public class DungeonBindings : BaseViewModel
 {
-    private CancellationTokenSource _filterCancellationTokenSource;
-    private ObservableRangeCollection<DungeonBaseFragment> _dungeons = new();
-    private ListCollectionView _dungeonsCollectionView;
-    private DungeonCloseTimer _dungeonCloseTimer = new();
-    private DungeonStatsFilter _dungeonStatsFilter;
-    private DungeonStats _stats = new();
-    private GridLength _gridSplitterPosition;
-    private DungeonsTranslation _translation = new();
+    private int _filterUpdateVersion;
     private DashboardChartRangeOption _selectedStatsTimeType;
-    private DungeonStats _dungeonStatsSelection;
-    private DungeonOptionsObject _dungeonOptionsObject = new();
     private StatsTypeFilterStruct _selectedDungeonStatsType;
 
     public DungeonBindings()
@@ -41,73 +31,73 @@ public class DungeonBindings : BaseViewModel
 
     public ObservableRangeCollection<DungeonBaseFragment> Dungeons
     {
-        get => _dungeons;
+        get;
         set
         {
-            _dungeons = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public ListCollectionView DungeonsCollectionView
     {
-        get => _dungeonsCollectionView;
+        get;
         set
         {
-            _dungeonsCollectionView = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public DungeonCloseTimer DungeonCloseTimer
     {
-        get => _dungeonCloseTimer;
+        get;
         set
         {
-            _dungeonCloseTimer = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public DungeonStats Stats
     {
-        get => _stats;
+        get;
         set
         {
-            _stats = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public DungeonAnalytics Analytics { get; } = new();
 
     public DungeonStatsFilter DungeonStatsFilter
     {
-        get => _dungeonStatsFilter;
+        get;
         set
         {
-            _dungeonStatsFilter = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public DungeonOptionsObject DungeonOptionsObject
     {
-        get => _dungeonOptionsObject;
+        get;
         set
         {
-            _dungeonOptionsObject = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public GridLength GridSplitterPosition
     {
-        get => _gridSplitterPosition;
+        get;
         set
         {
-            _gridSplitterPosition = value;
-            SettingsController.CurrentSettings.DungeonsGridSplitterPosition = _gridSplitterPosition.Value;
+            field = value;
+            SettingsController.CurrentSettings.DungeonsGridSplitterPosition = field.Value;
             OnPropertyChanged();
         }
     }
@@ -168,10 +158,10 @@ public class DungeonBindings : BaseViewModel
 
     public DungeonStats DungeonStatsSelection
     {
-        get => _dungeonStatsSelection;
+        get;
         set
         {
-            _dungeonStatsSelection = value;
+            field = value;
             OnPropertyChanged();
         }
     }
@@ -198,13 +188,13 @@ public class DungeonBindings : BaseViewModel
 
     public DungeonsTranslation Translation
     {
-        get => _translation;
+        get;
         set
         {
-            _translation = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public void InitListCollectionView()
     {
@@ -240,6 +230,7 @@ public class DungeonBindings : BaseViewModel
 
         Analytics.RefreshLocalization();
         DungeonOptionsObject.RefreshLocalization();
+        DungeonStatsFilter.RefreshLocalization();
         foreach (var dungeon in Dungeons)
         {
             dungeon.RefreshLootVisibility();
@@ -251,10 +242,7 @@ public class DungeonBindings : BaseViewModel
 
     public async Task UpdateFilteredDungeonsAsync()
     {
-        _filterCancellationTokenSource?.Cancel();
-        _filterCancellationTokenSource?.Dispose();
-        _filterCancellationTokenSource = new CancellationTokenSource();
-        var cancellationToken = _filterCancellationTokenSource.Token;
+        var filterUpdateVersion = Interlocked.Increment(ref _filterUpdateVersion);
 
         var dungeons = Dungeons?.ToList() ?? [];
         var selectedMode = SelectedDungeonStatsType.StatsViewType;
@@ -273,41 +261,43 @@ public class DungeonBindings : BaseViewModel
         var appliesTierFilter = SupportsTier(selectedMode);
         var appliesEnchantmentFilter = SupportsEnchantment(selectedMode);
 
-        try
+        var filteredPeriods = await Task.Run(() =>
         {
-            var filteredPeriods = await Task.Run(() =>
+            var current = new List<DungeonBaseFragment>();
+            var previous = new List<DungeonBaseFragment>();
+
+            foreach (var dungeon in dungeons)
             {
-                var current = new List<DungeonBaseFragment>();
-                var previous = new List<DungeonBaseFragment>();
-
-                foreach (var dungeon in dungeons)
+                if (IsFilterUpdateObsolete(filterUpdateVersion))
                 {
-                    cancellationToken.ThrowIfCancellationRequested();
-                    if (!MatchesMetadata(dungeon, selectedMode, selectedTiers, selectedLevels, appliesTierFilter, appliesEnchantmentFilter))
-                    {
-                        continue;
-                    }
-
-                    if (dungeon.EnterDungeonFirstTime >= currentRangeStart && dungeon.EnterDungeonFirstTime <= currentRangeEnd)
-                    {
-                        current.Add(dungeon);
-                    }
-                    else if (dungeon.EnterDungeonFirstTime >= previousRangeStart && dungeon.EnterDungeonFirstTime < currentRangeStart)
-                    {
-                        previous.Add(dungeon);
-                    }
+                    return null;
                 }
 
-                current.Sort((left, right) => right.EnterDungeonFirstTime.CompareTo(left.EnterDungeonFirstTime));
-                return new FilteredDungeonPeriods(current, previous);
-            }, cancellationToken);
+                if (!MatchesMetadata(dungeon, selectedMode, selectedTiers, selectedLevels, appliesTierFilter, appliesEnchantmentFilter))
+                {
+                    continue;
+                }
 
-            cancellationToken.ThrowIfCancellationRequested();
-            await ApplyFilteredPeriodsAsync(filteredPeriods, selectedRange, selectedMode, cancellationToken);
-        }
-        catch (OperationCanceledException)
+                if (dungeon.EnterDungeonFirstTime >= currentRangeStart && dungeon.EnterDungeonFirstTime <= currentRangeEnd)
+                {
+                    current.Add(dungeon);
+                }
+                else if (dungeon.EnterDungeonFirstTime >= previousRangeStart && dungeon.EnterDungeonFirstTime < currentRangeStart)
+                {
+                    previous.Add(dungeon);
+                }
+            }
+
+            current.Sort((left, right) => right.EnterDungeonFirstTime.CompareTo(left.EnterDungeonFirstTime));
+            return new FilteredDungeonPeriods(current, previous);
+        });
+
+        if (filteredPeriods == null || IsFilterUpdateObsolete(filterUpdateVersion))
         {
+            return;
         }
+
+        await ApplyFilteredPeriodsAsync(filteredPeriods, selectedRange, selectedMode, filterUpdateVersion);
     }
 
     public List<DungeonBaseFragment> ParallelDungeonFilterProcess()
@@ -335,11 +325,15 @@ public class DungeonBindings : BaseViewModel
         FilteredDungeonPeriods filteredPeriods,
         DashboardChartRangeOption selectedRange,
         DungeonMode selectedMode,
-        CancellationToken cancellationToken)
+        int filterUpdateVersion)
     {
         void Apply()
         {
-            cancellationToken.ThrowIfCancellationRequested();
+            if (IsFilterUpdateObsolete(filterUpdateVersion))
+            {
+                return;
+            }
+
             DungeonsCollectionView = CreateCollectionView(filteredPeriods.Current);
             Stats.Set(filteredPeriods.Current);
             UpdateStatsView();
@@ -353,6 +347,11 @@ public class DungeonBindings : BaseViewModel
         }
 
         Apply();
+    }
+
+    private bool IsFilterUpdateObsolete(int filterUpdateVersion)
+    {
+        return Volatile.Read(ref _filterUpdateVersion) != filterUpdateVersion;
     }
 
     private static ListCollectionView CreateCollectionView(IEnumerable<DungeonBaseFragment> dungeons)
