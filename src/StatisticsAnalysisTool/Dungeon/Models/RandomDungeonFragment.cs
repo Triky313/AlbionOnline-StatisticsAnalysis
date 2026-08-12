@@ -11,6 +11,9 @@ namespace StatisticsAnalysisTool.Dungeon.Models;
 public class RandomDungeonFragment : DungeonBaseFragment
 {
     public bool IsLevelLockedFromEntrance { get; private set; }
+    public bool IsTierLockedFromEntrance { get; private set; }
+    public double MobHitPointsFactor { get; set; } = 1;
+    public double ZoneLootFactor { get; set; }
 
     public RandomDungeonFragment(Guid guid, MapType mapType, DungeonMode mode, string mainMapIndex) : base(guid, mapType, mode, mainMapIndex)
     {
@@ -281,6 +284,50 @@ public class RandomDungeonFragment : DungeonBaseFragment
     public bool TrySetLevelFromMob(int level)
     {
         if (IsLevelLockedFromEntrance || level is < 0 or > 4 || level <= Level)
+        {
+            return false;
+        }
+
+        Level = level;
+        return true;
+    }
+
+    public bool TrySetTierFromEntrance(Tier tier)
+    {
+        if (tier == Tier.Unknown)
+        {
+            return false;
+        }
+
+        IsTierLockedFromEntrance = true;
+        if (Tier == tier)
+        {
+            return false;
+        }
+
+        Tier = tier;
+        return true;
+    }
+
+    public bool TrySetTierFromMob(Tier tier)
+    {
+        if (IsTierLockedFromEntrance || tier == Tier.Unknown || Tier == tier)
+        {
+            return false;
+        }
+
+        Tier = tier;
+        return true;
+    }
+
+    public bool TrySetLevelFromLootFactor(int level)
+    {
+        if (IsLevelLockedFromEntrance || level is < 0 or > 4)
+        {
+            return false;
+        }
+
+        if (Level == level)
         {
             return false;
         }

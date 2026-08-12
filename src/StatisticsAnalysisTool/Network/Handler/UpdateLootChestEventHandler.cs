@@ -9,6 +9,7 @@ public class UpdateLootChestEventHandler(TrackingController trackingController) 
     protected override async Task OnActionAsync(UpdateLootChestEvent value)
     {
         trackingController.DungeonController?.SetDungeonChestOpen(value.ObjectId, value.PlayerGuid);
+        trackingController.DungeonController?.UpdateCurrentDungeonLevelFromLootChest(value.ObjectId, value.LootFactor);
         trackingController?.TreasureController?.UpdateTreasure(value.ObjectId, value.PlayerGuid);
         await Task.CompletedTask;
     }

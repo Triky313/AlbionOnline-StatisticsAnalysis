@@ -66,15 +66,15 @@ public class MobsDataTests
     {
         var result = MobsData.GetRandomDungeonMobTierByIndex(16);
 
-        result.Should().Be(5);
+        result.Should().Be(6);
     }
 
     [Test]
-    public void GetRandomDungeonMobTierByIndex_WithUserUndeadDungeonMob_ReturnsDungeonTierFour()
+    public void GetRandomDungeonMobTierByIndex_WithUserUndeadDungeonMob_ReturnsDungeonTierFive()
     {
         var result = MobsData.GetRandomDungeonMobTierByIndex(17);
 
-        result.Should().Be(4);
+        result.Should().Be(5);
     }
 
     [Test]
@@ -112,7 +112,7 @@ public class MobsDataTests
     [Test]
     public void GetRandomDungeonMobLevelByIndex_WithLevelTwoBonus_ReturnsLevelTwo()
     {
-        var levelTwoHitPoints = 1328 * 136 / 116d;
+        var levelTwoHitPoints = 1328 * 1.36;
 
         var result = MobsData.GetRandomDungeonMobLevelByIndex(16, levelTwoHitPoints);
 
@@ -122,7 +122,7 @@ public class MobsDataTests
     [Test]
     public void GetRandomDungeonMobLevelByIndex_WithUserLevelFourUndeadMob_ReturnsLevelFour()
     {
-        var result = MobsData.GetRandomDungeonMobLevelByIndex(17, 1494);
+        var result = MobsData.GetRandomDungeonMobLevelByIndex(17, 923 * 1.84);
 
         result.Should().Be(4);
     }

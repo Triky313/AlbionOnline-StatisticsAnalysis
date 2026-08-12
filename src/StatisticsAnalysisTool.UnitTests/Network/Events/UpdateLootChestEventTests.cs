@@ -36,12 +36,14 @@ public class UpdateLootChestEventTests
                 {
                     211, 221, 124, 14, 233, 103, 215, 74, 185, 66, 67, 20, 244, 60, 44, 155
                 }
-            }
+            },
+            { 10, 3.70968 }
         };
 
         var updateLootChestEvent = new UpdateLootChestEvent(parameters);
 
         updateLootChestEvent.ObjectId.Should().Be(145);
+        updateLootChestEvent.LootFactor.Should().Be(3.70968);
         updateLootChestEvent.PlayerGuid.Should().ContainSingle().Which.Should().Be(new Guid(firstGuidBytes));
         updateLootChestEvent.PlayerGuid2.Should().ContainSingle().Which.Should().Be(new Guid(secondGuidBytes));
     }

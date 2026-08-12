@@ -11,6 +11,7 @@ public class UpdateLootChestEvent
     private const int GuidByteLength = 16;
 
     public int ObjectId { get; }
+    public double LootFactor { get; }
     public List<Guid> PlayerGuid { get; } = [];
     public List<Guid> PlayerGuid2 { get; } = [];
 
@@ -21,6 +22,11 @@ public class UpdateLootChestEvent
             if (parameters.TryGetValue(0, out object objectId) && int.TryParse(objectId.ToString(), out var parsedObjectId))
             {
                 ObjectId = parsedObjectId;
+            }
+
+            if (parameters.TryGetValue(10, out object lootFactor))
+            {
+                LootFactor = lootFactor.ObjectToDouble();
             }
 
             if (parameters.TryGetValue(3, out object playerGuid))

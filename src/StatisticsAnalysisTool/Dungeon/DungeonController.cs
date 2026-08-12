@@ -38,6 +38,7 @@ public sealed class DungeonController
     private readonly List<DiscoveredItem> _discoveredLoot = [];
     private readonly Dictionary<long, DungeonLootSource> _lootSources = [];
     private readonly List<RandomDungeonExitInfo> _discoveredRandomDungeonExits = [];
+    private int? _selectedRandomDungeonExitObjectId;
 
     public DungeonController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
     {
@@ -533,27 +534,57 @@ public sealed class DungeonController
         }
     }
 
+    public void SelectRandomDungeonExit(int objectId)
+    {
+        lock (_discoveredRandomDungeonExits)
+        {
+            _selectedRandomDungeonExitObjectId = _discoveredRandomDungeonExits.Any(x => x.ObjectId == objectId)
+                ? objectId
+                : null;
+        }
+    }
+
     public void UpdateCurrentDungeonLevel(DungeonBaseFragment dungeon, string sourceClusterIndex, WorldPosition? worldPosition)
     {
-        if (dungeon is not RandomDungeonFragment { IsLevelLockedFromEntrance: false } randomDungeon)
+        if (dungeon is not RandomDungeonFragment randomDungeon)
         {
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(sourceClusterIndex) || worldPosition is not { } sourceWorldPosition)
+        if (string.IsNullOrWhiteSpace(sourceClusterIndex))
         {
             return;
         }
 
         lock (_discoveredRandomDungeonExits)
         {
-            var discoveredRandomDungeonExit = FindDiscoveredRandomDungeonExit(sourceClusterIndex, sourceWorldPosition);
-            if (discoveredRandomDungeonExit?.HasVisibleLevel != true)
+            var discoveredRandomDungeonExit = FindDiscoveredRandomDungeonExit(sourceClusterIndex, worldPosition);
+            _selectedRandomDungeonExitObjectId = null;
+            if (discoveredRandomDungeonExit is null)
             {
                 return;
             }
 
-            randomDungeon.TrySetLevelFromEntrance(discoveredRandomDungeonExit.Level);
+            randomDungeon.MobHitPointsFactor = DungeonData.GetDungeonMobHitPointsFactor(discoveredRandomDungeonExit.DungeonType);
+            randomDungeon.ZoneLootFactor = DungeonData.GetDungeonZoneLootFactor(discoveredRandomDungeonExit.DungeonType);
+            randomDungeon.TrySetTierFromEntrance(DungeonData.GetDungeonTierFromExit(discoveredRandomDungeonExit.UniqueName));
+
+            var dungeonMode = DungeonData.GetRandomDungeonModeFromExit(discoveredRandomDungeonExit.UniqueName);
+            if (dungeonMode != DungeonMode.Unknown)
+            {
+                randomDungeon.Mode = dungeonMode;
+            }
+
+            var faction = DungeonData.GetFaction(discoveredRandomDungeonExit.UniqueName);
+            if (faction != Faction.Unknown)
+            {
+                randomDungeon.Faction = faction;
+            }
+
+            if (discoveredRandomDungeonExit.HasVisibleLevel)
+            {
+                randomDungeon.TrySetLevelFromEntrance(discoveredRandomDungeonExit.Level);
+            }
         }
     }
 
@@ -583,13 +614,74 @@ public sealed class DungeonController
         }
     }
 
-    private RandomDungeonExitInfo FindDiscoveredRandomDungeonExit(string sourceClusterIndex, WorldPosition worldPosition)
+    public void UpdateCurrentDungeonLevelFromLootChest(int objectId, double combinedLootFactor)
     {
+        if (_currentGuid is not { } currentDungeonGuid)
+        {
+            return;
+        }
+
+        try
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                TryUpdateCurrentDungeonLevelFromLootChest(currentDungeonGuid, objectId, combinedLootFactor);
+            });
+        }
+        catch (Exception e)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+        }
+    }
+
+    private RandomDungeonExitInfo FindDiscoveredRandomDungeonExit(string sourceClusterIndex, WorldPosition? worldPosition)
+    {
+        if (_selectedRandomDungeonExitObjectId is { } selectedObjectId)
+        {
+            var selectedExit = _discoveredRandomDungeonExits.FirstOrDefault(x =>
+                x.ObjectId == selectedObjectId && x.SourceClusterIndex == sourceClusterIndex);
+            if (selectedExit is not null)
+            {
+                return selectedExit;
+            }
+        }
+
+        if (worldPosition is not { } sourceWorldPosition)
+        {
+            return null;
+        }
+
         return _discoveredRandomDungeonExits.FirstOrDefault(x =>
             x.SourceClusterIndex == sourceClusterIndex
             && x.SourceExitPosition is { } sourceExitPosition
-            && sourceExitPosition.X.Equals(worldPosition.X)
-            && sourceExitPosition.Y.Equals(worldPosition.Y));
+            && sourceExitPosition.X.Equals(sourceWorldPosition.X)
+            && sourceExitPosition.Y.Equals(sourceWorldPosition.Y));
+    }
+
+    private void TryUpdateCurrentDungeonLevelFromLootChest(Guid currentDungeonGuid, int objectId, double combinedLootFactor)
+    {
+        var activeDungeon = _mainWindowViewModel.DungeonBindings.Dungeons?
+            .FirstOrDefault(x => x.GuidList.Contains(currentDungeonGuid) && x.Status == DungeonStatus.Active);
+
+        if (activeDungeon is not RandomDungeonFragment { IsLevelLockedFromEntrance: false } randomDungeon)
+        {
+            return;
+        }
+
+        var lootChest = randomDungeon.Events?.FirstOrDefault(x => x.Id == objectId);
+        if (lootChest is null || !DungeonData.IsRandomDungeonLootChest(lootChest.UniqueName, randomDungeon.Mode))
+        {
+            return;
+        }
+
+        var level = DungeonData.GetDungeonLevelFromLootFactor(combinedLootFactor, randomDungeon.ZoneLootFactor);
+        if (!randomDungeon.TrySetLevelFromLootFactor(level))
+        {
+            return;
+        }
+
+        UpdateCurrentMapHistoryRandomDungeonInformation(randomDungeon);
     }
 
     private void TryUpdateCurrentDungeonLevelFromMob(Guid currentDungeonGuid, int mobIndex, double hitPointsMax)
@@ -602,7 +694,7 @@ public sealed class DungeonController
             return;
         }
 
-        var level = GetLevelFromMob(randomDungeon.MapType, mobIndex, hitPointsMax);
+        var level = MobsData.GetRandomDungeonMobLevelByIndex(mobIndex, hitPointsMax, randomDungeon.MobHitPointsFactor);
         if (!randomDungeon.TrySetLevelFromMob(level))
         {
             return;
@@ -611,20 +703,12 @@ public sealed class DungeonController
         UpdateCurrentMapHistoryRandomDungeonInformation(randomDungeon);
     }
 
-    private static int GetLevelFromMob(MapType mapType, int mobIndex, double hitPointsMax)
-    {
-        return mapType switch
-        {
-            MapType.RandomDungeon => MobsData.GetRandomDungeonMobLevelByIndex(mobIndex, hitPointsMax),
-            _ => MobsData.GetMobLevelByIndex(mobIndex, hitPointsMax)
-        };
-    }
-
     public void ClearRandomDungeonExits()
     {
         lock (_discoveredRandomDungeonExits)
         {
             _discoveredRandomDungeonExits.Clear();
+            _selectedRandomDungeonExitObjectId = null;
         }
     }
 
@@ -692,12 +776,10 @@ public sealed class DungeonController
 
     private static void SetRandomDungeonTier(DungeonBaseFragment dungeon, Tier mobTier)
     {
-        if (dungeon.Tier != Tier.Unknown && dungeon.Tier <= mobTier)
+        if (dungeon is RandomDungeonFragment randomDungeon)
         {
-            return;
+            randomDungeon.TrySetTierFromMob(mobTier);
         }
-
-        dungeon.Tier = mobTier;
     }
 
     #endregion
