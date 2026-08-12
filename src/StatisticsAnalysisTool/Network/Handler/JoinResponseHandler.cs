@@ -51,7 +51,7 @@ public class JoinResponseHandler(TrackingController trackingController) : Respon
             ObjectSubType = GameObjectSubType.LocalPlayer
         });
 
-        trackingController.DungeonController?.AddDungeonAsync(value.MapType, value.MapGuid, value.SourceClusterIndex, value.SourceExitPosition).ConfigureAwait(false);
+        await trackingController.DungeonController.AddDungeonAsync(value.MapType, value.MapGuid, value.SourceClusterIndex, value.SourceExitPosition);
 
         await ResetSessionByMapChangeIfActiveAsync(hadActiveStatisticsSession);
         SetTrackingActivityText();

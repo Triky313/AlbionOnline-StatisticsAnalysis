@@ -193,6 +193,9 @@
     <Resource Include="Assets\combat_swords.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\corrupted_dungeon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\crafting_description_image001.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -757,6 +760,7 @@
     <None Remove="Assets\checkpoint.png" />
     <None Remove="Assets\chest_locked.png" />
     <None Remove="Assets\combat_swords.png" />
+    <None Remove="Assets\corrupted_dungeon.png" />
     <None Remove="Assets\crafting_description_image001.png" />
     <None Remove="Assets\crafting_description_image002.png" />
     <None Remove="Assets\currupted_dungeon.png" />
