@@ -70,6 +70,7 @@ public class MainWindowViewModel : BaseViewModel
         UpdateServerStatus();
         RefreshDashboardChartTranslations();
         RefreshItemCategoryTranslations();
+        DungeonBindings.RefreshLocalization();
         TradeMonitoringBindings.RefreshLocalization();
         OpenWorldBindings.UpdateStats();
         RefreshTrackingActivityText();

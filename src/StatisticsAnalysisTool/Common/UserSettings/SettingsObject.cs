@@ -75,6 +75,7 @@ public class SettingsObject
     public double TradeMonitoringMarketTaxRate { get; set; } = 4;
     public double TradeMonitoringMarketTaxSetupRate { get; set; } = 2.5;
     public bool IsDungeonClosedSoundActive { get; set; } = false;
+    public bool IsDungeonPlayerLootVisible { get; set; } = false;
     [JsonPropertyName("ItemWindowMainTabLocationFilters")]
     public List<MainTabLocationFilterSettingsObject> ItemDetailsLocationFilters { get; set; } = new();
     public double GatheringGridSplitterPosition { get; set; } = 125;

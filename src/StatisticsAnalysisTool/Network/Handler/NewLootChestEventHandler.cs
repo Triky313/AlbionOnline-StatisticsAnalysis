@@ -1,3 +1,4 @@
+using StatisticsAnalysisTool.Enumerations;
 ﻿using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
@@ -11,5 +12,6 @@ public class NewLootChestEventHandler(TrackingController trackingController) : E
         await trackingController?.DungeonController?.SetDungeonEventInformationAsync(value.ObjectId, value.UniqueName)!;
         trackingController?.TreasureController?.AddTreasure(value.ObjectId, value.UniqueName, value.UniqueNameWithLocation);
         trackingController.LootController.SetIdentifiedBody(value.ObjectId, value.UniqueName);
+        trackingController.DungeonController.SetLootSource(value.ObjectId, value.UniqueNameWithLocation, DungeonLootSourceType.Chest);
     }
 }

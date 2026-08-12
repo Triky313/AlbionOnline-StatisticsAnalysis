@@ -15,6 +15,239 @@
     <converters:IntToStringOrQuestionMarkConverter x:Key="IntToStringOrQuestionMarkConverter" />
     <converters:SecondsToTimeFormatConverter x:Key="SecondsToTimeFormatConverter" />
 
+    <converters:ShortNumberConverter x:Key="Dungeon.ShortNumberConverter" />
+    <converters:DurationSecondsToCompactStringConverter x:Key="Dungeon.DurationConverter" />
+
+    <Style x:Key="Dungeon.AnalyticsCard" TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.SummaryCard}">
+        <Setter Property="MinWidth" Value="150" />
+        <Setter Property="Margin" Value="4" />
+        <Setter Property="Padding" Value="10,9" />
+    </Style>
+
+    <Style x:Key="Dungeon.DetailCard" TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.Section}">
+        <Setter Property="Margin" Value="4" />
+        <Setter Property="Padding" Value="13,11" />
+        <Setter Property="MinHeight" Value="235" />
+    </Style>
+
+    <Style x:Key="Dungeon.SectionTitle" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+        <Setter Property="Margin" Value="0,0,0,10" />
+    </Style>
+
+    <Style x:Key="Dungeon.DeltaText" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="10.5" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
+        <Setter Property="ToolTip" Value="{Binding DataContext.DungeonBindings.Analytics.ComparisonText, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsPositiveChange}" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.3}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsNegativeChange}" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.3}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <DataTemplate x:Key="Dungeon.SummaryMetricTemplate" DataType="{x:Type dungeonModels:DungeonMetric}">
+        <StackPanel>
+            <WrapPanel>
+                <TextBlock Text="{Binding Value, Converter={StaticResource Dungeon.ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}"
+                           Style="{StaticResource Dashboard.SummaryValue}" />
+                <TextBlock Text="{Binding ValuePerHour, Converter={StaticResource Dungeon.ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, StringFormat='{}({0} /h)', FallbackValue=0}">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource Dashboard.SummaryPerHourText}">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding HasPerHourValue}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </WrapPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding ChangeIndicator}" Style="{StaticResource Dungeon.DeltaText}" />
+                <TextBlock Text=" " Style="{StaticResource Dungeon.DeltaText}" />
+                <TextBlock Text="{Binding ChangeAmount, Converter={StaticResource Dungeon.ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}"
+                           Style="{StaticResource Dungeon.DeltaText}" />
+                <TextBlock Text=" (" Style="{StaticResource Dungeon.DeltaText}" />
+                <TextBlock Text="{Binding ChangePercentageText}" Style="{StaticResource Dungeon.DeltaText}" />
+                <TextBlock Text=")" Style="{StaticResource Dungeon.DeltaText}" />
+            </StackPanel>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="Dungeon.DurationMetricTemplate" DataType="{x:Type dungeonModels:DungeonMetric}">
+        <StackPanel>
+            <TextBlock Text="{Binding Value, Converter={StaticResource Dungeon.DurationConverter}, FallbackValue=0m}"
+                       Style="{StaticResource Dashboard.SummaryValue}" />
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding ChangeIndicator}" Style="{StaticResource Dungeon.DeltaText}" />
+                <TextBlock Text=" " Style="{StaticResource Dungeon.DeltaText}" />
+                <TextBlock Text="{Binding ChangeAmount, Converter={StaticResource Dungeon.DurationConverter}, FallbackValue=0m}"
+                           Style="{StaticResource Dungeon.DeltaText}" />
+                <TextBlock Text=" (" Style="{StaticResource Dungeon.DeltaText}" />
+                <TextBlock Text="{Binding ChangePercentageText}" Style="{StaticResource Dungeon.DeltaText}" />
+                <TextBlock Text=")" Style="{StaticResource Dungeon.DeltaText}" />
+            </StackPanel>
+        </StackPanel>
+    </DataTemplate>
+
+    <Style x:Key="Dungeon.ContentTabs" TargetType="{x:Type ListBox}">
+        <Setter Property="SelectionMode" Value="Single" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
+    </Style>
+
+    <Style x:Key="Dungeon.ContentTab" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.4}" />
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.4}" />
+        <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Border.2}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="14,7" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Border x:Name="TabBorder"
+                            Padding="{TemplateBinding Padding}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="4,4,0,0">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="TabBorder" Property="BorderBrush" Value="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="TabBorder" Property="Background" Value="{StaticResource SolidColorBrush.Surface.Selected}" />
+                            <Setter TargetName="TabBorder" Property="BorderBrush" Value="{StaticResource SolidColorBrush.Border.Focus}" />
+                            <Setter TargetName="TabBorder" Property="BorderThickness" Value="1,1,1,0" />
+                            <Setter Property="Panel.ZIndex" Value="2" />
+                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+                            <Setter Property="FontWeight" Value="SemiBold" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Dungeon.OverviewMetricCard" TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.SummaryCard}">
+        <Setter Property="MinWidth" Value="135" />
+        <Setter Property="MinHeight" Value="88" />
+        <Setter Property="Margin" Value="4" />
+        <Setter Property="Padding" Value="9,7" />
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.3}" />
+    </Style>
+
+    <Style x:Key="Dungeon.OverviewMetricTitle" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="10.5" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.3}" />
+        <Setter Property="TextAlignment" Value="Center" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        <Setter Property="Margin" Value="0,0,0,5" />
+    </Style>
+
+    <Style x:Key="Dungeon.OverviewMetricValue" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    </Style>
+
+    <Style x:Key="Dungeon.OverviewMetricCaption" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.4}" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    </Style>
+
+    <Style x:Key="Dungeon.SettingsCard" TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.Section}">
+        <Setter Property="Margin" Value="4" />
+        <Setter Property="Padding" Value="13,11" />
+    </Style>
+    <Style x:Key="Dungeon.EfficiencyBar" TargetType="{x:Type ProgressBar}">
+        <Setter Property="Height" Value="19" />
+        <Setter Property="Minimum" Value="0" />
+        <Setter Property="Maximum" Value="100" />
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.4}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ProgressBar}">
+                    <Grid x:Name="PART_Track" ClipToBounds="True">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="2" />
+                        <Border x:Name="PART_Indicator"
+                                HorizontalAlignment="Left"
+                                Background="{TemplateBinding Foreground}"
+                                CornerRadius="2" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Dungeon.LootToggle" TargetType="{x:Type Border}">
+        <Setter Property="Padding" Value="6,3" />
+        <Setter Property="Margin" Value="0,-2,0,2" />
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Accent.Blue.Transparent.5}" />
+        <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Accent.Blue.4}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="3" />
+        <Setter Property="Cursor" Value="Hand" />
+    </Style>
+
+    <DataTemplate x:Key="DungeonFragment.LootToggle.Template" DataType="{x:Type dungeonModels:DungeonBaseFragment}">
+        <Border Style="{StaticResource Dungeon.LootToggle}"
+                ToolTip="{Binding LootToggleToolTip}">
+            <Border.InputBindings>
+                <MouseBinding MouseAction="LeftClick" Command="{Binding ShowLootedItems}" />
+            </Border.InputBindings>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="28" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="18" />
+                </Grid.ColumnDefinitions>
+                <Grid Width="24" Height="24">
+                    <Image Source="../Assets/static_chest.png" />
+                    <Ellipse Width="7" Height="7" HorizontalAlignment="Right" VerticalAlignment="Top"
+                             Fill="{StaticResource SolidColorBrush.Accent.Blue.2}" Visibility="{Binding UnseenLootVisibility}" />
+                </Grid>
+                <StackPanel Grid.Column="1" Margin="3,0,7,0">
+                    <TextBlock Text="{Binding TotalValue, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, StringFormat='{}{0:N0}', FallbackValue=0}"
+                               Foreground="{StaticResource SolidColorBrush.Text.1}" FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding LootSummaryText}" FontSize="10" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                </StackPanel>
+                <TextBlock Grid.Column="2" FontSize="10" VerticalAlignment="Center"
+                           Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}"
+                           Visibility="{Binding HasLootVisibility}">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Text" Value="&#x25BC;" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ItemsContainerVisibility}" Value="Visible">
+                                    <Setter Property="Text" Value="&#x25B2;" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+        </Border>
+    </DataTemplate>
+
     <Style x:Key="DungeonFragment.Faction" TargetType="StackPanel">
         <Setter Property="VerticalAlignment" Value="Top"/>
         <Setter Property="Height" Value="96"/>
@@ -310,8 +543,16 @@
     </Style>
 
     <DataTemplate x:Key="DungeonContainerItemTemplate" DataType="{x:Type dungeonModels:Loot}">
-        <Grid Height="35" Width="35" Margin="0">
-            <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Stretch="Fill" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
+        <Grid Height="44" Width="44" Margin="0" ToolTip="{Binding SourceReferenceText}">
+            <Image Margin="2,0,2,9" Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}"
+                   Stretch="Fill" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
+            <Border VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                    Padding="2,0" CornerRadius="2"
+                    Background="{StaticResource SolidColorBrush.Background.1}"
+                    Visibility="{Binding SourceVisibility}">
+                <TextBlock Text="{Binding SourceTypeText}" FontSize="8"
+                           Foreground="{StaticResource SolidColorBrush.Text.2}" />
+            </Border>
         </Grid>
     </DataTemplate>
 
@@ -2808,6 +3049,19 @@
         </StackPanel>
     </DataTemplate>
 
+    <DataTemplate x:Key="DungeonFragment.LootAndDeath.Template" DataType="{x:Type dungeonModels:DungeonBaseFragment}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource DungeonFragment.LootToggle.Template}" />
+            <ContentPresenter Grid.Column="1" Margin="8,0,0,0"
+                              VerticalAlignment="Center"
+                              Content="{Binding}" ContentTemplate="{StaticResource DungeonFragment.Kill.Template}" />
+        </Grid>
+    </DataTemplate>
+
     <!-- Dungeon fragments -->
     <DataTemplate x:Key="RandomDungeonTemplate" DataType="{x:Type dungeonModels:RandomDungeonFragment}">
         <Border BorderBrush="{StaticResource SolidColorBrush.Background.2}" BorderThickness="0,0,0,1">
@@ -2968,21 +3222,7 @@
 
                                     <StackPanel Orientation="Vertical" Margin="0,2">
                                         <!-- Total value -->
-                                        <StackPanel Orientation="Horizontal" Height="20">
-                                            <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationTotalLootedValue, FallbackValue=TOTAL_LOOTED_VALUE}">
-                                                <Grid.InputBindings>
-                                                    <MouseBinding MouseAction="LeftClick" Command="{Binding ShowLootedItems}" />
-                                                </Grid.InputBindings>
-                                                <Image Source="../Assets/static_chest.png" />
-                                            </Grid>
-
-                                            <DockPanel>
-                                                <TextBlock Text="{Binding TotalValue, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, StringFormat='{}{0:N0}', IsAsync=True, Mode=OneWay, FallbackValue=-}" 
-                                                           Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Right" />
-                                                <TextBlock Margin="2,0,2,0" />
-                                                <TextBlock Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Left" />
-                                            </DockPanel>
-                                        </StackPanel>
+                                        <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource DungeonFragment.LootAndDeath.Template}" />
 
                                         <!-- Most valuable loot -->
                                         <StackPanel Orientation="Horizontal" Height="30" Margin="-6,-2,0,0" Visibility="{Binding MostValuableLootVisibility}">
@@ -2995,8 +3235,6 @@
                                             </StackPanel>
                                         </StackPanel>
 
-                                        <!-- Kill message -->
-                                        <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.Kill.Template}" Content="{Binding}" />
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>
@@ -3005,7 +3243,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Margin="0,97,0,0" MinHeight="35" Visibility="{Binding ItemsContainerVisibility}" HorizontalAlignment="Left">
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                        <ItemsControl ItemsSource="{Binding Loot, IsAsync=True}" ItemTemplate="{StaticResource DungeonContainerItemTemplate}">
+                        <ItemsControl ItemsSource="{Binding VisibleLoot, IsAsync=True}" ItemTemplate="{StaticResource DungeonContainerItemTemplate}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <VirtualizingStackPanel Orientation="Horizontal"/>
@@ -3137,21 +3375,7 @@
 
                                     <StackPanel Orientation="Vertical" Margin="0,2">
                                         <!-- Total value -->
-                                        <StackPanel Orientation="Horizontal" Height="20">
-                                            <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" 
-                                                  ToolTip="{Binding TranslationTotalLootedValue, FallbackValue=TOTAL_LOOTED_VALUE}">
-                                                <Grid.InputBindings>
-                                                    <MouseBinding MouseAction="LeftClick" Command="{Binding ShowLootedItems}" />
-                                                </Grid.InputBindings>
-                                                <Image Source="../Assets/static_chest.png" />
-                                            </Grid>
-                                            <DockPanel>
-                                                <TextBlock Text="{Binding TotalValue, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, StringFormat='{}{0:N0}', IsAsync=True, Mode=OneWay, FallbackValue=-}" 
-                                                           Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Right" />
-                                                <TextBlock Margin="2,0,2,0" />
-                                                <TextBlock Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Left" />
-                                            </DockPanel>
-                                        </StackPanel>
+                                        <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource DungeonFragment.LootAndDeath.Template}" />
 
                                         <!-- Most valuable loot -->
                                         <StackPanel Orientation="Horizontal" Height="30" Margin="-6,-2,0,0" Visibility="{Binding MostValuableLootVisibility}">
@@ -3164,8 +3388,6 @@
                                             </StackPanel>
                                         </StackPanel>
 
-                                        <!-- Kill message -->
-                                        <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.Kill.Template}" Content="{Binding}" />
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>
@@ -3174,7 +3396,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Margin="0,97,0,0" MinHeight="35" Visibility="{Binding ItemsContainerVisibility}" HorizontalAlignment="Left">
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                        <ItemsControl ItemsSource="{Binding Loot, IsAsync=True}" ItemTemplate="{StaticResource DungeonContainerItemTemplate}">
+                        <ItemsControl ItemsSource="{Binding VisibleLoot, IsAsync=True}" ItemTemplate="{StaticResource DungeonContainerItemTemplate}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <VirtualizingStackPanel Orientation="Horizontal"/>
@@ -3306,20 +3528,7 @@
 
                                     <StackPanel Orientation="Vertical" Margin="0,2">
                                         <!-- Total value -->
-                                        <StackPanel Orientation="Horizontal" Height="20">
-                                            <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationTotalLootedValue, FallbackValue=TOTAL_LOOTED_VALUE}">
-                                                <Grid.InputBindings>
-                                                    <MouseBinding MouseAction="LeftClick" Command="{Binding ShowLootedItems}" />
-                                                </Grid.InputBindings>
-                                                <Image Source="../Assets/static_chest.png" />
-                                            </Grid>
-                                            <DockPanel>
-                                                <TextBlock Text="{Binding TotalValue, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, StringFormat='{}{0:N0}', IsAsync=True, Mode=OneWay, FallbackValue=-}" 
-                                                           Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Right" />
-                                                <TextBlock Margin="2,0,2,0" />
-                                                <TextBlock Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Left" />
-                                            </DockPanel>
-                                        </StackPanel>
+                                        <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource DungeonFragment.LootAndDeath.Template}" />
 
                                         <!-- Most valuable loot -->
                                         <StackPanel Orientation="Horizontal" Height="30" Margin="-6,-2,0,0" Visibility="{Binding MostValuableLootVisibility}">
@@ -3332,8 +3541,6 @@
                                             </StackPanel>
                                         </StackPanel>
 
-                                        <!-- Kill message -->
-                                        <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.Kill.Template}" Content="{Binding}" />
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>
@@ -3342,7 +3549,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Margin="0,97,0,0" MinHeight="35" Visibility="{Binding ItemsContainerVisibility}" HorizontalAlignment="Left">
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                        <ItemsControl ItemsSource="{Binding Loot, IsAsync=True}" ItemTemplate="{StaticResource DungeonContainerItemTemplate}">
+                        <ItemsControl ItemsSource="{Binding VisibleLoot, IsAsync=True}" ItemTemplate="{StaticResource DungeonContainerItemTemplate}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <VirtualizingStackPanel Orientation="Horizontal"/>
@@ -3438,20 +3645,7 @@
 
                                     <StackPanel Orientation="Vertical" Margin="0,2">
                                         <!-- Total value -->
-                                        <StackPanel Orientation="Horizontal" Height="20">
-                                            <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationTotalLootedValue, FallbackValue=TOTAL_LOOTED_VALUE}">
-                                                <Grid.InputBindings>
-                                                    <MouseBinding MouseAction="LeftClick" Command="{Binding ShowLootedItems}" />
-                                                </Grid.InputBindings>
-                                                <Image Source="../Assets/static_chest.png" />
-                                            </Grid>
-                                            <DockPanel>
-                                                <TextBlock Text="{Binding TotalValue, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, StringFormat='{}{0:N0}', IsAsync=True, Mode=OneWay, FallbackValue=-}" 
-                                                           Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Right" />
-                                                <TextBlock Margin="2,0,2,0" />
-                                                <TextBlock Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Left" />
-                                            </DockPanel>
-                                        </StackPanel>
+                                        <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource DungeonFragment.LootAndDeath.Template}" />
 
                                         <!-- Most valuable loot -->
                                         <StackPanel Orientation="Horizontal" Height="30" Margin="-6,-2,0,0" Visibility="{Binding MostValuableLootVisibility}">
@@ -3471,7 +3665,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Margin="0,97,0,0" MinHeight="35" Visibility="{Binding ItemsContainerVisibility}" HorizontalAlignment="Left">
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                        <ItemsControl ItemsSource="{Binding Loot, IsAsync=True}" ItemTemplate="{StaticResource DungeonContainerItemTemplate}">
+                        <ItemsControl ItemsSource="{Binding VisibleLoot, IsAsync=True}" ItemTemplate="{StaticResource DungeonContainerItemTemplate}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <VirtualizingStackPanel Orientation="Horizontal"/>
@@ -3604,20 +3798,7 @@
 
                                     <StackPanel Orientation="Vertical" Margin="0,2">
                                         <!-- Total value -->
-                                        <StackPanel Orientation="Horizontal" Height="20">
-                                            <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationTotalLootedValue, FallbackValue=TOTAL_LOOTED_VALUE}">
-                                                <Grid.InputBindings>
-                                                    <MouseBinding MouseAction="LeftClick" Command="{Binding ShowLootedItems}" />
-                                                </Grid.InputBindings>
-                                                <Image Source="../Assets/static_chest.png" />
-                                            </Grid>
-                                            <DockPanel>
-                                                <TextBlock Text="{Binding TotalValue, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, StringFormat='{}{0:N0}', IsAsync=True, Mode=OneWay, FallbackValue=-}" 
-                                                           Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Right" />
-                                                <TextBlock Margin="2,0,2,0" />
-                                                <TextBlock Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Left" />
-                                            </DockPanel>
-                                        </StackPanel>
+                                        <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource DungeonFragment.LootAndDeath.Template}" />
 
                                         <!-- Most valuable loot -->
                                         <StackPanel Orientation="Horizontal" Height="30" Margin="-6,-2,0,0" Visibility="{Binding MostValuableLootVisibility}">
@@ -3630,8 +3811,6 @@
                                             </StackPanel>
                                         </StackPanel>
 
-                                        <!-- Kill message -->
-                                        <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.Kill.Template}" Content="{Binding}" />
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>
@@ -3640,7 +3819,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Margin="0,97,0,0" MinHeight="35" Visibility="{Binding ItemsContainerVisibility}" HorizontalAlignment="Left">
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                        <ItemsControl ItemsSource="{Binding Loot, IsAsync=True}" ItemTemplate="{StaticResource DungeonContainerItemTemplate}">
+                        <ItemsControl ItemsSource="{Binding VisibleLoot, IsAsync=True}" ItemTemplate="{StaticResource DungeonContainerItemTemplate}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <VirtualizingStackPanel Orientation="Horizontal"/>
@@ -3757,20 +3936,7 @@
 
                                     <StackPanel Orientation="Vertical" Margin="0,2">
                                         <!-- Total value -->
-                                        <StackPanel Orientation="Horizontal" Height="20">
-                                            <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationTotalLootedValue, FallbackValue=TOTAL_LOOTED_VALUE}">
-                                                <Grid.InputBindings>
-                                                    <MouseBinding MouseAction="LeftClick" Command="{Binding ShowLootedItems}" />
-                                                </Grid.InputBindings>
-                                                <Image Source="../Assets/static_chest.png" />
-                                            </Grid>
-                                            <DockPanel>
-                                                <TextBlock Text="{Binding TotalValue, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, StringFormat='{}{0:N0}', IsAsync=True, Mode=OneWay, FallbackValue=-}" 
-                                                           Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Right" />
-                                                <TextBlock Margin="2,0,2,0" />
-                                                <TextBlock Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Left" />
-                                            </DockPanel>
-                                        </StackPanel>
+                                        <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource DungeonFragment.LootAndDeath.Template}" />
 
                                         <!-- Most valuable loot -->
                                         <StackPanel Orientation="Horizontal" Height="30" Margin="-6,-2,0,0" Visibility="{Binding MostValuableLootVisibility}">
@@ -3783,8 +3949,6 @@
                                             </StackPanel>
                                         </StackPanel>
 
-                                        <!-- Kill message -->
-                                        <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.Kill.Template}" Content="{Binding}" />
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>
@@ -3793,7 +3957,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Margin="0,97,0,0" MinHeight="35" Visibility="{Binding ItemsContainerVisibility}" HorizontalAlignment="Left">
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                        <ItemsControl ItemsSource="{Binding Loot, IsAsync=True}" ItemTemplate="{StaticResource DungeonContainerItemTemplate}">
+                        <ItemsControl ItemsSource="{Binding VisibleLoot, IsAsync=True}" ItemTemplate="{StaticResource DungeonContainerItemTemplate}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <VirtualizingStackPanel Orientation="Horizontal"/>
@@ -3938,20 +4102,7 @@
 
                                     <StackPanel Orientation="Vertical" Margin="0,2">
                                         <!-- Total value -->
-                                        <StackPanel Orientation="Horizontal" Height="20">
-                                            <Grid HorizontalAlignment="Center" Width="20" Margin="0,0,2,0" VerticalAlignment="Center" ToolTip="{Binding TranslationTotalLootedValue, FallbackValue=TOTAL_LOOTED_VALUE}">
-                                                <Grid.InputBindings>
-                                                    <MouseBinding MouseAction="LeftClick" Command="{Binding ShowLootedItems}" />
-                                                </Grid.InputBindings>
-                                                <Image Source="../Assets/static_chest.png" />
-                                            </Grid>
-                                            <DockPanel>
-                                                <TextBlock Text="{Binding TotalValue, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, StringFormat='{}{0:N0}', IsAsync=True, Mode=OneWay, FallbackValue=-}" 
-                                                       Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Right" />
-                                                <TextBlock Margin="2,0,2,0" />
-                                                <TextBlock Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Left" />
-                                            </DockPanel>
-                                        </StackPanel>
+                                        <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource DungeonFragment.LootAndDeath.Template}" />
 
                                         <!-- Most valuable loot -->
                                         <StackPanel Orientation="Horizontal" Height="30" Margin="-6,-2,0,0" Visibility="{Binding MostValuableLootVisibility}">
@@ -3964,8 +4115,6 @@
                                             </StackPanel>
                                         </StackPanel>
 
-                                        <!-- Kill message -->
-                                        <ContentPresenter ContentTemplate="{StaticResource DungeonFragment.Kill.Template}" Content="{Binding}" />
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>
@@ -3974,7 +4123,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Margin="0,97,0,0" MinHeight="35" Visibility="{Binding ItemsContainerVisibility}" HorizontalAlignment="Left">
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                        <ItemsControl ItemsSource="{Binding Loot, IsAsync=True}" ItemTemplate="{StaticResource DungeonContainerItemTemplate}">
+                        <ItemsControl ItemsSource="{Binding VisibleLoot, IsAsync=True}" ItemTemplate="{StaticResource DungeonContainerItemTemplate}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <VirtualizingStackPanel Orientation="Horizontal"/>
@@ -3991,74 +4140,17 @@
         <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource AbyssalDepthsTemplate}" />
     </DataTemplate>
 
-    <DataTemplate x:Key="DungeonCloseTimerTemplate" DataType="{x:Type dungeon:DungeonCloseTimer}">
-        <Border Visibility="{Binding Visibility}" Style="{StaticResource Tracking.Information.Border}">
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="auto" Margin="5 0 5 0">
-                <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding TranslationDungeonTimer, FallbackValue=DUNGEON__TIMER}" />
-                <StackPanel Orientation="Horizontal" Width="auto">
-                    <Grid>
-                        <Grid>
-                            <Grid.Style>
-                                <Style TargetType="{x:Type Grid}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsDungeonClosed}" Value="True">
-                                            <Setter Property="Visibility" Value="Hidden"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding IsDungeonClosed}" Value="False">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
-                            <StackPanel ZIndex="2" Orientation="Horizontal">
-                                <Label Content="{Binding TimerString, FallbackValue=00:00:00}" />
-                            </StackPanel>
-                        </Grid>
-                        <Grid>
-                            <Grid.Style>
-                                <Style TargetType="{x:Type Grid}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsDungeonClosed}" Value="True">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding IsDungeonClosed}" Value="False">
-                                            <Setter Property="Visibility" Value="Hidden"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
-                            <Label FontWeight="Bold" Foreground="{StaticResource SolidColorBrush.Accent.Green.2}" Content="{Binding TranslationSafe, FallbackValue=SAFE}" />
-                        </Grid>
-                    </Grid>
-                    <Grid ZIndex="2" Height="15" Width="15" Margin="0,0,5,0" VerticalAlignment="Center">
-                        <fa5:ImageAwesome Icon="Solid_SyncAlt" Foreground="{StaticResource SolidColorBrush.Text.1}" ToolTip="{Binding TranslationResetDungeonTimer}">
-                            <fa5:ImageAwesome.InputBindings>
-                                <MouseBinding
-                                    MouseAction="LeftClick"
-                                    Command="{Binding RefreshDungeonTimer}" />
-                            </fa5:ImageAwesome.InputBindings>
-                        </fa5:ImageAwesome>
-                    </Grid>
-                </StackPanel>
-            </StackPanel>
-        </Border>
-    </DataTemplate>
 
     <DataTemplate x:Key="DungeonOptionsObjectTemplate" DataType="{x:Type dungeonModels:DungeonOptionsObject}">
-        <Grid>
-            <StackPanel Orientation="Vertical" Margin="0,0,0,0">
-                <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,0,0,0" VerticalAlignment="Top"/>
-                <StackPanel>
-                    <Label Content="{Binding TranslationSettings, FallbackValue=SETTINGS}" Style="{StaticResource HeaderStyle.Tracking.Title}" Margin="2,5,0,0"
-                           Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-
-                    <CheckBox IsChecked="{Binding IsDungeonClosedSoundActive}" 
-                              Content="{Binding TranslationDungeonClosedSoundActive, FallbackValue=DUNGEON__CLOSED__SOUND__ACTIVE}" 
-                              HorizontalContentAlignment="Left" Margin="0,2,10,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="auto" MaxWidth="250"/>
-                    <Grid Height="25"/>
-                </StackPanel>
-            </StackPanel>
-        </Grid>
+        <StackPanel>
+            <CheckBox IsChecked="{Binding IsDungeonClosedSoundActive}"
+                      Content="{Binding TranslationDungeonClosedSoundActive, FallbackValue=DUNGEON_CLOSED_SOUND_ACTIVE}"
+                      HorizontalContentAlignment="Left" />
+            <CheckBox Margin="0,8,0,0"
+                      IsChecked="{Binding IsDungeonPlayerLootVisible}"
+                      Content="{Binding TranslationDungeonPlayerLootVisible, FallbackValue=DUNGEON_PLAYER_LOOT_VISIBLE}"
+                      HorizontalContentAlignment="Left" />
+        </StackPanel>
     </DataTemplate>
 
 </ResourceDictionary>

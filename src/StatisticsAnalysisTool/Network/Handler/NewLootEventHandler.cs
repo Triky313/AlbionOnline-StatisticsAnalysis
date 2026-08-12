@@ -1,3 +1,5 @@
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
@@ -10,7 +12,10 @@ public class NewLootEventHandler(TrackingController trackingController) : EventP
     {
         if (value?.ObjectId != null)
         {
-            trackingController.LootController.SetIdentifiedBody((long) value.ObjectId, value.LootBody);
+            var objectId = (long) value.ObjectId;
+            var sourceType = MobController.IsMob(value.LootBody) ? DungeonLootSourceType.Mob : DungeonLootSourceType.Player;
+            trackingController.LootController.SetIdentifiedBody(objectId, value.LootBody);
+            trackingController.DungeonController.SetLootSource(objectId, value.LootBody, sourceType);
         }
 
         await Task.CompletedTask;

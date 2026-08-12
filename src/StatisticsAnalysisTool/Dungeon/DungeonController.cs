@@ -28,6 +28,7 @@ public sealed class DungeonController
 {
     private const int MaxDungeons = 9999;
     private const int NumberOfDungeonsUntilSaved = 1;
+    private const int DungeonRetentionYears = 2;
 
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly TrackingController _trackingController;
@@ -35,6 +36,7 @@ public sealed class DungeonController
     private Guid? _lastMapGuid;
     private int _addDungeonCounter;
     private readonly List<DiscoveredItem> _discoveredLoot = [];
+    private readonly Dictionary<long, DungeonLootSource> _lootSources = [];
     private readonly List<RandomDungeonExitInfo> _discoveredRandomDungeonExits = [];
 
     public DungeonController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
@@ -45,12 +47,51 @@ public sealed class DungeonController
         if (_mainWindowViewModel?.DungeonBindings?.Dungeons != null)
         {
             _mainWindowViewModel.DungeonBindings.Dungeons.CollectionChanged += OnCollectionChanged;
+            foreach (var dungeon in _mainWindowViewModel.DungeonBindings.Dungeons)
+            {
+                SubscribeToDungeon(dungeon);
+            }
         }
     }
 
     private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
-        _mainWindowViewModel?.DungeonBindings?.Stats.Set(_mainWindowViewModel?.DungeonBindings?.Dungeons);
+        if (e.OldItems != null)
+        {
+            foreach (var dungeon in e.OldItems.OfType<DungeonBaseFragment>())
+            {
+                dungeon.LootSeenStateChanged -= OnLootSeenStateChanged;
+            }
+        }
+
+        if (e.NewItems != null)
+        {
+            foreach (var dungeon in e.NewItems.OfType<DungeonBaseFragment>())
+            {
+                SubscribeToDungeon(dungeon);
+            }
+        }
+
+        _ = _mainWindowViewModel?.DungeonBindings?.UpdateFilteredDungeonsAsync();
+    }
+
+    private void SubscribeToDungeon(DungeonBaseFragment dungeon)
+    {
+        dungeon.LootSeenStateChanged -= OnLootSeenStateChanged;
+        dungeon.LootSeenStateChanged += OnLootSeenStateChanged;
+    }
+
+    private async void OnLootSeenStateChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            await SaveInFileAsync();
+        }
+        catch (Exception exception)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, exception);
+            Log.Error(exception, "Could not persist the dungeon loot read state.");
+        }
     }
 
     public async Task AddDungeonAsync(MapType mapType, Guid? mapGuid, string sourceClusterIndex, WorldPosition? sourceExitPosition)
@@ -96,6 +137,7 @@ public sealed class DungeonController
             _mainWindowViewModel.DungeonBindings.Dungeons.Where(x => x.Status != DungeonStatus.Done).ToList().ForEach(x => x.Status = DungeonStatus.Done);
 
             var newDungeon = CreateNewDungeon(mapType, ClusterController.CurrentCluster.SourceClusterIndex, mapGuid);
+            newDungeon.PartySize = Math.Max(1, _mainWindowViewModel.PartyBindings.Party.Count);
             UpdateCurrentDungeonLevel(newDungeon, sourceClusterIndex, sourceExitPosition);
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
@@ -669,6 +711,22 @@ public sealed class DungeonController
         _currentItemContainer = itemContainerObject;
     }
 
+    public void SetLootSource(long objectId, string name, DungeonLootSourceType type)
+    {
+        if (objectId <= 0)
+        {
+            return;
+        }
+
+        _lootSources[objectId] = new DungeonLootSource
+        {
+            ObjectId = objectId,
+            Name = name ?? string.Empty,
+            Type = type
+        };
+    }
+
+
     public void AddDiscoveredItem(DiscoveredItem discoveredItem)
     {
         if (_discoveredLoot.Any(x => x?.ObjectId == discoveredItem?.ObjectId))
@@ -699,7 +757,7 @@ public sealed class DungeonController
             return;
         }
 
-        await AddLocalPlayerLootedItemToCurrentDungeonAsync(lootedItem);
+        await AddLocalPlayerLootedItemToCurrentDungeonAsync(lootedItem, GetCurrentLootSource());
     }
 
     public async Task AddNewLocalPlayerLootOnCurrentDungeonAsync(IReadOnlyCollection<long> itemObjectIds, Guid containerGuid, Guid userInteractGuid)
@@ -723,7 +781,7 @@ public sealed class DungeonController
                 continue;
             }
 
-            await AddLocalPlayerLootedItemToCurrentDungeonAsync(lootedItem);
+            await AddLocalPlayerLootedItemToCurrentDungeonAsync(lootedItem, GetCurrentLootSource());
         }
     }
 
@@ -762,7 +820,20 @@ public sealed class DungeonController
         return _currentItemContainer!.SlotItemIds![containerSlot];
     }
 
-    public async Task AddLocalPlayerLootedItemToCurrentDungeonAsync(DiscoveredItem discoveredItem)
+    private DungeonLootSource GetCurrentLootSource()
+    {
+        if (_currentItemContainer == null)
+        {
+            return DungeonLootSource.Unknown;
+        }
+
+        return _currentItemContainer.ObjectId is { } objectId
+               && _lootSources.TryGetValue(objectId, out var source)
+            ? source
+            : DungeonLootSource.Unknown;
+    }
+
+    public async Task AddLocalPlayerLootedItemToCurrentDungeonAsync(DiscoveredItem discoveredItem, DungeonLootSource source)
     {
         if (_currentGuid == null)
         {
@@ -790,11 +861,11 @@ public sealed class DungeonController
                     EstimatedMarketValueInternal = discoveredItem.EstimatedMarketValueInternal,
                     Quantity = discoveredItem.Quantity,
                     UniqueName = uniqueItemName,
-                    UtcDiscoveryTime = discoveredItem.UtcDiscoveryTime
+                    UtcDiscoveryTime = discoveredItem.UtcDiscoveryTime,
+                    SourceObjectId = source.ObjectId,
+                    SourceName = source.Name,
+                    SourceType = source.Type
                 });
-                dun.UpdateTotalSilverValue();
-                dun.UpdateMostValuableLoot();
-                dun.UpdateMostValuableLootVisibility();
             });
         }
         catch (Exception e)
@@ -807,6 +878,7 @@ public sealed class DungeonController
     public void ResetLocalPlayerDiscoveredLoot()
     {
         _discoveredLoot.Clear();
+        _lootSources.Clear();
     }
 
     #endregion
@@ -889,9 +961,17 @@ public sealed class DungeonController
             AppDataPaths.UserDataFile(Settings.Default.DungeonRunsFileName));
 
         var dungeonsToAdd = new List<DungeonBaseFragment>();
+        var expirationThreshold = DateTime.UtcNow.AddYears(-DungeonRetentionYears);
+        var expiredDungeonCount = 0;
         var invalidDungeonCount = 0;
         foreach (DungeonDto dungeonDto in dungeons)
         {
+            if (dungeonDto.EnterDungeonFirstTime < expirationThreshold)
+            {
+                expiredDungeonCount++;
+                continue;
+            }
+
             if (!DungeonMapping.TryMapping(dungeonDto, out var dungeon))
             {
                 invalidDungeonCount++;
@@ -909,6 +989,12 @@ public sealed class DungeonController
         _mainWindowViewModel.DungeonBindings.Dungeons.Clear();
         _mainWindowViewModel.DungeonBindings.Dungeons.AddRange(dungeonsToAdd.OrderBy(x => x?.EnterDungeonFirstTime).ToList());
         _mainWindowViewModel.DungeonBindings.InitListCollectionView();
+
+        if (expiredDungeonCount > 0)
+        {
+            Log.Information("Deleted {expiredDungeonCount} dungeon records older than {retentionYears} years.", expiredDungeonCount, DungeonRetentionYears);
+            await SaveInFileAsync();
+        }
     }
 
     public async Task SaveInFileAsync()

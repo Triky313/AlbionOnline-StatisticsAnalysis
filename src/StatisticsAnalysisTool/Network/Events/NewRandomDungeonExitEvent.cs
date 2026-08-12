@@ -31,14 +31,14 @@ public class NewRandomDungeonExitEvent
                 SourceExitPosition = ParseWorldPosition(positionObj);
             }
 
+            if (parameters.TryGetValue(9, out object level))
+            {
+                Level = level.ObjectToInt();
+            }
+
             if (parameters.TryGetValue(10, out object alreadyEntered))
             {
                 IsAlreadyEntered = alreadyEntered.ObjectToBool();
-            }
-
-            if (parameters.TryGetValue(8, out object level))
-            {
-                Level = level.ObjectToInt();
             }
         }
         catch (Exception e)

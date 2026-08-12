@@ -1,5 +1,6 @@
 ﻿using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Localization;
@@ -8,6 +9,8 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -45,7 +48,9 @@ public abstract class DungeonBaseFragment : BaseViewModel
     private Visibility _mostValuableLootVisibility = Visibility.Collapsed;
     private KillStatus _killStatus;
     private Visibility _itemsContainerVisibility = Visibility.Collapsed;
+    private bool _isLootSeen = true;
     private Visibility _killedByVisibility = Visibility.Visible;
+    private int _partySize = 1;
 
     public ObservableCollection<Guid> GuidList { get; set; }
     public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
@@ -61,6 +66,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
         EnterDungeonFirstTime = DateTime.UtcNow;
         Status = DungeonStatus.Active;
         Visibility = Visibility.Visible;
+        _loot.CollectionChanged += OnLootCollectionChanged;
     }
 
     protected DungeonBaseFragment(DungeonDto dto)
@@ -86,6 +92,8 @@ public abstract class DungeonBaseFragment : BaseViewModel
         KilledBy = dto.KilledBy;
         DiedName = dto.DiedName;
         KillStatus = dto.KillStatus;
+        PartySize = Math.Max(1, dto.PartySize);
+        _isLootSeen = dto.IsLootSeen;
         Events = new ObservableCollection<PointOfInterest>(dto.Events.Select(DungeonMapping.Mapping));
         Loot = new ObservableCollection<Loot>(dto.Loot.Select(DungeonMapping.Mapping));
 
@@ -248,8 +256,13 @@ public abstract class DungeonBaseFragment : BaseViewModel
         get => _loot;
         set
         {
-            _loot = value;
+            _loot.CollectionChanged -= OnLootCollectionChanged;
+            _loot = value ?? [];
+            _loot.CollectionChanged += OnLootCollectionChanged;
             OnPropertyChanged();
+            OnPropertyChanged(nameof(VisibleLoot));
+            OnPropertyChanged(nameof(HasLootVisibility));
+            OnPropertyChanged(nameof(LootSummaryText));
         }
     }
 
@@ -290,6 +303,16 @@ public abstract class DungeonBaseFragment : BaseViewModel
         set
         {
             _killStatus = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int PartySize
+    {
+        get => _partySize;
+        set
+        {
+            _partySize = Math.Max(1, value);
             OnPropertyChanged();
         }
     }
@@ -416,9 +439,43 @@ public abstract class DungeonBaseFragment : BaseViewModel
         set
         {
             _itemsContainerVisibility = value;
+            if (_itemsContainerVisibility == Visibility.Visible)
+            {
+                IsLootSeen = true;
+            }
+
             OnPropertyChanged();
+            OnPropertyChanged(nameof(LootToggleToolTip));
         }
     }
+
+    public IEnumerable<Loot> VisibleLoot => Loot.Where(IsLootVisible);
+    public Visibility HasLootVisibility => VisibleLoot.Any() ? Visibility.Visible : Visibility.Collapsed;
+    public Visibility UnseenLootVisibility => HasUnseenLoot ? Visibility.Visible : Visibility.Collapsed;
+    public string LootSummaryText => string.Format(CultureInfo.CurrentCulture, TranslationLootEntries, VisibleLoot.Count());
+    public string LootToggleToolTip => ItemsContainerVisibility == Visibility.Visible ? TranslationHideCollectedLoot : TranslationShowCollectedLoot;
+
+    public bool IsLootSeen
+    {
+        get => _isLootSeen;
+        private set
+        {
+            if (_isLootSeen == value)
+            {
+                return;
+            }
+
+            _isLootSeen = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(HasUnseenLoot));
+            OnPropertyChanged(nameof(UnseenLootVisibility));
+            LootSeenStateChanged?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    public bool HasUnseenLoot => VisibleLoot.Any() && !IsLootSeen;
+
+    public event EventHandler LootSeenStateChanged;
 
     public int TotalRunTimeInSeconds
     {
@@ -433,17 +490,62 @@ public abstract class DungeonBaseFragment : BaseViewModel
         }
     }
 
+    public int EffectiveRunTimeInSeconds => Math.Max(TotalRunTimeInSeconds, GetTotalRunTimeInSeconds());
+
     #endregion
 
     public void UpdateTotalSilverValue()
     {
-        var lootValue = Loot?.Sum(x => x.Quantity * FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue) ?? 0;
+        var lootValue = VisibleLoot.Sum(x => x.Quantity * FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
         TotalValue = Silver + lootValue;
+        OnPropertyChanged(nameof(HasLootVisibility));
+        OnPropertyChanged(nameof(UnseenLootVisibility));
+        OnPropertyChanged(nameof(LootSummaryText));
+        OnPropertyChanged(nameof(LootToggleToolTip));
+    }
+
+    private void OnLootCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (e.Action == NotifyCollectionChangedAction.Add
+            && ItemsContainerVisibility != Visibility.Visible
+            && e.NewItems?.OfType<Loot>().Any(IsLootVisible) == true)
+        {
+            IsLootSeen = false;
+        }
+
+        OnPropertyChanged(nameof(HasLootVisibility));
+        OnPropertyChanged(nameof(VisibleLoot));
+        UpdateTotalSilverValue();
+        UpdateMostValuableLoot();
+        UpdateMostValuableLootVisibility();
+        OnPropertyChanged(nameof(LootSummaryText));
+    }
+
+    public void RefreshLootVisibility()
+    {
+        var hasVisibleLoot = VisibleLoot.Any();
+        if (!hasVisibleLoot)
+        {
+            ItemsContainerVisibility = Visibility.Collapsed;
+        }
+
+        OnPropertyChanged(nameof(VisibleLoot));
+        UpdateTotalSilverValue();
+        UpdateMostValuableLoot();
+        UpdateMostValuableLootVisibility();
+        OnPropertyChanged(nameof(HasLootVisibility));
+        OnPropertyChanged(nameof(LootSummaryText));
+    }
+
+    private static bool IsLootVisible(Loot loot)
+    {
+        return loot.SourceType != DungeonLootSourceType.Player
+               || SettingsController.CurrentSettings.IsDungeonPlayerLootVisible;
     }
 
     public void UpdateMostValuableLoot()
     {
-        var loot = Loot?.MaxBy(x => x?.EstimatedMarketValueInternal) ?? new Loot();
+        var loot = VisibleLoot.MaxBy(x => x?.EstimatedMarketValueInternal) ?? new Loot();
         MostValuableLoot = loot;
     }
 
@@ -553,7 +655,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
 
     private void PerformShowLootedItems(object value)
     {
-        if (Loot?.Count <= 0)
+        if (!VisibleLoot.Any())
         {
             return;
         }
@@ -597,4 +699,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
     public static string TranslationKilledBy => LocalizationController.Translation("KILLED_BY");
     public static string TranslationAbyssalDepths => LocalizationController.Translation("ABYSSALDEPTHS");
     public static string TranslationDragonArea => LocalizationController.Translation("DRAGONAREA");
+    public static string TranslationLootEntries => LocalizationController.Translation("LOOT_ENTRIES");
+    public static string TranslationShowCollectedLoot => LocalizationController.Translation("SHOW_COLLECTED_LOOT");
+    public static string TranslationHideCollectedLoot => LocalizationController.Translation("HIDE_COLLECTED_LOOT");
 }

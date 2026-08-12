@@ -54,8 +54,8 @@ public class DungeonStats : BaseViewModel
         StatsTotal.Might = baseDun.Where(x => x.HasProperty("Might")).Sum(x => (double) x?.GetType().GetProperty("Might")?.GetValue(x)!);
         StatsTotal.Favor = baseDun.Where(x => x.HasProperty("Favor")).Sum(x => (double) x?.GetType().GetProperty("Favor")?.GetValue(x)!);
 
-        StatsTotal.LootInSilver = baseDun.SelectMany(x => x.Loot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
-        StatsTotal.MostValuableLoot = baseDun.SelectMany(x => x.Loot).MaxBy(x => x?.EstimatedMarketValueInternal);
+        StatsTotal.LootInSilver = baseDun.SelectMany(x => x.VisibleLoot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
+        StatsTotal.MostValuableLoot = baseDun.SelectMany(x => x.VisibleLoot).MaxBy(x => x?.EstimatedMarketValueInternal);
     }
 
     public void UpdateMistsStats(List<DungeonBaseFragment> dungeons)
@@ -78,8 +78,8 @@ public class DungeonStats : BaseViewModel
         StatsMists.Might = mists.Sum(x => x.Might);
         StatsMists.Favor = mists.Sum(x => x.Favor);
 
-        StatsMists.LootInSilver = mists.SelectMany(x => x.Loot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
-        StatsMists.MostValuableLoot = mists.SelectMany(x => x.Loot).MaxBy(x => x?.EstimatedMarketValueInternal);
+        StatsMists.LootInSilver = mists.SelectMany(x => x.VisibleLoot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
+        StatsMists.MostValuableLoot = mists.SelectMany(x => x.VisibleLoot).MaxBy(x => x?.EstimatedMarketValueInternal);
     }
 
     public void UpdateMistsDungeonStats(List<DungeonBaseFragment> dungeons)
@@ -96,8 +96,8 @@ public class DungeonStats : BaseViewModel
         StatsMistsDungeon.Might = mistsDungeons.Sum(x => x.Might);
         StatsMistsDungeon.Favor = mistsDungeons.Sum(x => x.Favor);
 
-        StatsMistsDungeon.LootInSilver = mistsDungeons.SelectMany(x => x.Loot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
-        StatsMistsDungeon.MostValuableLoot = mistsDungeons.SelectMany(x => x.Loot).MaxBy(x => x?.EstimatedMarketValueInternal);
+        StatsMistsDungeon.LootInSilver = mistsDungeons.SelectMany(x => x.VisibleLoot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
+        StatsMistsDungeon.MostValuableLoot = mistsDungeons.SelectMany(x => x.VisibleLoot).MaxBy(x => x?.EstimatedMarketValueInternal);
     }
 
     public void UpdateSoloStats(List<DungeonBaseFragment> dungeons)
@@ -136,8 +136,8 @@ public class DungeonStats : BaseViewModel
         StatsSolo.Might = soloDun.Sum(x => x.Might);
         StatsSolo.Favor = soloDun.Sum(x => x.Favor);
 
-        StatsSolo.LootInSilver = soloDun.SelectMany(x => x.Loot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
-        StatsSolo.MostValuableLoot = soloDun.SelectMany(x => x.Loot).MaxBy(x => x?.EstimatedMarketValueInternal);
+        StatsSolo.LootInSilver = soloDun.SelectMany(x => x.VisibleLoot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
+        StatsSolo.MostValuableLoot = soloDun.SelectMany(x => x.VisibleLoot).MaxBy(x => x?.EstimatedMarketValueInternal);
     }
 
     public void UpdateStandardStats(List<DungeonBaseFragment> dungeons)
@@ -176,8 +176,8 @@ public class DungeonStats : BaseViewModel
         StatsStandard.Might = stdDun.Sum(x => x.Might);
         StatsStandard.Favor = stdDun.Sum(x => x.Favor);
 
-        StatsStandard.LootInSilver = stdDun.SelectMany(x => x.Loot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
-        StatsStandard.MostValuableLoot = stdDun.SelectMany(x => x.Loot).MaxBy(x => x?.EstimatedMarketValueInternal);
+        StatsStandard.LootInSilver = stdDun.SelectMany(x => x.VisibleLoot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
+        StatsStandard.MostValuableLoot = stdDun.SelectMany(x => x.VisibleLoot).MaxBy(x => x?.EstimatedMarketValueInternal);
     }
 
     public void UpdateAvalonianStats(List<DungeonBaseFragment> dungeons)
@@ -216,8 +216,8 @@ public class DungeonStats : BaseViewModel
         StatsAvalonian.Might = ava.Sum(x => x.Might);
         StatsAvalonian.Favor = ava.Sum(x => x.Favor);
 
-        StatsAvalonian.LootInSilver = ava.SelectMany(x => x.Loot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
-        StatsAvalonian.MostValuableLoot = ava.SelectMany(x => x.Loot).MaxBy(x => x?.EstimatedMarketValueInternal);
+        StatsAvalonian.LootInSilver = ava.SelectMany(x => x.VisibleLoot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
+        StatsAvalonian.MostValuableLoot = ava.SelectMany(x => x.VisibleLoot).MaxBy(x => x?.EstimatedMarketValueInternal);
     }
 
     public void UpdateExpeditionStats(List<DungeonBaseFragment> dungeons)
@@ -232,8 +232,8 @@ public class DungeonStats : BaseViewModel
         StatsExpedition.ReSpec = hce.Sum(x => x.ReSpec);
         StatsExpedition.Silver = hce.Sum(x => x.Silver);
 
-        StatsExpedition.LootInSilver = hce.SelectMany(x => x.Loot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
-        StatsExpedition.MostValuableLoot = hce.SelectMany(x => x.Loot).MaxBy(x => x?.EstimatedMarketValueInternal);
+        StatsExpedition.LootInSilver = hce.SelectMany(x => x.VisibleLoot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
+        StatsExpedition.MostValuableLoot = hce.SelectMany(x => x.VisibleLoot).MaxBy(x => x?.EstimatedMarketValueInternal);
     }
 
     public void UpdateCorruptedStats(List<DungeonBaseFragment> dungeons)
@@ -266,8 +266,8 @@ public class DungeonStats : BaseViewModel
         StatsCorrupted.Might = corrupted.Sum(x => x.Might);
         StatsCorrupted.Favor = corrupted.Sum(x => x.Favor);
 
-        StatsCorrupted.LootInSilver = corrupted.SelectMany(x => x.Loot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
-        StatsCorrupted.MostValuableLoot = corrupted.SelectMany(x => x.Loot).MaxBy(x => x?.EstimatedMarketValueInternal);
+        StatsCorrupted.LootInSilver = corrupted.SelectMany(x => x.VisibleLoot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
+        StatsCorrupted.MostValuableLoot = corrupted.SelectMany(x => x.VisibleLoot).MaxBy(x => x?.EstimatedMarketValueInternal);
     }
 
     public void UpdateHellGateStats(List<DungeonBaseFragment> dungeons)
@@ -304,8 +304,8 @@ public class DungeonStats : BaseViewModel
         StatsHellGate.Deaths = hellGate.Count(x => x.KillStatus == KillStatus.LocalPlayerDead);
         StatsHellGate.Fights = hellGate.Count(x => x.KillStatus is KillStatus.LocalPlayerDead or KillStatus.OpponentDead);
 
-        StatsHellGate.LootInSilver = hellGate.SelectMany(x => x.Loot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
-        StatsHellGate.MostValuableLoot = hellGate.SelectMany(x => x.Loot).MaxBy(x => x?.EstimatedMarketValueInternal);
+        StatsHellGate.LootInSilver = hellGate.SelectMany(x => x.VisibleLoot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
+        StatsHellGate.MostValuableLoot = hellGate.SelectMany(x => x.VisibleLoot).MaxBy(x => x?.EstimatedMarketValueInternal);
     }
 
     public void UpdateAbyssalDepthsStats(List<DungeonBaseFragment> dungeons)
@@ -335,8 +335,8 @@ public class DungeonStats : BaseViewModel
         StatsAbyssalDepths.Deaths = hellGate.Count(x => x.KillStatus == KillStatus.LocalPlayerDead);
         StatsAbyssalDepths.Fights = hellGate.Count(x => x.KillStatus is KillStatus.LocalPlayerDead or KillStatus.OpponentDead);
 
-        StatsAbyssalDepths.LootInSilver = hellGate.SelectMany(x => x.Loot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
-        StatsAbyssalDepths.MostValuableLoot = hellGate.SelectMany(x => x.Loot).MaxBy(x => x?.EstimatedMarketValueInternal);
+        StatsAbyssalDepths.LootInSilver = hellGate.SelectMany(x => x.VisibleLoot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
+        StatsAbyssalDepths.MostValuableLoot = hellGate.SelectMany(x => x.VisibleLoot).MaxBy(x => x?.EstimatedMarketValueInternal);
     }
 
     public StatsTotal StatsTotal

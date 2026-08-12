@@ -136,9 +136,6 @@ public class TrackingController : ITrackingController
 
             LiveStatsTracker.Start();
 
-            _mainWindowViewModel.DungeonBindings.DungeonStatsFilter =
-                new DungeonStatsFilter(_mainWindowViewModel.DungeonBindings);
-
             _networkManager.Start();
             _mainWindowViewModel.IsTrackingActive = true;
         }

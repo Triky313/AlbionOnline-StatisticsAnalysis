@@ -48609,6 +48609,370 @@
           "seg": "Other maps"
         }
       ]
+    },
+    {
+      "tuid": "RUN_EFFICIENCY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Run-Effizienz"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Run efficiency"
+        }
+      ]
+    },
+    {
+      "tuid": "TOTAL_RUNS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Runs gesamt"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total runs"
+        }
+      ]
+    },
+    {
+      "tuid": "TOTAL_MIGHT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Macht gesamt"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total Might"
+        }
+      ]
+    },
+    {
+      "tuid": "TOTAL_FAVOR",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gunst gesamt"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total Favor"
+        }
+      ]
+    },
+    {
+      "tuid": "DUNGEON_DEATHS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Tode in Dungeons"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Deaths in dungeons"
+        }
+      ]
+    },
+    {
+      "tuid": "AVERAGE_RUN_TIME",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Durchschnittliche Run-Zeit"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Average run time"
+        }
+      ]
+    },
+    {
+      "tuid": "MOST_PROFITABLE_TIER",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Profitabelstes Tier"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Most profitable tier"
+        }
+      ]
+    },
+    {
+      "tuid": "MOST_PLAYED_TIER",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Meistgespieltes Tier"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Most played tier"
+        }
+      ]
+    },
+    {
+      "tuid": "BEST_DUNGEON_MAP",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Beste Dungeon-Map"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Best dungeon map"
+        }
+      ]
+    },
+    {
+      "tuid": "FASTEST_RUN",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Schnellster Run"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Fastest run"
+        }
+      ]
+    },
+    {
+      "tuid": "AVERAGE_CHESTS_PER_RUN",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Durchschn. Truhen / Run"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Average chests / run"
+        }
+      ]
+    },
+    {
+      "tuid": "AVERAGE_LOOT_PER_RUN",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Durchschn. Loot / Run"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Average loot / run"
+        }
+      ]
+    },
+    {
+      "tuid": "AVERAGE_FAME_PER_RUN",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Durchschn. Ruhm / Run"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Average Fame / run"
+        }
+      ]
+    },
+    {
+      "tuid": "AVERAGE_DURATION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Durchschn. Dauer"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Average duration"
+        }
+      ]
+    },
+    {
+      "tuid": "PARTY_SIZE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gruppengröße"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Party size"
+        }
+      ]
+    },
+    {
+      "tuid": "CONTENT_RUNS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Content-Runs"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Content runs"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_ENTRIES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "{0} Loot-Einträge"
+        },
+        {
+          "lang": "en-US",
+          "seg": "{0} loot entries"
+        }
+      ]
+    },
+    {
+      "tuid": "SHOW_COLLECTED_LOOT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Eingesammelten Loot anzeigen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Show collected loot"
+        }
+      ]
+    },
+    {
+      "tuid": "HIDE_COLLECTED_LOOT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Eingesammelten Loot ausblenden"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Hide collected loot"
+        }
+      ]
+    },
+    {
+      "tuid": "AVALON",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Avalon"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Avalon"
+        }
+      ]
+    },
+    {
+      "tuid": "UNKNOWN_CHEST",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Unbekannte Truhe"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Unknown chest"
+        }
+      ]
+    },
+    {
+      "tuid": "DUNGEON_OVERVIEW",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Dungeon-Übersicht"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Dungeon Overview"
+        }
+      ]
+    },
+    {
+      "tuid": "DUNGEON_PLAYER_LOOT_VISIBLE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Spieler-Loot berücksichtigen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Include player loot"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_SOURCE_CHEST",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Truhe"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Chest"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_SOURCE_MOB",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Mob"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Mob"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_SOURCE_PLAYER",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Spieler"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Player"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_SOURCE_UNKNOWN",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Unbekannte Quelle"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Unknown source"
+        }
+      ]
+    },
+    {
+      "tuid": "SETTINGS_AND_RESET",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Einstellungen und Zurücksetzen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Settings and Reset"
+        }
+      ]
     }
   ]
 }

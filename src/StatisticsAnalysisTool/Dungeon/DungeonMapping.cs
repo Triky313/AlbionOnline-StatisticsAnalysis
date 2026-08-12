@@ -17,7 +17,9 @@ public class DungeonMapping
             Tier = dungeon.Tier,
             Faction = dungeon.Faction,
             EnterDungeonFirstTime = dungeon.EnterDungeonFirstTime,
-            TotalRunTimeInSeconds = dungeon.RunningIntervals.Where(x => x.EndTime != null).ToList().Sum(time => (int) time.TimeSpan.TotalSeconds),
+            TotalRunTimeInSeconds = dungeon.EffectiveRunTimeInSeconds,
+            PartySize = dungeon.PartySize,
+            IsLootSeen = dungeon.IsLootSeen,
             Events = dungeon.Events.Select(Mapping).ToList(),
             Loot = dungeon.Loot.Select(Mapping).ToList(),
             Status = DungeonStatus.Done,
@@ -142,7 +144,10 @@ public class DungeonMapping
             UniqueName = dto.UniqueName,
             UtcDiscoveryTime = dto.UtcDiscoveryTime,
             Quantity = dto.Quantity,
-            EstimatedMarketValueInternal = dto.EstimatedMarketValueInternal
+            EstimatedMarketValueInternal = dto.EstimatedMarketValueInternal,
+            SourceObjectId = dto.SourceObjectId,
+            SourceName = dto.SourceName,
+            SourceType = dto.SourceType
         };
     }
 
@@ -153,7 +158,10 @@ public class DungeonMapping
             UniqueName = loot.UniqueName,
             UtcDiscoveryTime = loot.UtcDiscoveryTime,
             Quantity = loot.Quantity,
-            EstimatedMarketValueInternal = loot.EstimatedMarketValueInternal
+            EstimatedMarketValueInternal = loot.EstimatedMarketValueInternal,
+            SourceObjectId = loot.SourceObjectId,
+            SourceName = loot.SourceName,
+            SourceType = loot.SourceType
         };
     }
 
