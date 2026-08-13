@@ -48,51 +48,12 @@ public sealed class DungeonController
         if (_mainWindowViewModel?.DungeonBindings?.Dungeons != null)
         {
             _mainWindowViewModel.DungeonBindings.Dungeons.CollectionChanged += OnCollectionChanged;
-            foreach (var dungeon in _mainWindowViewModel.DungeonBindings.Dungeons)
-            {
-                SubscribeToDungeon(dungeon);
-            }
         }
     }
 
     private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
-        if (e.OldItems != null)
-        {
-            foreach (var dungeon in e.OldItems.OfType<DungeonBaseFragment>())
-            {
-                dungeon.LootSeenStateChanged -= OnLootSeenStateChanged;
-            }
-        }
-
-        if (e.NewItems != null)
-        {
-            foreach (var dungeon in e.NewItems.OfType<DungeonBaseFragment>())
-            {
-                SubscribeToDungeon(dungeon);
-            }
-        }
-
         _ = _mainWindowViewModel?.DungeonBindings?.UpdateFilteredDungeonsAsync();
-    }
-
-    private void SubscribeToDungeon(DungeonBaseFragment dungeon)
-    {
-        dungeon.LootSeenStateChanged -= OnLootSeenStateChanged;
-        dungeon.LootSeenStateChanged += OnLootSeenStateChanged;
-    }
-
-    private async void OnLootSeenStateChanged(object sender, EventArgs e)
-    {
-        try
-        {
-            await SaveInFileAsync();
-        }
-        catch (Exception exception)
-        {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, exception);
-            Log.Error(exception, "Could not persist the dungeon loot read state.");
-        }
     }
 
     public async Task AddDungeonAsync(MapType mapType, Guid? mapGuid, string sourceClusterIndex, WorldPosition? sourceExitPosition)

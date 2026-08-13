@@ -19,7 +19,6 @@ public class DungeonDto
     public DateTime EnterDungeonFirstTime { get; set; }
     public int TotalRunTimeInSeconds { get; set; }
     public int PartySize { get; set; } = 1;
-    public bool IsLootSeen { get; set; }
     public List<DungeonEventDto> Events { get; set; } = new();
     public List<LootDto> Loot { get; set; } = new();
     public DungeonStatus Status { get; set; }

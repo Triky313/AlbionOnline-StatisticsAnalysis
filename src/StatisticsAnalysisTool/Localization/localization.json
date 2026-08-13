@@ -48973,6 +48973,110 @@
           "seg": "Settings and Reset"
         }
       ]
+    },
+    {
+      "tuid": "OTHER_LOOT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Weitere Beute"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Other loot"
+        }
+      ]
+    },
+    {
+      "tuid": "MORE_CHESTS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "+{0} weitere Truhen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "+{0} more chests"
+        }
+      ]
+    },
+    {
+      "tuid": "SHOW_FEWER_CHESTS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Weniger anzeigen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Show fewer"
+        }
+      ]
+    },
+    {
+      "tuid": "BRECILIAN_STANDING",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Brecilien-Ansehen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Brecilian standing"
+        }
+      ]
+    },
+    {
+      "tuid": "PLAYERS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Spieler"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Players"
+        }
+      ]
+    },
+    {
+      "tuid": "NORMAL_CHEST",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Normale Truhe"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Normal chest"
+        }
+      ]
+    },
+    {
+      "tuid": "MORE_ITEMS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "+{0} weitere Items"
+        },
+        {
+          "lang": "en-US",
+          "seg": "+{0} more items"
+        }
+      ]
+    },
+    {
+      "tuid": "SHOW_FEWER_ITEMS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Weniger Items anzeigen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Show fewer items"
+        }
+      ]
     }
   ]
 }

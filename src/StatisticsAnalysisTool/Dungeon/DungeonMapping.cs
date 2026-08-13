@@ -19,7 +19,6 @@ public class DungeonMapping
             EnterDungeonFirstTime = dungeon.EnterDungeonFirstTime,
             TotalRunTimeInSeconds = dungeon.EffectiveRunTimeInSeconds,
             PartySize = dungeon.PartySize,
-            IsLootSeen = dungeon.IsLootSeen,
             Events = dungeon.Events.Select(Mapping).ToList(),
             Loot = dungeon.Loot.Select(Mapping).ToList(),
             Status = DungeonStatus.Done,
