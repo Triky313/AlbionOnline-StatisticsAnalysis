@@ -21,6 +21,7 @@ public class DungeonDto
     public int PartySize { get; set; } = 1;
     public List<DungeonEventDto> Events { get; set; } = new();
     public List<LootDto> Loot { get; set; } = new();
+    public List<DungeonCombatEventDto> CombatEvents { get; set; } = new();
     public DungeonStatus Status { get; set; }
     public double Fame { get; set; }
     public double ReSpec { get; set; }

@@ -300,9 +300,9 @@ public class DungeonStats : BaseViewModel
         StatsHellGate.Might = hellGate.Sum(x => x.Might);
         StatsHellGate.Favor = hellGate.Sum(x => x.Favor);
 
-        StatsHellGate.Kills = hellGate.Count(x => x.KillStatus == KillStatus.OpponentDead);
-        StatsHellGate.Deaths = hellGate.Count(x => x.KillStatus == KillStatus.LocalPlayerDead);
-        StatsHellGate.Fights = hellGate.Count(x => x.KillStatus is KillStatus.LocalPlayerDead or KillStatus.OpponentDead);
+        StatsHellGate.Kills = hellGate.Sum(x => x.CombatEvents.Count(combatEvent => combatEvent.Status == KillStatus.OpponentDead));
+        StatsHellGate.Deaths = hellGate.Sum(x => x.CombatEvents.Count(combatEvent => combatEvent.Status == KillStatus.LocalPlayerDead));
+        StatsHellGate.Fights = hellGate.Sum(x => x.CombatEvents.Count(combatEvent => combatEvent.Status is KillStatus.LocalPlayerDead or KillStatus.OpponentDead));
 
         StatsHellGate.LootInSilver = hellGate.SelectMany(x => x.VisibleLoot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
         StatsHellGate.MostValuableLoot = hellGate.SelectMany(x => x.VisibleLoot).MaxBy(x => x?.EstimatedMarketValueInternal);
@@ -331,9 +331,9 @@ public class DungeonStats : BaseViewModel
         StatsAbyssalDepths.Might = hellGate.Sum(x => x.Might);
         StatsAbyssalDepths.Favor = hellGate.Sum(x => x.Favor);
 
-        StatsAbyssalDepths.Kills = hellGate.Count(x => x.KillStatus == KillStatus.OpponentDead);
-        StatsAbyssalDepths.Deaths = hellGate.Count(x => x.KillStatus == KillStatus.LocalPlayerDead);
-        StatsAbyssalDepths.Fights = hellGate.Count(x => x.KillStatus is KillStatus.LocalPlayerDead or KillStatus.OpponentDead);
+        StatsAbyssalDepths.Kills = hellGate.Sum(x => x.CombatEvents.Count(combatEvent => combatEvent.Status == KillStatus.OpponentDead));
+        StatsAbyssalDepths.Deaths = hellGate.Sum(x => x.CombatEvents.Count(combatEvent => combatEvent.Status == KillStatus.LocalPlayerDead));
+        StatsAbyssalDepths.Fights = hellGate.Sum(x => x.CombatEvents.Count(combatEvent => combatEvent.Status is KillStatus.LocalPlayerDead or KillStatus.OpponentDead));
 
         StatsAbyssalDepths.LootInSilver = hellGate.SelectMany(x => x.VisibleLoot).Sum(x => FixPoint.FromInternalValue(x.EstimatedMarketValueInternal).DoubleValue);
         StatsAbyssalDepths.MostValuableLoot = hellGate.SelectMany(x => x.VisibleLoot).MaxBy(x => x?.EstimatedMarketValueInternal);

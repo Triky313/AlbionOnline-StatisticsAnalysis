@@ -11,16 +11,24 @@ namespace StatisticsAnalysisTool.Dungeon.Models;
 
 public sealed class DungeonLootGroup : BaseViewModel
 {
-    private const int CollapsedItemCount = 5;
     private bool _isExpanded;
 
-    public DungeonLootGroup(long sourceObjectId, TreasureRarity rarity, EventType type, bool isBossChest, IReadOnlyList<Loot> items, bool isExpanded, bool isOtherLoot = false)
+    public DungeonLootGroup(
+        long sourceObjectId,
+        TreasureRarity rarity,
+        EventType type,
+        bool isBossChest,
+        IReadOnlyList<Loot> items,
+        bool isExpanded,
+        bool isOtherLoot = false,
+        bool isOpened = true)
     {
         SourceObjectId = sourceObjectId;
         Rarity = rarity;
         Type = type;
         IsBossChest = isBossChest;
         IsOtherLoot = isOtherLoot;
+        IsOpened = isOpened;
         Items = items;
         MostValuableItem = Items.MaxBy(x => x.EstimatedMarketValueInternal);
         AdditionalItems = Items.Where(x => !ReferenceEquals(x, MostValuableItem)).ToList();
@@ -45,16 +53,21 @@ public sealed class DungeonLootGroup : BaseViewModel
     public EventType Type { get; }
     public bool IsBossChest { get; }
     public bool IsOtherLoot { get; }
+    public bool IsOpened { get; }
     public IReadOnlyList<Loot> Items { get; }
     public Loot MostValuableItem { get; }
     public IReadOnlyList<Loot> AdditionalItems { get; }
-    public IEnumerable<Loot> DisplayedAdditionalItems => IsExpanded ? AdditionalItems : AdditionalItems.Take(CollapsedItemCount);
+    public IEnumerable<Loot> DisplayedAdditionalItems => IsExpanded ? AdditionalItems : [];
     public double TotalValue { get; }
     public Visibility MostValuableItemVisibility => MostValuableItem is null ? Visibility.Collapsed : Visibility.Visible;
-    public Visibility AdditionalItemsVisibility => AdditionalItems.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
-    public Visibility AdditionalItemsToggleVisibility => HiddenItemCount > 0 ? Visibility.Visible : Visibility.Collapsed;
-    public int HiddenItemCount => System.Math.Max(0, AdditionalItems.Count - CollapsedItemCount);
-    public string BadgeText => IsOtherLoot ? DungeonBaseFragment.TranslationOtherLoot : $"{RarityText} · {ChestTypeText}";
+    public Visibility AdditionalItemsVisibility => IsExpanded && AdditionalItems.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+    public Visibility AdditionalItemsToggleVisibility => AdditionalItems.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+    public int HiddenItemCount => AdditionalItems.Count;
+    public string BadgeText => IsOtherLoot
+        ? DungeonBaseFragment.TranslationOtherLoot
+        : IsOpened
+            ? $"{RarityText} · {ChestTypeText}"
+            : ChestTypeText;
     public string AdditionalItemsToggleText => IsExpanded ? LocalizationController.Translation("SHOW_FEWER_ITEMS") : string.Format(LocalizationController.Translation("MORE_ITEMS"), HiddenItemCount);
 
     public bool IsExpanded
@@ -70,18 +83,23 @@ public sealed class DungeonLootGroup : BaseViewModel
             _isExpanded = value;
             OnPropertyChanged();
             OnPropertyChanged(nameof(DisplayedAdditionalItems));
+            OnPropertyChanged(nameof(AdditionalItemsVisibility));
             OnPropertyChanged(nameof(AdditionalItemsToggleText));
         }
     }
 
-    public string LootGroupIconPath => IsOtherLoot ? "/Assets/bag.png" : Rarity switch
-    {
-        TreasureRarity.Common => "/Assets/chest_green.png",
-        TreasureRarity.Uncommon => "/Assets/chest_blue.png",
-        TreasureRarity.Rare => "/Assets/chest_purple.png",
-        TreasureRarity.Legendary => "/Assets/chest_gold.png",
-        _ => "/Assets/bag.png"
-    };
+    public string LootGroupIconPath => IsOtherLoot
+        ? "/Assets/bag.png"
+        : !IsOpened
+            ? "/Assets/chest_gray.png"
+            : Rarity switch
+            {
+                TreasureRarity.Common => "/Assets/chest_green.png",
+                TreasureRarity.Uncommon => "/Assets/chest_blue.png",
+                TreasureRarity.Rare => "/Assets/chest_purple.png",
+                TreasureRarity.Legendary => "/Assets/chest_gold.png",
+                _ => "/Assets/bag.png"
+            };
 
     private string RarityText => Rarity switch
     {

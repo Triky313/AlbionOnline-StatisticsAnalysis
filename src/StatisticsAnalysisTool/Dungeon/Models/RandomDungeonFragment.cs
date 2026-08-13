@@ -245,14 +245,15 @@ public class RandomDungeonFragment : DungeonBaseFragment
             case ValueType.FactionStanding:
                 if (cityFaction != CityFaction.Unknown)
                 {
+                    CityFaction = cityFaction;
                     FactionStanding += value;
                 }
                 return;
             case ValueType.FactionPoints:
                 if (cityFaction != CityFaction.Unknown)
                 {
-                    FactionCoins += value;
                     CityFaction = cityFaction;
+                    FactionCoins += value;
                 }
                 return;
             case ValueType.Might:

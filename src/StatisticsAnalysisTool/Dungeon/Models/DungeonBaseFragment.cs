@@ -21,13 +21,16 @@ namespace StatisticsAnalysisTool.Dungeon.Models;
 
 public abstract class DungeonBaseFragment : BaseViewModel
 {
-    private const int AlwaysVisibleChestCount = 3;
+    private const int AlwaysVisibleLootGroupCount = 3;
+    private const int AlwaysVisibleCombatEventCount = 5;
     private ObservableCollection<PointOfInterest> _events = [];
     private ObservableCollection<Loot> _loot = [];
+    private ObservableCollection<DungeonCombatEvent> _combatEvents = [];
     private readonly HashSet<PointOfInterest> _subscribedEvents = [];
     private IReadOnlyList<DungeonLootGroup> _chestLootGroups = [];
     private DungeonLootGroup _otherLootGroup = DungeonLootGroup.CreateOtherLoot([], false);
     private bool _areAdditionalChestsVisible;
+    private bool _areAdditionalCombatEventsVisible;
 
     public ObservableCollection<Guid> GuidList { get; set; }
     public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
@@ -45,6 +48,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
         Visibility = Visibility.Visible;
         _loot.CollectionChanged += OnLootCollectionChanged;
         _events.CollectionChanged += OnEventsCollectionChanged;
+        _combatEvents.CollectionChanged += OnCombatEventsCollectionChanged;
     }
 
     protected DungeonBaseFragment(DungeonDto dto)
@@ -76,6 +80,8 @@ public abstract class DungeonBaseFragment : BaseViewModel
         PartySize = Math.Max(1, dto.PartySize);
         Events = new ObservableCollection<PointOfInterest>(dto.Events.Select(DungeonMapping.Mapping));
         Loot = new ObservableCollection<Loot>(dto.Loot.Select(DungeonMapping.Mapping));
+        CombatEvents = new ObservableCollection<DungeonCombatEvent>(
+            CreateCombatEvents(dto).Select(DungeonMapping.Mapping));
 
         UpdateTotalSilverValue();
         UpdateMostValuableLoot();
@@ -250,6 +256,19 @@ public abstract class DungeonBaseFragment : BaseViewModel
             OnPropertyChanged(nameof(HasLootVisibility));
             OnPropertyChanged(nameof(LootSummaryText));
             RebuildLootPresentation();
+        }
+    }
+
+    public ObservableCollection<DungeonCombatEvent> CombatEvents
+    {
+        get => _combatEvents;
+        set
+        {
+            _combatEvents.CollectionChanged -= OnCombatEventsCollectionChanged;
+            _combatEvents = value ?? [];
+            _combatEvents.CollectionChanged += OnCombatEventsCollectionChanged;
+            OnCombatEventsChanged();
+            OnPropertyChanged();
         }
     }
 
@@ -659,6 +678,8 @@ public abstract class DungeonBaseFragment : BaseViewModel
     public static string TranslationOtherLoot => LocalizationController.Translation("OTHER_LOOT");
     public static string TranslationMoreChests => LocalizationController.Translation("MORE_CHESTS");
     public static string TranslationShowFewerChests => LocalizationController.Translation("SHOW_FEWER_CHESTS");
+    public static string TranslationMoreCombatEvents => LocalizationController.Translation("MORE_COMBAT_EVENTS");
+    public static string TranslationShowFewerCombatEvents => LocalizationController.Translation("SHOW_FEWER_COMBAT_EVENTS");
     public static string TranslationBrecilianStanding => LocalizationController.Translation("BRECILIAN_STANDING");
     public static string TranslationPlayers => LocalizationController.Translation("PLAYERS");
     public string ContentDisplayName => Mode switch
@@ -699,6 +720,33 @@ public abstract class DungeonBaseFragment : BaseViewModel
     public Visibility EnchantmentBadgeVisibility => this is RandomDungeonFragment { Level: >= 0 } ? Visibility.Visible : Visibility.Collapsed;
     public Visibility MapNameVisibility => string.IsNullOrWhiteSpace(MainMapName) ? Visibility.Collapsed : Visibility.Visible;
     public Visibility KillInformationVisibility => KillStatus == KillStatus.Unknown ? Visibility.Collapsed : Visibility.Visible;
+    public IEnumerable<DungeonCombatEvent> DisplayedCombatEvents => AreAdditionalCombatEventsVisible
+        ? CombatEvents
+        : CombatEvents.Take(AlwaysVisibleCombatEventCount);
+    public Visibility CombatEventsVisibility => CombatEvents.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+    public Visibility AdditionalCombatEventsToggleVisibility => HiddenCombatEventCount > 0 ? Visibility.Visible : Visibility.Collapsed;
+    public int HiddenCombatEventCount => Math.Max(0, CombatEvents.Count - AlwaysVisibleCombatEventCount);
+
+    public bool AreAdditionalCombatEventsVisible
+    {
+        get => _areAdditionalCombatEventsVisible;
+        private set
+        {
+            if (_areAdditionalCombatEventsVisible == value)
+            {
+                return;
+            }
+
+            _areAdditionalCombatEventsVisible = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(DisplayedCombatEvents));
+            OnPropertyChanged(nameof(AdditionalCombatEventsToggleText));
+        }
+    }
+
+    public string AdditionalCombatEventsToggleText => AreAdditionalCombatEventsVisible
+        ? TranslationShowFewerCombatEvents
+        : string.Format(CultureInfo.CurrentCulture, TranslationMoreCombatEvents, HiddenCombatEventCount);
 
     public int FloorCount => this switch
     {
@@ -712,13 +760,15 @@ public abstract class DungeonBaseFragment : BaseViewModel
     public IEnumerable<CheckPoint> DisplayedCheckPoints => this is ExpeditionFragment dungeon ? dungeon.CheckPoints : [];
     public Visibility CheckPointVisibility => DisplayedCheckPoints.Any() ? Visibility.Visible : Visibility.Collapsed;
     public IReadOnlyList<DungeonRunMetric> PerformanceMetrics => DungeonRunPresentationService.BuildMetrics(this);
-    private IEnumerable<DungeonLootGroup> DisplayedChestLootGroups => AreAdditionalChestsVisible ? ChestLootGroups : ChestLootGroups.Take(AlwaysVisibleChestCount);
-    public IEnumerable<DungeonLootGroup> DisplayedLootGroups => OtherLootGroup.Items.Count > 0
-        ? DisplayedChestLootGroups.Append(OtherLootGroup)
-        : DisplayedChestLootGroups;
+    private IEnumerable<DungeonLootGroup> LootGroups => OtherLootGroup.Items.Count > 0
+        ? ChestLootGroups.Append(OtherLootGroup)
+        : ChestLootGroups;
+    public IEnumerable<DungeonLootGroup> DisplayedLootGroups => AreAdditionalChestsVisible
+        ? LootGroups
+        : LootGroups.Take(AlwaysVisibleLootGroupCount);
     public IReadOnlyList<DungeonLootGroup> ChestLootGroups => _chestLootGroups;
     public DungeonLootGroup OtherLootGroup => _otherLootGroup;
-    public int HiddenChestCount => Math.Max(0, ChestLootGroups.Count - AlwaysVisibleChestCount);
+    public int HiddenChestCount => Math.Max(0, LootGroups.Count() - AlwaysVisibleLootGroupCount);
     public Visibility LootGroupVisibility => ChestLootGroups.Count > 0 || OtherLootGroup.Items.Count > 0
         ? Visibility.Visible
         : Visibility.Collapsed;
@@ -744,6 +794,56 @@ public abstract class DungeonBaseFragment : BaseViewModel
     public string AdditionalChestToggleText => AreAdditionalChestsVisible
         ? TranslationShowFewerChests
         : string.Format(CultureInfo.CurrentCulture, TranslationMoreChests, HiddenChestCount);
+
+    public void AddCombatEvent(KillStatus status, string diedName, string killedBy)
+    {
+        KillStatus = status;
+        DiedName = diedName;
+        KilledBy = killedBy;
+        CombatEvents.Add(new DungeonCombatEvent(status, diedName, killedBy));
+    }
+
+    private static IEnumerable<DungeonCombatEventDto> CreateCombatEvents(DungeonDto dto)
+    {
+        if (dto.CombatEvents?.Count > 0)
+        {
+            return dto.CombatEvents;
+        }
+
+        if (dto.KillStatus == KillStatus.Unknown)
+        {
+            return [];
+        }
+
+        return
+        [
+            new DungeonCombatEventDto
+            {
+                Status = dto.KillStatus,
+                DiedName = dto.DiedName,
+                KilledBy = dto.KilledBy
+            }
+        ];
+    }
+
+    private void OnCombatEventsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        OnCombatEventsChanged();
+    }
+
+    private void OnCombatEventsChanged()
+    {
+        if (CombatEvents.Count <= AlwaysVisibleCombatEventCount)
+        {
+            _areAdditionalCombatEventsVisible = false;
+        }
+
+        OnPropertyChanged(nameof(DisplayedCombatEvents));
+        OnPropertyChanged(nameof(CombatEventsVisibility));
+        OnPropertyChanged(nameof(AdditionalCombatEventsToggleVisibility));
+        OnPropertyChanged(nameof(HiddenCombatEventCount));
+        OnPropertyChanged(nameof(AdditionalCombatEventsToggleText));
+    }
 
     private void OnEventsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
@@ -823,7 +923,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
             _otherLootGroup.IsExpanded);
         _chestLootGroups = presentation.ChestGroups;
         _otherLootGroup = presentation.OtherLootGroup;
-        if (_chestLootGroups.Count <= AlwaysVisibleChestCount)
+        if (LootGroups.Count() <= AlwaysVisibleLootGroupCount)
         {
             _areAdditionalChestsVisible = false;
             ItemsContainerVisibility = Visibility.Collapsed;
@@ -837,15 +937,23 @@ public abstract class DungeonBaseFragment : BaseViewModel
         OnPropertyChanged(nameof(AdditionalChestToggleVisibility));
         OnPropertyChanged(nameof(AdditionalChestToggleText));
     }
+
     private void PerformToggleAdditionalChests(object value)
     {
         AreAdditionalChestsVisible = !AreAdditionalChestsVisible;
         ItemsContainerVisibility = AreAdditionalChestsVisible ? Visibility.Visible : Visibility.Collapsed;
     }
 
+    private void PerformToggleAdditionalCombatEvents(object value)
+    {
+        AreAdditionalCombatEventsVisible = !AreAdditionalCombatEventsVisible;
+    }
+
     private ICommand _toggleAdditionalChests;
     public ICommand ToggleAdditionalChests => _toggleAdditionalChests ??= new CommandHandler(PerformToggleAdditionalChests, true);
 
+    private ICommand _toggleAdditionalCombatEvents;
+    public ICommand ToggleAdditionalCombatEvents => _toggleAdditionalCombatEvents ??= new CommandHandler(PerformToggleAdditionalCombatEvents, true);
 
     protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
@@ -868,6 +976,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
             case "FactionCoinsPerHour":
             case "FactionStanding":
             case "FactionStandingPerHour":
+            case "CityFaction":
             case "BrecilianStanding":
             case "BrecilianStandingPerHour":
                 base.OnPropertyChanged(nameof(PerformanceMetrics));

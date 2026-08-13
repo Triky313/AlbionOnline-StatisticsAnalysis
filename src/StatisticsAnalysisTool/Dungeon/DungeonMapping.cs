@@ -21,6 +21,7 @@ public class DungeonMapping
             PartySize = dungeon.PartySize,
             Events = dungeon.Events.Select(Mapping).ToList(),
             Loot = dungeon.Loot.Select(Mapping).ToList(),
+            CombatEvents = dungeon.CombatEvents.Select(Mapping).ToList(),
             Status = DungeonStatus.Done,
             Fame = dungeon.Fame,
             ReSpec = dungeon.ReSpec,
@@ -161,6 +162,21 @@ public class DungeonMapping
             SourceObjectId = loot.SourceObjectId,
             SourceName = loot.SourceName,
             SourceType = loot.SourceType
+        };
+    }
+
+    public static DungeonCombatEvent Mapping(DungeonCombatEventDto dto)
+    {
+        return new DungeonCombatEvent(dto.Status, dto.DiedName, dto.KilledBy);
+    }
+
+    public static DungeonCombatEventDto Mapping(DungeonCombatEvent combatEvent)
+    {
+        return new DungeonCombatEventDto
+        {
+            Status = combatEvent.Status,
+            DiedName = combatEvent.DiedName,
+            KilledBy = combatEvent.KilledBy
         };
     }
 

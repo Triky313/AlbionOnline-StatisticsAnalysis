@@ -49077,6 +49077,32 @@
           "seg": "Show fewer items"
         }
       ]
+    },
+    {
+      "tuid": "MORE_COMBAT_EVENTS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "+{0} weitere Tötungen/Tode"
+        },
+        {
+          "lang": "en-US",
+          "seg": "+{0} more kills/deaths"
+        }
+      ]
+    },
+    {
+      "tuid": "SHOW_FEWER_COMBAT_EVENTS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Weniger Tötungen/Tode anzeigen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Show fewer kills/deaths"
+        }
+      ]
     }
   ]
 }

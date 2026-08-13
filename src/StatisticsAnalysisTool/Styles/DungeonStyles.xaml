@@ -3026,10 +3026,8 @@
                 <ColumnDefinition Width="62" />
                 <ColumnDefinition Width="77" />
             </Grid.ColumnDefinitions>
-            <Image Source="{Binding IconPath}" Width="15" Height="15" Margin="0,0,7,0"
-                   VerticalAlignment="Center" Visibility="{Binding IconVisibility}" />
-            <TextBlock Grid.Column="1" Text="{Binding Label}" FontSize="12" VerticalAlignment="Center"
-                       Foreground="{StaticResource SolidColorBrush.Text.3}" TextTrimming="CharacterEllipsis" />
+            <Image Source="{Binding IconPath}" Width="15" Height="15" Margin="0,0,7,0" VerticalAlignment="Center" Visibility="{Binding IconVisibility}" />
+            <TextBlock Grid.Column="1" Text="{Binding Label}" FontSize="12" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.3}" TextTrimming="CharacterEllipsis" />
             <TextBlock Grid.Column="2" Text="{Binding Value, Converter={StaticResource Dungeon.ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}"
                        Margin="5,0,0,0" FontSize="12" FontWeight="SemiBold" TextAlignment="Right" VerticalAlignment="Center"
                        Foreground="{StaticResource SolidColorBrush.Text.1}" />
@@ -3156,9 +3154,50 @@
         </Border>
     </DataTemplate>
 
+    <DataTemplate x:Key="Dungeon.RunEntry.CombatEvent.Template" DataType="{x:Type dungeonModels:DungeonCombatEvent}">
+        <Border MinWidth="100" MinHeight="40" Margin="0,0,5,5" Padding="5" Background="{StaticResource SolidColorBrush.Background.3}" BorderThickness="1" CornerRadius="3">
+            <Border.Style>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Accent.Red.3}" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Status}" Value="{x:Static dungeon:KillStatus.OpponentDead}">
+                            <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Accent.Green.3}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="32" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Image Width="32" Height="32" VerticalAlignment="Top">
+                    <Image.Style>
+                        <Style TargetType="{x:Type Image}">
+                            <Setter Property="Source" Value="../Assets/skull_red.png" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static dungeon:KillStatus.OpponentDead}">
+                                    <Setter Property="Source" Value="../Assets/skull_green.png" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="{Binding DiedName}" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource SolidColorBrush.Text.1}" TextTrimming="CharacterEllipsis" />
+                    <WrapPanel Visibility="{Binding KilledByVisibility}">
+                        <TextBlock Text="{x:Static dungeonModels:DungeonBaseFragment.TranslationKilledBy}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.4}" />
+                        <TextBlock Margin="5,0,0,0" Text="{Binding KilledBy}" FontSize="12"
+                                   Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" TextTrimming="CharacterEllipsis" />
+                    </WrapPanel>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </DataTemplate>
+
     <DataTemplate x:Key="Dungeon.ModernRunEntry.Template" DataType="{x:Type dungeonModels:DungeonBaseFragment}">
         <Border Style="{StaticResource Dungeon.RunEntry.Card}">
-            <Grid MinHeight="150">
+            <Grid MinHeight="100">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="220" />
                     <ColumnDefinition Width="250" />
@@ -3212,26 +3251,41 @@
                                 </ItemsControl.ItemsPanel>
                             </ItemsControl>
                         </Grid>
-                        <Button Margin="10,0,7,6" Padding="10,5" HorizontalAlignment="Left"
+                        <Button Margin="0,0,5,5" Padding="10,5" HorizontalAlignment="Left"
                                 Command="{Binding ToggleAdditionalChests}" Visibility="{Binding AdditionalChestToggleVisibility}"
                                 Background="{StaticResource SolidColorBrush.Background.3}" BorderBrush="{StaticResource SolidColorBrush.Border.2}"
                                 Foreground="{StaticResource SolidColorBrush.Text.2}" Cursor="Hand">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="../Assets/static_chest.png" Width="20" Height="20" Margin="0,0,6,0" />
-                                <TextBlock Text="{Binding AdditionalChestToggleText}" VerticalAlignment="Center" />
+                                <Image Source="../Assets/static_chest.png" Width="20" Height="20" Margin="5,0,5,0" />
+                                <TextBlock Text="{Binding AdditionalChestToggleText}" VerticalAlignment="Center" Margin="0,0,5,0" />
                             </StackPanel>
                         </Button>
+                        <StackPanel Visibility="{Binding CombatEventsVisibility}">
+                            <ItemsControl ItemsSource="{Binding DisplayedCombatEvents}"
+                                          ItemTemplate="{StaticResource Dungeon.RunEntry.CombatEvent.Template}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                            <Button Margin="0,0,5,5" Padding="5,2" HorizontalAlignment="Left"
+                                    Command="{Binding ToggleAdditionalCombatEvents}" Visibility="{Binding AdditionalCombatEventsToggleVisibility}"
+                                    Background="Transparent" BorderThickness="0" Cursor="Hand"
+                                    Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}">
+                                <TextBlock Text="{Binding AdditionalCombatEventsToggleText}" FontSize="12" />
+                            </Button>
+                        </StackPanel>
                     </StackPanel>
                 </Border>
 
-                <Border Grid.Column="3" Style="{StaticResource Dungeon.RunEntry.Divider}" Padding="11,10">
+                <Border Grid.Column="3" Style="{StaticResource Dungeon.RunEntry.Divider}" Padding="10">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <CheckBox HorizontalAlignment="Right" IsChecked="{Binding IsSelectedForDeletion}"
                                   ToolTip="{Binding TranslationSelectToDelete}" />
@@ -3260,41 +3314,6 @@
                                 </ItemsControl.ItemsPanel>
                             </ItemsControl>
                         </WrapPanel>
-                        <Border Grid.Row="4" Margin="0,9,0,0" Padding="7,6" VerticalAlignment="Bottom"
-                                Background="{StaticResource SolidColorBrush.Background.1}" BorderThickness="1" CornerRadius="3"
-                                Visibility="{Binding KillInformationVisibility}">
-                            <Border.Style>
-                                <Style TargetType="{x:Type Border}">
-                                    <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Accent.Red.3}" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding KillStatus}" Value="{x:Static dungeon:KillStatus.OpponentDead}">
-                                            <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Accent.Green.3}" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Width="25" Height="25" Margin="0,0,6,0">
-                                    <Image.Style>
-                                        <Style TargetType="{x:Type Image}">
-                                            <Setter Property="Source" Value="../Assets/skull_red.png" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding KillStatus}" Value="{x:Static dungeon:KillStatus.OpponentDead}">
-                                                    <Setter Property="Source" Value="../Assets/skull_green.png" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Image.Style>
-                                </Image>
-                                <StackPanel>
-                                    <TextBlock Text="{Binding DiedName}" FontSize="10.5" FontWeight="SemiBold" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                    <WrapPanel Visibility="{Binding KilledByVisibility}">
-                                        <TextBlock Text="{Binding TranslationKilledBy}" FontSize="9" Foreground="{StaticResource SolidColorBrush.Text.4}" />
-                                        <TextBlock Margin="4,0,0,0" Text="{Binding KilledBy}" FontSize="9" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-                                    </WrapPanel>
-                                </StackPanel>
-                            </StackPanel>
-                        </Border>
                     </Grid>
                 </Border>
             </Grid>

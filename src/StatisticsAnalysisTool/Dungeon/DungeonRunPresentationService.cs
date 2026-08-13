@@ -14,7 +14,7 @@ internal static class DungeonRunPresentationService
             CreateMetric(DungeonBaseFragment.TranslationFame, "/Resources/fame.png", dungeon.Fame, dungeon.FamePerHour),
             CreateMetric(DungeonBaseFragment.TranslationReSpec, "/Resources/respec.png", dungeon.ReSpec, dungeon.ReSpecPerHour),
             CreateMetric(DungeonBaseFragment.TranslationSilver, "/Resources/silver.png", dungeon.Silver, dungeon.SilverPerHour),
-            CreateMetric(DungeonBaseFragment.TranslationTotalValue, "/Assets/static_chest.png", dungeon.TotalValue, 0)
+            CreateMetric(DungeonBaseFragment.TranslationTotalValue, "/Assets/static_chest.png", dungeon.TotalValue, GetValuePerHour(dungeon.TotalValue, dungeon.EffectiveRunTimeInSeconds))
         ];
 
         switch (dungeon)
@@ -22,8 +22,18 @@ internal static class DungeonRunPresentationService
             case RandomDungeonFragment randomDungeon:
                 AddMetric(metrics, DungeonBaseFragment.TranslationMight, "/Resources/might.png", randomDungeon.Might, randomDungeon.MightPerHour);
                 AddMetric(metrics, DungeonBaseFragment.TranslationFavor, "/Resources/favor.png", randomDungeon.Favor, randomDungeon.FavorPerHour);
-                AddMetric(metrics, DungeonBaseFragment.TranslationFactionCoins, string.Empty, randomDungeon.FactionCoins, randomDungeon.FactionCoinsPerHour);
-                AddMetric(metrics, DungeonBaseFragment.TranslationFactionStanding, string.Empty, randomDungeon.FactionStanding, randomDungeon.FactionStandingPerHour);
+                AddMetric(
+                    metrics,
+                    DungeonBaseFragment.TranslationFactionCoins,
+                    GetFactionCoinIconPath(randomDungeon.CityFaction),
+                    randomDungeon.FactionCoins,
+                    randomDungeon.FactionCoinsPerHour);
+                AddMetric(
+                    metrics,
+                    DungeonBaseFragment.TranslationFactionStanding,
+                    GetFactionStandingIconPath(randomDungeon.CityFaction),
+                    randomDungeon.FactionStanding,
+                    randomDungeon.FactionStandingPerHour);
                 break;
             case MistsFragment mists:
                 AddMetric(metrics, DungeonBaseFragment.TranslationMight, "/Resources/might.png", mists.Might, mists.MightPerHour);
@@ -64,8 +74,6 @@ internal static class DungeonRunPresentationService
         var visibleLoot = loot.ToList();
         var chestEvents = events
             .Where(x => x.Type is EventType.Chest or EventType.BookChest)
-            .Where(x => x.Status == ChestStatus.Open
-                        || visibleLoot.Any(y => y.SourceType == DungeonLootSourceType.Chest && y.SourceObjectId == x.Id))
             .ToList();
         var chestGroups = chestEvents
             .Select(x => CreateChestLootGroup(x, visibleLoot
@@ -104,18 +112,55 @@ internal static class DungeonRunPresentationService
         metrics.Add(CreateMetric(label, iconPath, value, valuePerHour));
     }
 
+    private static double GetValuePerHour(double value, int durationInSeconds)
+    {
+        return durationInSeconds <= 0 ? 0 : value / durationInSeconds * 3600;
+    }
+
+    private static string GetFactionCoinIconPath(CityFaction cityFaction)
+    {
+        return GetFactionIconPath(cityFaction, "factioncoin");
+    }
+
+    private static string GetFactionStandingIconPath(CityFaction cityFaction)
+    {
+        return GetFactionIconPath(cityFaction, "factionflag");
+    }
+
+    private static string GetFactionIconPath(CityFaction cityFaction, string iconPrefix)
+    {
+        var factionResourceName = cityFaction switch
+        {
+            CityFaction.Martlock => "martlock",
+            CityFaction.Lymhurst => "lymhurst",
+            CityFaction.FortSterling => "fortsterling",
+            CityFaction.Bridgewatch => "bridgewatch",
+            CityFaction.Thetford => "thetford",
+            CityFaction.Caerleon => "caerleon",
+            _ => string.Empty
+        };
+
+        return string.IsNullOrEmpty(factionResourceName)
+            ? string.Empty
+            : $"/Resources/{iconPrefix}_{factionResourceName}.png";
+    }
+
     private static DungeonLootGroup CreateChestLootGroup(
         PointOfInterest pointOfInterest,
         IReadOnlyList<Loot> loot,
         IReadOnlySet<long> expandedChestIds)
     {
         var sourceObjectId = pointOfInterest?.Id ?? loot.FirstOrDefault()?.SourceObjectId ?? 0;
+        var isOpened = pointOfInterest is null
+                       || pointOfInterest.Status == ChestStatus.Open
+                       || loot.Count > 0;
         return new DungeonLootGroup(
             sourceObjectId,
-            pointOfInterest?.Rarity ?? TreasureRarity.Unknown,
+            isOpened ? pointOfInterest?.Rarity ?? TreasureRarity.Unknown : TreasureRarity.Unknown,
             pointOfInterest?.Type ?? EventType.Chest,
             pointOfInterest?.IsBossChest ?? false,
             loot,
-            expandedChestIds.Contains(sourceObjectId));
+            expandedChestIds.Contains(sourceObjectId),
+            isOpened: isOpened);
     }
 }

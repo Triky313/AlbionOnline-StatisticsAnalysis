@@ -462,15 +462,12 @@ public sealed class DungeonController
 
         if (dieObject.DiedName == _trackingController.EntityController.LocalUserData.Username)
         {
-            dungeon.KillStatus = KillStatus.LocalPlayerDead;
+            dungeon.AddCombatEvent(KillStatus.LocalPlayerDead, dieObject.DiedName, dieObject.KilledBy);
         }
         else if (dieObject.KilledBy == _trackingController.EntityController.LocalUserData.Username)
         {
-            dungeon.KillStatus = KillStatus.OpponentDead;
+            dungeon.AddCombatEvent(KillStatus.OpponentDead, dieObject.DiedName, dieObject.KilledBy);
         }
-
-        dungeon.DiedName = dieObject.DiedName;
-        dungeon.KilledBy = dieObject.KilledBy;
     }
 
     #endregion
