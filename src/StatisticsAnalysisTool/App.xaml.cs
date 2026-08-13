@@ -337,7 +337,7 @@ public partial class App
         {
             ServiceLocator.Resolve<SatNotificationManager>().StopShowingNotifications();
             AutoUpdateController.Dispose();
-            _trackingController?.StopTracking();
+            _trackingController.PrepareForShutdown();
             CriticalData.Save();
 
             if (!BackupController.ExistBackupOnSettingConditions())
@@ -362,7 +362,7 @@ public partial class App
         {
             ServiceLocator.Resolve<SatNotificationManager>().StopShowingNotifications();
             AutoUpdateController.Dispose();
-            _trackingController?.StopTracking();
+            _trackingController.PrepareForShutdown();
             CriticalData.Save();
 
             if (!BackupController.ExistBackupOnSettingConditions())

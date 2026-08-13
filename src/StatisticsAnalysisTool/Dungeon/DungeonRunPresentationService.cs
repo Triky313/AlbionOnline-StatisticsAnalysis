@@ -69,11 +69,19 @@ internal static class DungeonRunPresentationService
         IEnumerable<PointOfInterest> events,
         IEnumerable<Loot> loot,
         IReadOnlySet<long> expandedChestIds,
-        bool isOtherLootExpanded)
+        bool isOtherLootExpanded,
+        bool hideClosedChests)
     {
         var visibleLoot = loot.ToList();
+        var lootedChestIds = visibleLoot
+            .Where(x => x.SourceType == DungeonLootSourceType.Chest)
+            .Select(x => x.SourceObjectId)
+            .ToHashSet();
         var chestEvents = events
             .Where(x => x.Type is EventType.Chest or EventType.BookChest)
+            .Where(x => !hideClosedChests
+                        || x.Status == ChestStatus.Open
+                        || lootedChestIds.Contains(x.Id))
             .ToList();
         var chestGroups = chestEvents
             .Select(x => CreateChestLootGroup(x, visibleLoot

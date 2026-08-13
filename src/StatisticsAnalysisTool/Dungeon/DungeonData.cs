@@ -250,7 +250,7 @@ public static class DungeonData
 
         if (value.Contains("CHEST") || value.Contains("AVALON") || value.Contains("HELL_STD_PVP")
             || value.Contains("HELL_HRD_PVP") || value.Contains("HELL_STD_PVE") || value.Contains("HELL_HRD_PVE")
-            || value.Contains("HD_DEMON_") || value.Contains("HD_DEMON_CHEST_") || value.Contains("TREASURE_"))
+            || value.Contains("HD_DEMON_") || value.Contains("HIGHLAND_DEAD_DNG_HELL_CHEST") || value.Contains("TREASURE_"))
         {
             return EventType.Chest;
         }

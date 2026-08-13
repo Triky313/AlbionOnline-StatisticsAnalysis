@@ -19,14 +19,14 @@
             <RowDefinition Height="{Binding DungeonBindings.GridSplitterPosition, Mode=TwoWay, FallbackValue=*}" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" Margin="15,10,15,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Border Grid.Row="0" Style="{StaticResource App.TopFilterCard}">
+            <Border Grid.Row="0" Margin="0,0,0,8" Style="{StaticResource App.TopFilterCard}">
                 <DockPanel LastChildFill="True">
                     <WrapPanel>
                         <Border Style="{StaticResource App.FilterGroup}">
@@ -42,8 +42,7 @@
 
                         <Border Style="{StaticResource App.FilterGroup}">
                             <StackPanel>
-                                <TextBlock Text="{Binding DungeonBindings.TranslationTier, FallbackValue=TIER}"
-                                           Style="{StaticResource App.FilterLabel}" />
+                                <TextBlock Text="{Binding DungeonBindings.TranslationTier, FallbackValue=TIER}" Style="{StaticResource App.FilterLabel}" />
                                 <ItemsControl ItemsSource="{Binding DungeonBindings.DungeonStatsFilter.TierFilterOptions}"
                                               IsEnabled="{Binding DungeonBindings.IsTierFilterEnabled}">
                                     <ItemsControl.ItemsPanel>
@@ -64,8 +63,7 @@
                         </Border>
 
                         <StackPanel>
-                            <TextBlock Text="{Binding DungeonBindings.TranslationEnchantment, FallbackValue=ENCHANTMENT}"
-                                       Style="{StaticResource App.FilterLabel}" />
+                            <TextBlock Text="{Binding DungeonBindings.TranslationEnchantment, FallbackValue=ENCHANTMENT}" Style="{StaticResource App.FilterLabel}" />
                             <ItemsControl ItemsSource="{Binding DungeonBindings.DungeonStatsFilter.EnchantmentFilterOptions}"
                                           IsEnabled="{Binding DungeonBindings.IsEnchantmentFilterEnabled}">
                                 <ItemsControl.ItemsPanel>
@@ -87,10 +85,7 @@
                 </DockPanel>
             </Border>
 
-            <ScrollViewer Grid.Row="1"
-                          Margin="8,0,8,5"
-                          HorizontalScrollBarVisibility="Auto"
-                          VerticalScrollBarVisibility="Disabled">
+            <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                 <ListBox ItemsSource="{Binding DungeonBindings.DungeonStatsType}"
                          SelectedItem="{Binding DungeonBindings.SelectedDungeonStatsType, Mode=TwoWay}"
                          DisplayMemberPath="Name"
@@ -105,7 +100,7 @@
             </ScrollViewer>
 
             <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <StackPanel Margin="4,0,4,8">
+                <StackPanel Margin="0,8,0,8">
                     <UniformGrid Columns="5">
                         <Border Style="{StaticResource Dungeon.AnalyticsCard}">
                             <Grid>
@@ -159,7 +154,7 @@
                         </Border>
                     </UniformGrid>
 
-                    <UniformGrid Columns="4">
+                    <UniformGrid Margin="0,8,0,0" Columns="4">
                         <Border Style="{StaticResource Dungeon.AnalyticsCard}">
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="Auto" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>

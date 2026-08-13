@@ -62,7 +62,7 @@
 
     <Style x:Key="Dungeon.AnalyticsCard" TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.SummaryCard}">
         <Setter Property="MinWidth" Value="150" />
-        <Setter Property="Margin" Value="4" />
+        <Setter Property="Margin" Value="0,0,6,0" />
         <Setter Property="Padding" Value="10,9" />
     </Style>
 
@@ -153,8 +153,10 @@
         <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.4}" />
         <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Border.2}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Padding" Value="14,7" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Padding" Value="15,6" />
         <Setter Property="Margin" Value="0" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
@@ -164,11 +166,14 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="4,4,0,0">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          RecognizesAccessKey="True" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="TabBorder" Property="BorderBrush" Value="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                            <Setter TargetName="TabBorder" Property="Background" Value="{StaticResource SolidColorBrush.Background.2}" />
+                            <Setter TargetName="TabBorder" Property="BorderBrush" Value="{StaticResource SolidColorBrush.Border.1}" />
                             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
@@ -178,6 +183,11 @@
                             <Setter Property="Panel.ZIndex" Value="2" />
                             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
                             <Setter Property="FontWeight" Value="SemiBold" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="TabBorder" Property="Background" Value="{StaticResource SolidColorBrush.Background.5}" />
+                            <Setter TargetName="TabBorder" Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.6}" />
+                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.6}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -2765,6 +2775,9 @@
                             </DataTrigger>
                             <DataTrigger Binding="{Binding ClusterType, IsAsync=True, Mode=OneWay}" Value="{x:Static cluster:ClusterType.Black}">
                                 <Setter Property="Source" Value="../Assets/map_black_icon.png" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Mode, IsAsync=True, Mode=OneWay}" Value="{x:Static dungeon:DungeonMode.AbyssalDepths}">
+                                <Setter Property="Source" Value="../Assets/map_orange_icon.png" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

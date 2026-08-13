@@ -223,6 +223,13 @@ public class TrackingController : ITrackingController
         Debug.Print("Stopped tracking");
     }
 
+    public void PrepareForShutdown()
+    {
+        CancelLogoutDetection();
+        StopTracking();
+        DungeonController.PrepareShutdownSaveSnapshot();
+    }
+
     public void BeginLogoutDetection()
     {
         CancelLogoutDetection();

@@ -19,9 +19,9 @@
     <Grid Style="{StaticResource TabItemGridStyle}">
         <Grid Style="{StaticResource BackgroundImageGridStyle}" />
 
-        <ScrollViewer x:Name="DashboardScrollViewer" Padding="12,10,12,18" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch">
+        <ScrollViewer x:Name="DashboardScrollViewer" Padding="15,10,15,15" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch">
             <StackPanel MinWidth="1050" Width="{Binding ViewportWidth, ElementName=DashboardScrollViewer, Mode=OneWay}">
-                <Grid Margin="0,0,0,10">
+                <Grid Margin="0,0,0,0">
                     <Border Style="{StaticResource App.TopFilterCard}" Margin="0,0,0,8">
                         <Grid>
                             <Grid.ColumnDefinitions>

@@ -12,6 +12,7 @@ using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -27,14 +28,18 @@ public sealed class DungeonController
 {
     private const int NumberOfDungeonsUntilSaved = 1;
     private const int DungeonRetentionYears = 2;
+    private const string AbyssalDepthsRewardChestName = "HD_DEMON_SOUL_REWARD";
 
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly TrackingController _trackingController;
+    private readonly object _saveSnapshotLock = new();
+    private List<DungeonDto> _preparedShutdownSaveSnapshot;
     private Guid? _currentGuid;
     private Guid? _lastMapGuid;
     private int _addDungeonCounter;
     private readonly List<DiscoveredItem> _discoveredLoot = [];
     private readonly Dictionary<long, DungeonLootSource> _lootSources = [];
+    private readonly ConcurrentDictionary<int, (string UniqueName, TreasureRarity Rarity)> _pendingAbyssalDepthsChests = [];
     private readonly List<RandomDungeonExitInfo> _discoveredRandomDungeonExits = [];
     private int? _selectedRandomDungeonExitObjectId;
 
@@ -244,31 +249,103 @@ public sealed class DungeonController
 
     #region Dungeon object
 
-    public void SetDungeonChestOpen(int id, List<Guid> allowedToOpen)
+    public async Task UpdateDungeonChestAsync(int id, List<Guid> allowedToOpen, bool isOpened, TreasureRarity rarity)
     {
-        if (!_trackingController.EntityController.IsAnyEntityInParty(allowedToOpen))
+        if (_currentGuid is not { } currentGuid)
         {
             return;
         }
 
-        if (_currentGuid != null)
+        var isAbyssalDepths = GetCurrentDungeonMode() == DungeonMode.AbyssalDepths;
+        if (isAbyssalDepths && !isOpened)
         {
-            try
+            CacheAbyssalDepthsChestRarity(id, rarity);
+            return;
+        }
+
+        if (!isOpened || !_trackingController.EntityController.IsAnyEntityInParty(allowedToOpen))
+        {
+            return;
+        }
+
+        var openedChestName = string.Empty;
+        try
+        {
+            await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                var dun = GetDungeon((Guid) _currentGuid);
+                var dun = GetDungeon(currentGuid);
                 var chest = dun?.Events?.FirstOrDefault(x => x?.Id == id);
-                if (chest != null)
+                if (chest == null && dun?.Mode == DungeonMode.AbyssalDepths)
                 {
-                    chest.Status = ChestStatus.Open;
-                    chest.Opened = DateTime.UtcNow;
+                    var hasPendingChest = _pendingAbyssalDepthsChests.TryRemove(id, out var pendingChest);
+                    var uniqueName = hasPendingChest
+                        ? pendingChest.UniqueName
+                        : AbyssalDepthsRewardChestName;
+                    var openedRarity = rarity != TreasureRarity.Unknown
+                        ? rarity
+                        : hasPendingChest && pendingChest.Rarity != TreasureRarity.Unknown
+                            ? pendingChest.Rarity
+                            : TreasureRarity.Common;
+                    chest = new PointOfInterest(id, uniqueName, openedRarity);
+                    dun.Events.Add(chest);
+                    openedChestName = uniqueName;
                 }
-            }
-            catch (Exception e)
+
+                if (chest == null)
+                {
+                    return;
+                }
+
+                if (dun?.Mode == DungeonMode.AbyssalDepths && rarity != TreasureRarity.Unknown)
+                {
+                    chest.Rarity = rarity;
+                }
+
+                chest.Status = ChestStatus.Open;
+                chest.Opened = DateTime.UtcNow;
+            });
+
+            if (!string.IsNullOrWhiteSpace(openedChestName))
             {
-                DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+                SetLootSource(id, openedChestName, DungeonLootSourceType.Chest);
             }
         }
+        catch (Exception e)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+        }
+    }
+
+    public async Task RegisterDungeonChestAsync(int id, string uniqueName)
+    {
+        if (GetCurrentDungeonMode() == DungeonMode.AbyssalDepths)
+        {
+            if (id > 0 && !string.IsNullOrWhiteSpace(uniqueName))
+            {
+                _pendingAbyssalDepthsChests.AddOrUpdate(
+                    id,
+                    (uniqueName, TreasureRarity.Unknown),
+                    (_, pendingChest) => (uniqueName, pendingChest.Rarity));
+            }
+
+            return;
+        }
+
+        await SetDungeonEventInformationAsync(id, uniqueName);
+    }
+
+    private void CacheAbyssalDepthsChestRarity(int id, TreasureRarity rarity)
+    {
+        if (id <= 0 || rarity == TreasureRarity.Unknown)
+        {
+            return;
+        }
+
+        _pendingAbyssalDepthsChests.AddOrUpdate(
+            id,
+            (AbyssalDepthsRewardChestName, rarity),
+            (_, pendingChest) => (pendingChest.UniqueName, rarity));
     }
 
     private DungeonBaseFragment GetDungeon(Guid? guid)
@@ -857,6 +934,7 @@ public sealed class DungeonController
     {
         _discoveredLoot.Clear();
         _lootSources.Clear();
+        _pendingAbyssalDepthsChests.Clear();
     }
 
     #endregion
@@ -986,14 +1064,17 @@ public sealed class DungeonController
 
     private async Task<List<DungeonDto>> CreateSaveSnapshotAsync()
     {
+        var preparedSnapshot = GetPreparedShutdownSaveSnapshot();
+        if (preparedSnapshot is not null)
+        {
+            return preparedSnapshot;
+        }
+
         List<DungeonDto> snapshot = null;
 
         void CreateSnapshot()
         {
-            snapshot = _mainWindowViewModel.DungeonBindings.Dungeons
-                .Where(x => x.Status == DungeonStatus.Done)
-                .Select(DungeonMapping.Mapping)
-                .ToList();
+            snapshot = CreateSaveSnapshot();
         }
 
         if (Application.Current?.Dispatcher is { } dispatcher && !dispatcher.CheckAccess())
@@ -1006,6 +1087,31 @@ public sealed class DungeonController
         }
 
         return snapshot;
+    }
+
+    public void PrepareShutdownSaveSnapshot()
+    {
+        var snapshot = CreateSaveSnapshot();
+        lock (_saveSnapshotLock)
+        {
+            _preparedShutdownSaveSnapshot = snapshot;
+        }
+    }
+
+    private List<DungeonDto> GetPreparedShutdownSaveSnapshot()
+    {
+        lock (_saveSnapshotLock)
+        {
+            return _preparedShutdownSaveSnapshot;
+        }
+    }
+
+    private List<DungeonDto> CreateSaveSnapshot()
+    {
+        return _mainWindowViewModel.DungeonBindings.Dungeons
+            .Where(x => x.Status == DungeonStatus.Done)
+            .Select(DungeonMapping.Mapping)
+            .ToList();
     }
 
     private async Task SaveInFileAfterExceedingLimit(int limit)
