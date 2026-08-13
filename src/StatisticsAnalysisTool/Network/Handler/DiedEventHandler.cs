@@ -14,7 +14,11 @@ public class DiedEventHandler(TrackingController trackingController) : EventPack
 {
     protected override async Task OnActionAsync(DiedEvent value)
     {
-        trackingController.DungeonController?.SetDiedIfInDungeon(new DiedObject(value.Died, value.KilledBy, value.KilledByGuild));
+        if (trackingController.DungeonController is { } dungeonController)
+        {
+            await dungeonController.SetDiedIfInDungeonAsync(new DiedObject(value.Died, value.KilledBy, value.KilledByGuild));
+        }
+
         trackingController.PartyController.PlayerHasDied(value.Died);
         trackingController.StatisticController.AddPlayerDeath(value.Died, value.KilledBy);
 

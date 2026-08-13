@@ -3324,11 +3324,7 @@
 
     <DataTemplate x:Key="DungeonOptionsObjectTemplate" DataType="{x:Type dungeonModels:DungeonOptionsObject}">
         <StackPanel>
-            <CheckBox IsChecked="{Binding IsDungeonClosedSoundActive}"
-                      Content="{Binding TranslationDungeonClosedSoundActive, FallbackValue=DUNGEON_CLOSED_SOUND_ACTIVE}"
-                      HorizontalContentAlignment="Left" />
-            <CheckBox Margin="0,8,0,0"
-                      IsChecked="{Binding IsDungeonPlayerLootVisible}"
+            <CheckBox IsChecked="{Binding IsDungeonPlayerLootVisible}"
                       Content="{Binding TranslationDungeonPlayerLootVisible, FallbackValue=DUNGEON_PLAYER_LOOT_VISIBLE}"
                       HorizontalContentAlignment="Left" />
         </StackPanel>

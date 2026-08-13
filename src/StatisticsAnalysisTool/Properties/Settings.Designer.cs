@@ -325,15 +325,6 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("dungeon_closed.wav")]
-        public string DungeonClosedSoundFileName {
-            get {
-                return ((string)(this["DungeonClosedSoundFileName"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool IsContainerRepairCostsVisible {
             get {

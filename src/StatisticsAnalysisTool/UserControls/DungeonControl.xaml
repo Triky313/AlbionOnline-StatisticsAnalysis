@@ -510,7 +510,7 @@
                 <vwp:VirtualizingItemsControl ItemsSource="{Binding DungeonBindings.DungeonsCollectionView, IsAsync=True, Mode=OneWay}"
                                               ItemTemplateSelector="{StaticResource DungeonDataTemplateSelector}"
                                               VirtualizingPanel.CacheLengthUnit="Item"
-                                              VirtualizingPanel.CacheLength="10,10"
+                                              VirtualizingPanel.CacheLength="5,5"
                                               VirtualizingPanel.ScrollUnit="Pixel"
                                               VirtualizingPanel.VirtualizationMode="Standard"
                                               ScrollViewer.HorizontalScrollBarVisibility="Disabled"

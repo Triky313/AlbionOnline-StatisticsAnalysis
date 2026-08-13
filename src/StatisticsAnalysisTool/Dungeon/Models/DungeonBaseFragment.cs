@@ -27,6 +27,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
     private ObservableCollection<Loot> _loot = [];
     private ObservableCollection<DungeonCombatEvent> _combatEvents = [];
     private readonly HashSet<PointOfInterest> _subscribedEvents = [];
+    private IReadOnlyList<DungeonRunMetric> _performanceMetrics;
     private IReadOnlyList<DungeonLootGroup> _chestLootGroups = [];
     private DungeonLootGroup _otherLootGroup = DungeonLootGroup.CreateOtherLoot([], false);
     private bool _areAdditionalChestsVisible;
@@ -759,7 +760,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
     public Visibility FloorCountVisibility => FloorCount > 0 ? Visibility.Visible : Visibility.Collapsed;
     public IEnumerable<CheckPoint> DisplayedCheckPoints => this is ExpeditionFragment dungeon ? dungeon.CheckPoints : [];
     public Visibility CheckPointVisibility => DisplayedCheckPoints.Any() ? Visibility.Visible : Visibility.Collapsed;
-    public IReadOnlyList<DungeonRunMetric> PerformanceMetrics => DungeonRunPresentationService.BuildMetrics(this);
+    public IReadOnlyList<DungeonRunMetric> PerformanceMetrics => _performanceMetrics ??= DungeonRunPresentationService.BuildMetrics(this);
     private IEnumerable<DungeonLootGroup> LootGroups => OtherLootGroup.Items.Count > 0
         ? ChestLootGroups.Append(OtherLootGroup)
         : ChestLootGroups;
@@ -801,6 +802,11 @@ public abstract class DungeonBaseFragment : BaseViewModel
         DiedName = diedName;
         KilledBy = killedBy;
         CombatEvents.Add(new DungeonCombatEvent(status, diedName, killedBy));
+    }
+
+    public void RefreshPerformanceMetrics()
+    {
+        InvalidatePerformanceMetrics();
     }
 
     private static IEnumerable<DungeonCombatEventDto> CreateCombatEvents(DungeonDto dto)
@@ -955,6 +961,17 @@ public abstract class DungeonBaseFragment : BaseViewModel
     private ICommand _toggleAdditionalCombatEvents;
     public ICommand ToggleAdditionalCombatEvents => _toggleAdditionalCombatEvents ??= new CommandHandler(PerformToggleAdditionalCombatEvents, true);
 
+    private void InvalidatePerformanceMetrics()
+    {
+        if (_performanceMetrics is null)
+        {
+            return;
+        }
+
+        _performanceMetrics = null;
+        base.OnPropertyChanged(nameof(PerformanceMetrics));
+    }
+
     protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         base.OnPropertyChanged(propertyName);
@@ -979,7 +996,8 @@ public abstract class DungeonBaseFragment : BaseViewModel
             case "CityFaction":
             case "BrecilianStanding":
             case "BrecilianStandingPerHour":
-                base.OnPropertyChanged(nameof(PerformanceMetrics));
+            case nameof(TotalRunTimeInSeconds):
+                InvalidatePerformanceMetrics();
                 break;
             case nameof(Mode):
                 base.OnPropertyChanged(nameof(ContentDisplayName));

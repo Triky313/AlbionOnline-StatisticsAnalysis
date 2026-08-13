@@ -139,9 +139,6 @@
     <Content Include="Sounds\deathalert3.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sounds\dungeon_closed.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Resource Include="Assets\abyssal_depths.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -894,7 +891,6 @@
     <None Remove="Sounds\deathalert1.wav" />
     <None Remove="Sounds\deathalert2.wav" />
     <None Remove="Sounds\deathalert3.wav" />
-    <None Remove="Sounds\dungeon_closed.wav" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StatisticAnalysisTool.Extractor\StatisticAnalysisTool.Extractor.csproj" />

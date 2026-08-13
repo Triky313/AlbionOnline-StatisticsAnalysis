@@ -37,8 +37,6 @@ public class JoinResponseHandler(TrackingController trackingController) : Respon
 
         SetCharacterTrackedVisibility(value.Username);
 
-        _mainWindowViewModel.DungeonBindings.DungeonCloseTimer.Visibility = Visibility.Collapsed;
-
         await AddEntityAsync(new Entity
         {
             ObjectId = value.UserObjectId,
