@@ -427,17 +427,16 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <StackPanel Orientation="Horizontal">
-                                    <fa5:ImageAwesome Icon="Regular_FileAlt" Width="17" Height="17" Margin="0,0,10,0"
+                                    <fa5:ImageAwesome Icon="Regular_FileAlt" Width="15" Height="17" Margin="0,0,10,0"
                                                       Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                     <TextBlock Style="{StaticResource Logging.ComparatorSectionTitle}"
                                                Text="{Binding LoggingBindings.Translation.LootComparatorChestLogInput, FallbackValue=CHEST__LOG__INPUT}" />
                                 </StackPanel>
-                                <Grid Grid.Row="1" Margin="0,12,0,0">
+                                <Grid Grid.Row="1" Margin="0,0,0,0">
                                     <TextBox Text="{Binding LoggingBindings.ChestLogText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             AcceptsReturn="True" AcceptsTab="True" TextWrapping="NoWrap"
-                                             VerticalContentAlignment="Top" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
+                                             AcceptsReturn="True" AcceptsTab="True" TextWrapping="NoWrap" VerticalContentAlignment="Top" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
                                     <TextBlock Text="{Binding LoggingBindings.Translation.ChestLogTextPlaceholder, FallbackValue=Paste chest log here}"
-                                               Foreground="{StaticResource SolidColorBrush.Text.5}" Opacity="0.55" Margin="8,6,0,0"
+                                               Foreground="{StaticResource SolidColorBrush.Text.5}" Opacity="0.55" Margin="10,23,0,0"
                                                IsHitTestVisible="False" Focusable="False">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
@@ -451,11 +450,11 @@
                                         </TextBlock.Style>
                                     </TextBlock>
                                 </Grid>
-                                <TextBlock Grid.Row="2" Margin="0,2,0,6"
+                                <TextBlock Grid.Row="2" Margin="0,0,0,0"
                                            Text="{Binding LoggingBindings.LootComparatorLogCountSummary, FallbackValue='0 chest files | 0 loot log files'}"
                                            ToolTip="{Binding LoggingBindings.LootComparatorLogCountTooltip}"
                                            Foreground="{StaticResource SolidColorBrush.Text.3}" />
-                                <Grid Grid.Row="3" Margin="0,8,0,0">
+                                <Grid Grid.Row="3" Margin="0,5,0,0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="*" />
