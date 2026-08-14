@@ -68,6 +68,12 @@ public static class AutoUpdateController
 
     public static Task StartBackgroundUpdateLoopAsync()
     {
+        if (!AutoUpdateSecurity.AreBackgroundUpdatesEnabled)
+        {
+            Log.Information("Background auto updates are disabled for this local installer build.");
+            return Task.CompletedTask;
+        }
+
         lock (SyncRoot)
         {
             if (_isStartupCheckCompleted)

@@ -40,8 +40,11 @@
     <NetSparkleEd25519PublicKey Condition="'$(NetSparkleEd25519PublicKey)' == ''">$(SPARKLE_PUBLIC_KEY)</NetSparkleEd25519PublicKey>
     <AuthenticodePublisherThumbprint Condition="'$(AuthenticodePublisherThumbprint)' == ''">$(AUTHENTICODE_PUBLISHER_THUMBPRINT)</AuthenticodePublisherThumbprint>
     <RequireNetSparkleEd25519PublicKey Condition="'$(RequireNetSparkleEd25519PublicKey)' == ''">false</RequireNetSparkleEd25519PublicKey>
+    <LocalInstallerBuild Condition="'$(LocalInstallerBuild)' == ''">false</LocalInstallerBuild>
     <NetSparkleSignatureVerificationRequiredLiteral>false</NetSparkleSignatureVerificationRequiredLiteral>
     <NetSparkleSignatureVerificationRequiredLiteral Condition="'$(RequireNetSparkleEd25519PublicKey)' == 'true'">true</NetSparkleSignatureVerificationRequiredLiteral>
+    <NetSparkleBackgroundUpdatesEnabledLiteral>true</NetSparkleBackgroundUpdatesEnabledLiteral>
+    <NetSparkleBackgroundUpdatesEnabledLiteral Condition="'$(LocalInstallerBuild)' == 'true'">false</NetSparkleBackgroundUpdatesEnabledLiteral>
     <NetSparkleGeneratedSecurityFile>$(MSBuildProjectDirectory)\obj\$(Platform)\$(Configuration)\Generated\AutoUpdateSecurityBuildSettings.g.cs</NetSparkleGeneratedSecurityFile>
   </PropertyGroup>
   <PropertyGroup>
@@ -1030,7 +1033,7 @@
   <Target Name="ValidateNetSparklePublicKey" BeforeTargets="CoreCompile" Condition="'$(RequireNetSparkleEd25519PublicKey)' == 'true' And '$(NetSparkleEd25519PublicKey)' == ''">
     <Error Text="NetSparkleEd25519PublicKey is required for signed release builds. Pass -p:NetSparkleEd25519PublicKey=... or set SPARKLE_PUBLIC_KEY." />
   </Target>
-  <Target Name="ValidateReleasePublishNetSparklePublicKey" BeforeTargets="Publish" Condition="'$(Configuration)' == 'Release' And '$(NetSparkleEd25519PublicKey)' == ''">
+  <Target Name="ValidateReleasePublishNetSparklePublicKey" BeforeTargets="Publish" Condition="'$(Configuration)' == 'Release' And '$(LocalInstallerBuild)' != 'true' And '$(NetSparkleEd25519PublicKey)' == ''">
     <Error Text="NetSparkleEd25519PublicKey is required for Release publishes. Pass -p:NetSparkleEd25519PublicKey=... or set SPARKLE_PUBLIC_KEY. Use Debug builds for local development without updater signing." />
   </Target>
   <Target Name="GenerateNetSparkleSecuritySource" BeforeTargets="CoreCompile">
@@ -1042,6 +1045,7 @@
       <NetSparkleSecuritySourceLine Include="    public const string Ed25519PublicKey = &quot;$(NetSparkleEd25519PublicKey)&quot;%3B" />
       <NetSparkleSecuritySourceLine Include="    public const string AuthenticodePublisherThumbprint = &quot;$(AuthenticodePublisherThumbprint)&quot;%3B" />
       <NetSparkleSecuritySourceLine Include="    public const bool IsSignatureVerificationRequired = $(NetSparkleSignatureVerificationRequiredLiteral)%3B" />
+      <NetSparkleSecuritySourceLine Include="    public const bool AreBackgroundUpdatesEnabled = $(NetSparkleBackgroundUpdatesEnabledLiteral)%3B" />
       <NetSparkleSecuritySourceLine Include="}" />
     </ItemGroup>
     <MakeDir Directories="$([System.IO.Path]::GetDirectoryName('$(NetSparkleGeneratedSecurityFile)'))" />
