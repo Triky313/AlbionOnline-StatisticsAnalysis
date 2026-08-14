@@ -19,12 +19,37 @@
 
         <Border Grid.Row="0" Style="{StaticResource App.TopFilterCard}">
             <StackPanel>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                    <fa5:ImageAwesome Icon="Solid_UserCog" Foreground="{StaticResource SolidColorBrush.Text.1}"
-                                      Width="20" Height="20" Margin="0,3,5,0" VerticalAlignment="Top" />
-                    <CheckBox IsChecked="{Binding IsOpenWorldTrackingActive, FallbackValue=true}" Content="{Binding TranslationOpenWorldActive, FallbackValue=OPEN__WORLD__ACTIVE}"
-                              HorizontalAlignment="Left" VerticalAlignment="Center" Width="180" Margin="5,0,10,0" />
-                </StackPanel>
+                <Button Width="180" Height="32" HorizontalAlignment="Left" Style="{StaticResource Style.Button.Neutral}"
+                        ToolTip="{Binding TranslationOpenWorldActive, FallbackValue=OPEN__WORLD__ACTIVE}" Click="OpenWorldActivationToggle_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <fa5:ImageAwesome Width="16" Height="16" Margin="0,0,8,0" IsHitTestVisible="False">
+                            <fa5:ImageAwesome.Style>
+                                <Style TargetType="{x:Type fa5:ImageAwesome}">
+                                    <Setter Property="Icon" Value="Solid_ToggleOff" />
+                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsOpenWorldTrackingActive}" Value="True">
+                                            <Setter Property="Icon" Value="Solid_ToggleOn" />
+                                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </fa5:ImageAwesome.Style>
+                        </fa5:ImageAwesome>
+                        <TextBlock VerticalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Text" Value="{Binding DataContext.Translation.TrackingIsNotActive, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsOpenWorldTrackingActive}" Value="True">
+                                            <Setter Property="Text" Value="{Binding DataContext.Translation.TrackingIsActive, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </StackPanel>
+                </Button>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,8,0,0">
                     <TextBox Width="220" Margin="0,0,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding MobSearchText, UpdateSourceTrigger=PropertyChanged}"
                              ToolTip="{Binding TranslationSearchMobs, FallbackValue=SEARCH__MOBS}" />

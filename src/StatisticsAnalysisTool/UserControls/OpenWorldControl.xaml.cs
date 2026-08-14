@@ -1,6 +1,7 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System.Windows;
 
@@ -11,6 +12,17 @@ public partial class OpenWorldControl
     public OpenWorldControl()
     {
         InitializeComponent();
+    }
+
+    private void OpenWorldActivationToggle_Click(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        {
+            return;
+        }
+
+        var openWorldBindings = mainWindowViewModel.OpenWorldBindings;
+        openWorldBindings.IsOpenWorldTrackingActive = !openWorldBindings.IsOpenWorldTrackingActive;
     }
 
     private async void BtnResetOpenWorldStats_Click(object sender, RoutedEventArgs e)
