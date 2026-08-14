@@ -646,6 +646,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
     public static string TranslationNumberOfDungeonFloors => LocalizationController.Translation("NUMBER_OF_DUNGEON_FLOORS");
     public static string TranslationExpedition => LocalizationController.Translation("EXPEDITION");
     public static string TranslationSolo => LocalizationController.Translation("SOLO");
+    public static string TranslationDuo => LocalizationController.Translation("DUO");
     public static string TranslationStandard => LocalizationController.Translation("STANDARD");
     public static string TranslationAvalon => LocalizationController.Translation("AVALON");
     public static string TranslationUnknown => LocalizationController.Translation("UNKNOWN");
@@ -719,6 +720,13 @@ public abstract class DungeonBaseFragment : BaseViewModel
     public Visibility TierBadgeVisibility => Tier == Tier.Unknown ? Visibility.Collapsed : Visibility.Visible;
     public string EnchantmentDisplayText => this is RandomDungeonFragment { Level: >= 0 } dungeon ? $".{dungeon.Level}" : string.Empty;
     public Visibility EnchantmentBadgeVisibility => this is RandomDungeonFragment { Level: >= 0 } ? Visibility.Visible : Visibility.Collapsed;
+    public string MistsTypeDisplayText => this switch
+    {
+        MistsFragment { PortalType: MistsType.Solo } => TranslationSolo,
+        MistsFragment { PortalType: MistsType.Duo } => TranslationDuo,
+        _ => string.Empty
+    };
+    public Visibility MistsTypeBadgeVisibility => this is MistsFragment { PortalType: not MistsType.Unknown } ? Visibility.Visible : Visibility.Collapsed;
     public Visibility MapNameVisibility => string.IsNullOrWhiteSpace(MainMapName) ? Visibility.Collapsed : Visibility.Visible;
     public Visibility KillInformationVisibility => KillStatus == KillStatus.Unknown ? Visibility.Collapsed : Visibility.Visible;
     public IEnumerable<DungeonCombatEvent> DisplayedCombatEvents => AreAdditionalCombatEventsVisible
@@ -1020,6 +1028,10 @@ public abstract class DungeonBaseFragment : BaseViewModel
                 break;
             case "Rarity":
                 base.OnPropertyChanged(nameof(ContentIconPath));
+                break;
+            case nameof(MistsFragment.PortalType):
+                base.OnPropertyChanged(nameof(MistsTypeDisplayText));
+                base.OnPropertyChanged(nameof(MistsTypeBadgeVisibility));
                 break;
             case "NumberOfFloors":
                 base.OnPropertyChanged(nameof(FloorCount));

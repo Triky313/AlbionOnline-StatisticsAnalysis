@@ -16,6 +16,7 @@ public class MistsFragment : DungeonBaseFragment
     private double _favorPerHour;
     private double _brecilianStandingPerHour;
     private MistsRarity _rarity;
+    private MistsType _portalType;
     private Visibility _mightFavorVisibility = Visibility.Collapsed;
     private Visibility _brecilianStandingVisibility = Visibility.Collapsed;
 
@@ -30,6 +31,7 @@ public class MistsFragment : DungeonBaseFragment
         Might = dto.Might;
         Favor = dto.Favor;
         Rarity = dto.MistsRarity;
+        PortalType = dto.MistsType;
         BrecilianStanding = dto.BrecilianStanding;
 
         UpdateValueVisibility();
@@ -82,6 +84,21 @@ public class MistsFragment : DungeonBaseFragment
             }
 
             _rarity = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public MistsType PortalType
+    {
+        get => _portalType;
+        set
+        {
+            if (_portalType == value)
+            {
+                return;
+            }
+
+            _portalType = value;
             OnPropertyChanged();
         }
     }

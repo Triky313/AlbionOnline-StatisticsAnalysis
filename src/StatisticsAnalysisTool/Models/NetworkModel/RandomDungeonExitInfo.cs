@@ -15,4 +15,5 @@ public sealed class RandomDungeonExitInfo
     public DateTime LastSeenUtc { get; init; } = DateTime.UtcNow;
     public bool HasVisibleLevel => !IsAlreadyEntered && Level is >= 0 and <= 4;
     public MistsRarity ResolvedMistsRarity => UniqueName.StartsWith("MISTS_", StringComparison.Ordinal) ? MistsRarityResolver.FromValue(Level) : MistsRarity.Unknown;
+    public MistsType ResolvedMistsType => MistsTypeResolver.FromUniqueName(UniqueName);
 }

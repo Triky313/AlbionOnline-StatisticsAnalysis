@@ -16710,6 +16710,19 @@
       ]
     },
     {
+      "tuid": "DUO",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Duo"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Duo"
+        }
+      ]
+    },
+    {
       "tuid": "KILLED_BY",
       "tuv": [
         {

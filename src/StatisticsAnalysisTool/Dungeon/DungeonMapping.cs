@@ -63,6 +63,7 @@ public class DungeonMapping
             dto.Might = mists.Might;
             dto.Favor = mists.Favor;
             dto.MistsRarity = mists.Rarity;
+            dto.MistsType = mists.PortalType;
             dto.BrecilianStanding = mists.BrecilianStanding;
         }
 

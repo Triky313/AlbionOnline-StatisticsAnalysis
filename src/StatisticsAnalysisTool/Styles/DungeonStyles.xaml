@@ -3031,6 +3031,11 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="Dungeon.RunEntry.MistsTypeBadge" TargetType="{x:Type Border}" BasedOn="{StaticResource Dungeon.RunEntry.Badge}">
+        <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+    </Style>
+
+
     <DataTemplate x:Key="Dungeon.RunEntry.Metric.Template" DataType="{x:Type dungeonModels:DungeonRunMetric}">
         <Grid Height="21" Margin="0,0,0,1">
             <Grid.ColumnDefinitions>
@@ -3242,6 +3247,10 @@
                             </Border>
                             <Border Style="{StaticResource Dungeon.RunEntry.EnchantmentBadge}" Visibility="{Binding EnchantmentBadgeVisibility}">
                                 <TextBlock Text="{Binding EnchantmentDisplayText}" FontSize="10.5" FontWeight="SemiBold"
+                                           Foreground="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type Border}}}" />
+                            </Border>
+                            <Border Style="{StaticResource Dungeon.RunEntry.MistsTypeBadge}" Visibility="{Binding MistsTypeBadgeVisibility}">
+                                <TextBlock Text="{Binding MistsTypeDisplayText}" FontSize="10.5" FontWeight="SemiBold"
                                            Foreground="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type Border}}}" />
                             </Border>
                         </WrapPanel>

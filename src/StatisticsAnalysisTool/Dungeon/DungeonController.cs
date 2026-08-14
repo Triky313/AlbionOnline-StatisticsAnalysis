@@ -24,14 +24,13 @@ using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Dungeon;
 
-public sealed class DungeonController
+public sealed class DungeonController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
 {
     private const int NumberOfDungeonsUntilSaved = 1;
     private const int DungeonRetentionYears = 2;
     private const string AbyssalDepthsRewardChestName = "HD_DEMON_SOUL_REWARD";
+    private const float MaxDungeonExitAssociationDistanceSquared = 25f;
 
-    private readonly MainWindowViewModel _mainWindowViewModel;
-    private readonly TrackingController _trackingController;
     private readonly object _saveSnapshotLock = new();
     private List<DungeonDto> _preparedShutdownSaveSnapshot;
     private Guid? _currentGuid;
@@ -43,15 +42,9 @@ public sealed class DungeonController
     private readonly List<RandomDungeonExitInfo> _discoveredRandomDungeonExits = [];
     private int? _selectedRandomDungeonExitObjectId;
 
-    public DungeonController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
-    {
-        _trackingController = trackingController;
-        _mainWindowViewModel = mainWindowViewModel;
-    }
-
     public async Task AddDungeonAsync(MapType mapType, Guid? mapGuid, string sourceClusterIndex, WorldPosition? sourceExitPosition)
     {
-        if (!_trackingController.IsTrackingAllowedByMainCharacter())
+        if (!trackingController.IsTrackingAllowedByMainCharacter())
         {
             return;
         }
@@ -85,14 +78,14 @@ public sealed class DungeonController
                 lastDungeon?.EndTimer();
             }
 
-            _mainWindowViewModel.DungeonBindings.Dungeons.Where(x => x.Status != DungeonStatus.Done).ToList().ForEach(x => x.Status = DungeonStatus.Done);
+            mainWindowViewModel.DungeonBindings.Dungeons.Where(x => x.Status != DungeonStatus.Done).ToList().ForEach(x => x.Status = DungeonStatus.Done);
 
             var newDungeon = CreateNewDungeon(mapType, ClusterController.CurrentCluster.SourceClusterIndex, mapGuid);
-            newDungeon.PartySize = Math.Max(1, _mainWindowViewModel.PartyBindings.Party.Count);
+            newDungeon.PartySize = Math.Max(1, mainWindowViewModel.PartyBindings.Party.Count);
             UpdateCurrentDungeonFromEntrance(newDungeon, sourceClusterIndex, sourceExitPosition);
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                _mainWindowViewModel.DungeonBindings.Dungeons.Insert(0, newDungeon);
+                mainWindowViewModel.DungeonBindings.Dungeons.Insert(0, newDungeon);
             });
         }
         // Activate exist dungeon again
@@ -170,37 +163,37 @@ public sealed class DungeonController
 
     public void ResetDungeons()
     {
-        _mainWindowViewModel.DungeonBindings.Dungeons.Clear();
-        Application.Current.Dispatcher.Invoke(() => { _mainWindowViewModel?.DungeonBindings?.Dungeons?.Clear(); });
+        mainWindowViewModel.DungeonBindings.Dungeons.Clear();
+        Application.Current.Dispatcher.Invoke(() => { mainWindowViewModel?.DungeonBindings?.Dungeons?.Clear(); });
     }
 
     public void ResetDungeonsByDateAscending(DateTime date)
     {
-        var dungeonsToDelete = _mainWindowViewModel.DungeonBindings.Dungeons?.Where(x => x.EnterDungeonFirstTime >= date).ToList();
+        var dungeonsToDelete = mainWindowViewModel.DungeonBindings.Dungeons?.Where(x => x.EnterDungeonFirstTime >= date).ToList();
         foreach (var dungeonObject in dungeonsToDelete ?? [])
         {
-            _mainWindowViewModel.DungeonBindings.Dungeons?.Remove(dungeonObject);
+            mainWindowViewModel.DungeonBindings.Dungeons?.Remove(dungeonObject);
         }
 
-        var trackingDungeonsToDelete = _mainWindowViewModel?.DungeonBindings?.Dungeons?.Where(x => x.EnterDungeonFirstTime >= date).ToList();
+        var trackingDungeonsToDelete = mainWindowViewModel?.DungeonBindings?.Dungeons?.Where(x => x.EnterDungeonFirstTime >= date).ToList();
         foreach (var dungeonObject in trackingDungeonsToDelete ?? [])
         {
-            _mainWindowViewModel?.DungeonBindings?.Dungeons?.Remove(dungeonObject);
+            mainWindowViewModel?.DungeonBindings?.Dungeons?.Remove(dungeonObject);
         }
     }
 
     public void DeleteDungeonsWithZeroFame()
     {
-        var dungeonsToDelete = _mainWindowViewModel.DungeonBindings.Dungeons?.Where(x => x.Fame <= 0 && x.Status != DungeonStatus.Active).ToList();
+        var dungeonsToDelete = mainWindowViewModel.DungeonBindings.Dungeons?.Where(x => x.Fame <= 0 && x.Status != DungeonStatus.Active).ToList();
         foreach (var dungeonObject in dungeonsToDelete ?? [])
         {
-            _mainWindowViewModel.DungeonBindings.Dungeons?.Remove(dungeonObject);
+            mainWindowViewModel.DungeonBindings.Dungeons?.Remove(dungeonObject);
         }
     }
 
     public void RemoveDungeon(string dungeonHash)
     {
-        var dungeon = _mainWindowViewModel.DungeonBindings.Dungeons.FirstOrDefault(x => x.DungeonHash.Contains(dungeonHash));
+        var dungeon = mainWindowViewModel.DungeonBindings.Dungeons.FirstOrDefault(x => x.DungeonHash.Contains(dungeonHash));
 
         if (dungeon == null)
         {
@@ -215,16 +208,16 @@ public sealed class DungeonController
             return;
         }
 
-        _ = _mainWindowViewModel.DungeonBindings.Dungeons.Remove(dungeon);
+        _ = mainWindowViewModel.DungeonBindings.Dungeons.Remove(dungeon);
     }
 
     public async Task RemoveDungeonByHashAsync(IEnumerable<string> dungeonHash)
     {
-        await foreach (var dungeons in _mainWindowViewModel.DungeonBindings.Dungeons.ToList().ToAsyncEnumerable())
+        await foreach (var dungeons in mainWindowViewModel.DungeonBindings.Dungeons.ToList().ToAsyncEnumerable())
         {
             if (dungeonHash.Contains(dungeons.DungeonHash))
             {
-                _mainWindowViewModel.DungeonBindings.Dungeons.Remove(dungeons);
+                mainWindowViewModel.DungeonBindings.Dungeons.Remove(dungeons);
             }
         }
 
@@ -233,14 +226,14 @@ public sealed class DungeonController
 
     private bool AddClusterToExistDungeon(Guid? currentGuid, Guid? lastGuid, out DungeonBaseFragment dungeon)
     {
-        if (currentGuid != null && lastGuid != null && _mainWindowViewModel.DungeonBindings.Dungeons?.Any(x => x.GuidList.Contains((Guid) currentGuid)) != true)
+        if (currentGuid != null && lastGuid != null && mainWindowViewModel.DungeonBindings.Dungeons?.Any(x => x.GuidList.Contains((Guid) currentGuid)) != true)
         {
-            var dun = _mainWindowViewModel.DungeonBindings.Dungeons?.FirstOrDefault(x => x.GuidList.Contains((Guid) lastGuid));
+            var dun = mainWindowViewModel.DungeonBindings.Dungeons?.FirstOrDefault(x => x.GuidList.Contains((Guid) lastGuid));
             dun?.GuidList.Add((Guid) currentGuid);
 
             dungeon = dun;
 
-            return _mainWindowViewModel.DungeonBindings.Dungeons?.Any(x => x.GuidList.Contains((Guid) currentGuid)) ?? false;
+            return mainWindowViewModel.DungeonBindings.Dungeons?.Any(x => x.GuidList.Contains((Guid) currentGuid)) ?? false;
         }
 
         dungeon = null;
@@ -263,7 +256,7 @@ public sealed class DungeonController
             return;
         }
 
-        if (!isOpened || !_trackingController.EntityController.IsAnyEntityInParty(allowedToOpen))
+        if (!isOpened || !trackingController.EntityController.IsAnyEntityInParty(allowedToOpen))
         {
             return;
         }
@@ -351,7 +344,7 @@ public sealed class DungeonController
 
     private DungeonBaseFragment GetDungeon(Guid? guid)
     {
-        return guid == null ? null : _mainWindowViewModel.DungeonBindings.Dungeons.FirstOrDefault(x => x.GuidList.Contains((Guid) guid));
+        return guid == null ? null : mainWindowViewModel.DungeonBindings.Dungeons.FirstOrDefault(x => x.GuidList.Contains((Guid) guid));
     }
 
     public async Task SetDungeonEventInformationAsync(int id, string uniqueName, TreasureRarity rarity = TreasureRarity.Unknown)
@@ -391,7 +384,7 @@ public sealed class DungeonController
 
     public DungeonMode GetCurrentDungeonMode()
     {
-        var dungeons = _mainWindowViewModel.DungeonBindings.Dungeons;
+        var dungeons = mainWindowViewModel.DungeonBindings.Dungeons;
         if (dungeons is null || _currentGuid is null)
         {
             return DungeonMode.Unknown;
@@ -410,9 +403,9 @@ public sealed class DungeonController
     {
         try
         {
-            lock (_mainWindowViewModel.DungeonBindings.Dungeons)
+            lock (mainWindowViewModel.DungeonBindings.Dungeons)
             {
-                var dun = _mainWindowViewModel.DungeonBindings.Dungeons?.FirstOrDefault(x => _currentGuid != null && x.GuidList.Contains((Guid) _currentGuid) && x.Status == DungeonStatus.Active);
+                var dun = mainWindowViewModel.DungeonBindings.Dungeons?.FirstOrDefault(x => _currentGuid != null && x.GuidList.Contains((Guid) _currentGuid) && x.Status == DungeonStatus.Active);
 
                 switch (dun)
                 {
@@ -452,7 +445,7 @@ public sealed class DungeonController
     public async Task SetDiedIfInDungeonAsync(DiedObject dieObject)
     {
         if (_currentGuid is not { } currentGuid
-            || _trackingController.EntityController.LocalUserData.Username is not { } username)
+            || trackingController.EntityController.LocalUserData.Username is not { } username)
         {
             return;
         }
@@ -469,7 +462,7 @@ public sealed class DungeonController
 
     private void AddCombatEventIfInDungeon(Guid currentGuid, string username, DiedObject dieObject)
     {
-        var dungeon = _mainWindowViewModel.DungeonBindings.Dungeons.FirstOrDefault(x => x.GuidList.Contains(currentGuid));
+        var dungeon = mainWindowViewModel.DungeonBindings.Dungeons.FirstOrDefault(x => x.GuidList.Contains(currentGuid));
 
         if (dungeon is null)
         {
@@ -532,7 +525,7 @@ public sealed class DungeonController
 
         lock (_discoveredRandomDungeonExits)
         {
-            var discoveredRandomDungeonExit = FindDiscoveredRandomDungeonExit(sourceClusterIndex, worldPosition);
+            var discoveredRandomDungeonExit = FindDiscoveredRandomDungeonExit(sourceClusterIndex, worldPosition, dungeon);
             _selectedRandomDungeonExitObjectId = null;
             if (discoveredRandomDungeonExit is null)
             {
@@ -578,6 +571,12 @@ public sealed class DungeonController
     private static void UpdateMistsFromEntrance(MistsFragment mists, RandomDungeonExitInfo exit)
     {
         var rarity = exit.ResolvedMistsRarity;
+        var mistsType = exit.ResolvedMistsType;
+        if (mistsType != MistsType.Unknown)
+        {
+            mists.PortalType = mistsType;
+        }
+
         if (rarity != MistsRarity.Unknown)
         {
             mists.Rarity = rarity;
@@ -631,12 +630,14 @@ public sealed class DungeonController
         }
     }
 
-    private RandomDungeonExitInfo FindDiscoveredRandomDungeonExit(string sourceClusterIndex, WorldPosition? worldPosition)
+    private RandomDungeonExitInfo FindDiscoveredRandomDungeonExit(string sourceClusterIndex, WorldPosition? worldPosition, DungeonBaseFragment dungeon)
     {
         if (_selectedRandomDungeonExitObjectId is { } selectedObjectId)
         {
             var selectedExit = _discoveredRandomDungeonExits.FirstOrDefault(x =>
-                x.ObjectId == selectedObjectId && x.SourceClusterIndex == sourceClusterIndex);
+                x.ObjectId == selectedObjectId
+                && x.SourceClusterIndex == sourceClusterIndex
+                && IsCompatibleExit(x, dungeon));
             if (selectedExit is not null)
             {
                 return selectedExit;
@@ -648,16 +649,52 @@ public sealed class DungeonController
             return null;
         }
 
-        return _discoveredRandomDungeonExits.FirstOrDefault(x =>
-            x.SourceClusterIndex == sourceClusterIndex
-            && x.SourceExitPosition is { } sourceExitPosition
-            && sourceExitPosition.X.Equals(sourceWorldPosition.X)
-            && sourceExitPosition.Y.Equals(sourceWorldPosition.Y));
+        RandomDungeonExitInfo closestExit = null;
+        var closestDistanceSquared = MaxDungeonExitAssociationDistanceSquared;
+
+        foreach (var exit in _discoveredRandomDungeonExits)
+        {
+            if (exit.SourceClusterIndex != sourceClusterIndex
+                || exit.SourceExitPosition is not { } sourceExitPosition
+                || !IsCompatibleExit(exit, dungeon))
+            {
+                continue;
+            }
+
+            var distanceSquared = GetDistanceSquared(sourceWorldPosition, sourceExitPosition);
+            if (distanceSquared > closestDistanceSquared)
+            {
+                continue;
+            }
+
+            closestExit = exit;
+            closestDistanceSquared = distanceSquared;
+        }
+
+        return closestExit;
+    }
+
+    private static bool IsCompatibleExit(RandomDungeonExitInfo exit, DungeonBaseFragment dungeon)
+    {
+        var isMistsExit = exit.UniqueName.StartsWith("MISTS_", StringComparison.Ordinal);
+        return dungeon switch
+        {
+            MistsFragment => isMistsExit,
+            RandomDungeonFragment => !isMistsExit,
+            _ => false
+        };
+    }
+
+    private static float GetDistanceSquared(WorldPosition first, WorldPosition second)
+    {
+        var deltaX = first.X - second.X;
+        var deltaY = first.Y - second.Y;
+        return deltaX * deltaX + deltaY * deltaY;
     }
 
     private void TryUpdateCurrentDungeonLevelFromLootChest(Guid currentDungeonGuid, int objectId, double combinedLootFactor)
     {
-        var activeDungeon = _mainWindowViewModel.DungeonBindings.Dungeons?
+        var activeDungeon = mainWindowViewModel.DungeonBindings.Dungeons?
             .FirstOrDefault(x => x.GuidList.Contains(currentDungeonGuid) && x.Status == DungeonStatus.Active);
 
         if (activeDungeon is not RandomDungeonFragment { IsLevelLockedFromEntrance: false } randomDungeon)
@@ -682,7 +719,7 @@ public sealed class DungeonController
 
     private void TryUpdateCurrentDungeonLevelFromMob(Guid currentDungeonGuid, int mobIndex, double hitPointsMax)
     {
-        var activeDungeon = _mainWindowViewModel.DungeonBindings.Dungeons?
+        var activeDungeon = mainWindowViewModel.DungeonBindings.Dungeons?
             .FirstOrDefault(x => x.GuidList.Contains(currentDungeonGuid) && x.Status == DungeonStatus.Active);
 
         if (activeDungeon is not RandomDungeonFragment { IsLevelLockedFromEntrance: false } randomDungeon)
@@ -728,7 +765,7 @@ public sealed class DungeonController
         {
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                var dun = _mainWindowViewModel.DungeonBindings.Dungeons?.FirstOrDefault(x => x.GuidList.Contains(currentGuid) && x.Status == DungeonStatus.Active);
+                var dun = mainWindowViewModel.DungeonBindings.Dungeons?.FirstOrDefault(x => x.GuidList.Contains(currentGuid) && x.Status == DungeonStatus.Active);
                 if (dun == null)
                 {
                     return;
@@ -865,7 +902,7 @@ public sealed class DungeonController
 
     private bool IsLocalPlayerCurrentContainerLoot(Guid containerGuid, Guid userInteractGuid)
     {
-        if (_trackingController.EntityController.LocalUserData.InteractGuid != userInteractGuid)
+        if (trackingController.EntityController.LocalUserData.InteractGuid != userInteractGuid)
         {
             return false;
         }
@@ -979,7 +1016,7 @@ public sealed class DungeonController
 
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
-            var dun = _mainWindowViewModel.DungeonBindings.Dungeons?.FirstOrDefault(x => x.GuidList.Contains(currentGuid) && x.Status == DungeonStatus.Active);
+            var dun = mainWindowViewModel.DungeonBindings.Dungeons?.FirstOrDefault(x => x.GuidList.Contains(currentGuid) && x.Status == DungeonStatus.Active);
             if (dun is not ExpeditionFragment expedition)
             {
                 return;
@@ -1004,7 +1041,7 @@ public sealed class DungeonController
 
     private void UpdateCurrentMapHistoryRandomDungeonInformation(RandomDungeonFragment randomDungeon)
     {
-        _trackingController.ClusterController.UpdateCurrentMapHistoryRandomDungeonInformation(randomDungeon.Tier, randomDungeon.Level);
+        trackingController.ClusterController.UpdateCurrentMapHistoryRandomDungeonInformation(randomDungeon.Tier, randomDungeon.Level);
     }
 
     #endregion
@@ -1013,7 +1050,7 @@ public sealed class DungeonController
 
     private bool ExistDungeon(Guid? mapGuid)
     {
-        return mapGuid != null && _mainWindowViewModel.DungeonBindings.Dungeons.Any(x => x.GuidList.Contains((Guid) mapGuid));
+        return mapGuid != null && mainWindowViewModel.DungeonBindings.Dungeons.Any(x => x.GuidList.Contains((Guid) mapGuid));
     }
 
     private static bool IsDungeonCluster(MapType mapType, Guid? mapGuid)
@@ -1056,8 +1093,8 @@ public sealed class DungeonController
             Log.Warning("Skipped {invalidDungeonCount} invalid dungeon records while loading user data.", invalidDungeonCount);
         }
 
-        _mainWindowViewModel.DungeonBindings.Dungeons.Clear();
-        _mainWindowViewModel.DungeonBindings.Dungeons.AddRange(dungeonsToAdd.OrderBy(x => x?.EnterDungeonFirstTime).ToList());
+        mainWindowViewModel.DungeonBindings.Dungeons.Clear();
+        mainWindowViewModel.DungeonBindings.Dungeons.AddRange(dungeonsToAdd.OrderBy(x => x?.EnterDungeonFirstTime).ToList());
 
         if (expiredDungeonCount > 0)
         {
@@ -1131,7 +1168,7 @@ public sealed class DungeonController
 
     private List<DungeonDto> CreateSaveSnapshot()
     {
-        return _mainWindowViewModel.DungeonBindings.Dungeons
+        return mainWindowViewModel.DungeonBindings.Dungeons
             .Where(x => x.Status == DungeonStatus.Done)
             .Select(DungeonMapping.Mapping)
             .ToList();

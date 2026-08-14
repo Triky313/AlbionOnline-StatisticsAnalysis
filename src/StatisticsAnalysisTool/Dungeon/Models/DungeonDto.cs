@@ -50,5 +50,6 @@ public class DungeonDto
     public string KilledBy { get; set; }
     public KillStatus KillStatus { get; set; }
     public MistsRarity MistsRarity { get; set; }
+    public MistsType MistsType { get; set; }
     public List<CheckPointDto> CheckPoints { get; set; }
 }
