@@ -32,22 +32,21 @@ public class TakeSilverEventHandler : EventPacketHandler<TakeSilverEvent>
 
         if (isObjectLocalEntity || isObjectPartyEntityAndNotTargetEntity || isObjectLocalEntityAndTargetEntity)
         {
-            // Set guild tax % to local player
+            // Set tax percentages based on the local player's event for party member estimates
             if (isObjectLocalEntity && !isObjectLocalEntityAndTargetEntity)
             {
                 _trackingController.EntityController.SetLastLocalEntityGuildTax(value.YieldPreTax, value.GuildTax);
                 _trackingController.EntityController.SetLastLocalEntityClusterTax(value.YieldPreTax, value.ClusterTax);
+                _trackingController.EntityController.SetLastLocalEntityAlliancePenalty(value.YieldPreTax, value.AlliancePenalty);
             }
 
-            // Include guild + cluster tax if a party member takes silver
+            // Include the local player's tax percentages if a party member takes silver
             if (isObjectPartyEntityAndNotTargetEntity && !isObjectLocalEntity)
             {
-                value.GuildTax = _trackingController.EntityController.GetLastLocalEntityGuildTax(value.YieldPreTax);
-                var yieldAfterGuildTax = value.YieldPreTax - value.GuildTax;
-                value.ClusterTax = _trackingController.EntityController.GetLastLocalEntityClusterTax(yieldAfterGuildTax);
-
-                var yieldAfterGuildTaxAndClusterTax = yieldAfterGuildTax - value.ClusterTax;
-                value.YieldAfterTax = yieldAfterGuildTaxAndClusterTax;
+                value.ApplyTaxes(
+                    _trackingController.EntityController.GetLastLocalEntityClusterTax(value.YieldPreTax),
+                    _trackingController.EntityController.GetLastLocalEntityGuildTax(value.YieldPreTax),
+                    _trackingController.EntityController.GetLastLocalEntityAlliancePenalty(value.YieldPreTax));
             }
 
             await _trackingController.AddNotificationAsync(SetNotification(value.YieldAfterTax, value.ClusterYieldAfterTax, value.PremiumAfterTax, value.ClusterTax));

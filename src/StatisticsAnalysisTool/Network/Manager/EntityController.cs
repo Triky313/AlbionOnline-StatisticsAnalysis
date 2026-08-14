@@ -24,6 +24,7 @@ public class EntityController
     private readonly ObservableCollection<EquipmentItemInternal> _newEquipmentItems = [];
     private readonly ObservableCollection<SpellEffect> _spellEffects = [];
     private readonly ConcurrentDictionary<long, CharacterEquipmentData> _tempCharacterEquipmentData = new();
+    private double _lastLocalEntityAlliancePenaltyInPercent;
     private double _lastLocalEntityGuildTaxInPercent;
     private double _lastLocalEntityClusterTaxInPercent;
     private readonly TrackingController _trackingController;
@@ -595,19 +596,36 @@ public class EntityController
 
     #region Local Entity
 
-    public FixPoint GetLastLocalEntityClusterTax(FixPoint yieldPreClusterTax) => FixPoint.FromFloatingPointValue(yieldPreClusterTax.DoubleValue / 100 * _lastLocalEntityClusterTaxInPercent);
+    public FixPoint GetLastLocalEntityAlliancePenalty(FixPoint yieldPreTax) => CalculateTax(yieldPreTax, _lastLocalEntityAlliancePenaltyInPercent);
+
+    public void SetLastLocalEntityAlliancePenalty(FixPoint yieldPreTax, FixPoint alliancePenalty)
+    {
+        _lastLocalEntityAlliancePenaltyInPercent = CalculateTaxPercentage(yieldPreTax, alliancePenalty);
+    }
+
+    public FixPoint GetLastLocalEntityClusterTax(FixPoint yieldPreTax) => CalculateTax(yieldPreTax, _lastLocalEntityClusterTaxInPercent);
 
     public void SetLastLocalEntityClusterTax(FixPoint yieldPreTax, FixPoint clusterTax)
     {
-        _lastLocalEntityClusterTaxInPercent = (100 / yieldPreTax.DoubleValue) * clusterTax.DoubleValue;
+        _lastLocalEntityClusterTaxInPercent = CalculateTaxPercentage(yieldPreTax, clusterTax);
     }
 
     public void SetLastLocalEntityGuildTax(FixPoint yieldPreTax, FixPoint guildTax)
     {
-        _lastLocalEntityGuildTaxInPercent = (100 / yieldPreTax.DoubleValue) * guildTax.DoubleValue;
+        _lastLocalEntityGuildTaxInPercent = CalculateTaxPercentage(yieldPreTax, guildTax);
     }
 
-    public FixPoint GetLastLocalEntityGuildTax(FixPoint yieldPreTax) => FixPoint.FromFloatingPointValue(yieldPreTax.DoubleValue / 100 * _lastLocalEntityGuildTaxInPercent);
+    public FixPoint GetLastLocalEntityGuildTax(FixPoint yieldPreTax) => CalculateTax(yieldPreTax, _lastLocalEntityGuildTaxInPercent);
+
+    private static FixPoint CalculateTax(FixPoint yieldPreTax, double taxInPercent)
+    {
+        return FixPoint.FromFloatingPointValue(yieldPreTax.DoubleValue / 100 * taxInPercent);
+    }
+
+    private static double CalculateTaxPercentage(FixPoint yieldPreTax, FixPoint tax)
+    {
+        return yieldPreTax.InternalValue > 0 ? 100 / yieldPreTax.DoubleValue * tax.DoubleValue : 0;
+    }
 
     public bool ExistLocalEntity()
     {
