@@ -83,6 +83,7 @@ public class DungeonMapping
         {
             dto.Might = dragonArea.Might;
             dto.Favor = dragonArea.Favor;
+            dto.DragonAreaPortalSize = dragonArea.PortalSize;
         }
 
         return dto;

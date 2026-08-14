@@ -51,5 +51,6 @@ public class DungeonDto
     public KillStatus KillStatus { get; set; }
     public MistsRarity MistsRarity { get; set; }
     public MistsType MistsType { get; set; }
+    public DragonAreaPortalSize DragonAreaPortalSize { get; set; }
     public List<CheckPointDto> CheckPoints { get; set; }
 }

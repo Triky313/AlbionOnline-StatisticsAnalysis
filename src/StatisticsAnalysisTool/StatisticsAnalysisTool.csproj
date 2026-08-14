@@ -562,6 +562,15 @@
     <Resource Include="Resources\dragon_area_banner.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\ancient_lands_portal_big.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ancient_lands_portal_medium.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ancient_lands_portal_small.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\fame.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -878,6 +887,9 @@
     <None Remove="Resources\DonationIcon\TOAD1.png" />
     <None Remove="Resources\DonationIcon\WOLF.png" />
     <None Remove="Resources\dragon_area_banner.png" />
+    <None Remove="Resources\ancient_lands_portal_big.png" />
+    <None Remove="Resources\ancient_lands_portal_medium.png" />
+    <None Remove="Resources\ancient_lands_portal_small.png" />
     <None Remove="Resources\favor.png" />
     <None Remove="Resources\icon_daily_season_points.png" />
     <None Remove="Resources\might.png" />

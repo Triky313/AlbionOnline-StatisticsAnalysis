@@ -713,6 +713,9 @@ public abstract class DungeonBaseFragment : BaseViewModel
         HellGateFragment => "/Assets/hellgate.png",
         CorruptedFragment => "/Assets/corrupted_dungeon.png",
         AbyssalDepthsFragment => "/Assets/abyssal_depths.png",
+        DragonAreaFragment { PortalSize: DragonAreaPortalSize.Small } => "/Resources/ancient_lands_portal_small.png",
+        DragonAreaFragment { PortalSize: DragonAreaPortalSize.Medium } => "/Resources/ancient_lands_portal_medium.png",
+        DragonAreaFragment { PortalSize: DragonAreaPortalSize.Large } => "/Resources/ancient_lands_portal_big.png",
         _ => "/Assets/dungeon.png"
     };
 
@@ -1027,6 +1030,9 @@ public abstract class DungeonBaseFragment : BaseViewModel
                 base.OnPropertyChanged(nameof(EnchantmentBadgeVisibility));
                 break;
             case "Rarity":
+                base.OnPropertyChanged(nameof(ContentIconPath));
+                break;
+            case nameof(DragonAreaFragment.PortalSize):
                 base.OnPropertyChanged(nameof(ContentIconPath));
                 break;
             case nameof(MistsFragment.PortalType):

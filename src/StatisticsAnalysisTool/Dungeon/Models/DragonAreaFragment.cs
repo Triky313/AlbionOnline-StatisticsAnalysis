@@ -18,11 +18,27 @@ public class DragonAreaFragment : DungeonBaseFragment
         Faction = Faction.DragonArea;
         Might = dto.Might;
         Favor = dto.Favor;
+        PortalSize = ResolvePortalSize(dto);
 
         UpdateValueVisibility();
     }
     public int NumberOfFloors => GuidList.Count;
 
+
+    public DragonAreaPortalSize PortalSize
+    {
+        get;
+        set
+        {
+            if (field == value)
+            {
+                return;
+            }
+
+            field = value;
+            OnPropertyChanged();
+        }
+    }
     public double Might
     {
         get;
@@ -105,5 +121,24 @@ public class DragonAreaFragment : DungeonBaseFragment
         {
             MightFavorVisibility = Visibility.Visible;
         }
+    }
+
+    private static DragonAreaPortalSize ResolvePortalSize(DungeonDto dto)
+    {
+        if (dto.DragonAreaPortalSize != DragonAreaPortalSize.Unknown)
+        {
+            return dto.DragonAreaPortalSize;
+        }
+
+        foreach (var dungeonEvent in dto.Events ?? [])
+        {
+            var portalSize = DragonAreaPortalSizeResolver.FromUniqueName(dungeonEvent.UniqueName);
+            if (portalSize != DragonAreaPortalSize.Unknown)
+            {
+                return portalSize;
+            }
+        }
+
+        return DragonAreaPortalSize.Unknown;
     }
 }

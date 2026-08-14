@@ -376,7 +376,11 @@ public sealed class DungeonController(TrackingController trackingController, Mai
             }
 
             var eventObject = new PointOfInterest(id, uniqueName, rarity);
-            await Application.Current.Dispatcher.InvokeAsync(() => { dun.Events?.Add(eventObject); });
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                dun.Events?.Add(eventObject);
+                UpdateDragonAreaPortalSize(dun, uniqueName);
+            });
 
             if (dun.Faction == Faction.Unknown)
             {
@@ -526,7 +530,7 @@ public sealed class DungeonController(TrackingController trackingController, Mai
 
     private void UpdateCurrentDungeonFromEntrance(DungeonBaseFragment dungeon, string sourceClusterIndex, WorldPosition? worldPosition)
     {
-        if (dungeon is not (RandomDungeonFragment or MistsFragment))
+        if (dungeon is not (RandomDungeonFragment or MistsFragment or DragonAreaFragment))
         {
             return;
         }
@@ -552,6 +556,9 @@ public sealed class DungeonController(TrackingController trackingController, Mai
                     break;
                 case MistsFragment mists:
                     UpdateMistsFromEntrance(mists, discoveredRandomDungeonExit);
+                    break;
+                case DragonAreaFragment dragonArea:
+                    UpdateDragonAreaFromEntrance(dragonArea, discoveredRandomDungeonExit);
                     break;
             }
         }
@@ -593,6 +600,28 @@ public sealed class DungeonController(TrackingController trackingController, Mai
         if (rarity != MistsRarity.Unknown)
         {
             mists.Rarity = rarity;
+        }
+    }
+
+    private static void UpdateDragonAreaFromEntrance(DragonAreaFragment dragonArea, RandomDungeonExitInfo exit)
+    {
+        if (exit.ResolvedDragonAreaPortalSize != DragonAreaPortalSize.Unknown)
+        {
+            dragonArea.PortalSize = exit.ResolvedDragonAreaPortalSize;
+        }
+    }
+
+    private static void UpdateDragonAreaPortalSize(DungeonBaseFragment dungeon, string uniqueName)
+    {
+        if (dungeon is not DragonAreaFragment dragonArea)
+        {
+            return;
+        }
+
+        var portalSize = DragonAreaPortalSizeResolver.FromUniqueName(uniqueName);
+        if (portalSize != DragonAreaPortalSize.Unknown)
+        {
+            dragonArea.PortalSize = portalSize;
         }
     }
 
@@ -690,10 +719,12 @@ public sealed class DungeonController(TrackingController trackingController, Mai
     private static bool IsCompatibleExit(RandomDungeonExitInfo exit, DungeonBaseFragment dungeon)
     {
         var isMistsExit = exit.UniqueName.StartsWith("MISTS_", StringComparison.Ordinal);
+        var isDragonAreaExit = exit.ResolvedDragonAreaPortalSize != DragonAreaPortalSize.Unknown;
         return dungeon switch
         {
             MistsFragment => isMistsExit,
-            RandomDungeonFragment => !isMistsExit,
+            DragonAreaFragment => isDragonAreaExit,
+            RandomDungeonFragment => !isMistsExit && !isDragonAreaExit,
             _ => false
         };
     }
