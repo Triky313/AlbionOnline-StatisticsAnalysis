@@ -139,9 +139,6 @@
     <Content Include="Sounds\deathalert3.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sounds\dungeon_closed.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Resource Include="Assets\abyssal_depths.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -187,7 +184,22 @@
     <Resource Include="Assets\checkpoint.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\chest_blue.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\chest_gold.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\chest_gray.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\chest_green.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\chest_locked.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\chest_purple.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\combat_swords.png">
@@ -439,6 +451,9 @@
     <Resource Include="Resources\alert_window_background.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\ancient_lands_banner.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\DonationIcon\WOLF.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -544,6 +559,9 @@
     <Resource Include="Resources\DonationIcon\TOAD1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\dragon_area_banner.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\fame.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -578,30 +596,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\boss.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\chest_close_legendary.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\chest_close_rare.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\chest_close_standard.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\chest_close_uncommon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\chest_open_legendary.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\chest_open_rare.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\chest_open_standard.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\chest_open_uncommon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\faction_avalon_banner.png">
@@ -758,7 +752,13 @@
     <None Remove="Assets\butterfly_rare.png" />
     <None Remove="Assets\butterfly_uncommon.png" />
     <None Remove="Assets\checkpoint.png" />
+    <None Remove="Assets\chest_blue.png" />
+    <None Remove="Assets\chest_gold.png" />
+    <None Remove="Assets\chest_gray.png" />
+    <None Remove="Assets\chest_greem.png" />
+    <None Remove="Assets\chest_green.png" />
     <None Remove="Assets\chest_locked.png" />
+    <None Remove="Assets\chest_purple.png" />
     <None Remove="Assets\combat_swords.png" />
     <None Remove="Assets\corrupted_dungeon.png" />
     <None Remove="Assets\crafting_description_image001.png" />
@@ -842,6 +842,7 @@
     <None Remove="Assets\Navigation\*.png" />
     <None Remove="Localization\localization.json" />
     <None Remove="Resources\abyssal_depths_banner.png" />
+    <None Remove="Resources\ancient_lands_banner.png" />
     <None Remove="Resources\DonationIcon\ALLIGATOR1.png" />
     <None Remove="Resources\DonationIcon\ANCIENTMAMMOTH1.png" />
     <None Remove="Resources\DonationIcon\BEAR.png" />
@@ -877,6 +878,7 @@
     <None Remove="Resources\DonationIcon\SNOWRABBIT1.png" />
     <None Remove="Resources\DonationIcon\TOAD1.png" />
     <None Remove="Resources\DonationIcon\WOLF.png" />
+    <None Remove="Resources\dragon_area_banner.png" />
     <None Remove="Resources\favor.png" />
     <None Remove="Resources\icon_daily_season_points.png" />
     <None Remove="Resources\might.png" />
@@ -889,7 +891,6 @@
     <None Remove="Sounds\deathalert1.wav" />
     <None Remove="Sounds\deathalert2.wav" />
     <None Remove="Sounds\deathalert3.wav" />
-    <None Remove="Sounds\dungeon_closed.wav" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StatisticAnalysisTool.Extractor\StatisticAnalysisTool.Extractor.csproj" />

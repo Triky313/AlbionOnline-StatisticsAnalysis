@@ -16710,6 +16710,19 @@
       ]
     },
     {
+      "tuid": "DUO",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Duo"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Duo"
+        }
+      ]
+    },
+    {
       "tuid": "KILLED_BY",
       "tuv": [
         {
@@ -18738,59 +18751,6 @@
         {
           "lang": "zh-TW",
           "seg": "安全"
-        }
-      ]
-    },
-    {
-      "tuid": "DUNGEON_TIMER",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Dungeon Timer"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Dungeon Timer"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Temporizador de mazmorra"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Minuteur de donjon"
-        },
-        {
-          "lang": "ja-JP",
-          "seg": "ダンジョンタイマー"
-        },
-        {
-          "lang": "ko-KR",
-          "seg": "던전 타이머"
-        },
-        {
-          "lang": "pl-PL",
-          "seg": "Ile do bezpiecznej strefy:"
-        },
-        {
-          "lang": "pt-BR",
-          "seg": "Temporizador da Masmorra"
-        },
-        {
-          "lang": "ru-RU",
-          "seg": "Таймер подземелья"
-        },
-        {
-          "lang": "tr-TR",
-          "seg": "Zindan Zamanlayıcısı"
-        },
-        {
-          "lang": "zh-CN",
-          "seg": "入口消失倒计时"
-        },
-        {
-          "lang": "zh-TW",
-          "seg": "副本計時"
         }
       ]
     },
@@ -21401,55 +21361,6 @@
         {
           "lang": "zh-TW",
           "seg": "僅追蹤隊友拾取"
-        }
-      ]
-    },
-    {
-      "tuid": "RESET_DUNGEON_TIMER",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Dungeon-Timer zurücksetzen"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Reset dungeon timer"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Reinciar temporizador de mazmorra"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Réinitialiser le minuteur du donjon"
-        },
-        {
-          "lang": "ja-JP",
-          "seg": "ダンジョンタイマーをリセット"
-        },
-        {
-          "lang": "ko-KR",
-          "seg": "던전 타이머 초기화"
-        },
-        {
-          "lang": "pl-PL",
-          "seg": "Zresetuj licznik czasu w lochu"
-        },
-        {
-          "lang": "pt-BR",
-          "seg": "Resetar temporizador de Masmorra"
-        },
-        {
-          "lang": "ru-RU",
-          "seg": "Сброс таймера подземелья"
-        },
-        {
-          "lang": "zh-CN",
-          "seg": "重置副本计时"
-        },
-        {
-          "lang": "zh-TW",
-          "seg": "重置副本計時"
         }
       ]
     },
@@ -30793,55 +30704,6 @@
         {
           "lang": "zh-TW",
           "seg": "感謝你們～"
-        }
-      ]
-    },
-    {
-      "tuid": "DUNGEON_CLOSED_SOUND_ACTIVE",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Dungeon geschlossen Sound aktiv"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Dungeon closed sound active"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Sonido de mazmorra cerrada activado"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Jouer un son à la fermeture du donjon"
-        },
-        {
-          "lang": "ja-JP",
-          "seg": "ダンジョン閉鎖音有効"
-        },
-        {
-          "lang": "ko-KR",
-          "seg": "던전이 닫힐 때 소리 활성화"
-        },
-        {
-          "lang": "pl-PL",
-          "seg": "Dzwięk zamykania lochu"
-        },
-        {
-          "lang": "pt-BR",
-          "seg": "Som de calabouço fechado ativo"
-        },
-        {
-          "lang": "ru-RU",
-          "seg": "Звук при закрытии подземелья"
-        },
-        {
-          "lang": "zh-CN",
-          "seg": "地下城入口消失提示声"
-        },
-        {
-          "lang": "zh-TW",
-          "seg": "開啟地下城入口消失提示聲"
         }
       ]
     },
@@ -48971,6 +48833,136 @@
         {
           "lang": "en-US",
           "seg": "Settings and Reset"
+        }
+      ]
+    },
+    {
+      "tuid": "OTHER_LOOT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Weitere Beute"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Other loot"
+        }
+      ]
+    },
+    {
+      "tuid": "MORE_CHESTS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "+{0} weitere Truhen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "+{0} more chests"
+        }
+      ]
+    },
+    {
+      "tuid": "SHOW_FEWER_CHESTS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Weniger anzeigen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Show fewer"
+        }
+      ]
+    },
+    {
+      "tuid": "BRECILIAN_STANDING",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Brecilien-Ansehen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Brecilian standing"
+        }
+      ]
+    },
+    {
+      "tuid": "PLAYERS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Spieler"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Players"
+        }
+      ]
+    },
+    {
+      "tuid": "NORMAL_CHEST",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Normale Truhe"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Normal chest"
+        }
+      ]
+    },
+    {
+      "tuid": "MORE_ITEMS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "+{0} weitere Items"
+        },
+        {
+          "lang": "en-US",
+          "seg": "+{0} more items"
+        }
+      ]
+    },
+    {
+      "tuid": "SHOW_FEWER_ITEMS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Weniger Items anzeigen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Show fewer items"
+        }
+      ]
+    },
+    {
+      "tuid": "MORE_COMBAT_EVENTS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "+{0} weitere Tötungen/Tode"
+        },
+        {
+          "lang": "en-US",
+          "seg": "+{0} more kills/deaths"
+        }
+      ]
+    },
+    {
+      "tuid": "SHOW_FEWER_COMBAT_EVENTS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Weniger Tötungen/Tode anzeigen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Show fewer kills/deaths"
         }
       ]
     }

@@ -53,7 +53,7 @@ public static class DungeonAnalyticsService
         var might = dungeons.Sum(GetMight);
         var favor = dungeons.Sum(GetFavor);
         var lootValue = dungeons.Sum(GetLootValue);
-        var deaths = dungeons.Count(x => x.KillStatus == KillStatus.LocalPlayerDead);
+        var deaths = dungeons.Sum(x => x.CombatEvents.Count(combatEvent => combatEvent.Status == KillStatus.LocalPlayerDead));
         var averageRunTime = dungeons.Count == 0 ? 0 : dungeons.Average(x => x.EffectiveRunTimeInSeconds);
 
         return new PeriodTotals(dungeons.Count, durationInSeconds, fame, reSpec, silver, might, favor, lootValue, deaths, averageRunTime);

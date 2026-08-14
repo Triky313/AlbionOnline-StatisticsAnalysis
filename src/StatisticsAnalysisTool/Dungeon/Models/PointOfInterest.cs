@@ -18,11 +18,11 @@ public class PointOfInterest : BaseViewModel
     private ShrineBuff _shrineBuff;
     public string Hash => $"{Id}{UniqueName}";
 
-    public PointOfInterest(int id, string uniqueName)
+    public PointOfInterest(int id, string uniqueName, TreasureRarity rarity = TreasureRarity.Unknown)
     {
         Id = id;
         UniqueName = uniqueName;
-        Rarity = DungeonData.GetChestRarity(UniqueName);
+        Rarity = rarity == TreasureRarity.Unknown ? DungeonData.GetChestRarity(UniqueName) : rarity;
         ShrineBuff = DungeonData.GetShrineBuff(UniqueName);
         ShrineType = DungeonData.GetShrineType(UniqueName);
         Type = DungeonData.GetDungeonEventType(UniqueName);

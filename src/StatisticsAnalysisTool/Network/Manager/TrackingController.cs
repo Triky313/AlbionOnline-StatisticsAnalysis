@@ -223,6 +223,13 @@ public class TrackingController : ITrackingController
         Debug.Print("Stopped tracking");
     }
 
+    public void PrepareForShutdown()
+    {
+        CancelLogoutDetection();
+        StopTracking();
+        DungeonController.PrepareShutdownSaveSnapshot();
+    }
+
     public void BeginLogoutDetection()
     {
         CancelLogoutDetection();
@@ -250,35 +257,29 @@ public class TrackingController : ITrackingController
     {
         var cancellationToken = cancellationTokenSource.Token;
 
-        try
+        while (!cancellationToken.IsCancellationRequested)
         {
-            while (!cancellationToken.IsCancellationRequested)
+            var now = DateTime.UtcNow;
+            var logoutDuration = now - logoutStartUtc;
+
+            if (logoutDuration >= LogoutMaximumWaitDuration || IsLogoutConfirmedByServerSilence(now, logoutStartUtc, logoutDuration))
             {
-                var now = DateTime.UtcNow;
-                var logoutDuration = now - logoutStartUtc;
-
-                if (logoutDuration >= LogoutMaximumWaitDuration || IsLogoutConfirmedByServerSilence(now, logoutStartUtc, logoutDuration))
+                _mainWindowViewModel.MainStatusBindings.SetInGame(false);
+                var statisticsSessionEnded = StatisticController.EndSession(now);
+                if (ReferenceEquals(_logoutDetectionCancellationTokenSource, cancellationTokenSource))
                 {
-                    _mainWindowViewModel.MainStatusBindings.SetInGame(false);
-                    var statisticsSessionEnded = StatisticController.EndSession(now);
-                    if (ReferenceEquals(_logoutDetectionCancellationTokenSource, cancellationTokenSource))
-                    {
-                        _logoutDetectionCancellationTokenSource = null;
-                    }
-
-                    if (statisticsSessionEnded)
-                    {
-                        await StatisticController.SaveInFileAsync();
-                    }
-
-                    return;
+                    _logoutDetectionCancellationTokenSource = null;
                 }
 
-                await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+                if (statisticsSessionEnded)
+                {
+                    await StatisticController.SaveInFileAsync();
+                }
+
+                return;
             }
-        }
-        catch (OperationCanceledException)
-        {
+
+            await Task.Delay(TimeSpan.FromSeconds(1));
         }
     }
 

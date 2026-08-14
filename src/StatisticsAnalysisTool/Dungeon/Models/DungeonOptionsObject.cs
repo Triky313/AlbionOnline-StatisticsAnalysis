@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -7,26 +7,13 @@ namespace StatisticsAnalysisTool.Dungeon.Models;
 
 public class DungeonOptionsObject : BaseViewModel
 {
-    private bool _isDungeonClosedSoundActive;
     private bool _isDungeonPlayerLootVisible;
 
     public event EventHandler PlayerLootVisibilityChanged;
 
     public DungeonOptionsObject()
     {
-        IsDungeonClosedSoundActive = SettingsController.CurrentSettings.IsDungeonClosedSoundActive;
         IsDungeonPlayerLootVisible = SettingsController.CurrentSettings.IsDungeonPlayerLootVisible;
-    }
-
-    public bool IsDungeonClosedSoundActive
-    {
-        get => _isDungeonClosedSoundActive;
-        set
-        {
-            _isDungeonClosedSoundActive = value;
-            SettingsController.CurrentSettings.IsDungeonClosedSoundActive = _isDungeonClosedSoundActive;
-            OnPropertyChanged();
-        }
     }
 
     public bool IsDungeonPlayerLootVisible
@@ -50,8 +37,6 @@ public class DungeonOptionsObject : BaseViewModel
         OnPropertyChanged(null);
     }
 
-
     public static string TranslationSettings => LocalizationController.Translation("SETTINGS");
-    public static string TranslationDungeonClosedSoundActive => LocalizationController.Translation("DUNGEON_CLOSED_SOUND_ACTIVE");
     public static string TranslationDungeonPlayerLootVisible => LocalizationController.Translation("DUNGEON_PLAYER_LOOT_VISIBLE");
 }
