@@ -276,8 +276,24 @@ public static class DungeonData
 
     #region Chest
 
+    public static TreasureRarity GetChestRarity(string uniqueName, string prefabName)
+    {
+        var rarity = GetChestRarity(uniqueName);
+        if (rarity != TreasureRarity.Unknown)
+        {
+            return rarity;
+        }
+
+        return GetChestRarityFromPrefab(prefabName);
+    }
+
     public static TreasureRarity GetChestRarity(string value)
     {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return TreasureRarity.Unknown;
+        }
+
         if (value.Contains("_STANDARD")
             || value.Contains("AVALON") && value.Contains("STANDARD"))
         {
@@ -303,6 +319,18 @@ public static class DungeonData
         }
 
         return TreasureRarity.Unknown;
+    }
+
+    private static TreasureRarity GetChestRarityFromPrefab(string prefabName)
+    {
+        return prefabName switch
+        {
+            "LOOTCHEST_REGULAR_01" => TreasureRarity.Common,
+            "LOOTCHEST_REGULAR_02" => TreasureRarity.Uncommon,
+            "LOOTCHEST_REGULAR_03" => TreasureRarity.Rare,
+            "LOOTCHEST_REGULAR_04" => TreasureRarity.Legendary,
+            _ => TreasureRarity.Unknown
+        };
     }
 
     public static bool IsBossChest(string value)

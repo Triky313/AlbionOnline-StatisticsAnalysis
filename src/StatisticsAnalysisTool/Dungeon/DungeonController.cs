@@ -317,7 +317,7 @@ public sealed class DungeonController
         }
     }
 
-    public async Task RegisterDungeonChestAsync(int id, string uniqueName)
+    public async Task RegisterDungeonChestAsync(int id, string uniqueName, string prefabName)
     {
         if (GetCurrentDungeonMode() == DungeonMode.AbyssalDepths)
         {
@@ -332,7 +332,8 @@ public sealed class DungeonController
             return;
         }
 
-        await SetDungeonEventInformationAsync(id, uniqueName);
+        var rarity = DungeonData.GetChestRarity(uniqueName, prefabName);
+        await SetDungeonEventInformationAsync(id, uniqueName, rarity);
     }
 
     private void CacheAbyssalDepthsChestRarity(int id, TreasureRarity rarity)
@@ -353,7 +354,7 @@ public sealed class DungeonController
         return guid == null ? null : _mainWindowViewModel.DungeonBindings.Dungeons.FirstOrDefault(x => x.GuidList.Contains((Guid) guid));
     }
 
-    public async Task SetDungeonEventInformationAsync(int id, string uniqueName)
+    public async Task SetDungeonEventInformationAsync(int id, string uniqueName, TreasureRarity rarity = TreasureRarity.Unknown)
     {
         if (_currentGuid == null || uniqueName == null)
         {
@@ -368,7 +369,7 @@ public sealed class DungeonController
                 return;
             }
 
-            var eventObject = new PointOfInterest(id, uniqueName);
+            var eventObject = new PointOfInterest(id, uniqueName, rarity);
             await Application.Current.Dispatcher.InvokeAsync(() => { dun.Events?.Add(eventObject); });
 
             if (dun.Faction == Faction.Unknown)

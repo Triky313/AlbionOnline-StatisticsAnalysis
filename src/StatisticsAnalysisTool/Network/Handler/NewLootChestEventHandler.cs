@@ -10,7 +10,7 @@ public class NewLootChestEventHandler(TrackingController trackingController) : E
     protected override async Task OnActionAsync(NewLootChestEvent value)
     {
         var dungeonEventName = GetDungeonEventName(value);
-        await trackingController.DungeonController.RegisterDungeonChestAsync(value.ObjectId, dungeonEventName);
+        await trackingController.DungeonController.RegisterDungeonChestAsync(value.ObjectId, dungeonEventName, value.UniqueNameWithLocation);
         trackingController?.TreasureController?.AddTreasure(value.ObjectId, value.UniqueName, value.UniqueNameWithLocation);
         trackingController.LootController.SetIdentifiedBody(value.ObjectId, value.UniqueName);
         trackingController.DungeonController.SetLootSource(value.ObjectId, value.UniqueNameWithLocation, DungeonLootSourceType.Chest);
