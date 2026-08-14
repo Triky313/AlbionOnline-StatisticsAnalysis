@@ -76,6 +76,11 @@ public class MistsFragment : DungeonBaseFragment
         get => _rarity;
         set
         {
+            if (_rarity == value)
+            {
+                return;
+            }
+
             _rarity = value;
             OnPropertyChanged();
         }

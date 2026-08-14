@@ -314,24 +314,14 @@ public sealed class ClusterInfo : BaseViewModel
         IsSelectedInMapHistory = !IsSelectedInMapHistory;
     }
 
-    private MistsRarity GetMistsRarity(byte[] infoArray)
+    private static MistsRarity GetMistsRarity(byte[] infoArray)
     {
-        if (infoArray is null)
+        if (infoArray is not { Length: > 0 })
         {
             return MistsRarity.Unknown;
         }
 
-        var rarity = DungeonInformation[^1];
-
-        return rarity switch
-        {
-            0 => MistsRarity.Common,
-            1 => MistsRarity.Uncommon,
-            2 => MistsRarity.Rare,
-            3 => MistsRarity.Epic,
-            4 => MistsRarity.Legendary,
-            _ => MistsRarity.Unknown
-        };
+        return MistsRarityResolver.FromValue(infoArray[^1]);
     }
 
     public string TierRomanString

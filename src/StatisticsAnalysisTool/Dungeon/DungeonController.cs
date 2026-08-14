@@ -89,7 +89,7 @@ public sealed class DungeonController
 
             var newDungeon = CreateNewDungeon(mapType, ClusterController.CurrentCluster.SourceClusterIndex, mapGuid);
             newDungeon.PartySize = Math.Max(1, _mainWindowViewModel.PartyBindings.Party.Count);
-            UpdateCurrentDungeonLevel(newDungeon, sourceClusterIndex, sourceExitPosition);
+            UpdateCurrentDungeonFromEntrance(newDungeon, sourceClusterIndex, sourceExitPosition);
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 _mainWindowViewModel.DungeonBindings.Dungeons.Insert(0, newDungeon);
@@ -517,9 +517,9 @@ public sealed class DungeonController
         }
     }
 
-    public void UpdateCurrentDungeonLevel(DungeonBaseFragment dungeon, string sourceClusterIndex, WorldPosition? worldPosition)
+    private void UpdateCurrentDungeonFromEntrance(DungeonBaseFragment dungeon, string sourceClusterIndex, WorldPosition? worldPosition)
     {
-        if (dungeon is not RandomDungeonFragment randomDungeon)
+        if (dungeon is not (RandomDungeonFragment or MistsFragment))
         {
             return;
         }
@@ -538,26 +538,48 @@ public sealed class DungeonController
                 return;
             }
 
-            randomDungeon.MobHitPointsFactor = DungeonData.GetDungeonMobHitPointsFactor(discoveredRandomDungeonExit.DungeonType);
-            randomDungeon.ZoneLootFactor = DungeonData.GetDungeonZoneLootFactor(discoveredRandomDungeonExit.DungeonType);
-            randomDungeon.TrySetTierFromEntrance(DungeonData.GetDungeonTierFromExit(discoveredRandomDungeonExit.UniqueName));
-
-            var dungeonMode = DungeonData.GetRandomDungeonModeFromExit(discoveredRandomDungeonExit.UniqueName);
-            if (dungeonMode != DungeonMode.Unknown)
+            switch (dungeon)
             {
-                randomDungeon.Mode = dungeonMode;
+                case RandomDungeonFragment randomDungeon:
+                    UpdateRandomDungeonFromEntrance(randomDungeon, discoveredRandomDungeonExit);
+                    break;
+                case MistsFragment mists:
+                    UpdateMistsFromEntrance(mists, discoveredRandomDungeonExit);
+                    break;
             }
+        }
+    }
 
-            var faction = DungeonData.GetFaction(discoveredRandomDungeonExit.UniqueName);
-            if (faction != Faction.Unknown)
-            {
-                randomDungeon.Faction = faction;
-            }
+    private static void UpdateRandomDungeonFromEntrance(RandomDungeonFragment dungeon, RandomDungeonExitInfo exit)
+    {
+        dungeon.MobHitPointsFactor = DungeonData.GetDungeonMobHitPointsFactor(exit.DungeonType);
+        dungeon.ZoneLootFactor = DungeonData.GetDungeonZoneLootFactor(exit.DungeonType);
+        dungeon.TrySetTierFromEntrance(DungeonData.GetDungeonTierFromExit(exit.UniqueName));
 
-            if (discoveredRandomDungeonExit.HasVisibleLevel)
-            {
-                randomDungeon.TrySetLevelFromEntrance(discoveredRandomDungeonExit.Level);
-            }
+        var dungeonMode = DungeonData.GetRandomDungeonModeFromExit(exit.UniqueName);
+        if (dungeonMode != DungeonMode.Unknown)
+        {
+            dungeon.Mode = dungeonMode;
+        }
+
+        var faction = DungeonData.GetFaction(exit.UniqueName);
+        if (faction != Faction.Unknown)
+        {
+            dungeon.Faction = faction;
+        }
+
+        if (exit.HasVisibleLevel)
+        {
+            dungeon.TrySetLevelFromEntrance(exit.Level);
+        }
+    }
+
+    private static void UpdateMistsFromEntrance(MistsFragment mists, RandomDungeonExitInfo exit)
+    {
+        var rarity = exit.ResolvedMistsRarity;
+        if (rarity != MistsRarity.Unknown)
+        {
+            mists.Rarity = rarity;
         }
     }
 

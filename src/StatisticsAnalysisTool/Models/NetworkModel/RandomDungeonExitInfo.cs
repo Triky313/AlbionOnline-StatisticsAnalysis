@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using StatisticsAnalysisTool.Cluster;
 
 namespace StatisticsAnalysisTool.Models.NetworkModel;
 
@@ -13,4 +14,5 @@ public sealed class RandomDungeonExitInfo
     public bool IsAlreadyEntered { get; init; }
     public DateTime LastSeenUtc { get; init; } = DateTime.UtcNow;
     public bool HasVisibleLevel => !IsAlreadyEntered && Level is >= 0 and <= 4;
+    public MistsRarity ResolvedMistsRarity => UniqueName.StartsWith("MISTS_", StringComparison.Ordinal) ? MistsRarityResolver.FromValue(Level) : MistsRarity.Unknown;
 }
