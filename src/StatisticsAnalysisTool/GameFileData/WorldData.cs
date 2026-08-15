@@ -124,12 +124,18 @@ public static class WorldData
             MapType.Mists => LocalizationController.Translation("MISTS"),
             MapType.AbyssalDepths => LocalizationController.Translation("ABYSSALDEPTHS"),
             MapType.DragonArea => LocalizationController.Translation("DRAGONAREA"),
+            MapType.StaticDungeon => LocalizationController.Translation("STATIC_DUNGEONS"),
             _ => LocalizationController.Translation("UNKNOWN")
         };
     }
 
     public static MapType GetMapType(string index)
     {
+        if (string.IsNullOrWhiteSpace(index))
+        {
+            return MapType.Unknown;
+        }
+
         if (index.ToUpper().Contains("HELLCLUSTER"))
         {
             return MapType.HellGate;
@@ -185,7 +191,33 @@ public static class WorldData
             return MapType.DragonArea;
         }
 
+        var worldData = MapData?.FirstOrDefault(x => x?.Index == index);
+        if (IsStaticDungeon(worldData))
+        {
+            return MapType.StaticDungeon;
+        }
+
         return MapType.Unknown;
+    }
+
+    private static bool IsStaticDungeon(WorldJsonObject worldData)
+    {
+        return worldData?.Index is not null
+            && !worldData.Index.StartsWith("DNG-MISTS-", StringComparison.OrdinalIgnoreCase)
+            && IsStaticDungeonType(worldData.Type);
+    }
+
+    private static bool IsStaticDungeonType(string type)
+    {
+        return type is "DUNGEON_SAFEAREA"
+            or "DUNGEON_YELLOW"
+            or "DUNGEON_RED"
+            or "DUNGEON_BLACK_1"
+            or "DUNGEON_BLACK_2"
+            or "DUNGEON_BLACK_3"
+            or "DUNGEON_BLACK_4"
+            or "DUNGEON_BLACK_5"
+            or "DUNGEON_BLACK_6";
     }
 
     public static ClusterType GetClusterTypeByIndex(string index)

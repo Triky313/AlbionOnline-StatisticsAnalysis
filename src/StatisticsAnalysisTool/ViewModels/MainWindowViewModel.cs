@@ -133,6 +133,8 @@ public class MainWindowViewModel : BaseViewModel
             CreateDashboardContentFilterOption(DashboardContentType.SoloDungeon),
             CreateDashboardContentFilterOption(DashboardContentType.StandardDungeon),
             CreateDashboardContentFilterOption(DashboardContentType.AvalonDungeon),
+            CreateDashboardContentFilterOption(DashboardContentType.StaticDungeon),
+            CreateDashboardContentFilterOption(DashboardContentType.AvalonianRoads),
             CreateDashboardContentFilterOption(DashboardContentType.HellGate),
             CreateDashboardContentFilterOption(DashboardContentType.CorruptedDungeon),
             CreateDashboardContentFilterOption(DashboardContentType.Expedition),

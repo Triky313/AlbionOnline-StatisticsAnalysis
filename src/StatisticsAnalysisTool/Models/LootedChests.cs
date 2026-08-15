@@ -96,6 +96,8 @@ public class LootedChests : BaseViewModel
         new(DashboardContentType.SoloDungeon),
         new(DashboardContentType.StandardDungeon),
         new(DashboardContentType.AvalonDungeon),
+        new(DashboardContentType.StaticDungeon),
+        new(DashboardContentType.AvalonianRoads),
         new(DashboardContentType.OpenWorld),
         new(DashboardContentType.HellGate),
         new(DashboardContentType.CorruptedDungeon)

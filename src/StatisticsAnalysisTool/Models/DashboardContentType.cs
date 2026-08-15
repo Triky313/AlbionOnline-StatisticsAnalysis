@@ -13,5 +13,7 @@ public enum DashboardContentType
     AbyssalDepths,
     OpenWorld,
     Arena,
-    Others
+    Others,
+    StaticDungeon,
+    AvalonianRoads
 }

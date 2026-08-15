@@ -22,6 +22,8 @@ public static class DashboardContentTypeResolver
             MapType.Mists => DashboardContentType.Mists,
             MapType.MistsDungeon => DashboardContentType.MistsDungeon,
             MapType.AbyssalDepths => DashboardContentType.AbyssalDepths,
+            MapType.StaticDungeon => DashboardContentType.StaticDungeon,
+            MapType.Unknown when clusterMode == ClusterMode.AvalonTunnel => DashboardContentType.AvalonianRoads,
             MapType.Unknown when IsOpenWorldCluster(clusterMode) => DashboardContentType.OpenWorld,
             MapType.Arena => DashboardContentType.Arena,
             _ => DashboardContentType.Others
@@ -41,6 +43,8 @@ public static class DashboardContentTypeResolver
             DashboardContentType.Mists => "MISTS",
             DashboardContentType.MistsDungeon => "MISTS_DUNGEON",
             DashboardContentType.AbyssalDepths => "ABYSSALDEPTHS",
+            DashboardContentType.StaticDungeon => "STATIC_DUNGEONS",
+            DashboardContentType.AvalonianRoads => "AVALONIAN_ROADS",
             DashboardContentType.OpenWorld => "OPEN_WORLD",
             DashboardContentType.Arena => "ARENA",
             _ => "OTHERS"
@@ -60,6 +64,8 @@ public static class DashboardContentTypeResolver
             DashboardContentType.Mists => "SolidColorBrush.Dungeon.Mode.Mists.1",
             DashboardContentType.MistsDungeon => "SolidColorBrush.Dungeon.Mode.MistsDungeon.1",
             DashboardContentType.AbyssalDepths => "SolidColorBrush.Dungeon.Mode.AbyssalDepths.1",
+            DashboardContentType.StaticDungeon => "SolidColorBrush.Content.StaticDungeon",
+            DashboardContentType.AvalonianRoads => "SolidColorBrush.Content.AvalonianRoads",
             DashboardContentType.OpenWorld => "SolidColorBrush.Content.OpenWorld",
             DashboardContentType.Arena => "SolidColorBrush.Content.Arena",
             _ => "SolidColorBrush.Content.Others"

@@ -13,5 +13,6 @@ public enum MapType
     Mists,
     MistsDungeon,
     AbyssalDepths,
-    DragonArea
+    DragonArea,
+    StaticDungeon
 }
