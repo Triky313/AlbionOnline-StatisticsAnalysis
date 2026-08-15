@@ -451,10 +451,7 @@
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate DataType="{x:Type models:DashboardChartSeriesFilter}">
                                                         <Border Style="{StaticResource Dashboard.ChartFilter}">
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <Rectangle Width="10" Height="10" Fill="{Binding Brush}" Margin="0,0,6,0" VerticalAlignment="Center" />
-                                                                <CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected, Mode=TwoWay}" Checked="DashboardChartSeriesVisibility_Changed" Unchecked="DashboardChartSeriesVisibility_Changed" VerticalAlignment="Center" />
-                                                            </StackPanel>
+                                                            <CheckBox Content="{Binding Name}" Foreground="{Binding Brush}" IsChecked="{Binding IsSelected, Mode=TwoWay}" Checked="DashboardChartSeriesVisibility_Changed" Unchecked="DashboardChartSeriesVisibility_Changed" VerticalAlignment="Center" />
                                                         </Border>
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
