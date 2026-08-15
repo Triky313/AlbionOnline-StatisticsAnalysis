@@ -68,10 +68,9 @@ public sealed class BlackMarketBindings : BaseViewModel
         ItemsView.Filter = IsItemVisible;
         BuildRows();
         ResetChart();
-        _ = LoadAsync();
     }
 
-    public ObservableCollection<BlackMarketItemRow> Items { get; } = [];
+    public ObservableRangeCollection<BlackMarketItemRow> Items { get; } = [];
 
     public ICollectionView ItemsView { get; }
 
@@ -563,6 +562,7 @@ public sealed class BlackMarketBindings : BaseViewModel
     {
         Items.Clear();
         _rowsByKey.Clear();
+        var rows = new List<BlackMarketItemRow>();
 
         foreach (var item in ItemController.Items.Where(BlackMarketItemEligibility.IsEligible).OrderBy(x => x.LocalizedName))
         {
@@ -570,11 +570,12 @@ public sealed class BlackMarketBindings : BaseViewModel
             {
                 var key = (item.UniqueName, qualityLevel);
                 var row = new BlackMarketItemRow(item, qualityLevel, GetHistoryEntry(key));
-                Items.Add(row);
+                rows.Add(row);
                 _rowsByKey[key] = row;
             }
         }
 
+        Items.AddRange(rows);
         ItemCounterText = $"{Items.Count:N0}";
     }
 

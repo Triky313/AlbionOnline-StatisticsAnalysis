@@ -3,21 +3,18 @@ using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Localization;
-using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 
 namespace StatisticsAnalysisTool.DamageMeter;
 
-public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
+public class DamageMeterBindings : BaseViewModel
 {
     private List<DamageMeterSortStruct> _damageMeterSort = new();
     private DamageMeterSortStruct _damageMeterSortSelection;
@@ -48,7 +45,6 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
     private ObservableCollection<DamageStatsEntry> _topBurstDamageFiveSeconds = [];
     private ObservableCollection<DamageStatsEntry> _topBurstDamageTenSeconds = [];
     private ObservableCollection<DamageStatsEntry> _topAttackedTargets = [];
-    public Task Initialization { get; init; }
 
     public DamageMeterBindings()
     {
@@ -105,8 +101,6 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
         IsDamageMeterResetByMapChangeActive = SettingsController.CurrentSettings.IsDamageMeterResetByMapChangeActive;
         IsDamageMeterResetBeforeCombatActive = SettingsController.CurrentSettings.IsDamageMeterResetBeforeCombatActive;
         ShortDamageMeterToClipboard = SettingsController.CurrentSettings.ShortDamageMeterToClipboard;
-
-        Initialization = LoadLocalFileAsync();
     }
 
     #region Generally
@@ -668,13 +662,4 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
 
     #endregion
 
-    #region Load file
-
-    private async Task LoadLocalFileAsync()
-    {
-        DamageMeterSnapshots = await FileController.LoadAsync<List<DamageMeterSnapshot>>(
-            AppDataPaths.UserDataFile(Settings.Default.DamageMeterSnapshotsFileName));
-    }
-
-    #endregion
 }

@@ -205,8 +205,7 @@ public static class GameData
 
     private static async Task LoadItemGameDataAsync()
     {
-        await ItemController.LoadIndexedItemsDataAsync().ConfigureAwait(false);
-        await ItemController.LoadItemsDataAsync().ConfigureAwait(false);
+        await ItemController.LoadMainItemDataAsync().ConfigureAwait(false);
     }
 
     private static async Task LoadGameLocalizationsAsync(Extractor extractor, string gameFilesDirPath)

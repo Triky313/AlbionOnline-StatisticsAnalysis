@@ -82,8 +82,6 @@ public class CraftingBindings : BaseViewModel
         SelectedDailyBonus = DailyBonusOptions.First();
         SelectedHideoutBonus = HideoutBonusOptions.First();
         RefreshCraftingLocations(null);
-
-        _ = LoadAsync();
     }
 
     public ObservableCollection<Item> CraftableItems { get; }
@@ -859,6 +857,7 @@ public class CraftingBindings : BaseViewModel
 
     public async Task LoadAsync()
     {
+        var blackMarketLoadTask = IsBlackMarketEnabled ? BlackMarket.LoadAsync() : Task.CompletedTask;
         var craftings = await _controller.LoadAsync();
         SavedCraftings.Clear();
 
@@ -868,10 +867,7 @@ public class CraftingBindings : BaseViewModel
             SavedCraftings.Add(crafting);
         }
 
-        if (IsBlackMarketEnabled && _blackMarket != null)
-        {
-            await _blackMarket.LoadAsync();
-        }
+        await blackMarketLoadTask;
     }
 
     public async Task SaveInFileAsync()

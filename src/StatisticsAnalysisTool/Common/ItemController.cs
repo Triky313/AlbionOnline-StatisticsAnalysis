@@ -356,6 +356,20 @@ public static class ItemController
         return Items?.Count > 0;
     }
 
+    internal static async Task<bool> LoadMainItemDataAsync()
+    {
+        var indexedItemsTask = GetIndexedItemsFromLocal();
+        var itemsJsonTask = GetItemsJsonFromLocal(AppDataPaths.GameFile(Settings.Default.ItemsJsonFileName));
+
+        await Task.WhenAll(indexedItemsTask, itemsJsonTask).ConfigureAwait(false);
+
+        Items = await indexedItemsTask.ConfigureAwait(false);
+        RebuildItemLookup(Items);
+        _itemsJson = await itemsJsonTask.ConfigureAwait(false);
+
+        return InitializeLoadedItemsJson();
+    }
+
     private static async Task<ObservableCollection<Item>> GetIndexedItemsFromLocal()
     {
         try
@@ -531,6 +545,11 @@ public static class ItemController
         var localFilePath = AppDataPaths.GameFile(Settings.Default.ItemsJsonFileName);
         _itemsJson = await GetItemsJsonFromLocal(localFilePath).ConfigureAwait(false);
 
+        return InitializeLoadedItemsJson();
+    }
+
+    private static bool InitializeLoadedItemsJson()
+    {
         if (!IsItemsJsonLoaded())
         {
             ShopCategories = null;
