@@ -500,7 +500,8 @@
                                                          MistsTemplate="{StaticResource Dungeon.ModernRunEntry.Template}"
                                                          MistsDungeonTemplate="{StaticResource Dungeon.ModernRunEntry.Template}"
                                                          AbyssalDepthsTemplate="{StaticResource Dungeon.ModernRunEntry.Template}"
-                                                         DragonAreaTemplate="{StaticResource Dungeon.ModernRunEntry.Template}" />
+                                                         DragonAreaTemplate="{StaticResource Dungeon.ModernRunEntry.Template}"
+                                                         StaticDungeonTemplate="{StaticResource Dungeon.ModernRunEntry.Template}" />
                 </Grid.Resources>
                 <vwp:VirtualizingItemsControl ItemsSource="{Binding DungeonBindings.DungeonsCollectionView, IsAsync=True, Mode=OneWay}"
                                               ItemTemplateSelector="{StaticResource DungeonDataTemplateSelector}"

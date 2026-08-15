@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Diagnostics;
+using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Enumerations;
 using System;
 using System.Collections.Generic;
@@ -9,6 +9,7 @@ namespace StatisticsAnalysisTool.Network.Events;
 public class NewLootChestEvent
 {
     private const byte RarityParameterIndex = 21;
+    private const byte StaticDungeonRarityParameterIndex = 23;
 
     public int ObjectId { get; set; }
     public string UniqueName { get; set; }
@@ -34,7 +35,7 @@ public class NewLootChestEvent
                 UniqueNameWithLocation = string.IsNullOrEmpty(parameters[4].ToString()) ? string.Empty : parameters[4].ToString();
             }
 
-            Rarity = GetRarity(parameters);
+            Rarity = GetRarity(parameters, UniqueName);
         }
         catch (Exception e)
         {
@@ -42,10 +43,20 @@ public class NewLootChestEvent
         }
     }
 
-    private static TreasureRarity GetRarity(IReadOnlyDictionary<byte, object> parameters)
+    private static TreasureRarity GetRarity(IReadOnlyDictionary<byte, object> parameters, string uniqueName)
     {
-        if (!parameters.TryGetValue(RarityParameterIndex, out var rarityValue)
-            || !int.TryParse(rarityValue.ToString(), out var rarity))
+        var rarity = GetRarity(parameters, RarityParameterIndex);
+        return rarity != TreasureRarity.Unknown ? rarity : GetStaticDungeonRarity(parameters, uniqueName);
+    }
+
+    private static TreasureRarity GetStaticDungeonRarity(IReadOnlyDictionary<byte, object> parameters, string uniqueName)
+    {
+        return uniqueName?.StartsWith("STATIC_", StringComparison.Ordinal) == true ? GetRarity(parameters, StaticDungeonRarityParameterIndex) : TreasureRarity.Unknown;
+    }
+
+    private static TreasureRarity GetRarity(IReadOnlyDictionary<byte, object> parameters, byte parameterIndex)
+    {
+        if (!parameters.TryGetValue(parameterIndex, out var rarityValue) || !int.TryParse(rarityValue.ToString(), out var rarity))
         {
             return TreasureRarity.Unknown;
         }

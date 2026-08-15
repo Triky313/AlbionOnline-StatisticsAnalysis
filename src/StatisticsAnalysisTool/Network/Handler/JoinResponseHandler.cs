@@ -29,7 +29,12 @@ public class JoinResponseHandler(TrackingController trackingController) : Respon
         _mainWindowViewModel.MainStatusBindings.SetInGame(true);
         _mainWindowViewModel.MainStatusBindings.SetCharacter(value.Username);
 
-        trackingController.ClusterController.SetJoinClusterInformation(value.MapIndex, value.SourceClusterIndex, value.MapGuid, value.MapType);
+        var sourceClusterIndex = value.SourceClusterIndex;
+        if (value.MapType == Cluster.MapType.StaticDungeon && string.IsNullOrWhiteSpace(sourceClusterIndex))
+        {
+            sourceClusterIndex = Cluster.ClusterController.CurrentCluster.Index;
+        }
+        trackingController.ClusterController.SetJoinClusterInformation(value.MapIndex, sourceClusterIndex, value.MapGuid, value.MapType);
 
         _mainWindowViewModel.UserTrackingBindings.Username = value.Username;
         _mainWindowViewModel.UserTrackingBindings.GuildName = value.GuildName;
@@ -49,7 +54,7 @@ public class JoinResponseHandler(TrackingController trackingController) : Respon
             ObjectSubType = GameObjectSubType.LocalPlayer
         });
 
-        await trackingController.DungeonController.AddDungeonAsync(value.MapType, value.MapGuid, value.SourceClusterIndex, value.SourceExitPosition);
+        await trackingController.DungeonController.AddDungeonAsync(value.MapType, value.MapGuid, sourceClusterIndex, value.SourceExitPosition);
 
         await ResetSessionByMapChangeIfActiveAsync(hadActiveStatisticsSession);
         SetTrackingActivityText();

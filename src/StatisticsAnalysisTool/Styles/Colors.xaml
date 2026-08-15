@@ -167,10 +167,11 @@
     <Color x:Key="Dungeon.Mode.Solo.2">#FF159344</Color>
     <Color x:Key="Dungeon.Mode.Standard.1">#FF159BFF</Color>
     <Color x:Key="Dungeon.Mode.Standard.2">#FF0667B8</Color>
+    <Color x:Key="Dungeon.Mode.StaticDungeon.1">#FFBF6159</Color>
+    <Color x:Key="Dungeon.Mode.StaticDungeon.2">#FF8D3F39</Color>
     <Color x:Key="Dungeon.Mode.Avalon.1">#fffffaeb</Color>
     <Color x:Key="Dungeon.Mode.Avalon.2">#ffeddaa7</Color>
     <Color x:Key="Dungeon.Mode.Unknown">#FF7F8C99</Color>
-    <Color x:Key="Color.Content.StaticDungeon">#FFbf6159</Color>
     <Color x:Key="Color.Content.AvalonianRoads">#FFE9C86D</Color>
     <Color x:Key="Color.Content.OpenWorld">#FF00C7A5</Color>
     <Color x:Key="Color.Content.Arena">#FF4F6BFF</Color>
@@ -420,9 +421,10 @@
     <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Corrupted.1" Color="{StaticResource Dungeon.Mode.Corrupted.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Solo.1" Color="{StaticResource Dungeon.Mode.Solo.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Standard.1" Color="{StaticResource Dungeon.Mode.Standard.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.StaticDungeon.1" Color="{StaticResource Dungeon.Mode.StaticDungeon.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Avalon.1" Color="{StaticResource Dungeon.Mode.Avalon.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Unknown" Color="{StaticResource Dungeon.Mode.Unknown}"/>
-    <SolidColorBrush x:Key="SolidColorBrush.Content.StaticDungeon" Color="{StaticResource Color.Content.StaticDungeon}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Content.StaticDungeon" Color="{StaticResource Dungeon.Mode.StaticDungeon.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Content.AvalonianRoads" Color="{StaticResource Color.Content.AvalonianRoads}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Content.OpenWorld" Color="{StaticResource Color.Content.OpenWorld}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Content.Arena" Color="{StaticResource Color.Content.Arena}"/>

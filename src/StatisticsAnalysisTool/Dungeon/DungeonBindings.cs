@@ -491,7 +491,8 @@ public class DungeonBindings : BaseViewModel
             or DungeonMode.Avalon
             or DungeonMode.Mists
             or DungeonMode.MistsDungeon
-            or DungeonMode.AbyssalDepths;
+            or DungeonMode.AbyssalDepths
+            or DungeonMode.StaticDungeon;
     }
 
     private static bool SupportsEnchantment(DungeonMode mode)
@@ -506,6 +507,7 @@ public class DungeonBindings : BaseViewModel
             CreateContentTab("OVERVIEW", DungeonMode.Unknown),
             CreateContentTab("SOLO_DUNGEON", DungeonMode.Solo),
             CreateContentTab("STANDARD_DUNGEON", DungeonMode.Standard),
+            CreateContentTab("STATIC_DUNGEONS", DungeonMode.StaticDungeon),
             CreateContentTab("AVALONIAN_DUNGEON", DungeonMode.Avalon),
             CreateContentTab("CORRUPTED", DungeonMode.Corrupted),
             CreateContentTab("HELLGATE", DungeonMode.HellGate),
@@ -540,6 +542,7 @@ public class DungeonBindings : BaseViewModel
             DungeonMode.Mists => new DungeonStats { StatsMists = Stats.StatsMists },
             DungeonMode.MistsDungeon => new DungeonStats { StatsMistsDungeon = Stats.StatsMistsDungeon },
             DungeonMode.AbyssalDepths => new DungeonStats { StatsAbyssalDepths = Stats.StatsAbyssalDepths },
+            DungeonMode.StaticDungeon => new DungeonStats { StatsTotal = Stats.StatsTotal },
             _ => new DungeonStats { StatsTotal = Stats.StatsTotal }
         };
     }

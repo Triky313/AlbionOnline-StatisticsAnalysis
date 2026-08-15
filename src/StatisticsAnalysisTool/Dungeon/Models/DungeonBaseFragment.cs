@@ -617,6 +617,9 @@ public abstract class DungeonBaseFragment : BaseViewModel
                 Faction = Faction.DragonArea;
                 Mode = DungeonMode.DragonArea;
                 break;
+            case MapType.StaticDungeon:
+                Mode = DungeonMode.StaticDungeon;
+                break;
             case MapType.Unknown:
             default:
                 return;
@@ -673,6 +676,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
     public static string TranslationKilledBy => LocalizationController.Translation("KILLED_BY");
     public static string TranslationAbyssalDepths => LocalizationController.Translation("ABYSSALDEPTHS");
     public static string TranslationDragonArea => LocalizationController.Translation("DRAGONAREA");
+    public static string TranslationStaticDungeons => LocalizationController.Translation("STATIC_DUNGEONS");
     public static string TranslationLootEntries => LocalizationController.Translation("LOOT_ENTRIES");
     public static string TranslationShowCollectedLoot => LocalizationController.Translation("SHOW_COLLECTED_LOOT");
     public static string TranslationHideCollectedLoot => LocalizationController.Translation("HIDE_COLLECTED_LOOT");
@@ -696,6 +700,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
         DungeonMode.MistsDungeon => TranslationMistsDungeon,
         DungeonMode.AbyssalDepths => TranslationAbyssalDepths,
         DungeonMode.DragonArea => TranslationDragonArea,
+        DungeonMode.StaticDungeon => TranslationStaticDungeons,
         _ => TranslationUnknown
     };
 
@@ -716,6 +721,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
         DragonAreaFragment { PortalSize: DragonAreaPortalSize.Small } => "/Resources/ancient_lands_portal_small.png",
         DragonAreaFragment { PortalSize: DragonAreaPortalSize.Medium } => "/Resources/ancient_lands_portal_medium.png",
         DragonAreaFragment { PortalSize: DragonAreaPortalSize.Large } => "/Resources/ancient_lands_portal_big.png",
+        StaticDungeonFragment => "/Assets/MiniMapMarker/group_dungeon.png",
         _ => "/Assets/dungeon.png"
     };
 

@@ -157,7 +157,7 @@ public static class DungeonAnalyticsService
         return dungeon.Mode switch
         {
             DungeonMode.Solo or DungeonMode.Standard or DungeonMode.Avalon
-                or DungeonMode.Mists or DungeonMode.MistsDungeon => "T?",
+                or DungeonMode.Mists or DungeonMode.MistsDungeon or DungeonMode.StaticDungeon => "T?",
             _ => GetModeName(dungeon.Mode)
         };
     }
@@ -221,6 +221,7 @@ public static class DungeonAnalyticsService
             DungeonMode.MistsDungeon => "MISTS_DUNGEON",
             DungeonMode.AbyssalDepths => "ABYSSALDEPTHS",
             DungeonMode.DragonArea => "DRAGONAREA",
+            DungeonMode.StaticDungeon => "STATIC_DUNGEONS",
             _ => "UNKNOWN"
         };
 

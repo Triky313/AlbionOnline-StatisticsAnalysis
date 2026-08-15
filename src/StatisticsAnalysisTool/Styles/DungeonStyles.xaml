@@ -477,6 +477,17 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.StaticDungeon}">
+                <Setter Property="ToolTip" Value="{Binding TranslationStaticDungeons, IsAsync=True}"/>
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="{StaticResource Dungeon.Mode.StaticDungeon.1}" Offset="0.0" />
+                            <GradientStop Color="{StaticResource Dungeon.Mode.StaticDungeon.2}" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
             <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.Avalon}">
                 <Setter Property="ToolTip" Value="{Binding TranslationAvalon, IsAsync=True}"/>
                 <Setter Property="Background">
@@ -538,6 +549,10 @@
             <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.Standard}">
                 <Setter Property="ToolTip" Value="{Binding TranslationStandard, IsAsync=True}"/>
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Dungeon.Mode.Standard.1}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.StaticDungeon}">
+                <Setter Property="ToolTip" Value="{Binding TranslationStaticDungeons, IsAsync=True}"/>
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Dungeon.Mode.StaticDungeon.1}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static dungeon:DungeonMode.Avalon}">
                 <Setter Property="ToolTip" Value="{Binding TranslationAvalon, IsAsync=True}"/>

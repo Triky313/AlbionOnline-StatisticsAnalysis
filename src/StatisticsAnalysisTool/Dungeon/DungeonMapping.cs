@@ -101,6 +101,7 @@ public class DungeonMapping
             DungeonMode.MistsDungeon => new MistsDungeonFragment(dto),
             DungeonMode.AbyssalDepths => new AbyssalDepthsFragment(dto),
             DungeonMode.DragonArea => new DragonAreaFragment(dto),
+            DungeonMode.StaticDungeon => new StaticDungeonFragment(dto),
             _ => null
         };
 

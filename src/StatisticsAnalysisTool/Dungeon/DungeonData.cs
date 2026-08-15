@@ -24,6 +24,11 @@ public static class DungeonData
             return DungeonMode.Corrupted;
         }
 
+        if (value.Contains("STATIC_"))
+        {
+            return DungeonMode.StaticDungeon;
+        }
+
         if (value.Contains("HELL_") || value.Contains("HELLGATE"))
         {
             return DungeonMode.HellGate;
@@ -183,6 +188,11 @@ public static class DungeonData
 
     public static Faction GetFaction(string value)
     {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return Faction.Unknown;
+        }
+
         if (value.Contains("HIGHLAND_DEAD_DNG_HELL_BUFFSHRINE"))
         {
             return Faction.AbyssalDepths;
@@ -198,7 +208,7 @@ public static class DungeonData
             return Faction.Corrupted;
         }
 
-        if (value.Contains("KEEPER"))
+        if (value.Contains("KEEPER") || value.Contains("DNG-KPR") || value.Contains("_KPR_"))
         {
             return Faction.Keeper;
         }
@@ -208,12 +218,12 @@ public static class DungeonData
             return Faction.Heretic;
         }
 
-        if (value.Contains("MORGANA"))
+        if (value.Contains("MORGANA") || value.Contains("DNG-MOR") || value.Contains("_MOR_"))
         {
             return Faction.Morgana;
         }
 
-        if (value.Contains("UNDEAD"))
+        if (value.Contains("UNDEAD") || value.Contains("DNG-UND") || value.Contains("_UND_"))
         {
             return Faction.Undead;
         }
@@ -221,6 +231,20 @@ public static class DungeonData
         if (value.Contains("AVALON"))
         {
             return Faction.Avalon;
+        }
+
+        return Faction.Unknown;
+    }
+
+    public static Faction GetFaction(params string[] values)
+    {
+        foreach (var value in values ?? [])
+        {
+            var faction = GetFaction(value);
+            if (faction != Faction.Unknown)
+            {
+                return faction;
+            }
         }
 
         return Faction.Unknown;
@@ -250,7 +274,8 @@ public static class DungeonData
 
         if (value.Contains("CHEST") || value.Contains("AVALON") || value.Contains("HELL_STD_PVP")
             || value.Contains("HELL_HRD_PVP") || value.Contains("HELL_STD_PVE") || value.Contains("HELL_HRD_PVE")
-            || value.Contains("HD_DEMON_") || value.Contains("HIGHLAND_DEAD_DNG_HELL_CHEST") || value.Contains("TREASURE_"))
+            || value.Contains("HD_DEMON_") || value.Contains("HIGHLAND_DEAD_DNG_HELL_CHEST") || value.Contains("TREASURE_")
+            || value.StartsWith("STATIC_", StringComparison.Ordinal))
         {
             return EventType.Chest;
         }

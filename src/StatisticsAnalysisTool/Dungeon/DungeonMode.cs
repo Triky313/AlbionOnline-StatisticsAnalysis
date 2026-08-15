@@ -12,5 +12,6 @@ public enum DungeonMode
     Mists,
     MistsDungeon,
     AbyssalDepths,
-    DragonArea
+    DragonArea,
+    StaticDungeon
 }
