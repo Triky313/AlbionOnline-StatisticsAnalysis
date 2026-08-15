@@ -547,17 +547,23 @@ public class LootController : ILootController
 
     private void AddTopLooter(string name, int quantity)
     {
-        var looter = _mainWindowViewModel?.LoggingBindings?.TopLooters?.ToList().FirstOrDefault(x => string.Equals(x?.PlayerName, name, StringComparison.CurrentCultureIgnoreCase));
-        if (looter != null)
-        {
-            looter.Quantity += quantity;
-            looter.LootActions++;
-            return;
-        }
-
         Application.Current.Dispatcher.Invoke(() =>
         {
-            _mainWindowViewModel?.LoggingBindings?.TopLooters?.Add(new TopLooterObject(name, quantity, 1));
+            var topLooters = _mainWindowViewModel?.LoggingBindings?.TopLooters;
+            if (topLooters == null)
+            {
+                return;
+            }
+
+            var looter = topLooters.FirstOrDefault(x => string.Equals(x?.PlayerName, name, StringComparison.CurrentCultureIgnoreCase));
+            if (looter != null)
+            {
+                looter.Quantity += quantity;
+                looter.LootActions++;
+                return;
+            }
+
+            topLooters.Add(new TopLooterObject(name, quantity, 1));
         });
     }
 
