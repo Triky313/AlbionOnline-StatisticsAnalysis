@@ -1,5 +1,4 @@
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections.Generic;
@@ -12,12 +11,14 @@ public static class DamageMeterContentSnapshotFactory
     public static DamageMeterContentSnapshot Create(
         List<KeyValuePair<Guid, PlayerGameObject>> entities,
         DamageStatsSnapshot trackerSnapshot,
-        DamageMeterYourStatsSnapshot yourStats)
+        DamageMeterYourStatsSnapshot yourStats,
+        IReadOnlyCollection<MobDamageMeterFragment> mobDamageMeter)
     {
         var fragments = entities.Select(x => CreateFragment(x.Value, entities)).ToList();
         return new DamageMeterContentSnapshot
         {
             DamageMeter = fragments,
+            MobDamageMeter = mobDamageMeter?.ToList() ?? [],
             DamageStats = new DamageStatsSnapshot
             {
                 TopSingleHits = trackerSnapshot.TopSingleHits,
@@ -37,7 +38,7 @@ public static class DamageMeterContentSnapshotFactory
         PlayerGameObject player,
         List<KeyValuePair<Guid, PlayerGameObject>> entities)
     {
-        var mainHand = ItemController.GetItemByIndex(player.CharacterEquipment?.MainHand ?? 0);
+        var mainHand = DamageMeterWeaponResolver.GetWeaponByIndex(player.LastContributionWeaponItemIndex);
         return new DamageMeterSnapshotFragment
         {
             CauserGuid = player.UserGuid,

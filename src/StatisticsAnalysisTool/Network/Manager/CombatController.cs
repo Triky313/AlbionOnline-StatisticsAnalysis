@@ -94,6 +94,7 @@ public class CombatController
                 return Task.CompletedTask;
             }
 
+            RecordLastContributionWeapon(causerGameObjectValue, contentStats);
             causerGameObjectValue.Damage += damageChangeValue;
             AddOrUpdateSpell(causingSpellIndex, causerGameObjectValue, causerGameObjectValue.Spells, healthChangeType, damageChangeValue);
             lock (contentStats.SyncRoot)
@@ -116,6 +117,7 @@ public class CombatController
             }
 
             var positiveHealChangeValue = (int) Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
+            RecordLastContributionWeapon(causerGameObjectValue, contentStats);
             if (!IsMaxHealthReached(affectedId, newHealthValue))
             {
                 causerGameObjectValue.Heal += positiveHealChangeValue;
@@ -269,7 +271,6 @@ public class CombatController
                 .ToDictionary(x => x.Key, x => x.Value);
             var fragments = MobDamageMeterFragmentFactory.Create(
                 mobStats,
-                playerGuid => ResolvePlayerMainHand(playersByGuid, playerGuid),
                 (playerGuid, spellIndex) => ResolvePlayerSpellItemIndex(playersByGuid, playerGuid, spellIndex));
 
             await Application.Current.Dispatcher.InvokeAsync(
@@ -285,17 +286,19 @@ public class CombatController
         }
     }
 
-    private static Item ResolvePlayerMainHand(IReadOnlyDictionary<Guid, PlayerGameObject> playersByGuid, Guid playerGuid)
+    private static void RecordLastContributionWeapon(PlayerGameObject player, DamageMeterPlayerStats contentStats)
     {
-        if (!playersByGuid.TryGetValue(playerGuid, out var player))
+        var weaponItemIndex = DamageMeterWeaponResolver.GetEquippedWeaponItemIndex(player);
+        if (weaponItemIndex <= 0)
         {
-            return null;
+            return;
         }
 
-        var item = ItemController.GetItemByIndex(player.CharacterEquipment?.MainHand ?? 0);
-        return item?.FullItemInformation?.ItemType is ItemType.TransformationWeapon or ItemType.Weapon
-            ? item
-            : null;
+        player.LastContributionWeaponItemIndex = weaponItemIndex;
+        lock (contentStats.SyncRoot)
+        {
+            contentStats.LastContributionWeaponItemIndex = weaponItemIndex;
+        }
     }
 
     private int ResolvePlayerSpellItemIndex(
@@ -317,7 +320,6 @@ public class CombatController
         var maximumHeal = entities.GetCurrentTotalHeal();
         var maximumTakenDamage = entities.GetCurrentTotalTakenDamage();
 
-        _trackingController.EntityController.DetectUsedWeapon();
         var fragmentsByCauser = damageMeter
             .GroupBy(x => x.CauserGuid)
             .ToDictionary(x => x.Key, x => x.First());
@@ -349,11 +351,8 @@ public class CombatController
     {
         var healthChangeObjectValue = healthChangeObject.Value;
 
-        if (healthChangeObjectValue?.CharacterEquipment?.MainHand != null)
-        {
-            var item = ItemController.GetItemByIndex(healthChangeObjectValue.CharacterEquipment?.MainHand);
-            fragment.CauserMainHand = item?.FullItemInformation?.ItemType is ItemType.TransformationWeapon or ItemType.Weapon ? item : null;
-        }
+        fragment.CauserMainHand = DamageMeterWeaponResolver.GetWeaponByIndex(
+            healthChangeObjectValue.LastContributionWeaponItemIndex);
 
         // Damage
         fragment.DamageInPercent = CalculateBarPercentage(healthChangeObjectValue.Damage, maximumDamage);
@@ -408,7 +407,8 @@ public class CombatController
         }
 
         var healthChangeObjectValue = healthChangeObject.Value;
-        var item = ItemController.GetItemByIndex(healthChangeObject.Value?.CharacterEquipment?.MainHand ?? 0);
+        var item = DamageMeterWeaponResolver.GetWeaponByIndex(
+            healthChangeObjectValue.LastContributionWeaponItemIndex);
 
         var spells = new ObservableCollection<UsedSpellFragment>();
         await AddOrUpdateSpellFragmentAsync(spells, healthChangeObjectValue.Spells);
@@ -652,14 +652,18 @@ public class CombatController
 
     private DamageMeterSnapshot CreateDamageMeterSnapshot()
     {
+        var playersByGuid = _trackingController.EntityController
+            .GetAllEntities()
+            .Where(x => x.Value != null)
+            .ToDictionary(x => x.Key, x => x.Value);
         var snapshot = new DamageMeterSnapshot
         {
-            AllContent = CreateDamageMeterContentSnapshot(null)
+            AllContent = CreateDamageMeterContentSnapshot(null, playersByGuid)
         };
 
         foreach (var contentType in DashboardContentTypeResolver.ContentTypes)
         {
-            var contentSnapshot = CreateDamageMeterContentSnapshot(contentType);
+            var contentSnapshot = CreateDamageMeterContentSnapshot(contentType, playersByGuid);
             if (contentSnapshot.HasData)
             {
                 snapshot.ContentSnapshots[contentType] = contentSnapshot;
@@ -670,7 +674,9 @@ public class CombatController
         return snapshot;
     }
 
-    private DamageMeterContentSnapshot CreateDamageMeterContentSnapshot(DashboardContentType? contentType)
+    private DamageMeterContentSnapshot CreateDamageMeterContentSnapshot(
+        DashboardContentType? contentType,
+        IReadOnlyDictionary<Guid, PlayerGameObject> playersByGuid)
     {
         var entities = _trackingController.EntityController
             .GetAllEntitiesWithDamageOrHealAndInParty(contentType);
@@ -681,11 +687,15 @@ public class CombatController
             .ToList();
         var trackerSnapshot = GetDamageStatsTracker(contentType)
             .CreateSnapshot(activePlayerGuids, healingPlayerGuids);
+        var mobDamageMeter = MobDamageMeterFragmentFactory.Create(
+            CombatEventTracker.GetMobDamageStats(contentType),
+            (playerGuid, spellIndex) => ResolvePlayerSpellItemIndex(playersByGuid, playerGuid, spellIndex));
 
         return DamageMeterContentSnapshotFactory.Create(
             entities,
             trackerSnapshot,
-            CreateYourStatsSnapshot(contentType));
+            CreateYourStatsSnapshot(contentType),
+            mobDamageMeter);
     }
 
     private void UpdateDamageStatsUiIfAllowed()

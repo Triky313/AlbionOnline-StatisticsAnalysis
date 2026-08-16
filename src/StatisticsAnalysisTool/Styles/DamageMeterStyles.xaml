@@ -47,6 +47,50 @@
         <Setter Property="Margin" Value="0,0,5,0" />
     </Style>
 
+    <Style x:Key="DamageMeter.TierBadge" TargetType="{x:Type Border}" BasedOn="{StaticResource DamageMeter.MobBadge}">
+        <Style.Triggers>
+            <Trigger Property="Tag" Value="{x:Static enumerations:Tier.T1}">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Item.Tier.Color.1}" />
+            </Trigger>
+            <Trigger Property="Tag" Value="{x:Static enumerations:Tier.T2}">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Item.Tier.Color.2}" />
+            </Trigger>
+            <Trigger Property="Tag" Value="{x:Static enumerations:Tier.T3}">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Item.Tier.Color.3}" />
+            </Trigger>
+            <Trigger Property="Tag" Value="{x:Static enumerations:Tier.T4}">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Item.Tier.Color.4}" />
+            </Trigger>
+            <Trigger Property="Tag" Value="{x:Static enumerations:Tier.T5}">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Item.Tier.Color.5}" />
+            </Trigger>
+            <Trigger Property="Tag" Value="{x:Static enumerations:Tier.T6}">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Item.Tier.Color.6}" />
+            </Trigger>
+            <Trigger Property="Tag" Value="{x:Static enumerations:Tier.T7}">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Item.Tier.Color.7}" />
+            </Trigger>
+            <Trigger Property="Tag" Value="{x:Static enumerations:Tier.T8}">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Item.Tier.Color.8}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="DamageMeter.MobRankBadge" TargetType="{x:Type Border}" BasedOn="{StaticResource DamageMeter.MobBadge}">
+        <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="TextElement.Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding MobRankCategory}" Value="{x:Static damageMeter:MobRankCategory.Elite}">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Accent.Yellow.1}" />
+                <Setter Property="TextElement.Foreground" Value="{StaticResource SolidColorBrush.Accent.Yellow.1}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding MobRankCategory}" Value="{x:Static damageMeter:MobRankCategory.Boss}">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Accent.Red.3}" />
+                <Setter Property="TextElement.Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.3}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
     <Style TargetType="ProgressBar" x:Key="DamageMeter.ProgressBar.Colors">
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.UnknownWeaponType}" />
         <Style.Triggers>
@@ -321,100 +365,69 @@
     <!-- Mob damage meter -->
     <DataTemplate x:Key="MobDamageMeterFragmentTemplate" DataType="{x:Type damageMeter:MobDamageMeterFragment}">
         <StackPanel>
-            <Border MinWidth="980" Height="72" Margin="3,2,3,1"
-                    Background="{StaticResource SolidColorBrush.Background.2}"
-                    BorderBrush="{StaticResource SolidColorBrush.Background.3}"
-                    BorderThickness="1" CornerRadius="6">
+            <Border MinWidth="980" Height="70" Margin="3,0,5,0" BorderBrush="{StaticResource SolidColorBrush.Background.3}" BorderThickness="1" CornerRadius="5">
                 <Grid ToolTip="{Binding UniqueName}">
                     <Grid.InputBindings>
                         <MouseBinding MouseAction="LeftClick" Command="{Binding ShowPlayers}" />
                     </Grid.InputBindings>
-                    <ProgressBar common:ProgressBarSmoother.SmoothValue="{Binding DamageInPercent}"
-                                 Minimum="0" Maximum="100"
-                                 Background="#00FFFFFF" BorderThickness="0"
-                                 Foreground="{StaticResource SolidColorBrush.Accent.Blue.Transparent.3}"
-                                 Opacity="0.28" />
-                    <Grid Margin="7" Panel.ZIndex="1">
+                    <Grid Margin="5,5,5,5">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="58" />
-                            <ColumnDefinition Width="185" />
+                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="225" />
                             <ColumnDefinition Width="130" />
-                            <ColumnDefinition Width="90" />
-                            <ColumnDefinition Width="90" />
-                            <ColumnDefinition Width="105" />
-                            <ColumnDefinition Width="65" />
+                            <ColumnDefinition Width="110" />
+                            <ColumnDefinition Width="110" />
+                            <ColumnDefinition Width="110" />
+                            <ColumnDefinition Width="70" />
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="28" />
+                            <ColumnDefinition Width="30" />
                         </Grid.ColumnDefinitions>
 
-                        <Border Grid.Column="0" Width="58" Height="58"
-                                Background="{StaticResource SolidColorBrush.Background.3}"
-                                BorderBrush="{StaticResource SolidColorBrush.Button.Border.Normal}"
-                                BorderThickness="1" CornerRadius="5" ClipToBounds="True">
-                            <Image Width="58" Height="58" Source="{Binding AvatarSource}" Stretch="UniformToFill" />
-                        </Border>
+                        <Image Grid.Column="0" Width="100" Height="100" Source="{Binding AvatarSource}" Stretch="UniformToFill" Margin="-10,-20,0,0" />
 
-                        <Grid Grid.Column="1" Margin="10,0,6,0">
+                        <Grid Grid.Column="1" Margin="5,0,5,0">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" VerticalAlignment="Center" FontSize="15" FontWeight="SemiBold"
-                                       Text="{Binding Name}" TextTrimming="CharacterEllipsis" />
+                            <TextBlock Grid.Row="0" VerticalAlignment="Center" FontSize="14" FontWeight="SemiBold" Text="{Binding Name}" TextTrimming="CharacterEllipsis" />
                             <StackPanel Grid.Row="1" Orientation="Horizontal">
-                                <Border Style="{StaticResource DamageMeter.MobBadge}">
-                                    <TextBlock FontSize="10" FontWeight="Bold" Text="{Binding MobTierString}" />
+                                <Border Style="{StaticResource DamageMeter.TierBadge}" Tag="{Binding MobTier}">
+                                    <TextBlock FontSize="12" FontWeight="Bold" Text="{Binding MobTierString}" />
                                 </Border>
-                                <Border Style="{StaticResource DamageMeter.MobBadge}" MaxWidth="78">
-                                    <TextBlock FontSize="10" Text="{Binding MobType}" TextTrimming="CharacterEllipsis" />
+                                <Border Style="{StaticResource DamageMeter.MobBadge}" MaxWidth="120">
+                                    <TextBlock FontSize="12" Text="{Binding MobType}" TextTrimming="CharacterEllipsis" />
                                 </Border>
-                                <Border Style="{StaticResource DamageMeter.MobBadge}">
-                                    <TextBlock FontSize="10" Text="{Binding MobRank}" />
+                                <Border Style="{StaticResource DamageMeter.MobRankBadge}">
+                                    <TextBlock FontSize="12" Text="{Binding MobRank}" />
                                 </Border>
                             </StackPanel>
                         </Grid>
 
-                        <StackPanel Grid.Column="2" Margin="6,0" VerticalAlignment="Center"
-                                    ToolTip="{Binding TranslationFirstAttackTime}">
-                            <TextBlock HorizontalAlignment="Center" FontWeight="SemiBold"
-                                       Text="{Binding FirstAttackTimeLocal, StringFormat={}{0:g}}" />
-                            <TextBlock HorizontalAlignment="Center" FontSize="10" Opacity="0.55"
-                                       Text="{Binding TranslationFirstAttackTime}" />
+                        <StackPanel Grid.Column="2" Margin="0,0" VerticalAlignment="Center" ToolTip="{Binding TranslationFirstAttackTime}">
+                            <TextBlock HorizontalAlignment="Center" FontWeight="SemiBold" Text="{Binding FirstAttackTimeLocal, StringFormat={}{0:g}}" />
+                            <TextBlock HorizontalAlignment="Center" FontSize="11" Opacity="0.35" Text="{Binding TranslationFirstAttackTime}" />
                         </StackPanel>
 
                         <StackPanel Grid.Column="3" Margin="6,0" VerticalAlignment="Center">
-                            <TextBlock HorizontalAlignment="Center" FontSize="15" FontWeight="Bold"
-                                       Text="{Binding DamageShortString}" />
-                            <TextBlock HorizontalAlignment="Center" FontSize="10" Opacity="0.65"
-                                       Text="{Binding DamagePercentage, StringFormat={}{0:N2}%}" />
+                            <TextBlock HorizontalAlignment="Center" FontSize="15" FontWeight="Bold" Text="{Binding DamageShortString}" />
+                            <TextBlock HorizontalAlignment="Center" FontSize="11" Opacity="0.65" Text="{Binding DamagePercentage, StringFormat={}{0:N2}%}" />
                         </StackPanel>
 
-                        <TextBlock Grid.Column="4" Margin="6,0" HorizontalAlignment="Center"
-                                   VerticalAlignment="Center" FontSize="15" FontWeight="Bold"
-                                   Foreground="{StaticResource SolidColorBrush.Accent.Green.4}"
-                                   Text="{Binding DpsShortString, StringFormat={}{0}/dps}" />
+                        <TextBlock Grid.Column="4" Margin="6,0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" FontWeight="Bold"
+                                   Foreground="{StaticResource SolidColorBrush.Accent.Green.4}" Text="{Binding DpsShortString, StringFormat={}{0}/dps}" />
 
-                        <StackPanel Grid.Column="5" Margin="6,0" HorizontalAlignment="Center"
-                                    VerticalAlignment="Center" Orientation="Horizontal"
-                                    ToolTip="{Binding TranslationCombatTime}">
-                            <fa5:ImageAwesome Width="15" Height="15" Margin="0,0,7,0"
-                                              Icon="Regular_Clock"
-                                              Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                            <TextBlock VerticalAlignment="Center" FontWeight="SemiBold"
-                                       Text="{Binding CombatTimeString}" />
+                        <StackPanel Grid.Column="5" Margin="6,0" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" ToolTip="{Binding TranslationCombatTime}">
+                            <fa5:ImageAwesome Width="15" Height="15" Margin="0,0,7,0" Icon="Regular_Clock" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                            <TextBlock VerticalAlignment="Center" FontWeight="SemiBold" Text="{Binding CombatTimeString}" />
                         </StackPanel>
 
-                        <StackPanel Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                    Orientation="Horizontal" ToolTip="{Binding TranslationPlayers}">
-                            <fa5:ImageAwesome Width="16" Height="16" Margin="0,0,7,0"
-                                              Icon="Solid_Users"
-                                              Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                            <TextBlock VerticalAlignment="Center" FontSize="14" FontWeight="Bold"
-                                       Text="{Binding PlayerCount}" />
+                        <StackPanel Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" ToolTip="{Binding TranslationPlayers}">
+                            <fa5:ImageAwesome Width="16" Height="16" Margin="0,0,7,0" Icon="Solid_Users" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                            <TextBlock VerticalAlignment="Center" FontSize="14" FontWeight="Bold" Text="{Binding PlayerCount}" />
                         </StackPanel>
 
-                        <Border Grid.Column="7" Margin="8,0,4,0" Padding="10,5"
-                                Background="{StaticResource SolidColorBrush.Accent.Blue.Transparent.5}"
+                        <Border Grid.Column="7" Margin="8,0,4,0" Padding="10,5" Background="{StaticResource SolidColorBrush.Accent.Blue.Transparent.5}"
                                 CornerRadius="5" ToolTip="{Binding TranslationLocation}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -422,20 +435,17 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                    <TextBlock FontWeight="SemiBold" Text="{Binding ContentTypeName}"
-                                               TextTrimming="CharacterEllipsis" />
-                                    <TextBlock Margin="0,2,0,0" FontSize="11" Opacity="0.72"
-                                               Text="{Binding MapName}" TextTrimming="CharacterEllipsis" />
+                                    <TextBlock FontWeight="SemiBold" Text="{Binding ContentTypeName}" TextTrimming="CharacterEllipsis" />
+                                    <TextBlock Margin="0,2,0,0" FontSize="11" Opacity="0.72" Text="{Binding MapName}" TextTrimming="CharacterEllipsis" />
                                 </StackPanel>
                                 <Border Grid.Column="1" Margin="8,0,0,0" VerticalAlignment="Center"
-                                        Style="{StaticResource DamageMeter.MobBadge}">
+                                        Style="{StaticResource DamageMeter.TierBadge}" Tag="{Binding MapTier}">
                                     <TextBlock FontSize="10" FontWeight="Bold" Text="{Binding MapTierString}" />
                                 </Border>
                             </Grid>
                         </Border>
 
-                        <Grid Grid.Column="8" Width="16" Height="16"
-                              HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Grid Grid.Column="8" Width="16" Height="16" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <fa5:ImageAwesome Foreground="{StaticResource SolidColorBrush.Text.1}">
                                 <fa5:ImageAwesome.Style>
                                     <Style TargetType="{x:Type fa5:ImageAwesome}">
@@ -455,8 +465,7 @@
             <Border MinWidth="980" Margin="28,0,3,6" Padding="0,2,0,0"
                     BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.Transparent.5}"
                     BorderThickness="1,0,0,0" Visibility="{Binding PlayersContainerVisibility}">
-                <ItemsControl ItemsSource="{Binding Players, IsAsync=True, Mode=OneWay}"
-                              ItemTemplate="{StaticResource DamageMeterFragmentTemplate}" />
+                <ItemsControl ItemsSource="{Binding Players, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource DamageMeterFragmentTemplate}" />
             </Border>
         </StackPanel>
     </DataTemplate>

@@ -77,6 +77,7 @@ public sealed class CombatEventTracker(TrackingController trackingController)
         {
             return _mobDamageStatsByInstance.Values
                 .SelectMany(x => x.Values)
+                .Where(x => x.IsConfirmedMob)
                 .Where(x => !contentType.HasValue || x.ContentType == contentType.Value)
                 .Select(x => x.Clone())
                 .ToList();
@@ -428,7 +429,13 @@ public sealed class CombatEventTracker(TrackingController trackingController)
             statsByContent.Add(contentType, mobDamageStats);
         }
 
-        mobDamageStats.RecordDamage(sourcePlayer?.UserGuid, sourcePlayer?.Name ?? string.Empty, causingSpellIndex, value, DateTime.UtcNow);
+        mobDamageStats.RecordDamage(
+            sourcePlayer?.UserGuid,
+            sourcePlayer?.Name ?? string.Empty,
+            causingSpellIndex,
+            sourcePlayer?.LastContributionWeaponItemIndex ?? 0,
+            value,
+            DateTime.UtcNow);
     }
 
     private void UpdateMobDamageStats(CombatMobCacheEntry mob)

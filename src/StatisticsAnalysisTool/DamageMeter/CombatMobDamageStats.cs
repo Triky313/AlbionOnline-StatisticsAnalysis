@@ -17,6 +17,7 @@ public sealed class CombatMobDamageStats
     public string ClusterKey { get; init; } = string.Empty;
     public string ClusterName { get; init; } = string.Empty;
     public DashboardContentType ContentType { get; init; }
+    public bool IsConfirmedMob { get; private set; }
     public Tier MapTier { get; private set; } = Tier.Unknown;
     public DateTime FirstSeen { get; init; }
     public DateTime FirstDamageTime { get; private set; }
@@ -32,9 +33,10 @@ public sealed class CombatMobDamageStats
         TypeId = mob.TypeId;
         MaxHealth = mob.MaxHealth;
         MapTier = mob.MapTier;
+        IsConfirmedMob = !mob.IsProvisional;
     }
 
-    internal void RecordDamage(Guid? playerGuid, string playerName, int causingSpellIndex, long value, DateTime timestamp)
+    internal void RecordDamage(Guid? playerGuid, string playerName, int causingSpellIndex, int weaponItemIndex, long value, DateTime timestamp)
     {
         if (value <= 0)
         {
@@ -59,7 +61,7 @@ public sealed class CombatMobDamageStats
             _players.Add(playerGuid.Value, playerStats);
         }
 
-        playerStats.RecordDamage(playerName, causingSpellIndex, value, timestamp);
+        playerStats.RecordDamage(playerName, causingSpellIndex, weaponItemIndex, value, timestamp);
     }
 
     internal CombatMobDamageStats Clone()
@@ -74,6 +76,7 @@ public sealed class CombatMobDamageStats
             ClusterKey = ClusterKey,
             ClusterName = ClusterName,
             ContentType = ContentType,
+            IsConfirmedMob = IsConfirmedMob,
             MapTier = MapTier,
             FirstSeen = FirstSeen,
             FirstDamageTime = FirstDamageTime,

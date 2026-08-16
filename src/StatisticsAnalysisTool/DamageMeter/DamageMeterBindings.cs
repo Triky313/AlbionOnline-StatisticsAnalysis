@@ -106,6 +106,7 @@ public class DamageMeterBindings : BaseViewModel
         DamageMeterSnapshotSort.Add(sortByHealStruct);
         DamageMeterSnapshotSort.Add(sortByHpsStruct);
         DamageMeterSnapshotSort.Add(takenDamageStruct);
+        DamageMeterSnapshotSort.Add(sortByMobStruct);
         DamageMeterSnapshotSortSelection = sortByDamageStruct;
 
         IsSnapshotAfterMapChangeActive = SettingsController.CurrentSettings.IsSnapshotAfterMapChangeActive;
@@ -156,34 +157,43 @@ public class DamageMeterBindings : BaseViewModel
 
     public void SetMobDamageMeter(IReadOnlyCollection<MobDamageMeterFragment> fragments)
     {
-        var expandedMobIds = MobDamageMeter
-            .Where(x => x.PlayersContainerVisibility == Visibility.Visible)
-            .Select(x => x.MobInstanceId)
-            .ToHashSet();
-        var expandedPlayers = MobDamageMeter
-            .SelectMany(mob => mob.Players
-                .Where(player => player.SpellsContainerVisibility == Visibility.Visible)
-                .Select(player => (mob.MobInstanceId, player.CauserGuid)))
-            .ToHashSet();
         var updatedFragments = fragments.ToList();
+        var updatedKeys = updatedFragments
+            .Select(GetMobFragmentKey)
+            .ToHashSet();
 
-        foreach (var fragment in updatedFragments)
+        for (var index = MobDamageMeter.Count - 1; index >= 0; index--)
         {
-            if (expandedMobIds.Contains(fragment.MobInstanceId))
+            if (!updatedKeys.Contains(GetMobFragmentKey(MobDamageMeter[index])))
             {
-                fragment.PlayersContainerVisibility = Visibility.Visible;
-            }
-
-            foreach (var player in fragment.Players)
-            {
-                if (expandedPlayers.Contains((fragment.MobInstanceId, player.CauserGuid)))
-                {
-                    player.SpellsContainerVisibility = Visibility.Visible;
-                }
+                MobDamageMeter.RemoveAt(index);
             }
         }
 
-        MobDamageMeter = new ObservableCollection<MobDamageMeterFragment>(updatedFragments);
+        var existingFragments = MobDamageMeter.ToDictionary(GetMobFragmentKey);
+        for (var targetIndex = 0; targetIndex < updatedFragments.Count; targetIndex++)
+        {
+            var updatedFragment = updatedFragments[targetIndex];
+            var key = GetMobFragmentKey(updatedFragment);
+            if (!existingFragments.TryGetValue(key, out var existingFragment))
+            {
+                MobDamageMeter.Insert(targetIndex, updatedFragment);
+                existingFragments.Add(key, updatedFragment);
+                continue;
+            }
+
+            existingFragment.UpdateFrom(updatedFragment);
+            var currentIndex = MobDamageMeter.IndexOf(existingFragment);
+            if (currentIndex != targetIndex)
+            {
+                MobDamageMeter.Move(currentIndex, targetIndex);
+            }
+        }
+    }
+
+    private static (Guid MobInstanceId, DashboardContentType ContentType) GetMobFragmentKey(MobDamageMeterFragment fragment)
+    {
+        return (fragment.MobInstanceId, fragment.ContentType);
     }
 
     public void ClearMobDamageMeter()
@@ -636,6 +646,7 @@ public class DamageMeterBindings : BaseViewModel
         var allContent = new DamageMeterContentSnapshot
         {
             DamageMeter = DamageMeter.Select(x => new DamageMeterSnapshotFragment(x)).ToList(),
+            MobDamageMeter = MobDamageMeter.ToList(),
             DamageStats = DamageStatsSnapshotFactory.Clone(CurrentDamageStats),
             YourStats = DamageMeterYourStatsSnapshotFactory.Clone(CurrentYourStats)
         };
@@ -735,6 +746,13 @@ public class DamageMeterBindings : BaseViewModel
                     DamageMeterSnapshotSelection.DamageMeter = DamageMeterSnapshotSelection?.DamageMeter?.OrderByDescending(x => x.TakenDamage).ToList();
                 }
                 break;
+            case DamageMeterSortType.Mob:
+                if (DamageMeterSnapshotSelection != null)
+                {
+                    DamageMeterSnapshotSelection.MobDamageMeter = DamageMeterSnapshotSelection.MobDamageMeter
+                        .OrderByDescending(x => x.FirstAttackTime).ToList();
+                }
+                return;
         }
     }
     

@@ -13,6 +13,7 @@ public sealed class DamageMeterSnapshot : BaseViewModel
 {
     private DateTime _timestamp;
     private List<DamageMeterSnapshotFragment> _damageMeter = new();
+    private List<MobDamageMeterFragment> _mobDamageMeter = [];
     private DamageStatsSnapshot _damageStats = DamageStatsSnapshot.Empty;
     private DamageMeterYourStatsSnapshot _yourStats = DamageMeterYourStatsSnapshot.Empty;
     private string _location = string.Empty;
@@ -87,6 +88,16 @@ public sealed class DamageMeterSnapshot : BaseViewModel
         }
     }
 
+    public List<MobDamageMeterFragment> MobDamageMeter
+    {
+        get => _mobDamageMeter;
+        set
+        {
+            _mobDamageMeter = value ?? [];
+            OnPropertyChanged();
+        }
+    }
+
     public DamageStatsSnapshot DamageStats
     {
         get => _damageStats;
@@ -130,6 +141,9 @@ public sealed class DamageMeterSnapshot : BaseViewModel
         }
 
         DamageMeter = selectedContent.DamageMeter.ToList();
+        MobDamageMeter = (selectedContent.MobDamageMeter ?? [])
+            .OrderByDescending(x => x.FirstAttackTime)
+            .ToList();
         DamageStats = DamageStatsSnapshotFactory.Clone(selectedContent.DamageStats);
         YourStats = DamageMeterYourStatsSnapshotFactory.Clone(selectedContent.YourStats);
     }

@@ -1,7 +1,6 @@
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Localization;
-using StatisticsAnalysisTool.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,7 +12,6 @@ public static class MobDamageMeterFragmentFactory
 {
     public static IReadOnlyList<MobDamageMeterFragment> Create(
         IReadOnlyCollection<CombatMobDamageStats> mobStats,
-        Func<Guid, Item> mainHandResolver,
         Func<Guid, int, int> spellItemResolver)
     {
         if (mobStats == null || mobStats.Count == 0)
@@ -21,21 +19,18 @@ public static class MobDamageMeterFragmentFactory
             return [];
         }
 
-        var maxMobDamage = mobStats.Max(x => x.Damage);
         var totalMobDamage = mobStats.Sum(x => x.Damage);
 
         return mobStats
-            .OrderByDescending(x => x.Damage)
+            .OrderByDescending(x => x.FirstDamageTime)
             .ThenByDescending(x => x.LastDamageTime)
-            .Select(x => CreateMobFragment(x, maxMobDamage, totalMobDamage, mainHandResolver, spellItemResolver))
+            .Select(x => CreateMobFragment(x, totalMobDamage, spellItemResolver))
             .ToList();
     }
 
     private static MobDamageMeterFragment CreateMobFragment(
         CombatMobDamageStats mobStats,
-        long maxMobDamage,
         long totalMobDamage,
-        Func<Guid, Item> mainHandResolver,
         Func<Guid, int, int> spellItemResolver)
     {
         var mobData = MobsData.GetMobByUniqueNameOrDefault(mobStats.UniqueName);
@@ -58,23 +53,20 @@ public static class MobDamageMeterFragmentFactory
             FirstAttackTime = mobStats.FirstDamageTime,
             CombatTime = combatTime,
             Dps = mobStats.Damage / durationInSeconds,
-            MobTier = mobData.Tier,
+            MobTier = (Tier) mobData.Tier,
             MobType = ResolveMobType(MobsData.GetFaction(mobData)),
-            MobRank = ResolveMobRank(mobStats.UniqueName),
-            ContentTypeName = LocalizationController.Translation(DashboardContentTypeResolver.GetTranslationKey(mobStats.ContentType)),
+            ContentType = mobStats.ContentType,
             MapName = string.IsNullOrWhiteSpace(mobStats.ClusterName) ? mobStats.ClusterKey : mobStats.ClusterName,
             MapTier = mobStats.MapTier,
             AvatarSource = MobAvatarImageProvider.GetAvatarSource(MobsData.GetAvatarFileName(mobData)),
             Damage = mobStats.Damage,
-            DamageInPercent = CalculatePercentage(mobStats.Damage, maxMobDamage),
             DamagePercentage = CalculatePercentage(mobStats.Damage, totalMobDamage),
-            Players = CreatePlayerFragments(mobStats.Players, mainHandResolver, spellItemResolver)
+            Players = CreatePlayerFragments(mobStats.Players, spellItemResolver)
         };
     }
 
     private static ObservableCollection<DamageMeterFragment> CreatePlayerFragments(
         IReadOnlyCollection<CombatMobPlayerDamageStats> playerStats,
-        Func<Guid, Item> mainHandResolver,
         Func<Guid, int, int> spellItemResolver)
     {
         var maxPlayerDamage = playerStats.Count > 0 ? playerStats.Max(x => x.Damage) : 0;
@@ -92,7 +84,7 @@ public static class MobDamageMeterFragmentFactory
                 {
                     CauserGuid = x.PlayerGuid,
                     Name = x.PlayerName,
-                    CauserMainHand = mainHandResolver(x.PlayerGuid),
+                    CauserMainHand = DamageMeterWeaponResolver.GetWeaponByIndex(x.LastContributionWeaponItemIndex),
                     Damage = x.Damage,
                     DamageInPercent = CalculatePercentage(x.Damage, maxPlayerDamage),
                     DamagePercentage = CalculatePercentage(x.Damage, totalPlayerDamage),
@@ -141,24 +133,6 @@ public static class MobDamageMeterFragmentFactory
         return string.IsNullOrWhiteSpace(faction)
             ? LocalizationController.Translation("MOB")
             : faction.Replace('_', ' ');
-    }
-
-    private static string ResolveMobRank(string uniqueName)
-    {
-        if (string.IsNullOrWhiteSpace(uniqueName))
-        {
-            return LocalizationController.Translation("NORMAL");
-        }
-
-        var normalizedUniqueName = uniqueName.ToUpperInvariant();
-        if (normalizedUniqueName.Contains("_BOSS") || normalizedUniqueName.Contains("_MINIBOSS"))
-        {
-            return LocalizationController.Translation("BOSS");
-        }
-
-        return normalizedUniqueName.Contains("ELITE")
-            ? LocalizationController.Translation("ELITE")
-            : LocalizationController.Translation("NORMAL");
     }
 
     private static TimeSpan CalculateCombatTime(DateTime firstDamageTime, DateTime lastDamageTime)

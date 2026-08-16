@@ -72,6 +72,7 @@ public class PlayerGameObject : GameObject
     public long Damage { get; set; }
     public long Heal { get; set; }
     public long TakenDamage { get; set; }
+    public int LastContributionWeaponItemIndex { get; set; }
     public List<UsedSpell> Spells { get; set; } = new();
     public long Overhealed { get; set; }
     public double Dps => Utilities.GetValuePerSecondToDouble(Damage, CombatStart, CombatTime, 9999);
@@ -99,6 +100,7 @@ public class PlayerGameObject : GameObject
             IsInParty = IsInParty,
             ItemPower = ItemPower,
             CharacterEquipment = CharacterEquipment,
+            LastContributionWeaponItemIndex = LastContributionWeaponItemIndex,
             ObjectType = ObjectType,
             ObjectSubType = ObjectSubType
         };

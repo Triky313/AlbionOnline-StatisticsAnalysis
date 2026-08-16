@@ -13,10 +13,11 @@ public sealed class CombatMobPlayerDamageStats
     public long Damage { get; private set; }
     public DateTime FirstDamageTime { get; private set; }
     public DateTime LastDamageTime { get; private set; }
+    public int LastContributionWeaponItemIndex { get; private set; }
     public IReadOnlyDictionary<int, long> DamageBySpell => _damageBySpell;
     public IReadOnlyDictionary<int, int> HitCountBySpell => _hitCountBySpell;
 
-    internal void RecordDamage(string playerName, int causingSpellIndex, long value, DateTime timestamp)
+    internal void RecordDamage(string playerName, int causingSpellIndex, int weaponItemIndex, long value, DateTime timestamp)
     {
         if (value <= 0)
         {
@@ -35,6 +36,11 @@ public sealed class CombatMobPlayerDamageStats
 
         LastDamageTime = timestamp;
         Damage += value;
+        if (weaponItemIndex > 0)
+        {
+            LastContributionWeaponItemIndex = weaponItemIndex;
+        }
+
         _damageBySpell[causingSpellIndex] = _damageBySpell.GetValueOrDefault(causingSpellIndex) + value;
         _hitCountBySpell[causingSpellIndex] = _hitCountBySpell.GetValueOrDefault(causingSpellIndex) + 1;
     }
@@ -47,7 +53,8 @@ public sealed class CombatMobPlayerDamageStats
             PlayerName = PlayerName,
             Damage = Damage,
             FirstDamageTime = FirstDamageTime,
-            LastDamageTime = LastDamageTime
+            LastDamageTime = LastDamageTime,
+            LastContributionWeaponItemIndex = LastContributionWeaponItemIndex
         };
 
         foreach (var damageBySpell in _damageBySpell)

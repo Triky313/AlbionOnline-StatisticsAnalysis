@@ -70,6 +70,7 @@ public class EntityController
                 TakenDamage = oldEntity.TakenDamage,
                 CombatTimes = oldEntity.CombatTimes,
                 Overhealed = oldEntity.Overhealed,
+                LastContributionWeaponItemIndex = oldEntity.LastContributionWeaponItemIndex,
                 IsInParty = oldEntity.IsInParty,
                 Spells = oldEntity.Spells
             };
@@ -549,6 +550,7 @@ public class EntityController
         foreach (var entity in _knownEntities)
         {
             entity.Value.Damage = 0;
+            entity.Value.LastContributionWeaponItemIndex = 0;
         }
     }
 

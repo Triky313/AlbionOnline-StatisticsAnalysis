@@ -18,6 +18,7 @@ public sealed class DamageMeterPlayerStats
     public long Heal { get; set; }
     public long TakenDamage { get; set; }
     public long Overhealed { get; set; }
+    public int LastContributionWeaponItemIndex { get; set; }
     public List<UsedSpell> Spells { get; } = [];
     public double Dps => Utilities.GetValuePerSecondToDouble(Damage, CombatStart, CombatTime, 9999);
     public double Hps => Utilities.GetValuePerSecondToDouble(Heal, CombatStart, CombatTime, 9999);
@@ -60,6 +61,7 @@ public sealed class DamageMeterPlayerStats
             player.Heal = Heal;
             player.TakenDamage = TakenDamage;
             player.Overhealed = Overhealed;
+            player.LastContributionWeaponItemIndex = LastContributionWeaponItemIndex;
             player.Spells = Spells.Select(CloneSpell).ToList();
         }
     }

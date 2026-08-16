@@ -5,6 +5,7 @@ namespace StatisticsAnalysisTool.DamageMeter;
 public sealed class DamageMeterContentSnapshotDto
 {
     public List<DamageMeterSnapshotFragmentDto> DamageMeter { get; set; } = [];
+    public List<MobDamageMeterFragmentDto> MobDamageMeter { get; set; } = [];
     public DamageStatsSnapshot DamageStats { get; set; }
     public DamageMeterYourStatsSnapshot YourStats { get; set; }
 }
