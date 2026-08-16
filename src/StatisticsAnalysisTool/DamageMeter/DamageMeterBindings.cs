@@ -22,6 +22,7 @@ public class DamageMeterBindings : BaseViewModel
     private EFontAwesomeIcon _damageMeterActivationToggleIcon = EFontAwesomeIcon.Solid_ToggleOff;
     private Brush _damageMeterActivationToggleColor;
     private ObservableCollection<DamageMeterFragment> _damageMeter = new();
+    private ObservableCollection<MobDamageMeterFragment> _mobDamageMeter = [];
     private List<DamageMeterSnapshot> _damageMeterSnapshots = new();
     private DamageMeterSnapshot _damageMeterSnapshotSelection;
     private DamageMeterSortStruct _damageMeterSnapshotSortSelection;
@@ -82,6 +83,11 @@ public class DamageMeterBindings : BaseViewModel
             Name = TranslationTakenDamage,
             DamageMeterSortType = DamageMeterSortType.TakenDamage
         };
+        var sortByMobStruct = new DamageMeterSortStruct
+        {
+            Name = TranslationSortByMob,
+            DamageMeterSortType = DamageMeterSortType.Mob
+        };
 
         DamageMeterSort.Clear();
         DamageMeterSort.Add(sortByDamageStruct);
@@ -90,6 +96,7 @@ public class DamageMeterBindings : BaseViewModel
         DamageMeterSort.Add(sortByHealStruct);
         DamageMeterSort.Add(sortByHpsStruct);
         DamageMeterSort.Add(takenDamageStruct);
+        DamageMeterSort.Add(sortByMobStruct);
         DamageMeterSortSelection = sortByDamageStruct;
 
         DamageMeterSnapshotSort.Clear();
@@ -122,6 +129,7 @@ public class DamageMeterBindings : BaseViewModel
     }
     #endregion
     public event Action<DashboardContentType?> DamageMeterContentFilterChanged;
+    public event Action DamageMeterDisplayChanged;
     public Func<DamageMeterSnapshot> DamageMeterSnapshotProvider { private get; set; }
 
     #region Damage meter
@@ -134,6 +142,53 @@ public class DamageMeterBindings : BaseViewModel
             _damageMeter = value;
             OnPropertyChanged();
         }
+    }
+
+    public ObservableCollection<MobDamageMeterFragment> MobDamageMeter
+    {
+        get => _mobDamageMeter;
+        private set
+        {
+            _mobDamageMeter = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public void SetMobDamageMeter(IReadOnlyCollection<MobDamageMeterFragment> fragments)
+    {
+        var expandedMobIds = MobDamageMeter
+            .Where(x => x.PlayersContainerVisibility == Visibility.Visible)
+            .Select(x => x.MobInstanceId)
+            .ToHashSet();
+        var expandedPlayers = MobDamageMeter
+            .SelectMany(mob => mob.Players
+                .Where(player => player.SpellsContainerVisibility == Visibility.Visible)
+                .Select(player => (mob.MobInstanceId, player.CauserGuid)))
+            .ToHashSet();
+        var updatedFragments = fragments.ToList();
+
+        foreach (var fragment in updatedFragments)
+        {
+            if (expandedMobIds.Contains(fragment.MobInstanceId))
+            {
+                fragment.PlayersContainerVisibility = Visibility.Visible;
+            }
+
+            foreach (var player in fragment.Players)
+            {
+                if (expandedPlayers.Contains((fragment.MobInstanceId, player.CauserGuid)))
+                {
+                    player.SpellsContainerVisibility = Visibility.Visible;
+                }
+            }
+        }
+
+        MobDamageMeter = new ObservableCollection<MobDamageMeterFragment>(updatedFragments);
+    }
+
+    public void ClearMobDamageMeter()
+    {
+        MobDamageMeter.Clear();
     }
 
     public ObservableCollection<DamageMeterContentFilterOption> DamageMeterContentFilters
@@ -216,10 +271,16 @@ public class DamageMeterBindings : BaseViewModel
         get => _damageMeterSortSelection;
         set
         {
+            var previousSortType = _damageMeterSortSelection.DamageMeterSortType;
             _damageMeterSortSelection = value;
             SetDamageMeterSort();
 
             OnPropertyChanged();
+
+            if (previousSortType != value.DamageMeterSortType)
+            {
+                DamageMeterDisplayChanged?.Invoke();
+            }
         }
     }
 
@@ -260,6 +321,8 @@ public class DamageMeterBindings : BaseViewModel
             case DamageMeterSortType.TakenDamage:
                 SetIsDamageMeterShowing(DamageMeter, DamageMeterStyleFragmentType.TakenDamage);
                 DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.TakenDamage).ToList());
+                return;
+            case DamageMeterSortType.Mob:
                 return;
         }
     }
@@ -703,6 +766,7 @@ public class DamageMeterBindings : BaseViewModel
     #region Translations
 
     public static string TranslationSortByDamage => LocalizationController.Translation("SORT_BY_DAMAGE");
+    public static string TranslationSortByMob => LocalizationController.Translation("SORT_BY_MOB");
     public static string TranslationSortByDps => LocalizationController.Translation("SORT_BY_DPS");
     public static string TranslationSortByName => LocalizationController.Translation("SORT_BY_NAME");
     public static string TranslationSortByHeal => LocalizationController.Translation("SORT_BY_HEAL");

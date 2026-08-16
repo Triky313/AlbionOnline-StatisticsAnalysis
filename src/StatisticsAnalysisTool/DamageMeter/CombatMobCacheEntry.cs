@@ -1,3 +1,4 @@
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData.Models;
 using System;
 
@@ -14,6 +15,7 @@ public sealed class CombatMobCacheEntry
     public string TypeId { get; set; }
     public double Health { get; set; }
     public double MaxHealth { get; set; }
+    public Tier MapTier { get; set; } = Tier.Unknown;
     public DateTime FirstSeen { get; init; }
     public DateTime LastUpdated { get; set; }
     public MobJsonObject MobData { get; set; }
@@ -32,6 +34,7 @@ public sealed class CombatMobCacheEntry
             TypeId = TypeId,
             Health = Health,
             MaxHealth = MaxHealth,
+            MapTier = MapTier,
             FirstSeen = FirstSeen,
             LastUpdated = LastUpdated,
             MobData = MobData,

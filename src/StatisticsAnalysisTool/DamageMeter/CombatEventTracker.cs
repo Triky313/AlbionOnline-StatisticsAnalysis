@@ -128,6 +128,7 @@ public sealed class CombatEventTracker(TrackingController trackingController)
                 existingEntry.MobIndex = newMobEvent.MobIndex;
                 existingEntry.Health = newMobEvent.HitPoints;
                 existingEntry.MaxHealth = newMobEvent.HitPointsMax;
+                existingEntry.MapTier = GetCurrentMapTier();
                 existingEntry.LastUpdated = now;
                 existingEntry.MobData = mobData;
                 existingEntry.UniqueName = mobData.UniqueName;
@@ -247,6 +248,7 @@ public sealed class CombatEventTracker(TrackingController trackingController)
             TypeId = newMobEvent.MobIndex.ToString(),
             Health = newMobEvent.HitPoints,
             MaxHealth = newMobEvent.HitPointsMax,
+            MapTier = GetCurrentMapTier(),
             FirstSeen = now,
             LastUpdated = now,
             MobData = mobData,
@@ -265,6 +267,7 @@ public sealed class CombatEventTracker(TrackingController trackingController)
             {
                 ClusterKey = clusterKey,
                 ClusterName = GetCurrentClusterName(),
+                MapTier = GetCurrentMapTier(),
                 MobObjectId = mobObjectId,
                 MobIndex = 0,
                 UniqueName = "UNKNOWN_MOB",
@@ -502,6 +505,17 @@ public sealed class CombatEventTracker(TrackingController trackingController)
         }
 
         return $"{currentCluster.MapType}|{currentCluster.Index}|{currentCluster.InstanceName}|{currentCluster.SourceClusterIndex}";
+    }
+
+    private static Tier GetCurrentMapTier()
+    {
+        var currentCluster = ClusterController.CurrentCluster;
+        return currentCluster.MapType switch
+        {
+            MapType.RandomDungeon when currentCluster.RandomDungeonTier != Tier.Unknown => currentCluster.RandomDungeonTier,
+            MapType.MistsDungeon when currentCluster.MistsDungeonTier != Tier.Unknown => currentCluster.MistsDungeonTier,
+            _ => currentCluster.Tier
+        };
     }
 
     private static string GetCurrentClusterName()

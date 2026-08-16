@@ -37,13 +37,7 @@ public static class SpellData
             return new GameFileDataSpell();
         }
 
-        if (index < 0)
-        {
-            uint unsignedIndex = Convert.ToUInt32(index);
-            index = (int) unsignedIndex;
-        }
-
-        return _spells.IsInBounds(index) ? _spells?.ElementAt(index) : new GameFileDataSpell();
+        return _spells.IsInBounds(index) ? _spells[index] : new GameFileDataSpell();
     }
 
     public static GameFileDataSpell GetSpellByUniqueName(string uniqueName)

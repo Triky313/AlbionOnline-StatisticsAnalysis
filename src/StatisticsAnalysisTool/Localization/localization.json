@@ -17677,6 +17677,218 @@
       ]
     },
     {
+      "tuid": "SORT_BY_MOB",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Nach Mob sortieren"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Sort by mob"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Ordenar por criatura"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Trier par créature"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "モブ別に並べ替え"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "몹별 정렬"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Sortuj według przeciwnika"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Ordenar por criatura"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Сортировать по мобу"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Yaratığa göre sırala"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "按怪物排序"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "按怪物排序"
+        }
+      ]
+    },
+    {
+      "tuid": "BOSS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Boss"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Boss"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Jefe"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Boss"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ボス"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "보스"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Boss"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Chefe"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Босс"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Boss"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "首领"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "首領"
+        }
+      ]
+    },
+    {
+      "tuid": "ELITE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Elite"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Elite"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Élite"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Élite"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "エリート"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "정예"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Elita"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Elite"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Элита"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Seçkin"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "精英"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "精英"
+        }
+      ]
+    },
+    {
+      "tuid": "FIRST_ATTACK_TIME",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Erste Angriffszeit"
+        },
+        {
+          "lang": "en-US",
+          "seg": "First attack time"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Hora del primer ataque"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Heure de la première attaque"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "初回攻撃時刻"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "첫 공격 시간"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Czas pierwszego ataku"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Horário do primeiro ataque"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Время первой атаки"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "İlk saldırı zamanı"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "首次攻击时间"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "首次攻擊時間"
+        }
+      ]
+    },
+    {
       "tuid": "SORT_BY_DPS",
       "tuv": [
         {

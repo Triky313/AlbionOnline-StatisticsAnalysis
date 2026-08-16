@@ -49,7 +49,7 @@ public partial class DamageMeterControl
             else
             {
                 var vm = (MainWindowViewModel) DataContext;
-                var itemWindow = new DamageMeterWindow(vm?.DamageMeterBindings?.DamageMeter);
+                var itemWindow = new DamageMeterWindow(vm?.DamageMeterBindings);
                 itemWindow.Show();
             }
         }
@@ -127,6 +127,14 @@ public partial class DamageMeterControl
                 break;
             case DamageMeterSortType.TakenDamage:
                 Clipboard.SetDataObject(vm.DamageMeterBindings?.DamageMeter?.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.TakenDamage}({entity.TakenDamagePercentage:N2}%)\n") ?? string.Empty);
+                break;
+            case DamageMeterSortType.Mob:
+                Clipboard.SetDataObject(vm.DamageMeterBindings?.MobDamageMeter?.Aggregate(
+                    output,
+                    (current, mob) => current
+                        + $"{counter++}. {mob.Name}: {mob.Damage}({mob.DamagePercentage:N2}%)\n"
+                        + string.Join(string.Empty, mob.Players.Select((player, index)
+                            => $"  {index + 1}. {player.Name}: {player.Damage}({player.DamagePercentage:N2}%)|{player.Dps:N2} DPS\n"))) ?? string.Empty);
                 break;
             case null:
                 break;

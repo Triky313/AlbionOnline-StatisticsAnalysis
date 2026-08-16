@@ -1,3 +1,4 @@
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,9 @@ public sealed class CombatMobDamageStats
     public string ClusterKey { get; init; } = string.Empty;
     public string ClusterName { get; init; } = string.Empty;
     public DashboardContentType ContentType { get; init; }
+    public Tier MapTier { get; private set; } = Tier.Unknown;
     public DateTime FirstSeen { get; init; }
+    public DateTime FirstDamageTime { get; private set; }
     public DateTime LastDamageTime { get; private set; }
     public double MaxHealth { get; private set; }
     public long Damage { get; private set; }
@@ -28,6 +31,7 @@ public sealed class CombatMobDamageStats
         UniqueName = mob.UniqueName;
         TypeId = mob.TypeId;
         MaxHealth = mob.MaxHealth;
+        MapTier = mob.MapTier;
     }
 
     internal void RecordDamage(Guid? playerGuid, string playerName, int causingSpellIndex, long value, DateTime timestamp)
@@ -38,6 +42,7 @@ public sealed class CombatMobDamageStats
         }
 
         Damage += value;
+        FirstDamageTime = FirstDamageTime == default ? timestamp : FirstDamageTime;
         LastDamageTime = timestamp;
 
         if (!playerGuid.HasValue)
@@ -54,7 +59,7 @@ public sealed class CombatMobDamageStats
             _players.Add(playerGuid.Value, playerStats);
         }
 
-        playerStats.RecordDamage(playerName, causingSpellIndex, value);
+        playerStats.RecordDamage(playerName, causingSpellIndex, value, timestamp);
     }
 
     internal CombatMobDamageStats Clone()
@@ -69,7 +74,9 @@ public sealed class CombatMobDamageStats
             ClusterKey = ClusterKey,
             ClusterName = ClusterName,
             ContentType = ContentType,
+            MapTier = MapTier,
             FirstSeen = FirstSeen,
+            FirstDamageTime = FirstDamageTime,
             LastDamageTime = LastDamageTime,
             MaxHealth = MaxHealth,
             Damage = Damage

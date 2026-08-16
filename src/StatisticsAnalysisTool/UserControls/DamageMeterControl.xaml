@@ -540,8 +540,35 @@
                                 </Grid>
                             </Border>
                             <ScrollViewer Grid.Row="2" Margin="-3,0,0,0">
+                                <ScrollViewer.Style>
+                                    <Style TargetType="{x:Type ScrollViewer}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding DamageMeterBindings.DamageMeterSortSelection.DamageMeterSortType}"
+                                                         Value="{x:Static damageMeter:DamageMeterSortType.Mob}">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ScrollViewer.Style>
                                 <ItemsControl ItemsSource="{Binding DamageMeterBindings.DamageMeter, IsAsync=True, Mode=OneWay}"
                                               ItemTemplate="{StaticResource DamageMeterFragmentTemplate}" />
+                            </ScrollViewer>
+                            <ScrollViewer Grid.Row="2" Margin="-3,0,0,0"
+                                          HorizontalScrollBarVisibility="Auto">
+                                <ScrollViewer.Style>
+                                    <Style TargetType="{x:Type ScrollViewer}">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding DamageMeterBindings.DamageMeterSortSelection.DamageMeterSortType}"
+                                                         Value="{x:Static damageMeter:DamageMeterSortType.Mob}">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ScrollViewer.Style>
+                                <ItemsControl ItemsSource="{Binding DamageMeterBindings.MobDamageMeter, IsAsync=True, Mode=OneWay}"
+                                              ItemTemplate="{StaticResource MobDamageMeterFragmentTemplate}" />
                             </ScrollViewer>
 
                             <Grid Grid.Row="2"

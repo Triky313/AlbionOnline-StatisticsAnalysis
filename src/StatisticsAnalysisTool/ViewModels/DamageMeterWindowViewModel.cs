@@ -1,16 +1,15 @@
 ﻿using StatisticsAnalysisTool.DamageMeter;
-using System.Collections.ObjectModel;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
 public class DamageMeterWindowViewModel : BaseViewModel
 {
-    private ObservableCollection<DamageMeterFragment> _damageMeter;
+    private DamageMeterBindings _damageMeterBindings;
     private DamageMeterWindowTranslation _translation;
 
-    public DamageMeterWindowViewModel(ObservableCollection<DamageMeterFragment> damageMeter)
+    public DamageMeterWindowViewModel(DamageMeterBindings damageMeterBindings)
     {
-        DamageMeter = damageMeter;
+        DamageMeterBindings = damageMeterBindings;
         Init();
     }
 
@@ -19,12 +18,12 @@ public class DamageMeterWindowViewModel : BaseViewModel
         Translation = new DamageMeterWindowTranslation();
     }
 
-    public ObservableCollection<DamageMeterFragment> DamageMeter
+    public DamageMeterBindings DamageMeterBindings
     {
-        get => _damageMeter;
+        get => _damageMeterBindings;
         set
         {
-            _damageMeter = value;
+            _damageMeterBindings = value;
             OnPropertyChanged();
         }
     }
