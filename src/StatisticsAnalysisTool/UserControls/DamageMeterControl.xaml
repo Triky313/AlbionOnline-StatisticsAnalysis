@@ -10,14 +10,6 @@
              d:DesignHeight="600" d:DesignWidth="1200"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
     <UserControl.Resources>
-        <SolidColorBrush x:Key="YourStats.Damage.CardBackground" Color="{StaticResource Color.Accent.Red.6}" Opacity="0.14" />
-        <SolidColorBrush x:Key="YourStats.Damage.MetricBackground" Color="{StaticResource Color.Accent.Red.5}" Opacity="0.2" />
-        <SolidColorBrush x:Key="YourStats.Healing.CardBackground" Color="{StaticResource Color.Accent.Green.6}" Opacity="0.14" />
-        <SolidColorBrush x:Key="YourStats.Healing.MetricBackground" Color="{StaticResource Color.Accent.Green.5}" Opacity="0.2" />
-        <SolidColorBrush x:Key="YourStats.Defense.CardBackground" Color="{StaticResource Color.Accent.Blue.5}" Opacity="0.14" />
-        <SolidColorBrush x:Key="YourStats.Defense.MetricBackground" Color="{StaticResource Color.Accent.Blue.4}" Opacity="0.2" />
-        <SolidColorBrush x:Key="YourStats.Combat.CardBackground" Color="{StaticResource Color.Accent.Yellow.5}" Opacity="0.14" />
-        <SolidColorBrush x:Key="YourStats.Combat.MetricBackground" Color="{StaticResource Color.Accent.Yellow.4}" Opacity="0.2" />
         <Style x:Key="YourStats.SectionCard" TargetType="{x:Type Border}">
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="CornerRadius" Value="8" />
@@ -84,8 +76,8 @@
             <Setter Property="SnapsToDevicePixels" Value="True" />
         </Style>
         <Style x:Key="TopStats.RankingCard" TargetType="{x:Type Border}">
-            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.2}" />
-            <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Border.1}" />
+            <Setter Property="Background" Value="{StaticResource YourStats.Defense.CardBackground}" />
+            <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Accent.Blue.5}" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="CornerRadius" Value="6" />
             <Setter Property="Margin" Value="4" />
@@ -447,22 +439,17 @@
             </ScrollViewer>
         </DataTemplate>
         <DataTemplate x:Key="DamageStatsSnapshotTemplate" DataType="{x:Type damageMeter:DamageStatsSnapshot}">
-            <ScrollViewer Margin="0,5,0,0"
-                          HorizontalScrollBarVisibility="Disabled"
-                          VerticalScrollBarVisibility="Auto"
-                          HorizontalContentAlignment="Stretch">
+            <ScrollViewer Margin="0,5,0,0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch">
                 <StackPanel Margin="0,0,0,4">
                     <UniformGrid Columns="6">
-                        <Border Style="{StaticResource TopStats.HighlightCard}"
-                                Background="{StaticResource YourStats.Damage.CardBackground}"
+                        <Border Style="{StaticResource TopStats.HighlightCard}" Background="{StaticResource YourStats.Damage.CardBackground}"
                                 BorderBrush="{StaticResource SolidColorBrush.Accent.Red.6}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Border Grid.Column="0" Style="{StaticResource TopStats.HighlightIcon}"
-                                        Background="{StaticResource YourStats.Damage.MetricBackground}"
+                                <Border Grid.Column="0" Style="{StaticResource TopStats.HighlightIcon}" Background="{StaticResource YourStats.Damage.MetricBackground}"
                                         BorderBrush="{StaticResource SolidColorBrush.Accent.Red.6}">
                                     <fa5:ImageAwesome Icon="Solid_Bolt" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
                                 </Border>
@@ -475,8 +462,7 @@
                                 </StackPanel>
                             </Grid>
                         </Border>
-                        <Border Style="{StaticResource TopStats.HighlightCard}"
-                                Background="{StaticResource YourStats.Damage.CardBackground}"
+                        <Border Style="{StaticResource TopStats.HighlightCard}" Background="{StaticResource YourStats.Damage.CardBackground}"
                                 BorderBrush="{StaticResource SolidColorBrush.Accent.Red.6}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -563,22 +549,21 @@
                                 </StackPanel>
                             </Grid>
                         </Border>
-                        <Border Style="{StaticResource TopStats.HighlightCard}"
-                                Background="{StaticResource SolidColorBrush.Background.2}"
-                                BorderBrush="{StaticResource SolidColorBrush.Border.1}">
+                        <Border Style="{StaticResource TopStats.HighlightCard}" Background="{StaticResource YourStats.Defense.CardBackground}"
+                                BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.5}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Border Grid.Column="0" Style="{StaticResource TopStats.HighlightIcon}"
-                                        Background="{StaticResource SolidColorBrush.Background.3}"
-                                        BorderBrush="{StaticResource SolidColorBrush.Border.1}">
-                                    <fa5:ImageAwesome Icon="Solid_Users" Foreground="{StaticResource SolidColorBrush.Text.3}" />
+                                        Background="{StaticResource YourStats.Defense.MetricBackground}"
+                                        BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.5}">
+                                    <fa5:ImageAwesome Icon="Solid_Users" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
                                 </Border>
                                 <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                     <TextBlock Text="{Binding DataContext.DamageMeterBindings.TranslationTotalTrackedFights, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=TOTAL_TRACKED_FIGHTS}"
-                                               Foreground="{StaticResource SolidColorBrush.Text.3}"
+                                               Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}"
                                                Style="{StaticResource TopStats.HighlightTitle}" />
                                     <TextBlock Text="{Binding TrackedFightCount}" Style="{StaticResource TopStats.HighlightValue}" />
                                     <StackPanel Orientation="Horizontal">
@@ -591,17 +576,14 @@
                         </Border>
                     </UniformGrid>
                     <UniformGrid Columns="4">
-                        <Border Style="{StaticResource TopStats.RankingCard}"
-                                Background="{StaticResource YourStats.Damage.CardBackground}"
-                                BorderBrush="{StaticResource SolidColorBrush.Accent.Red.6}">
+                        <Border Style="{StaticResource TopStats.RankingCard}">
                             <StackPanel>
                                 <Grid Margin="0,0,0,5">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <fa5:ImageAwesome Grid.Column="0" Icon="Solid_Bolt" Width="14" Height="14" Margin="0,0,6,0"
-                                                      Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                                    <fa5:ImageAwesome Grid.Column="0" Icon="Solid_Bolt" Width="14" Height="14" Margin="0,0,6,0" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
                                     <TextBlock Grid.Column="1"
                                                Text="{Binding DataContext.DamageMeterBindings.TranslationBiggestSingleHitTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=BIGGEST_SINGLE_HIT_TOP_5}"
                                                Foreground="{StaticResource SolidColorBrush.Accent.Red.2}"
@@ -611,9 +593,7 @@
                                               Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
                             </StackPanel>
                         </Border>
-                        <Border Style="{StaticResource TopStats.RankingCard}"
-                                Background="{StaticResource YourStats.Damage.CardBackground}"
-                                BorderBrush="{StaticResource SolidColorBrush.Accent.Red.6}">
+                        <Border Style="{StaticResource TopStats.RankingCard}">
                             <StackPanel>
                                 <Grid Margin="0,0,0,5">
                                     <Grid.ColumnDefinitions>
@@ -631,9 +611,7 @@
                                               Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
                             </StackPanel>
                         </Border>
-                        <Border Style="{StaticResource TopStats.RankingCard}"
-                                Background="{StaticResource YourStats.Damage.CardBackground}"
-                                BorderBrush="{StaticResource SolidColorBrush.Accent.Red.6}">
+                        <Border Style="{StaticResource TopStats.RankingCard}">
                             <StackPanel>
                                 <Grid Margin="0,0,0,5">
                                     <Grid.ColumnDefinitions>
@@ -651,9 +629,7 @@
                                               Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
                             </StackPanel>
                         </Border>
-                        <Border Style="{StaticResource TopStats.RankingCard}"
-                                Background="{StaticResource YourStats.Damage.CardBackground}"
-                                BorderBrush="{StaticResource SolidColorBrush.Accent.Red.6}">
+                        <Border Style="{StaticResource TopStats.RankingCard}">
                             <StackPanel>
                                 <Grid Margin="0,0,0,5">
                                     <Grid.ColumnDefinitions>
@@ -673,9 +649,7 @@
                         </Border>
                     </UniformGrid>
                     <UniformGrid Columns="4">
-                        <Border Style="{StaticResource TopStats.RankingCard}"
-                                Background="{StaticResource YourStats.Healing.CardBackground}"
-                                BorderBrush="{StaticResource SolidColorBrush.Accent.Green.6}">
+                        <Border Style="{StaticResource TopStats.RankingCard}">
                             <StackPanel>
                                 <Grid Margin="0,0,0,5">
                                     <Grid.ColumnDefinitions>
@@ -693,9 +667,7 @@
                                               Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" />
                             </StackPanel>
                         </Border>
-                        <Border Style="{StaticResource TopStats.RankingCard}"
-                                Background="{StaticResource YourStats.Healing.CardBackground}"
-                                BorderBrush="{StaticResource SolidColorBrush.Accent.Green.6}">
+                        <Border Style="{StaticResource TopStats.RankingCard}">
                             <StackPanel>
                                 <Grid Margin="0,0,0,5">
                                     <Grid.ColumnDefinitions>
@@ -713,9 +685,7 @@
                                               Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" />
                             </StackPanel>
                         </Border>
-                        <Border Style="{StaticResource TopStats.RankingCard}"
-                                Background="{StaticResource YourStats.Defense.CardBackground}"
-                                BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.5}">
+                        <Border Style="{StaticResource TopStats.RankingCard}">
                             <StackPanel>
                                 <Grid Margin="0,0,0,5">
                                     <Grid.ColumnDefinitions>
@@ -733,9 +703,7 @@
                                               Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
                             </StackPanel>
                         </Border>
-                        <Border Style="{StaticResource TopStats.RankingCard}"
-                                Background="{StaticResource YourStats.Defense.CardBackground}"
-                                BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.5}">
+                        <Border Style="{StaticResource TopStats.RankingCard}">
                             <StackPanel>
                                 <Grid Margin="0,0,0,5">
                                     <Grid.ColumnDefinitions>
@@ -762,9 +730,7 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Border Grid.Column="0"
-                                Style="{StaticResource TopStats.RankingCard}"
-                                Background="{StaticResource YourStats.Combat.CardBackground}"
-                                BorderBrush="{StaticResource SolidColorBrush.Accent.Orange.5}">
+                                Style="{StaticResource TopStats.RankingCard}">
                             <StackPanel>
                                 <Grid Margin="0,0,0,5">
                                     <Grid.ColumnDefinitions>
@@ -966,12 +932,10 @@
                     </TabItem>
 
                     <TabItem Header="{Binding DamageMeterBindings.TranslationTopStats, FallbackValue=TOP_STATS}">
-                        <ContentControl Content="{Binding DamageMeterBindings.CurrentDamageStats}"
-                                        ContentTemplate="{StaticResource DamageStatsSnapshotTemplate}" />
+                        <ContentControl Content="{Binding DamageMeterBindings.CurrentDamageStats}" ContentTemplate="{StaticResource DamageStatsSnapshotTemplate}" />
                     </TabItem>
                     <TabItem Header="{Binding DamageMeterBindings.TranslationYourStats, FallbackValue=YOUR_STATS}">
-                        <ContentControl Content="{Binding DamageMeterBindings.CurrentYourStats}"
-                                        ContentTemplate="{StaticResource YourStatsSnapshotTemplate}" />
+                        <ContentControl Content="{Binding DamageMeterBindings.CurrentYourStats}" ContentTemplate="{StaticResource YourStatsSnapshotTemplate}" />
                     </TabItem>
 
                     <TabItem Header="{Binding Translation.Settings, FallbackValue=SETTINGS}">

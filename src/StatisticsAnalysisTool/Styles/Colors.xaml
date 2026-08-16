@@ -384,6 +384,15 @@
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.Transparent.4" Color="{StaticResource Color.Accent.Blue.Transparent.4}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.Transparent.5" Color="{StaticResource Color.Accent.Blue.Transparent.5}"/>
 
+    <SolidColorBrush x:Key="YourStats.Damage.CardBackground" Color="{StaticResource Color.Accent.Red.6}" Opacity="0.14"/>
+    <SolidColorBrush x:Key="YourStats.Damage.MetricBackground" Color="{StaticResource Color.Accent.Red.5}" Opacity="0.2"/>
+    <SolidColorBrush x:Key="YourStats.Healing.CardBackground" Color="{StaticResource Color.Accent.Green.6}" Opacity="0.14"/>
+    <SolidColorBrush x:Key="YourStats.Healing.MetricBackground" Color="{StaticResource Color.Accent.Green.5}" Opacity="0.2"/>
+    <SolidColorBrush x:Key="YourStats.Defense.CardBackground" Color="{StaticResource Color.Accent.Blue.5}" Opacity="0.14"/>
+    <SolidColorBrush x:Key="YourStats.Defense.MetricBackground" Color="{StaticResource Color.Accent.Blue.4}" Opacity="0.2"/>
+    <SolidColorBrush x:Key="YourStats.Combat.CardBackground" Color="{StaticResource Color.Accent.Yellow.5}" Opacity="0.14"/>
+    <SolidColorBrush x:Key="YourStats.Combat.MetricBackground" Color="{StaticResource Color.Accent.Yellow.4}" Opacity="0.2"/>
+
     <SolidColorBrush x:Key="SolidColorBrush.City.Default" Color="{StaticResource Color.City.Default}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.Caerleon" Color="{StaticResource Color.City.Caerleon}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.Thetford" Color="{StaticResource Color.City.Thetford}"/>

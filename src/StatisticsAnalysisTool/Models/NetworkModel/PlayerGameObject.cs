@@ -75,8 +75,8 @@ public class PlayerGameObject : GameObject
     public int LastContributionWeaponItemIndex { get; set; }
     public List<UsedSpell> Spells { get; set; } = new();
     public long Overhealed { get; set; }
-    public double Dps => Utilities.GetValuePerSecondToDouble(Damage, CombatStart, CombatTime, 9999);
-    public double Hps => Utilities.GetValuePerSecondToDouble(Heal, CombatStart, CombatTime, 9999);
+    public double Dps => Utilities.GetValuePerSecondToDouble(Damage, CombatStart, GetCombatTime(DateTime.UtcNow), 9999);
+    public double Hps => Utilities.GetValuePerSecondToDouble(Heal, CombatStart, GetCombatTime(DateTime.UtcNow), 9999);
 
     public DamageMeterPlayerStats GetOrCreateDamageMeterContentStats(DashboardContentType contentType)
     {
@@ -139,16 +139,52 @@ public class PlayerGameObject : GameObject
 
     #region Combat
 
-    public void AddCombatTime(ActionInterval actionInterval)
+    public void StartCombatInterval(DateTime startTime)
     {
-        CombatTimes.Add(actionInterval);
-        SetCombatTimeSpan();
+        lock (CombatTimes)
+        {
+            SetCombatTimeSpan();
+            if (CombatTimes.Any(x => x.EndTime == null))
+            {
+                return;
+            }
+
+            CombatTimes.Add(new ActionInterval(startTime));
+        }
+    }
+
+    public void EndCombatInterval(DateTime endTime)
+    {
+        lock (CombatTimes)
+        {
+            var combatTime = CombatTimes.FirstOrDefault(x => x.EndTime == null);
+            if (combatTime == null)
+            {
+                return;
+            }
+
+            combatTime.EndTime = endTime;
+            SetCombatTimeSpan();
+        }
+    }
+
+    public TimeSpan GetCombatTime(DateTime currentTime)
+    {
+        lock (CombatTimes)
+        {
+            return CombatTimes.Aggregate(
+                CombatTime,
+                (total, interval) => total + interval.GetDuration(currentTime));
+        }
     }
 
     public void ResetCombatTimes()
     {
-        CombatTimes.Clear();
-        CombatTime = new TimeSpan();
+        lock (CombatTimes)
+        {
+            CombatTimes.Clear();
+            CombatTime = TimeSpan.Zero;
+        }
     }
 
     private void SetCombatTimeSpan()

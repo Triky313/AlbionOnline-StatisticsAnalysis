@@ -41,9 +41,9 @@ public class CombatController
         _mainWindowViewModel = mainWindowViewModel;
         CombatEventTracker = new CombatEventTracker(trackingController);
 
+        OnChangeCombatMode += ResetDamageMeterBeforeCombatStart;
         OnChangeCombatMode += AddCombatTime;
         OnChangeCombatMode += SetLastCombatMode;
-        OnChangeCombatMode += ResetDamageMeterBeforeCombatStart;
         OnChangeCombatMode += CombatEventTracker.OnCombatStateUpdate;
         OnDamageUpdate += UpdateDamageMeterUiAsync;
         _mainWindowViewModel.DamageMeterBindings.DamageMeterContentFilterChanged += OnDamageMeterContentFilterChanged;
@@ -351,6 +351,7 @@ public class CombatController
         List<KeyValuePair<Guid, PlayerGameObject>> entities, long maximumDamage, long maximumHeal, long maximumTakenDamage)
     {
         var healthChangeObjectValue = healthChangeObject.Value;
+        var combatTime = healthChangeObjectValue.GetCombatTime(DateTime.UtcNow);
 
         fragment.CauserMainHand = DamageMeterWeaponResolver.GetWeaponByIndex(
             healthChangeObjectValue.LastContributionWeaponItemIndex);
@@ -376,7 +377,7 @@ public class CombatController
         // Generally
         if (healthChangeObjectValue != null)
         {
-            fragment.CombatTime = healthChangeObjectValue.CombatTime;
+            fragment.CombatTime = combatTime;
             fragment.DamagePercentage = entities.GetDamagePercentage(healthChangeObjectValue.Damage);
             fragment.HealPercentage = entities.GetHealPercentage(healthChangeObjectValue.Heal);
             fragment.TakenDamagePercentage = entities.GetTakenDamagePercentage(healthChangeObjectValue.TakenDamage);
@@ -408,6 +409,7 @@ public class CombatController
         }
 
         var healthChangeObjectValue = healthChangeObject.Value;
+        var combatTime = healthChangeObjectValue.GetCombatTime(DateTime.UtcNow);
         var item = DamageMeterWeaponResolver.GetWeaponByIndex(
             healthChangeObjectValue.LastContributionWeaponItemIndex);
 
@@ -417,6 +419,7 @@ public class CombatController
         var damageMeterFragment = new DamageMeterFragment
         {
             CauserGuid = healthChangeObjectValue.UserGuid,
+            CombatTime = combatTime,
             Damage = healthChangeObjectValue.Damage,
             Dps = healthChangeObjectValue.Dps,
             DamageInPercent = CalculateBarPercentage(healthChangeObjectValue.Damage, maximumDamage),
@@ -1101,21 +1104,12 @@ public class CombatController
         var now = DateTime.UtcNow;
         if (inActiveCombat || inPassiveCombat)
         {
-            if (!player.CombatTimes.Any(x => x?.EndTime == null))
-            {
-                player.AddCombatTime(new ActionInterval(now));
-            }
-
+            player.StartCombatInterval(now);
             player.GetOrCreateDamageMeterContentStats(GetCurrentContentType()).StartCombatInterval(now);
             return;
         }
 
-        var combatTime = player.CombatTimes.FirstOrDefault(x => x.EndTime == null);
-        if (combatTime != null)
-        {
-            combatTime.EndTime = now;
-        }
-
+        player.EndCombatInterval(now);
         player.EndDamageMeterContentCombatIntervals(now);
     }
 

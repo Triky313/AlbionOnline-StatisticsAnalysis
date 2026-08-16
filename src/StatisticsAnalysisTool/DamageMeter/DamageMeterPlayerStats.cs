@@ -20,13 +20,14 @@ public sealed class DamageMeterPlayerStats
     public long Overhealed { get; set; }
     public int LastContributionWeaponItemIndex { get; set; }
     public List<UsedSpell> Spells { get; } = [];
-    public double Dps => Utilities.GetValuePerSecondToDouble(Damage, CombatStart, CombatTime, 9999);
-    public double Hps => Utilities.GetValuePerSecondToDouble(Heal, CombatStart, CombatTime, 9999);
+    public double Dps => Utilities.GetValuePerSecondToDouble(Damage, CombatStart, GetCombatTime(DateTime.UtcNow), 9999);
+    public double Hps => Utilities.GetValuePerSecondToDouble(Heal, CombatStart, GetCombatTime(DateTime.UtcNow), 9999);
 
     public void StartCombatInterval(DateTime startTime)
     {
         lock (SyncRoot)
         {
+            SetCombatTimeSpan();
             if (_combatTimes.Any(x => x.EndTime == null))
             {
                 return;
@@ -56,13 +57,21 @@ public sealed class DamageMeterPlayerStats
         lock (SyncRoot)
         {
             player.CombatStart = CombatStart;
-            player.CombatTime = CombatTime;
+            player.CombatTime = CalculateCombatTime(DateTime.UtcNow);
             player.Damage = Damage;
             player.Heal = Heal;
             player.TakenDamage = TakenDamage;
             player.Overhealed = Overhealed;
             player.LastContributionWeaponItemIndex = LastContributionWeaponItemIndex;
             player.Spells = Spells.Select(CloneSpell).ToList();
+        }
+    }
+
+    private TimeSpan GetCombatTime(DateTime currentTime)
+    {
+        lock (SyncRoot)
+        {
+            return CalculateCombatTime(currentTime);
         }
     }
 
@@ -73,6 +82,13 @@ public sealed class DamageMeterPlayerStats
             CombatTime += combatTime.TimeSpan;
             _combatTimes.Remove(combatTime);
         }
+    }
+
+    private TimeSpan CalculateCombatTime(DateTime currentTime)
+    {
+        return _combatTimes.Aggregate(
+            CombatTime,
+            (total, interval) => total + interval.GetDuration(currentTime));
     }
 
     private static UsedSpell CloneSpell(UsedSpell spell)

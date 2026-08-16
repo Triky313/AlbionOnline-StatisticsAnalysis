@@ -15,7 +15,8 @@ public static class DamageMeterContentSnapshotFactory
         DamageMeterYourStatsSnapshot yourStats,
         IReadOnlyCollection<MobDamageMeterFragment> mobDamageMeter)
     {
-        var fragments = entities.Select(x => CreateFragment(x.Value, entities)).ToList();
+        var snapshotTime = DateTime.UtcNow;
+        var fragments = entities.Select(x => CreateFragment(x.Value, entities, snapshotTime)).ToList();
         return new DamageMeterContentSnapshot
         {
             DamageMeter = fragments,
@@ -30,14 +31,16 @@ public static class DamageMeterContentSnapshotFactory
 
     private static DamageMeterSnapshotFragment CreateFragment(
         PlayerGameObject player,
-        List<KeyValuePair<Guid, PlayerGameObject>> entities)
+        List<KeyValuePair<Guid, PlayerGameObject>> entities,
+        DateTime snapshotTime)
     {
         var mainHand = DamageMeterWeaponResolver.GetWeaponByIndex(player.LastContributionWeaponItemIndex);
+        var combatTime = player.GetCombatTime(snapshotTime);
         return new DamageMeterSnapshotFragment
         {
             CauserGuid = player.UserGuid,
             Name = player.Name,
-            CombatTime = player.CombatTime,
+            CombatTime = combatTime,
             Damage = player.Damage,
             Dps = player.Dps,
             DamageInPercent = GetBarPercentage(player.Damage, entities.Max(x => x.Value.Damage)),

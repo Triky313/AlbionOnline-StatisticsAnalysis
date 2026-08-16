@@ -74,7 +74,8 @@ public static class DamageMeterYourStatsSnapshotFactory
                         && x.SourceObjectId != localObjectId)
             .ToList();
 
-        var combatTime = localPlayer.CombatTime;
+        var snapshotTime = DateTime.UtcNow;
+        var combatTime = localPlayer.GetCombatTime(snapshotTime);
         var totalHealing = localPlayer.Heal + localPlayer.Overhealed;
         var fightDurations = events
             .Select(GetDuration)
