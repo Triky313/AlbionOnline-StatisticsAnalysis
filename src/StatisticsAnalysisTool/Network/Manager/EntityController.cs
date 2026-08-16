@@ -67,10 +67,14 @@ public class EntityController
                 CombatTime = oldEntity.CombatTime,
                 Damage = oldEntity.Damage,
                 Heal = oldEntity.Heal,
+                TakenDamage = oldEntity.TakenDamage,
+                CombatTimes = oldEntity.CombatTimes,
                 Overhealed = oldEntity.Overhealed,
                 IsInParty = oldEntity.IsInParty,
                 Spells = oldEntity.Spells
             };
+
+            gameObject.CopyDamageMeterContentStatsFrom(oldEntity);
         }
         else
         {
@@ -144,11 +148,20 @@ public class EntityController
         return new List<KeyValuePair<Guid, PlayerGameObject>>(onlyInParty ? _knownEntities.ToArray().Where(x => x.Value.IsInParty) : _knownEntities.ToArray());
     }
 
-    public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntitiesWithDamageOrHealAndInParty()
+    public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntitiesWithDamageOrHealAndInParty(DashboardContentType? contentType = null)
     {
-        return new List<KeyValuePair<Guid, PlayerGameObject>>(_knownEntities
+        return _knownEntities
             .ToArray()
-            .Where(x => (x.Value.Damage > 0 || x.Value.Heal > 0 || x.Value.Overhealed > 0) && IsEntityInParty(x.Key)));
+            .Where(x => IsEntityInParty(x.Key))
+            .Select(x => new KeyValuePair<Guid, PlayerGameObject>(
+                x.Key,
+                contentType.HasValue ? x.Value.CreateDamageMeterContentView(contentType.Value) : x.Value))
+            .Where(x => x.Value != null
+                        && (x.Value.Damage > 0
+                            || x.Value.Heal > 0
+                            || x.Value.Overhealed > 0
+                            || x.Value.TakenDamage > 0))
+            .ToList();
     }
 
     public bool ExistEntity(Guid guid)
@@ -506,6 +519,14 @@ public class EntityController
     #endregion
 
     #region Damage
+
+    public void ResetDamageMeterContentStats()
+    {
+        foreach (var entity in _knownEntities)
+        {
+            entity.Value.ResetDamageMeterContentStats();
+        }
+    }
 
     public void ResetEntitiesDamageStartTime()
     {

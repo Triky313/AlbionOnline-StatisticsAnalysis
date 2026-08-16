@@ -3,6 +3,8 @@ using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.GameFileData.Models;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
 using System;
@@ -21,6 +23,7 @@ public sealed class CombatEventTracker(TrackingController trackingController)
     private readonly ConcurrentDictionary<long, CombatMobCacheEntry> _knownMobs = new();
     private readonly ConcurrentDictionary<long, CombatMobCacheEntry> _recentlyLeftMobs = new();
     private readonly List<CombatEvent> _combatEvents = [];
+    private readonly Dictionary<Guid, Dictionary<DashboardContentType, CombatMobDamageStats>> _mobDamageStatsByInstance = [];
     private readonly HashSet<long> _partyPlayersInCombat = [];
     private readonly MobDataResolver _mobDataResolver = new();
     private CombatEvent _activeCombatEvent;
@@ -55,15 +58,42 @@ public sealed class CombatEventTracker(TrackingController trackingController)
         RemoveExpiredRecentlyLeftMobs();
     }
 
-    public IReadOnlyCollection<CombatEvent> CombatEvents
+    public IReadOnlyCollection<CombatEvent> CombatEvents => GetCombatEvents(null);
+
+    public IReadOnlyCollection<CombatEvent> GetCombatEvents(DashboardContentType? contentType)
     {
-        get
+        lock (_syncLock)
         {
-            lock (_syncLock)
-            {
-                return _combatEvents.Select(x => x.Clone()).ToList();
-            }
+            return _combatEvents
+                .Where(x => !contentType.HasValue || x.ContentType == contentType.Value)
+                .Select(x => x.Clone())
+                .ToList();
         }
+    }
+
+    public IReadOnlyCollection<CombatMobDamageStats> GetMobDamageStats(DashboardContentType? contentType = null)
+    {
+        lock (_syncLock)
+        {
+            return _mobDamageStatsByInstance.Values
+                .SelectMany(x => x.Values)
+                .Where(x => !contentType.HasValue || x.ContentType == contentType.Value)
+                .Select(x => x.Clone())
+                .ToList();
+        }
+    }
+
+    public bool TryGetMobInstanceId(long objectId, out Guid mobInstanceId)
+    {
+        var mob = GetKnownMobOrDefault(objectId);
+        if (mob == null)
+        {
+            mobInstanceId = Guid.Empty;
+            return false;
+        }
+
+        mobInstanceId = mob.MobInstanceId;
+        return true;
     }
 
     public void TrackNewMob(NewMobEvent newMobEvent)
@@ -76,18 +106,25 @@ public sealed class CombatEventTracker(TrackingController trackingController)
         var now = DateTime.UtcNow;
         var clusterKey = GetCurrentClusterKey();
         var mobData = _mobDataResolver.Resolve(newMobEvent);
-        var isNewMobEntry = false;
+        var shouldLogUnknownMobData = false;
 
         _recentlyLeftMobs.TryRemove(mobObjectId, out _);
-        _knownMobs.AddOrUpdate(
+        var trackedMob = _knownMobs.AddOrUpdate(
             mobObjectId,
             _ =>
             {
-                isNewMobEntry = true;
+                shouldLogUnknownMobData = true;
                 return CreateMobCacheEntry(newMobEvent, mobObjectId, clusterKey, now, mobData);
             },
             (_, existingEntry) =>
             {
+                if (!string.Equals(existingEntry.ClusterKey, clusterKey, StringComparison.Ordinal))
+                {
+                    shouldLogUnknownMobData = true;
+                    return CreateMobCacheEntry(newMobEvent, mobObjectId, clusterKey, now, mobData);
+                }
+
+                shouldLogUnknownMobData = existingEntry.IsProvisional;
                 existingEntry.MobIndex = newMobEvent.MobIndex;
                 existingEntry.Health = newMobEvent.HitPoints;
                 existingEntry.MaxHealth = newMobEvent.HitPointsMax;
@@ -95,10 +132,13 @@ public sealed class CombatEventTracker(TrackingController trackingController)
                 existingEntry.MobData = mobData;
                 existingEntry.UniqueName = mobData.UniqueName;
                 existingEntry.TypeId = newMobEvent.MobIndex.ToString();
+                existingEntry.IsProvisional = false;
                 return existingEntry;
             });
 
-        if (isNewMobEntry && string.Equals(mobData.UniqueName, "UNKNOWN_MOB", StringComparison.Ordinal))
+        UpdateMobDamageStats(trackedMob);
+
+        if (shouldLogUnknownMobData && string.Equals(mobData.UniqueName, "UNKNOWN_MOB", StringComparison.Ordinal))
         {
             Log.Debug("Unknown mob data for NewMob event | MobIndex={MobIndex} | ObjectId={ObjectId} | Cluster={Cluster}", newMobEvent.MobIndex, mobObjectId, clusterKey);
         }
@@ -117,7 +157,7 @@ public sealed class CombatEventTracker(TrackingController trackingController)
             if (isInCombat)
             {
                 _partyPlayersInCombat.Add(objectId);
-                EnsureActiveCombatEvent(false);
+                EnsureActiveCombatEvent(false, ResolveCurrentContentType());
                 _activeCombatEvent?.AddPlayerObjectId(objectId);
                 return;
             }
@@ -130,7 +170,7 @@ public sealed class CombatEventTracker(TrackingController trackingController)
         }
     }
 
-    public void AddHealthContribution(CombatEventValueType valueType, long sourceObjectId, long targetObjectId, long value, int causingSpellIndex)
+    public void AddHealthContribution(CombatEventValueType valueType, long sourceObjectId, long targetObjectId, long value, int causingSpellIndex, DashboardContentType contentType)
     {
         if (value <= 0)
         {
@@ -139,18 +179,36 @@ public sealed class CombatEventTracker(TrackingController trackingController)
 
         lock (_syncLock)
         {
-            EnsureActiveCombatEvent(true);
+            EnsureActiveCombatEvent(true, contentType);
 
             if (_activeCombatEvent == null)
             {
                 return;
             }
 
-            AddKnownParticipant(sourceObjectId);
-            AddKnownParticipant(targetObjectId);
+            var sourcePlayer = GetPlayer(sourceObjectId);
+            var targetPlayer = GetPlayer(targetObjectId);
+            var sourceMob = sourcePlayer == null ? GetKnownMob(sourceObjectId) : null;
+            var targetMob = targetPlayer == null ? GetKnownMob(targetObjectId) : null;
 
-            var participant = GetAggregationParticipant(valueType, sourceObjectId, targetObjectId);
-            _activeCombatEvent.AddContribution(valueType, sourceObjectId, targetObjectId, value, causingSpellIndex, participant);
+            if (valueType == CombatEventValueType.Damage
+                && sourcePlayer != null
+                && targetPlayer == null
+                && targetMob == null)
+            {
+                targetMob = GetOrCreateProvisionalMob(targetObjectId);
+            }
+
+            AddKnownParticipant(sourceObjectId, sourcePlayer, sourceMob);
+            AddKnownParticipant(targetObjectId, targetPlayer, targetMob);
+
+            var participant = GetAggregationParticipant(valueType, sourceObjectId, targetObjectId, sourcePlayer, targetPlayer, sourceMob, targetMob);
+            _activeCombatEvent.AddContribution(valueType, sourceObjectId, targetObjectId, targetMob?.MobInstanceId, value, causingSpellIndex, participant);
+
+            if (valueType == CombatEventValueType.Damage && targetMob != null)
+            {
+                RecordMobDamage(targetMob, contentType, sourcePlayer, causingSpellIndex, value);
+            }
         }
     }
 
@@ -172,6 +230,7 @@ public sealed class CombatEventTracker(TrackingController trackingController)
             EndActiveCombatEvent();
             _combatEvents.Clear();
             _partyPlayersInCombat.Clear();
+            _mobDamageStatsByInstance.Clear();
             _recentlyLeftMobs.Clear();
         }
     }
@@ -190,14 +249,47 @@ public sealed class CombatEventTracker(TrackingController trackingController)
             MaxHealth = newMobEvent.HitPointsMax,
             FirstSeen = now,
             LastUpdated = now,
-            MobData = mobData
+            MobData = mobData,
+            IsProvisional = false
         };
     }
 
-    private void EnsureActiveCombatEvent(bool isImplicit)
+    private CombatMobCacheEntry GetOrCreateProvisionalMob(long mobObjectId)
+    {
+        var now = DateTime.UtcNow;
+        var clusterKey = GetCurrentClusterKey();
+
+        CombatMobCacheEntry CreateEntry()
+        {
+            return new CombatMobCacheEntry
+            {
+                ClusterKey = clusterKey,
+                ClusterName = GetCurrentClusterName(),
+                MobObjectId = mobObjectId,
+                MobIndex = 0,
+                UniqueName = "UNKNOWN_MOB",
+                TypeId = "0",
+                Health = 0,
+                MaxHealth = 0,
+                FirstSeen = now,
+                LastUpdated = now,
+                MobData = null,
+                IsProvisional = true
+            };
+        }
+
+        return _knownMobs.AddOrUpdate(
+            mobObjectId,
+            _ => CreateEntry(),
+            (_, existingEntry) => string.Equals(existingEntry.ClusterKey, clusterKey, StringComparison.Ordinal) ? existingEntry : CreateEntry());
+    }
+
+    private void EnsureActiveCombatEvent(bool isImplicit, DashboardContentType contentType)
     {
         var clusterKey = GetCurrentClusterKey();
-        if (_activeCombatEvent?.IsActive == true && _activeCombatEvent.ClusterKey == clusterKey)
+        if (_activeCombatEvent?.IsActive == true
+            && _activeCombatEvent.ClusterKey == clusterKey
+            && _activeCombatEvent.ContentType == contentType)
         {
             if (_activeCombatEvent.IsImplicit && DateTime.UtcNow - _activeCombatEvent.LastEventTime > ImplicitCombatEventTimeout)
             {
@@ -214,7 +306,9 @@ public sealed class CombatEventTracker(TrackingController trackingController)
             }
         }
 
-        if (_activeCombatEvent?.IsActive == true && _activeCombatEvent.ClusterKey == clusterKey)
+        if (_activeCombatEvent?.IsActive == true
+            && _activeCombatEvent.ClusterKey == clusterKey
+            && _activeCombatEvent.ContentType == contentType)
         {
             return;
         }
@@ -225,6 +319,7 @@ public sealed class CombatEventTracker(TrackingController trackingController)
         {
             ClusterKey = clusterKey,
             ClusterName = GetCurrentClusterName(),
+            ContentType = contentType,
             StartTime = DateTime.UtcNow
         };
 
@@ -247,23 +342,28 @@ public sealed class CombatEventTracker(TrackingController trackingController)
         _activeCombatEvent = null;
     }
 
-    private void AddKnownParticipant(long objectId)
+    private void AddKnownParticipant(long objectId, PlayerGameObject player, CombatMobCacheEntry mob)
     {
-        var player = trackingController.EntityController.GetEntity(objectId);
-        if (player?.Value is { ObjectType: GameObjectType.Player })
+        if (player != null)
         {
             _activeCombatEvent?.AddPlayerObjectId(objectId);
             return;
         }
 
-        var mob = GetKnownMob(objectId);
         if (mob != null)
         {
             _activeCombatEvent?.AddMob(mob);
         }
     }
 
-    private CombatEventParticipant GetAggregationParticipant(CombatEventValueType valueType, long sourceObjectId, long targetObjectId)
+    private static CombatEventParticipant GetAggregationParticipant(
+        CombatEventValueType valueType,
+        long sourceObjectId,
+        long targetObjectId,
+        PlayerGameObject sourcePlayer,
+        PlayerGameObject targetPlayer,
+        CombatMobCacheEntry sourceMob,
+        CombatMobCacheEntry targetMob)
     {
         var participantObjectId = valueType switch
         {
@@ -271,29 +371,96 @@ public sealed class CombatEventTracker(TrackingController trackingController)
             _ => sourceObjectId
         };
 
-        var player = trackingController.EntityController.GetEntity(participantObjectId);
-        if (player?.Value is { ObjectType: GameObjectType.Player } playerObject)
+        var player = valueType == CombatEventValueType.TakenDamage ? targetPlayer : sourcePlayer;
+        if (player != null)
         {
             return new CombatEventParticipant
             {
                 ObjectId = participantObjectId,
-                Name = playerObject.Name,
+                Name = player.Name,
                 IsPlayer = true
             };
         }
 
-        var mob = GetKnownMob(participantObjectId);
+        var mob = valueType == CombatEventValueType.TakenDamage ? targetMob : sourceMob;
         if (mob != null)
         {
             return new CombatEventParticipant
             {
                 ObjectId = participantObjectId,
-                Name = MobsData.GetLocalizedMobName(mob.MobData),
+                Name = GetMobDisplayName(mob),
                 IsMob = true
             };
         }
 
         return null;
+    }
+
+    private PlayerGameObject GetPlayer(long objectId)
+    {
+        var entity = trackingController.EntityController.GetEntity(objectId);
+        return entity?.Value is { ObjectType: GameObjectType.Player } player ? player : null;
+    }
+
+    private void RecordMobDamage(CombatMobCacheEntry mob, DashboardContentType contentType, PlayerGameObject sourcePlayer, int causingSpellIndex, long value)
+    {
+        if (!_mobDamageStatsByInstance.TryGetValue(mob.MobInstanceId, out var statsByContent))
+        {
+            statsByContent = [];
+            _mobDamageStatsByInstance.Add(mob.MobInstanceId, statsByContent);
+        }
+
+        if (!statsByContent.TryGetValue(contentType, out var mobDamageStats))
+        {
+            mobDamageStats = new CombatMobDamageStats
+            {
+                MobInstanceId = mob.MobInstanceId,
+                MobObjectId = mob.MobObjectId,
+                ClusterKey = mob.ClusterKey,
+                ClusterName = mob.ClusterName,
+                ContentType = contentType,
+                FirstSeen = mob.FirstSeen
+            };
+            mobDamageStats.UpdateMob(mob);
+            statsByContent.Add(contentType, mobDamageStats);
+        }
+
+        mobDamageStats.RecordDamage(sourcePlayer?.UserGuid, sourcePlayer?.Name ?? string.Empty, causingSpellIndex, value, DateTime.UtcNow);
+    }
+
+    private void UpdateMobDamageStats(CombatMobCacheEntry mob)
+    {
+        lock (_syncLock)
+        {
+            if (_mobDamageStatsByInstance.TryGetValue(mob.MobInstanceId, out var statsByContent))
+            {
+                foreach (var mobDamageStats in statsByContent.Values)
+                {
+                    mobDamageStats.UpdateMob(mob);
+                }
+            }
+
+            if (_activeCombatEvent?.MobInstanceIds.Contains(mob.MobInstanceId) == true)
+            {
+                _activeCombatEvent.AddMob(mob);
+            }
+        }
+    }
+
+    private static string GetMobDisplayName(CombatMobCacheEntry mob)
+    {
+        if (mob.MobData != null)
+        {
+            var localizedName = MobsData.GetLocalizedMobName(mob.MobData);
+            if (!string.IsNullOrWhiteSpace(localizedName))
+            {
+                return localizedName;
+            }
+        }
+
+        return !string.IsNullOrWhiteSpace(mob.UniqueName)
+            ? mob.UniqueName
+            : mob.MobObjectId.ToString();
     }
 
     private CombatMobCacheEntry GetKnownMob(long objectId)
@@ -315,6 +482,15 @@ public sealed class CombatEventTracker(TrackingController trackingController)
                 _recentlyLeftMobs.TryRemove(mob.Key, out _);
             }
         }
+    }
+
+    private DashboardContentType ResolveCurrentContentType()
+    {
+        var currentCluster = ClusterController.CurrentCluster;
+        return DashboardContentTypeResolver.Resolve(
+            currentCluster.MapType,
+            trackingController.StatisticController.ResolveDungeonMode(currentCluster.MapType),
+            currentCluster.ClusterMode);
     }
 
     private static string GetCurrentClusterKey()

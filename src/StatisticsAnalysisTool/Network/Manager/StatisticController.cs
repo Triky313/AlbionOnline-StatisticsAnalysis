@@ -1623,7 +1623,7 @@ public class StatisticController
             _dirtySessionVersions.GetValueOrDefault(sessionId) + 1;
     }
 
-    private DungeonMode ResolveDungeonMode(MapType mapType)
+    public DungeonMode ResolveDungeonMode(MapType mapType)
     {
         if (mapType != MapType.RandomDungeon)
         {

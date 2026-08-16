@@ -1,9 +1,11 @@
 using Serilog;
+using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.DamageMeter;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Properties;
@@ -25,6 +27,7 @@ public class CombatController
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly TrackingController _trackingController;
     private readonly DamageStatsTracker _damageStatsTracker = new();
+    private readonly ConcurrentDictionary<DashboardContentType, DamageStatsTracker> _damageStatsTrackersByContent = new();
     private readonly object _damageStatsUiUpdateLock = new();
     private bool _combatModeWasCombatOver;
     private bool _isDamageStatsUiUpdateActive;
@@ -43,6 +46,8 @@ public class CombatController
         OnChangeCombatMode += ResetDamageMeterBeforeCombatStart;
         OnChangeCombatMode += CombatEventTracker.OnCombatStateUpdate;
         OnDamageUpdate += UpdateDamageMeterUiAsync;
+        _mainWindowViewModel.DamageMeterBindings.DamageMeterContentFilterChanged += OnDamageMeterContentFilterChanged;
+        _mainWindowViewModel.DamageMeterBindings.DamageMeterSnapshotProvider = CreateDamageMeterSnapshot;
 
 #if DEBUG
         RunDamageMeterDebugAsync(0, 0);
@@ -76,6 +81,10 @@ public class CombatController
             return Task.CompletedTask;
         }
 
+        var contentType = GetCurrentContentType();
+        var contentStats = causerGameObjectValue.GetOrCreateDamageMeterContentStats(contentType);
+        var contentDamageStatsTracker = _damageStatsTrackersByContent.GetOrAdd(contentType, _ => new DamageStatsTracker());
+
         if (healthChangeType == HealthChangeType.Damage)
         {
             var damageChangeValue = (int) Math.Round(healthChange.ToPositiveFromNegativeOrZero(), MidpointRounding.AwayFromZero);
@@ -85,9 +94,16 @@ public class CombatController
             }
 
             causerGameObjectValue.Damage += damageChangeValue;
-            AddOrUpdateSpell(causingSpellIndex, causerGameObjectValue, healthChangeType, damageChangeValue);
-            CombatEventTracker.AddHealthContribution(CombatEventValueType.Damage, causerId, affectedId, damageChangeValue, causingSpellIndex);
+            AddOrUpdateSpell(causingSpellIndex, causerGameObjectValue, causerGameObjectValue.Spells, healthChangeType, damageChangeValue);
+            lock (contentStats.SyncRoot)
+            {
+                contentStats.Damage += damageChangeValue;
+                AddOrUpdateSpell(causingSpellIndex, causerGameObjectValue, contentStats.Spells, healthChangeType, damageChangeValue);
+            }
+
+            CombatEventTracker.AddHealthContribution(CombatEventValueType.Damage, causerId, affectedId, damageChangeValue, causingSpellIndex, contentType);
             _damageStatsTracker.RecordDamage(causerGameObject.Value.Key, causerGameObjectValue.Name, affectedId, damageChangeValue, newHealthValue);
+            contentDamageStatsTracker.RecordDamage(causerGameObject.Value.Key, causerGameObjectValue.Name, affectedId, damageChangeValue, newHealthValue);
         }
 
         if (healthChangeType == HealthChangeType.Heal)
@@ -102,20 +118,37 @@ public class CombatController
             if (!IsMaxHealthReached(affectedId, newHealthValue))
             {
                 causerGameObjectValue.Heal += positiveHealChangeValue;
-                AddOrUpdateSpell(causingSpellIndex, causerGameObjectValue, healthChangeType, positiveHealChangeValue);
-                CombatEventTracker.AddHealthContribution(CombatEventValueType.Heal, causerId, affectedId, positiveHealChangeValue, causingSpellIndex);
+                AddOrUpdateSpell(causingSpellIndex, causerGameObjectValue, causerGameObjectValue.Spells, healthChangeType, positiveHealChangeValue);
+                lock (contentStats.SyncRoot)
+                {
+                    contentStats.Heal += positiveHealChangeValue;
+                    AddOrUpdateSpell(causingSpellIndex, causerGameObjectValue, contentStats.Spells, healthChangeType, positiveHealChangeValue);
+                }
+
+                CombatEventTracker.AddHealthContribution(CombatEventValueType.Heal, causerId, affectedId, positiveHealChangeValue, causingSpellIndex, contentType);
+                contentDamageStatsTracker.RecordHeal(causerGameObject.Value.Key, causerGameObjectValue.Name, positiveHealChangeValue);
                 _damageStatsTracker.RecordHeal(causerGameObject.Value.Key, causerGameObjectValue.Name, positiveHealChangeValue);
             }
             else
             {
                 causerGameObjectValue.Overhealed += positiveHealChangeValue;
+                lock (contentStats.SyncRoot)
+                {
+                    contentStats.Overhealed += positiveHealChangeValue;
+                }
+
+                contentDamageStatsTracker.RecordOverheal(causerGameObject.Value.Key, causerGameObjectValue.Name, positiveHealChangeValue);
                 _damageStatsTracker.RecordOverheal(causerGameObject.Value.Key, causerGameObjectValue.Name, positiveHealChangeValue);
             }
         }
 
         causerGameObjectValue.CombatStart ??= DateTime.UtcNow;
+        lock (contentStats.SyncRoot)
+        {
+            contentStats.CombatStart ??= DateTime.UtcNow;
+        }
 
-        OnDamageUpdate?.Invoke(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter, _trackingController.EntityController.GetAllEntitiesWithDamageOrHealAndInParty());
+        UpdateDamageMeterUiForSelectedContent();
         UpdateDamageStatsUiIfAllowed();
         return Task.CompletedTask;
     }
@@ -136,6 +169,9 @@ public class CombatController
             return Task.CompletedTask;
         }
 
+        var contentType = GetCurrentContentType();
+        var contentStats = gameObjectValue.GetOrCreateDamageMeterContentStats(contentType);
+
         if (healthChangeType == HealthChangeType.Damage)
         {
             var damageChangeValue = (int) Math.Round(healthChange.ToPositiveFromNegativeOrZero(), MidpointRounding.AwayFromZero);
@@ -145,14 +181,43 @@ public class CombatController
             }
 
             gameObjectValue.TakenDamage += damageChangeValue;
-            CombatEventTracker.AddHealthContribution(CombatEventValueType.TakenDamage, causerId, affectedId, damageChangeValue, causingSpellIndex);
+            lock (contentStats.SyncRoot)
+            {
+                contentStats.TakenDamage += damageChangeValue;
+            }
+
+            CombatEventTracker.AddHealthContribution(CombatEventValueType.TakenDamage, causerId, affectedId, damageChangeValue, causingSpellIndex, contentType);
         }
+
+        UpdateDamageMeterUiForSelectedContent();
 
         UpdateDamageStatsUiIfAllowed();
         return Task.CompletedTask;
     }
 
     private static bool _isUiUpdateActive;
+
+    private DashboardContentType GetCurrentContentType()
+    {
+        var currentCluster = ClusterController.CurrentCluster;
+        return DashboardContentTypeResolver.Resolve(
+            currentCluster.MapType,
+            _trackingController.StatisticController.ResolveDungeonMode(currentCluster.MapType),
+            currentCluster.ClusterMode);
+    }
+
+    private void UpdateDamageMeterUiForSelectedContent()
+    {
+        if (!IsUiUpdateRequired())
+        {
+            return;
+        }
+
+        var selectedContentType = _mainWindowViewModel.DamageMeterBindings.DamageMeterContentFilterSelection?.ContentType;
+        OnDamageUpdate?.Invoke(
+            _mainWindowViewModel.DamageMeterBindings.DamageMeter,
+            _trackingController.EntityController.GetAllEntitiesWithDamageOrHealAndInParty(selectedContentType));
+    }
 
     public async void UpdateDamageMeterUiAsync(ObservableCollection<DamageMeterFragment> damageMeter, List<KeyValuePair<Guid, PlayerGameObject>> entities)
     {
@@ -163,11 +228,30 @@ public class CombatController
 
         _isUiUpdateActive = true;
 
+        try
+        {
+            await UpdateDamageMeterUiCoreAsync(damageMeter, entities);
+        }
+        catch (Exception e)
+        {
+            Log.Warning(e, "Damage Meter UI update failed");
+        }
+        finally
+        {
+            _isUiUpdateActive = false;
+        }
+    }
+
+    private async Task UpdateDamageMeterUiCoreAsync(ObservableCollection<DamageMeterFragment> damageMeter, List<KeyValuePair<Guid, PlayerGameObject>> entities)
+    {
         var currentTotalDamage = entities.GetCurrentTotalDamage();
         var currentTotalHeal = entities.GetCurrentTotalHeal();
-        var currentTotalTakenDamage = entities.GetCurrentTotalDamage();
+        var currentTotalTakenDamage = entities.GetCurrentTotalTakenDamage();
 
         _trackingController.EntityController.DetectUsedWeapon();
+        var fragmentsByCauser = damageMeter
+            .GroupBy(x => x.CauserGuid)
+            .ToDictionary(x => x.Key, x => x.First());
 
         foreach (var healthChangeObject in entities)
         {
@@ -176,7 +260,7 @@ public class CombatController
                 continue;
             }
 
-            var fragment = damageMeter.ToList().FirstOrDefault(x => x.CauserGuid == healthChangeObject.Value.UserGuid);
+            fragmentsByCauser.TryGetValue(healthChangeObject.Value.UserGuid, out var fragment);
             if (fragment != null)
             {
                 await UpdateDamageMeterFragmentAsync(fragment, healthChangeObject, entities, currentTotalDamage, currentTotalHeal, currentTotalTakenDamage);
@@ -185,12 +269,10 @@ public class CombatController
             {
                 await AddDamageMeterFragmentAsync(damageMeter, healthChangeObject, entities, currentTotalDamage, currentTotalHeal, currentTotalTakenDamage).ConfigureAwait(true);
             }
-
-            Application.Current.Dispatcher.Invoke(() => _mainWindowViewModel.DamageMeterBindings?.SetDamageMeterSort());
         }
 
         await RemoveDuplicatesAsync(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter);
-        _isUiUpdateActive = false;
+        Application.Current.Dispatcher.Invoke(() => _mainWindowViewModel.DamageMeterBindings?.SetDamageMeterSort());
     }
 
     private static async Task UpdateDamageMeterFragmentAsync(DamageMeterFragment fragment, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
@@ -264,7 +346,7 @@ public class CombatController
     {
         if (healthChangeObject.Value == null
             || (double.IsNaN(healthChangeObject.Value.Damage) && double.IsNaN(healthChangeObject.Value.Heal) && double.IsNaN(healthChangeObject.Value.Overhealed))
-            || (healthChangeObject.Value.Damage <= 0 && healthChangeObject.Value.Heal <= 0 && healthChangeObject.Value.Overhealed <= 0))
+            || (healthChangeObject.Value.Damage <= 0 && healthChangeObject.Value.Heal <= 0 && healthChangeObject.Value.Overhealed <= 0 && healthChangeObject.Value.TakenDamage <= 0))
         {
             return;
         }
@@ -401,7 +483,9 @@ public class CombatController
         }
 
         _damageStatsTracker.Clear();
+        _damageStatsTrackersByContent.Clear();
         CombatEventTracker.ClearCombatEvents();
+        _trackingController.EntityController.ResetDamageMeterContentStats();
         _trackingController.EntityController.ResetEntitiesDamageTimes();
         _trackingController.EntityController.ResetEntitiesDamage();
         _trackingController.EntityController.ResetEntitiesHeal();
@@ -460,17 +544,83 @@ public class CombatController
 
     private DateTime _lastDamageUiUpdate;
 
+    private bool IsUiUpdateRequired(int waitTimeInSeconds = 1)
+    {
+        var difference = DateTime.UtcNow.Subtract(_lastDamageUiUpdate);
+        return difference.TotalSeconds >= waitTimeInSeconds && !_isUiUpdateActive;
+    }
+
     private bool IsUiUpdateAllowed(int waitTimeInSeconds = 1)
     {
         var currentDateTime = DateTime.UtcNow;
         var difference = currentDateTime.Subtract(_lastDamageUiUpdate);
-        if (difference.Seconds >= waitTimeInSeconds && !_isUiUpdateActive)
+        if (difference.TotalSeconds >= waitTimeInSeconds && !_isUiUpdateActive)
         {
             _lastDamageUiUpdate = currentDateTime;
             return true;
         }
 
         return false;
+    }
+
+    private void OnDamageMeterContentFilterChanged(DashboardContentType? contentType)
+    {
+        lock (_damageStatsUiUpdateLock)
+        {
+            _damageStatsVersion++;
+            _isDamageStatsUiUpdateActive = false;
+            _lastDamageStatsUiUpdate = DateTime.MinValue;
+        }
+
+        _lastDamageUiUpdate = DateTime.MinValue;
+        _isUiUpdateActive = false;
+
+        Application.Current?.Dispatcher?.Invoke(() =>
+        {
+            _mainWindowViewModel.DamageMeterBindings.DamageMeter.Clear();
+            _mainWindowViewModel.DamageMeterBindings.ClearDamageStats();
+        });
+
+        UpdateDamageMeterUiForSelectedContent();
+        UpdateDamageStatsUiIfAllowed();
+    }
+
+    private DamageMeterSnapshot CreateDamageMeterSnapshot()
+    {
+        var snapshot = new DamageMeterSnapshot
+        {
+            AllContent = CreateDamageMeterContentSnapshot(null)
+        };
+
+        foreach (var contentType in DashboardContentTypeResolver.ContentTypes)
+        {
+            var contentSnapshot = CreateDamageMeterContentSnapshot(contentType);
+            if (contentSnapshot.HasData)
+            {
+                snapshot.ContentSnapshots[contentType] = contentSnapshot;
+            }
+        }
+
+        snapshot.ApplyContentFilter(null);
+        return snapshot;
+    }
+
+    private DamageMeterContentSnapshot CreateDamageMeterContentSnapshot(DashboardContentType? contentType)
+    {
+        var entities = _trackingController.EntityController
+            .GetAllEntitiesWithDamageOrHealAndInParty(contentType);
+        var activePlayerGuids = entities.Select(x => x.Key).ToList();
+        var healingPlayerGuids = entities
+            .Where(x => x.Value.Heal > 0)
+            .Select(x => x.Key)
+            .ToList();
+        var trackerSnapshot = GetDamageStatsTracker(contentType)
+            .CreateSnapshot(activePlayerGuids, healingPlayerGuids);
+
+        return DamageMeterContentSnapshotFactory.Create(
+            entities,
+            trackerSnapshot,
+            CreateYourStatsSnapshot(contentType));
     }
 
     private void UpdateDamageStatsUiIfAllowed()
@@ -494,11 +644,10 @@ public class CombatController
     {
         try
         {
+            var selectedContentType = _mainWindowViewModel.DamageMeterBindings.DamageMeterContentFilterSelection?.ContentType;
             var activeEntities = _trackingController.EntityController
-                .GetAllEntities()
-                .Where(x => _trackingController.EntityController.IsEntityInParty(x.Key))
-                .Where(x => x.Value.Damage > 0 || x.Value.Heal > 0 || x.Value.Overhealed > 0 || x.Value.TakenDamage > 0)
-                .ToList();
+                .GetAllEntitiesWithDamageOrHealAndInParty(selectedContentType);
+            var damageStatsTracker = GetDamageStatsTracker(selectedContentType);
 
             var activePlayerGuids = activeEntities
                 .Select(x => x.Key)
@@ -509,8 +658,8 @@ public class CombatController
                 .Select(x => x.Key)
                 .ToList();
 
-            var damageStatsSnapshot = CreateDamageStatsSnapshot(_damageStatsTracker.CreateSnapshot(activePlayerGuids, healingPlayerGuids), activeEntities);
-            var yourStatsSnapshot = CreateYourStatsSnapshot();
+            var damageStatsSnapshot = CreateDamageStatsSnapshot(damageStatsTracker.CreateSnapshot(activePlayerGuids, healingPlayerGuids), activeEntities);
+            var yourStatsSnapshot = CreateYourStatsSnapshot(selectedContentType);
 
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
@@ -560,7 +709,19 @@ public class CombatController
         };
     }
 
-    private DamageMeterYourStatsSnapshot CreateYourStatsSnapshot()
+    private DamageStatsTracker GetDamageStatsTracker(DashboardContentType? contentType)
+    {
+        if (!contentType.HasValue)
+        {
+            return _damageStatsTracker;
+        }
+
+        return _damageStatsTrackersByContent.TryGetValue(contentType.Value, out var tracker)
+            ? tracker
+            : new DamageStatsTracker();
+    }
+
+    private DamageMeterYourStatsSnapshot CreateYourStatsSnapshot(DashboardContentType? contentType)
     {
         var localUserData = _trackingController.EntityController.LocalUserData;
         PlayerGameObject localPlayer = null;
@@ -575,7 +736,15 @@ public class CombatController
             localPlayer = _trackingController.EntityController.GetEntity(localUserData.UserObjectId.Value)?.Value;
         }
 
-        return DamageMeterYourStatsSnapshotFactory.FromLiveData(localPlayer, CombatEventTracker.CombatEvents, ResolveObjectName);
+        if (contentType.HasValue && localPlayer != null)
+        {
+            localPlayer = localPlayer.CreateDamageMeterContentView(contentType.Value);
+        }
+
+        return DamageMeterYourStatsSnapshotFactory.FromLiveData(
+            localPlayer,
+            CombatEventTracker.GetCombatEvents(contentType),
+            ResolveObjectName);
     }
 
     private string ResolveObjectName(long objectId)
@@ -586,10 +755,19 @@ public class CombatController
             return entity.Value.Value.Name;
         }
 
-        var mob = CombatEventTracker.KnownMobs.FirstOrDefault(x => x.MobObjectId == objectId);
-        if (mob != null)
+        var mob = CombatEventTracker.GetKnownMobOrDefault(objectId);
+        if (mob?.MobData != null)
         {
-            return MobsData.GetLocalizedMobName(mob.MobData);
+            var localizedName = MobsData.GetLocalizedMobName(mob.MobData);
+            if (!string.IsNullOrWhiteSpace(localizedName))
+            {
+                return localizedName;
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(mob?.UniqueName))
+        {
+            return mob.UniqueName;
         }
 
         return objectId.ToString();
@@ -616,11 +794,11 @@ public class CombatController
         }
     }
 
-    private void AddOrUpdateSpell(int causingSpellIndex, PlayerGameObject playerGameObject, HealthChangeType healthChangeType, int healthChangeValue)
+    private void AddOrUpdateSpell(int causingSpellIndex, PlayerGameObject playerGameObject, ICollection<UsedSpell> spells, HealthChangeType healthChangeType, int healthChangeValue)
     {
         if (causingSpellIndex <= 0)
         {
-            var autoAttack = playerGameObject.Spells.FirstOrDefault(x => x.SpellIndex == 0);
+            var autoAttack = spells.FirstOrDefault(x => x.SpellIndex == 0);
             if (autoAttack is not null)
             {
                 autoAttack.DamageHealValue += healthChangeValue;
@@ -628,7 +806,7 @@ public class CombatController
             }
             else
             {
-                playerGameObject.Spells.Add(new UsedSpell(0, 0)
+                spells.Add(new UsedSpell(0, 0)
                 {
                     UniqueName = "AUTO_ATTACK",
                     Category = "damage",
@@ -642,7 +820,7 @@ public class CombatController
         }
 
         var itemIndex = GetSpellItemIndex(causingSpellIndex, playerGameObject);
-        var spell = playerGameObject.Spells.FirstOrDefault(x => x.SpellIndex == causingSpellIndex && x.HealthChangeType == healthChangeType);
+        var spell = spells.FirstOrDefault(x => x.SpellIndex == causingSpellIndex && x.HealthChangeType == healthChangeType);
         if (spell is not null)
         {
             spell.HealthChangeType = healthChangeType;
@@ -656,7 +834,7 @@ public class CombatController
         }
         else
         {
-            playerGameObject.Spells.Add(new UsedSpell(causingSpellIndex, itemIndex)
+            spells.Add(new UsedSpell(causingSpellIndex, itemIndex)
             {
                 ItemIndex = itemIndex,
                 HealthChangeType = healthChangeType,
@@ -846,28 +1024,31 @@ public class CombatController
             return;
         }
 
-        var playerObject = _trackingController.EntityController.GetEntity(objectId);
-
-        if (playerObject?.Value == null)
+        var player = _trackingController.EntityController.GetEntity(objectId)?.Value;
+        if (player == null)
         {
             return;
         }
 
-        if ((inActiveCombat || inPassiveCombat) && playerObject.Value.Value.CombatTimes.Any(x => x?.EndTime == null))
+        var now = DateTime.UtcNow;
+        if (inActiveCombat || inPassiveCombat)
         {
-            return;
-        }
-
-        if (inActiveCombat || inPassiveCombat) playerObject.Value.Value.AddCombatTime(new ActionInterval(DateTime.UtcNow));
-
-        if (!inActiveCombat && !inPassiveCombat)
-        {
-            var combatTime = playerObject.Value.Value.CombatTimes.FirstOrDefault(x => x.EndTime == null);
-            if (combatTime != null)
+            if (!player.CombatTimes.Any(x => x?.EndTime == null))
             {
-                combatTime.EndTime = DateTime.UtcNow;
+                player.AddCombatTime(new ActionInterval(now));
             }
+
+            player.GetOrCreateDamageMeterContentStats(GetCurrentContentType()).StartCombatInterval(now);
+            return;
         }
+
+        var combatTime = player.CombatTimes.FirstOrDefault(x => x.EndTime == null);
+        if (combatTime != null)
+        {
+            combatTime.EndTime = now;
+        }
+
+        player.EndDamageMeterContentCombatIntervals(now);
     }
 
     #endregion

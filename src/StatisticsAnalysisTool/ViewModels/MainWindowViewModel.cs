@@ -75,6 +75,7 @@ public class MainWindowViewModel : BaseViewModel
         OpenWorldBindings.UpdateStats();
         RefreshTrackingActivityText();
         MainStatusBindings.RefreshLocalization();
+        DamageMeterBindings.RefreshContentFilters();
     }
 
     private void RefreshDashboardChartTranslations()
@@ -129,22 +130,13 @@ public class MainWindowViewModel : BaseViewModel
 
         DashboardContentFilters = new ObservableCollection<DashboardContentFilterOption>
         {
-            new(null, LocalizationController.Translation("ALL_CONTENT_TYPES")),
-            CreateDashboardContentFilterOption(DashboardContentType.SoloDungeon),
-            CreateDashboardContentFilterOption(DashboardContentType.StandardDungeon),
-            CreateDashboardContentFilterOption(DashboardContentType.AvalonDungeon),
-            CreateDashboardContentFilterOption(DashboardContentType.StaticDungeon),
-            CreateDashboardContentFilterOption(DashboardContentType.AvalonianRoads),
-            CreateDashboardContentFilterOption(DashboardContentType.HellGate),
-            CreateDashboardContentFilterOption(DashboardContentType.CorruptedDungeon),
-            CreateDashboardContentFilterOption(DashboardContentType.Expedition),
-            CreateDashboardContentFilterOption(DashboardContentType.Mists),
-            CreateDashboardContentFilterOption(DashboardContentType.MistsDungeon),
-            CreateDashboardContentFilterOption(DashboardContentType.AbyssalDepths),
-            CreateDashboardContentFilterOption(DashboardContentType.OpenWorld),
-            CreateDashboardContentFilterOption(DashboardContentType.Arena),
-            CreateDashboardContentFilterOption(DashboardContentType.Others)
+            new(null, LocalizationController.Translation("ALL_CONTENT_TYPES"))
         };
+
+        foreach (var contentType in DashboardContentTypeResolver.ContentTypes)
+        {
+            DashboardContentFilters.Add(CreateDashboardContentFilterOption(contentType));
+        }
         SelectedDashboardContentFilter = DashboardContentFilters
             .FirstOrDefault(x => x.ContentType == selectedContentType)
             ?? DashboardContentFilters[0];

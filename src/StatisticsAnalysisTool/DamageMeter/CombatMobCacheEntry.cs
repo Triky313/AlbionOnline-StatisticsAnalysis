@@ -5,6 +5,7 @@ namespace StatisticsAnalysisTool.DamageMeter;
 
 public sealed class CombatMobCacheEntry
 {
+    public Guid MobInstanceId { get; init; } = Guid.NewGuid();
     public string ClusterKey { get; init; }
     public string ClusterName { get; init; }
     public long MobObjectId { get; init; }
@@ -16,4 +17,25 @@ public sealed class CombatMobCacheEntry
     public DateTime FirstSeen { get; init; }
     public DateTime LastUpdated { get; set; }
     public MobJsonObject MobData { get; set; }
+    public bool IsProvisional { get; set; }
+
+    internal CombatMobCacheEntry Clone()
+    {
+        return new CombatMobCacheEntry
+        {
+            MobInstanceId = MobInstanceId,
+            ClusterKey = ClusterKey,
+            ClusterName = ClusterName,
+            MobObjectId = MobObjectId,
+            MobIndex = MobIndex,
+            UniqueName = UniqueName,
+            TypeId = TypeId,
+            Health = Health,
+            MaxHealth = MaxHealth,
+            FirstSeen = FirstSeen,
+            LastUpdated = LastUpdated,
+            MobData = MobData,
+            IsProvisional = IsProvisional
+        };
+    }
 }

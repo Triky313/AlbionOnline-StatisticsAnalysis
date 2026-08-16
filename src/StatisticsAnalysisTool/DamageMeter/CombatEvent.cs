@@ -1,3 +1,4 @@
+using StatisticsAnalysisTool.Models;
 using System;
 using System.Collections.Generic;
 
@@ -6,10 +7,13 @@ namespace StatisticsAnalysisTool.DamageMeter;
 public sealed class CombatEvent
 {
     private readonly Dictionary<long, CombatEventParticipant> _participants = new();
+    private readonly Dictionary<Guid, int> _knownMobIndexes = [];
+    private readonly List<CombatMobCacheEntry> _knownMobs = [];
 
     public Guid CombatEventId { get; init; } = Guid.NewGuid();
     public string ClusterKey { get; init; }
     public string ClusterName { get; init; }
+    public DashboardContentType ContentType { get; init; }
     public DateTime StartTime { get; init; } = DateTime.UtcNow;
     public DateTime? EndTime { get; private set; }
     public DateTime LastEventTime { get; private set; } = DateTime.UtcNow;
@@ -17,8 +21,9 @@ public sealed class CombatEvent
     public bool IsImplicit { get; private set; }
     public HashSet<long> PlayerObjectIds { get; } = [];
     public HashSet<long> MobObjectIds { get; } = [];
-    public List<CombatMobCacheEntry> KnownMobs { get; } = [];
+    public HashSet<Guid> MobInstanceIds { get; } = [];
     public List<CombatEventContribution> Contributions { get; } = [];
+    public IReadOnlyList<CombatMobCacheEntry> KnownMobs => _knownMobs;
     public IReadOnlyCollection<CombatEventParticipant> Participants => _participants.Values;
     public long Damage { get; private set; }
     public long Heal { get; private set; }
@@ -34,7 +39,7 @@ public sealed class CombatEvent
         IsImplicit = false;
     }
 
-    public void AddContribution(CombatEventValueType valueType, long sourceObjectId, long targetObjectId, long value, int causingSpellIndex, CombatEventParticipant participant)
+    public void AddContribution(CombatEventValueType valueType, long sourceObjectId, long targetObjectId, Guid? targetMobInstanceId, long value, int causingSpellIndex, CombatEventParticipant participant)
     {
         LastEventTime = DateTime.UtcNow;
 
@@ -69,6 +74,7 @@ public sealed class CombatEvent
             ValueType = valueType,
             SourceObjectId = sourceObjectId,
             TargetObjectId = targetObjectId,
+            TargetMobInstanceId = targetMobInstanceId,
             Value = value,
             CausingSpellIndex = causingSpellIndex
         });
@@ -88,9 +94,17 @@ public sealed class CombatEvent
 
         MobObjectIds.Add(mob.MobObjectId);
 
-        if (!KnownMobs.Exists(x => x.MobObjectId == mob.MobObjectId && x.ClusterKey == mob.ClusterKey))
+        if (!_knownMobIndexes.TryGetValue(mob.MobInstanceId, out var knownMobIndex))
         {
-            KnownMobs.Add(mob);
+            MobInstanceIds.Add(mob.MobInstanceId);
+            _knownMobIndexes.Add(mob.MobInstanceId, _knownMobs.Count);
+            _knownMobs.Add(mob.Clone());
+            return;
+        }
+
+        if (_knownMobs[knownMobIndex].IsProvisional && !mob.IsProvisional)
+        {
+            _knownMobs[knownMobIndex] = mob.Clone();
         }
     }
 
@@ -113,6 +127,7 @@ public sealed class CombatEvent
             CombatEventId = CombatEventId,
             ClusterKey = ClusterKey,
             ClusterName = ClusterName,
+            ContentType = ContentType,
             StartTime = StartTime,
             EndTime = EndTime,
             LastEventTime = LastEventTime,
@@ -133,9 +148,14 @@ public sealed class CombatEvent
             combatEvent.MobObjectIds.Add(mobObjectId);
         }
 
-        foreach (var knownMob in KnownMobs)
+        foreach (var mobInstanceId in MobInstanceIds)
         {
-            combatEvent.KnownMobs.Add(knownMob);
+            combatEvent.MobInstanceIds.Add(mobInstanceId);
+        }
+
+        foreach (var knownMob in _knownMobs)
+        {
+            combatEvent.AddMob(knownMob);
         }
 
         foreach (var contribution in Contributions)
@@ -148,6 +168,7 @@ public sealed class CombatEvent
                 SourceObjectId = contribution.SourceObjectId,
                 TargetObjectId = contribution.TargetObjectId,
                 Value = contribution.Value,
+                TargetMobInstanceId = contribution.TargetMobInstanceId,
                 CausingSpellIndex = contribution.CausingSpellIndex
             });
         }

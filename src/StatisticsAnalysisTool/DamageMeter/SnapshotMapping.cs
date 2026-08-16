@@ -6,29 +6,68 @@ public static class SnapshotMapping
 {
     public static DamageMeterSnapshotDto Mapping(DamageMeterSnapshot snapshot)
     {
-        return new DamageMeterSnapshotDto()
+        var allContent = snapshot.AllContent.HasData
+            ? snapshot.AllContent
+            : new DamageMeterContentSnapshot
+            {
+                DamageMeter = snapshot.DamageMeter ?? [],
+                DamageStats = snapshot.DamageStats,
+                YourStats = snapshot.YourStats
+            };
+
+        return new DamageMeterSnapshotDto
         {
             Timestamp = snapshot.Timestamp,
             Location = snapshot.Location,
             IsAutoSave = snapshot.IsAutoSave,
-            DamageMeter = snapshot.DamageMeter?.Select(Mapping).ToList(),
-            DamageStats = DamageStatsSnapshotFactory.Clone(snapshot.DamageStats),
-            YourStats = DamageMeterYourStatsSnapshotFactory.Clone(snapshot.YourStats)
+            DamageMeter = allContent.DamageMeter.Select(Mapping).ToList(),
+            DamageStats = DamageStatsSnapshotFactory.Clone(allContent.DamageStats),
+            YourStats = DamageMeterYourStatsSnapshotFactory.Clone(allContent.YourStats),
+            ContentSnapshots = snapshot.ContentSnapshots.ToDictionary(x => x.Key, x => Mapping(x.Value))
         };
     }
 
     public static DamageMeterSnapshot Mapping(DamageMeterSnapshotDto snapshotDto)
     {
-        var damageMeter = snapshotDto.DamageMeter?.Select(Mapping).ToList() ?? [];
+        var allContent = Mapping(new DamageMeterContentSnapshotDto
+        {
+            DamageMeter = snapshotDto.DamageMeter ?? [],
+            DamageStats = snapshotDto.DamageStats,
+            YourStats = snapshotDto.YourStats
+        });
 
-        return new DamageMeterSnapshot()
+        var snapshot = new DamageMeterSnapshot
         {
             Timestamp = snapshotDto.Timestamp,
             Location = snapshotDto.Location,
             IsAutoSave = snapshotDto.IsAutoSave,
+            AllContent = allContent,
+            ContentSnapshots = (snapshotDto.ContentSnapshots ?? [])
+                .ToDictionary(x => x.Key, x => Mapping(x.Value))
+        };
+
+        snapshot.ApplyContentFilter(null);
+        return snapshot;
+    }
+
+    private static DamageMeterContentSnapshotDto Mapping(DamageMeterContentSnapshot snapshot)
+    {
+        return new DamageMeterContentSnapshotDto
+        {
+            DamageMeter = snapshot.DamageMeter.Select(Mapping).ToList(),
+            DamageStats = DamageStatsSnapshotFactory.Clone(snapshot.DamageStats),
+            YourStats = DamageMeterYourStatsSnapshotFactory.Clone(snapshot.YourStats)
+        };
+    }
+
+    private static DamageMeterContentSnapshot Mapping(DamageMeterContentSnapshotDto snapshot)
+    {
+        var damageMeter = snapshot?.DamageMeter?.Select(Mapping).ToList() ?? [];
+        return new DamageMeterContentSnapshot
+        {
             DamageMeter = damageMeter,
-            DamageStats = snapshotDto.DamageStats ?? DamageStatsSnapshotFactory.FromSnapshotFragments(damageMeter),
-            YourStats = snapshotDto.YourStats ?? DamageMeterYourStatsSnapshotFactory.FromSnapshotFragments(damageMeter, null, string.Empty)
+            DamageStats = snapshot?.DamageStats ?? DamageStatsSnapshotFactory.FromSnapshotFragments(damageMeter),
+            YourStats = snapshot?.YourStats ?? DamageMeterYourStatsSnapshotFactory.FromSnapshotFragments(damageMeter, null, string.Empty)
         };
     }
 
@@ -57,6 +96,9 @@ public static class SnapshotMapping
             HealInPercent = snapshot.HealInPercent,
             HealPercentage = snapshot.HealPercentage,
             OverhealedPercentageOfTotalHealing = snapshot.OverhealedPercentageOfTotalHealing,
+            TakenDamage = snapshot.TakenDamage,
+            TakenDamageInPercent = snapshot.TakenDamageInPercent,
+            TakenDamagePercentage = snapshot.TakenDamagePercentage,
             Spells = snapshot.Spells.Select(Mapping).ToList(),
             CauserMainHandItemUniqueName = snapshot.CauserMainHandItemUniqueName,
             ShopSubCategory = snapshot.ShopSubCategory
@@ -85,6 +127,9 @@ public static class SnapshotMapping
             Hps = snapshotFragmentDto.Hps,
             HealInPercent = snapshotFragmentDto.HealInPercent,
             HealPercentage = snapshotFragmentDto.HealPercentage,
+            TakenDamage = snapshotFragmentDto.TakenDamage,
+            TakenDamageInPercent = snapshotFragmentDto.TakenDamageInPercent,
+            TakenDamagePercentage = snapshotFragmentDto.TakenDamagePercentage,
             OverhealedPercentageOfTotalHealing = snapshotFragmentDto.OverhealedPercentageOfTotalHealing,
             Spells = snapshotFragmentDto.Spells.Select(Mapping).ToList(),
             CauserMainHandItemUniqueName = snapshotFragmentDto.CauserMainHandItemUniqueName,
