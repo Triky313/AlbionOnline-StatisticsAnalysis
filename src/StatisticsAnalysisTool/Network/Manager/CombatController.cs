@@ -104,8 +104,9 @@ public class CombatController
             }
 
             CombatEventTracker.AddHealthContribution(CombatEventValueType.Damage, causerId, affectedId, damageChangeValue, causingSpellIndex, contentType);
-            _damageStatsTracker.RecordDamage(causerGameObject.Value.Key, causerGameObjectValue.Name, affectedId, damageChangeValue, newHealthValue);
-            contentDamageStatsTracker.RecordDamage(causerGameObject.Value.Key, causerGameObjectValue.Name, affectedId, damageChangeValue, newHealthValue);
+            var isMobTarget = affectedGameObject?.Value is not { ObjectType: GameObjectType.Player };
+            _damageStatsTracker.RecordDamage(causerGameObject.Value.Key, causerGameObjectValue.Name, affectedId, damageChangeValue, newHealthValue, isMobTarget);
+            contentDamageStatsTracker.RecordDamage(causerGameObject.Value.Key, causerGameObjectValue.Name, affectedId, damageChangeValue, newHealthValue, isMobTarget);
         }
 
         if (healthChangeType == HealthChangeType.Heal)
@@ -687,6 +688,7 @@ public class CombatController
             .ToList();
         var trackerSnapshot = GetDamageStatsTracker(contentType)
             .CreateSnapshot(activePlayerGuids, healingPlayerGuids);
+        var combatEvents = CombatEventTracker.GetCombatEvents(contentType);
         var mobDamageMeter = MobDamageMeterFragmentFactory.Create(
             CombatEventTracker.GetMobDamageStats(contentType),
             (playerGuid, spellIndex) => ResolvePlayerSpellItemIndex(playersByGuid, playerGuid, spellIndex));
@@ -694,7 +696,8 @@ public class CombatController
         return DamageMeterContentSnapshotFactory.Create(
             entities,
             trackerSnapshot,
-            CreateYourStatsSnapshot(contentType),
+            combatEvents,
+            CreateYourStatsSnapshot(contentType, combatEvents),
             mobDamageMeter);
     }
 
@@ -733,8 +736,13 @@ public class CombatController
                 .Select(x => x.Key)
                 .ToList();
 
-            var damageStatsSnapshot = CreateDamageStatsSnapshot(damageStatsTracker.CreateSnapshot(activePlayerGuids, healingPlayerGuids), activeEntities);
-            var yourStatsSnapshot = CreateYourStatsSnapshot(selectedContentType);
+            var combatEvents = CombatEventTracker.GetCombatEvents(selectedContentType);
+            var trackerSnapshot = damageStatsTracker.CreateSnapshot(activePlayerGuids, healingPlayerGuids);
+            var damageStatsSnapshot = DamageStatsSnapshotFactory.FromLiveData(
+                trackerSnapshot,
+                activeEntities.Select(x => x.Value),
+                combatEvents);
+            var yourStatsSnapshot = CreateYourStatsSnapshot(selectedContentType, combatEvents);
 
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
@@ -766,23 +774,6 @@ public class CombatController
         }
     }
 
-    private static DamageStatsSnapshot CreateDamageStatsSnapshot(
-        DamageStatsSnapshot trackerSnapshot,
-        IReadOnlyCollection<KeyValuePair<Guid, PlayerGameObject>> activeEntities
-    )
-    {
-        return new DamageStatsSnapshot
-        {
-            TopSingleHits = trackerSnapshot.TopSingleHits,
-            TopSingleHeals = trackerSnapshot.TopSingleHeals,
-            TopLastHits = trackerSnapshot.TopLastHits,
-            TopOverheals = trackerSnapshot.TopOverheals,
-            TopTakenDamage = DamageStatsSnapshotFactory.CreateTopTakenDamageEntries(activeEntities.Select(x => x.Value)),
-            TopBurstDamageFiveSeconds = trackerSnapshot.TopBurstDamageFiveSeconds,
-            TopBurstDamageTenSeconds = trackerSnapshot.TopBurstDamageTenSeconds,
-            TopAttackedTargets = trackerSnapshot.TopAttackedTargets
-        };
-    }
 
     private DamageStatsTracker GetDamageStatsTracker(DashboardContentType? contentType)
     {
@@ -796,7 +787,9 @@ public class CombatController
             : new DamageStatsTracker();
     }
 
-    private DamageMeterYourStatsSnapshot CreateYourStatsSnapshot(DashboardContentType? contentType)
+    private DamageMeterYourStatsSnapshot CreateYourStatsSnapshot(
+        DashboardContentType? contentType,
+        IEnumerable<CombatEvent> combatEvents)
     {
         var localUserData = _trackingController.EntityController.LocalUserData;
         PlayerGameObject localPlayer = null;
@@ -818,7 +811,7 @@ public class CombatController
 
         return DamageMeterYourStatsSnapshotFactory.FromLiveData(
             localPlayer,
-            CombatEventTracker.GetCombatEvents(contentType),
+            combatEvents,
             ResolveObjectName);
     }
 

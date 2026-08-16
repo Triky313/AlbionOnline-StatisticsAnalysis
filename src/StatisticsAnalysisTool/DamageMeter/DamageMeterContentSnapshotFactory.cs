@@ -11,6 +11,7 @@ public static class DamageMeterContentSnapshotFactory
     public static DamageMeterContentSnapshot Create(
         List<KeyValuePair<Guid, PlayerGameObject>> entities,
         DamageStatsSnapshot trackerSnapshot,
+        IReadOnlyCollection<CombatEvent> combatEvents,
         DamageMeterYourStatsSnapshot yourStats,
         IReadOnlyCollection<MobDamageMeterFragment> mobDamageMeter)
     {
@@ -19,17 +20,10 @@ public static class DamageMeterContentSnapshotFactory
         {
             DamageMeter = fragments,
             MobDamageMeter = mobDamageMeter?.ToList() ?? [],
-            DamageStats = new DamageStatsSnapshot
-            {
-                TopSingleHits = trackerSnapshot.TopSingleHits,
-                TopSingleHeals = trackerSnapshot.TopSingleHeals,
-                TopLastHits = trackerSnapshot.TopLastHits,
-                TopOverheals = trackerSnapshot.TopOverheals,
-                TopTakenDamage = DamageStatsSnapshotFactory.CreateTopTakenDamageEntries(entities.Select(x => x.Value)),
-                TopBurstDamageFiveSeconds = trackerSnapshot.TopBurstDamageFiveSeconds,
-                TopBurstDamageTenSeconds = trackerSnapshot.TopBurstDamageTenSeconds,
-                TopAttackedTargets = trackerSnapshot.TopAttackedTargets
-            },
+            DamageStats = DamageStatsSnapshotFactory.FromLiveData(
+                trackerSnapshot,
+                entities.Select(x => x.Value),
+                combatEvents),
             YourStats = yourStats
         };
     }

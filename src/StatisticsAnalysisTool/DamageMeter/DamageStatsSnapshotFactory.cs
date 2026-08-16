@@ -8,22 +8,80 @@ namespace StatisticsAnalysisTool.DamageMeter;
 
 public static class DamageStatsSnapshotFactory
 {
-    private const int TopCount = 5;
-
     public static DamageStatsSnapshot Clone(DamageStatsSnapshot snapshot)
     {
         snapshot ??= DamageStatsSnapshot.Empty;
 
         return new DamageStatsSnapshot
         {
-            TopSingleHits = snapshot.TopSingleHits.ToList(),
-            TopSingleHeals = snapshot.TopSingleHeals.ToList(),
-            TopLastHits = snapshot.TopLastHits.ToList(),
-            TopOverheals = snapshot.TopOverheals.ToList(),
-            TopTakenDamage = snapshot.TopTakenDamage.ToList(),
-            TopBurstDamageFiveSeconds = snapshot.TopBurstDamageFiveSeconds.ToList(),
-            TopBurstDamageTenSeconds = snapshot.TopBurstDamageTenSeconds.ToList(),
-            TopAttackedTargets = snapshot.TopAttackedTargets.ToList()
+            TopSingleHits = NormalizeEntries(snapshot.TopSingleHits),
+            TopSingleHeals = NormalizeEntries(snapshot.TopSingleHeals),
+            TopTotalDamage = NormalizeEntries(snapshot.TopTotalDamage),
+            TopEffectiveHealing = NormalizeEntries(snapshot.TopEffectiveHealing),
+            TopLastHits = NormalizeEntries(snapshot.TopLastHits),
+            TopMobKillContribution = NormalizeEntries(snapshot.TopMobKillContribution, true),
+            TopOverheals = NormalizeEntries(snapshot.TopOverheals),
+            TopTakenDamage = NormalizeEntries(snapshot.TopTakenDamage),
+            TopBurstDamageFiveSeconds = NormalizeEntries(snapshot.TopBurstDamageFiveSeconds),
+            TopBurstDamageTenSeconds = NormalizeEntries(snapshot.TopBurstDamageTenSeconds),
+            TopAttackedTargets = NormalizeEntries(snapshot.TopAttackedTargets),
+            TrackedFightCount = snapshot.TrackedFightCount,
+            TrackedFightDuration = snapshot.TrackedFightDuration
+        };
+    }
+
+    public static DamageStatsSnapshot WithSnapshotFragmentFallback(
+        DamageStatsSnapshot snapshot,
+        IEnumerable<DamageMeterSnapshotFragment> fragments)
+    {
+        var fallback = FromSnapshotFragments(fragments);
+        snapshot ??= DamageStatsSnapshot.Empty;
+
+        return new DamageStatsSnapshot
+        {
+            TopSingleHits = SelectEntries(snapshot.TopSingleHits, fallback.TopSingleHits),
+            TopSingleHeals = SelectEntries(snapshot.TopSingleHeals, fallback.TopSingleHeals),
+            TopTotalDamage = SelectEntries(snapshot.TopTotalDamage, fallback.TopTotalDamage),
+            TopEffectiveHealing = SelectEntries(snapshot.TopEffectiveHealing, fallback.TopEffectiveHealing),
+            TopLastHits = NormalizeEntries(snapshot.TopLastHits),
+            TopMobKillContribution = NormalizeEntries(snapshot.TopMobKillContribution, true),
+            TopOverheals = NormalizeEntries(snapshot.TopOverheals),
+            TopTakenDamage = SelectEntries(snapshot.TopTakenDamage, fallback.TopTakenDamage),
+            TopBurstDamageFiveSeconds = NormalizeEntries(snapshot.TopBurstDamageFiveSeconds),
+            TopBurstDamageTenSeconds = NormalizeEntries(snapshot.TopBurstDamageTenSeconds),
+            TopAttackedTargets = NormalizeEntries(snapshot.TopAttackedTargets),
+            TrackedFightCount = snapshot.TrackedFightCount,
+            TrackedFightDuration = snapshot.TrackedFightDuration
+        };
+    }
+
+    public static DamageStatsSnapshot FromLiveData(
+        DamageStatsSnapshot trackerSnapshot,
+        IEnumerable<PlayerGameObject> players,
+        IEnumerable<CombatEvent> combatEvents)
+    {
+        trackerSnapshot ??= DamageStatsSnapshot.Empty;
+        var trackedFights = (combatEvents ?? [])
+            .Where(x => x.Contributions.Count > 0)
+            .ToList();
+
+        return new DamageStatsSnapshot
+        {
+            TopSingleHits = trackerSnapshot.TopSingleHits,
+            TopSingleHeals = trackerSnapshot.TopSingleHeals,
+            TopTotalDamage = trackerSnapshot.TopTotalDamage,
+            TopEffectiveHealing = trackerSnapshot.TopEffectiveHealing,
+            TopLastHits = trackerSnapshot.TopLastHits,
+            TopMobKillContribution = trackerSnapshot.TopMobKillContribution,
+            TopOverheals = trackerSnapshot.TopOverheals,
+            TopTakenDamage = CreateTopTakenDamageEntries(players),
+            TopBurstDamageFiveSeconds = trackerSnapshot.TopBurstDamageFiveSeconds,
+            TopBurstDamageTenSeconds = trackerSnapshot.TopBurstDamageTenSeconds,
+            TopAttackedTargets = trackerSnapshot.TopAttackedTargets,
+            TrackedFightCount = trackedFights.Count,
+            TrackedFightDuration = trackedFights
+                .Select(GetDuration)
+                .Aggregate(TimeSpan.Zero, (total, duration) => total + duration)
         };
     }
 
@@ -35,6 +93,8 @@ public static class DamageStatsSnapshotFactory
         {
             TopSingleHits = CreateTopSpellEntries(snapshotFragments, HealthChangeType.Damage),
             TopSingleHeals = CreateTopSpellEntries(snapshotFragments.Where(x => x.Heal > 0), HealthChangeType.Heal),
+            TopTotalDamage = CreateTopEntries(snapshotFragments, x => x.Damage),
+            TopEffectiveHealing = CreateTopEntries(snapshotFragments, x => x.Heal),
             TopTakenDamage = CreateTopEntries(snapshotFragments, x => x.TakenDamage)
         };
     }
@@ -52,30 +112,19 @@ public static class DamageStatsSnapshotFactory
     private static IReadOnlyList<DamageStatsEntry> CreateTopEntries<T>(IEnumerable<T> fragments, Func<T, long> valueSelector)
         where T : class
     {
-        var rank = 1;
-        return (fragments ?? [])
+        return DamageStatsEntryFactory.Rank((fragments ?? [])
             .Select(x => new DamageStatsEntry
             {
                 PlayerName = GetPlayerName(x),
                 Value = valueSelector(x)
-            })
-            .Where(x => x.Value > 0)
-            .OrderByDescending(x => x.Value)
-            .ThenBy(x => x.PlayerName)
-            .Take(TopCount)
-            .Select(x => new DamageStatsEntry
-            {
-                Rank = rank++,
-                PlayerName = x.PlayerName,
-                Value = x.Value
-            })
-            .ToList();
+            }));
     }
 
-    private static IReadOnlyList<DamageStatsEntry> CreateTopSpellEntries(IEnumerable<DamageMeterSnapshotFragment> fragments, HealthChangeType healthChangeType)
+    private static IReadOnlyList<DamageStatsEntry> CreateTopSpellEntries(
+        IEnumerable<DamageMeterSnapshotFragment> fragments,
+        HealthChangeType healthChangeType)
     {
-        var rank = 1;
-        return fragments
+        return DamageStatsEntryFactory.Rank(fragments
             .Select(x => new DamageStatsEntry
             {
                 PlayerName = x.Name,
@@ -84,18 +133,36 @@ public static class DamageStatsSnapshotFactory
                     .Select(y => y.DamageHealValue)
                     .DefaultIfEmpty(0)
                     .Max()
-            })
-            .Where(x => x.Value > 0)
-            .OrderByDescending(x => x.Value)
-            .ThenBy(x => x.PlayerName)
-            .Take(TopCount)
-            .Select(x => new DamageStatsEntry
-            {
-                Rank = rank++,
-                PlayerName = x.PlayerName,
-                Value = x.Value
-            })
-            .ToList();
+            }));
+    }
+
+    private static IReadOnlyList<DamageStatsEntry> SelectEntries(
+        IReadOnlyList<DamageStatsEntry> entries,
+        IReadOnlyList<DamageStatsEntry> fallbackEntries)
+    {
+        return NormalizeEntries(entries.Count > 0 ? entries : fallbackEntries);
+    }
+
+    private static IReadOnlyList<DamageStatsEntry> NormalizeEntries(
+        IReadOnlyList<DamageStatsEntry> entries,
+        bool calculateSharePercentage = false)
+    {
+        if (entries == null || entries.Count == 0)
+        {
+            return [];
+        }
+
+        return entries.Any(x => x.BarPercentage > 0)
+            ? entries.ToList()
+            : DamageStatsEntryFactory.Rank(entries, calculateSharePercentage);
+    }
+
+    private static TimeSpan GetDuration(CombatEvent combatEvent)
+    {
+        var endTime = combatEvent.EndTime ?? combatEvent.LastEventTime;
+        return endTime > combatEvent.StartTime
+            ? endTime - combatEvent.StartTime
+            : TimeSpan.Zero;
     }
 
     private static string GetPlayerName<T>(T fragment)

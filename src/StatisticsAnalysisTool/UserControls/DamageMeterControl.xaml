@@ -75,16 +75,106 @@
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="Margin" Value="0,2,0,0" />
         </Style>
+        <Style x:Key="TopStats.HighlightCard" TargetType="{x:Type Border}">
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="Padding" Value="8" />
+            <Setter Property="MinHeight" Value="96" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+        </Style>
+        <Style x:Key="TopStats.RankingCard" TargetType="{x:Type Border}">
+            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.2}" />
+            <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Border.1}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="Padding" Value="8" />
+            <Setter Property="MinHeight" Value="152" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+        </Style>
+        <Style x:Key="TopStats.HighlightIcon" TargetType="{x:Type Border}">
+            <Setter Property="Width" Value="46" />
+            <Setter Property="Height" Value="46" />
+            <Setter Property="Margin" Value="0,0,8,0" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="23" />
+        </Style>
+        <Style x:Key="TopStats.HighlightTitle" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+        <Style x:Key="TopStats.HighlightPlayer" TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="Margin" Value="0,3,0,0" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        </Style>
+        <Style x:Key="TopStats.HighlightValue" TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="0,2,0,0" />
+        </Style>
+        <Style x:Key="TopStats.RankingTitle" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+        <Style x:Key="TopStats.RankingBar" TargetType="{x:Type ProgressBar}">
+            <Setter Property="Height" Value="6" />
+            <Setter Property="Minimum" Value="0" />
+            <Setter Property="Maximum" Value="100" />
+            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.4}" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ProgressBar}">
+                        <Grid>
+                            <Border x:Name="PART_Track" Background="{TemplateBinding Background}" CornerRadius="2" />
+                            <Border x:Name="PART_Indicator" HorizontalAlignment="Left" Background="{TemplateBinding Foreground}" CornerRadius="2" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <DataTemplate x:Key="DamageStatsEntryTemplate" DataType="{x:Type damageMeter:DamageStatsEntry}">
-            <Grid Margin="0,0,0,3">
+            <Grid Height="22">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="20"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="58" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="{Binding Rank, StringFormat='{}{0}.'}" Foreground="{StaticResource SolidColorBrush.Text.2}" FontSize="18" FontWeight="Bold" />
-                <TextBlock Grid.Column="1" Text="{Binding PlayerName}" Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="14" TextTrimming="CharacterEllipsis" />
-                <TextBlock Grid.Column="2" Text="{Binding ValueString}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" HorizontalAlignment="Right" FontSize="15" FontWeight="Bold" />
+                <TextBlock Grid.Column="0" Text="{Binding Rank, StringFormat='{}{0}.'}" Foreground="{StaticResource SolidColorBrush.Text.2}" FontSize="11" FontWeight="Bold" VerticalAlignment="Center" />
+                <TextBlock Grid.Column="1" Text="{Binding PlayerName}" Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="11" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                <ProgressBar Grid.Column="2" Value="{Binding BarPercentage}" Margin="5,0,7,0" VerticalAlignment="Center"
+                             Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+                             Style="{StaticResource TopStats.RankingBar}" />
+                <TextBlock Grid.Column="3" Text="{Binding ValueString}"
+                           Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+                           HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="11" FontWeight="Bold" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="DamageStatsContributionEntryTemplate" DataType="{x:Type damageMeter:DamageStatsEntry}">
+            <Grid Height="22">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="58" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="{Binding Rank, StringFormat='{}{0}.'}" Foreground="{StaticResource SolidColorBrush.Text.2}" FontSize="11" FontWeight="Bold" VerticalAlignment="Center" />
+                <TextBlock Grid.Column="1" Text="{Binding PlayerName}" Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="11" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                <ProgressBar Grid.Column="2" Value="{Binding BarPercentage}" Margin="5,0,7,0" VerticalAlignment="Center"
+                             Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+                             Style="{StaticResource TopStats.RankingBar}" />
+                <TextBlock Grid.Column="3" Text="{Binding SharePercentageString}"
+                           Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+                           HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="11" FontWeight="Bold" />
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="YourStatsTopEntryTemplate" DataType="{x:Type damageMeter:DamageMeterYourStatsTopEntry}">
@@ -357,70 +447,344 @@
             </ScrollViewer>
         </DataTemplate>
         <DataTemplate x:Key="DamageStatsSnapshotTemplate" DataType="{x:Type damageMeter:DamageStatsSnapshot}">
-            <ScrollViewer Margin="0,5,0,0">
-                <ItemsControl>
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <UniformGrid Columns="2"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <Border Margin="0,2,10,0" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}" BorderThickness="0,1,0,0">
-                        <DockPanel LastChildFill="True">
-                            <TextBlock DockPanel.Dock="Top" Text="{Binding DataContext.DamageMeterBindings.TranslationBiggestSingleHitTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=BIGGEST_SINGLE_HIT_TOP_5}"
-                                       Foreground="{StaticResource SolidColorBrush.Accent.Red.1}" FontWeight="Bold" Margin="0,0,0,2" FontSize="14" />
-                            <ItemsControl ItemsSource="{Binding TopSingleHits}" ItemTemplate="{StaticResource DamageStatsEntryTemplate}" Foreground="{StaticResource SolidColorBrush.Accent.Red.1}" />
-                        </DockPanel>
-                    </Border>
-                    <Border Margin="10,2,0,0" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}" BorderThickness="0,1,0,0">
-                        <DockPanel LastChildFill="True">
-                            <TextBlock DockPanel.Dock="Top" Text="{Binding DataContext.DamageMeterBindings.TranslationBiggestSingleHealTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=BIGGEST_SINGLE_HEAL_TOP_5}"
-                                       Foreground="{StaticResource SolidColorBrush.Accent.Green.2}" FontWeight="Bold" Margin="0,0,0,2" FontSize="14" />
-                            <ItemsControl ItemsSource="{Binding TopSingleHeals}" ItemTemplate="{StaticResource DamageStatsEntryTemplate}" Foreground="{StaticResource SolidColorBrush.Accent.Green.2}" />
-                        </DockPanel>
-                    </Border>
-                    <Border Margin="0,2,10,0" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}" BorderThickness="0,1,0,0">
-                        <DockPanel LastChildFill="True">
-                            <TextBlock DockPanel.Dock="Top" Text="{Binding DataContext.DamageMeterBindings.TranslationLastHitsTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=LAST_HITS_TOP_5}"
-                                       Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" FontWeight="Bold" Margin="0,0,0,2" FontSize="14" />
-                            <ItemsControl ItemsSource="{Binding TopLastHits}" ItemTemplate="{StaticResource DamageStatsEntryTemplate}" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
-                        </DockPanel>
-                    </Border>
-                    <Border Margin="10,2,0,0" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}" BorderThickness="0,1,0,0">
-                        <DockPanel LastChildFill="True">
-                            <TextBlock DockPanel.Dock="Top" Text="{Binding DataContext.DamageMeterBindings.TranslationOverhealTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=OVERHEAL_TOP_5}"
-                                       Foreground="{StaticResource SolidColorBrush.Accent.Green.5}" FontWeight="Bold" Margin="0,0,0,2" FontSize="14" />
-                            <ItemsControl ItemsSource="{Binding TopOverheals}" ItemTemplate="{StaticResource DamageStatsEntryTemplate}" Foreground="{StaticResource SolidColorBrush.Accent.Green.5}" />
-                        </DockPanel>
-                    </Border>
-                    <Border Margin="0,2,10,0" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}" BorderThickness="0,1,0,0">
-                        <DockPanel LastChildFill="True">
-                            <TextBlock DockPanel.Dock="Top" Text="{Binding DataContext.DamageMeterBindings.TranslationDamageTakenTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=DAMAGE_TAKEN_TOP_5}"
-                                       Foreground="{StaticResource SolidColorBrush.Accent.Red.5}" FontWeight="Bold" Margin="0,0,0,2" FontSize="14" />
-                            <ItemsControl ItemsSource="{Binding TopTakenDamage}" ItemTemplate="{StaticResource DamageStatsEntryTemplate}" Foreground="{StaticResource SolidColorBrush.Accent.Red.5}" />
-                        </DockPanel>
-                    </Border>
-                    <Border Margin="10,2,0,0" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}" BorderThickness="0,1,0,0">
-                        <DockPanel LastChildFill="True">
-                            <TextBlock DockPanel.Dock="Top" Text="{Binding DataContext.DamageMeterBindings.TranslationBurstDamageFiveSecondsTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=BURST_DAMAGE_5_SECONDS_TOP_5}"
-                                       Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" FontWeight="Bold" Margin="0,0,0,2" FontSize="14" />
-                            <ItemsControl ItemsSource="{Binding TopBurstDamageFiveSeconds}" ItemTemplate="{StaticResource DamageStatsEntryTemplate}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" />
-                        </DockPanel>
-                    </Border>
-                    <Border Margin="0,2,10,0" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}" BorderThickness="0,1,0,0">
-                        <DockPanel LastChildFill="True">
-                            <TextBlock DockPanel.Dock="Top" Text="{Binding DataContext.DamageMeterBindings.TranslationBurstDamageTenSecondsTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=BURST_DAMAGE_10_SECONDS_TOP_5}"
-                                       Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" FontWeight="Bold" Margin="0,0,0,2" FontSize="14" />
-                            <ItemsControl ItemsSource="{Binding TopBurstDamageTenSeconds}" ItemTemplate="{StaticResource DamageStatsEntryTemplate}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" />
-                        </DockPanel>
-                    </Border>
-                    <Border Margin="10,2,0,0" Padding="5" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}" BorderThickness="0,1,0,0">
-                        <DockPanel LastChildFill="True">
-                            <TextBlock DockPanel.Dock="Top" Text="{Binding DataContext.DamageMeterBindings.TranslationAttackedMobsPlayersTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=ATTACKED_MOBS_PLAYERS_TOP_5}"
-                                       Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontWeight="Bold" Margin="0,0,0,2" FontSize="14" />
-                            <ItemsControl ItemsSource="{Binding TopAttackedTargets}" ItemTemplate="{StaticResource DamageStatsEntryTemplate}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-                        </DockPanel>
-                    </Border>
-                </ItemsControl>
+            <ScrollViewer Margin="0,5,0,0"
+                          HorizontalScrollBarVisibility="Disabled"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalContentAlignment="Stretch">
+                <StackPanel Margin="0,0,0,4">
+                    <UniformGrid Columns="6">
+                        <Border Style="{StaticResource TopStats.HighlightCard}"
+                                Background="{StaticResource YourStats.Damage.CardBackground}"
+                                BorderBrush="{StaticResource SolidColorBrush.Accent.Red.6}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Style="{StaticResource TopStats.HighlightIcon}"
+                                        Background="{StaticResource YourStats.Damage.MetricBackground}"
+                                        BorderBrush="{StaticResource SolidColorBrush.Accent.Red.6}">
+                                    <fa5:ImageAwesome Icon="Solid_Bolt" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                                </Border>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding DataContext.DamageMeterBindings.TranslationBiggestHit, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=BIGGEST_HIT}"
+                                               Foreground="{StaticResource SolidColorBrush.Accent.Red.2}"
+                                               Style="{StaticResource TopStats.HighlightTitle}" />
+                                    <TextBlock Text="{Binding BiggestHit.PlayerName}" Style="{StaticResource TopStats.HighlightPlayer}" />
+                                    <TextBlock Text="{Binding BiggestHit.ValueString}" Style="{StaticResource TopStats.HighlightValue}" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                        <Border Style="{StaticResource TopStats.HighlightCard}"
+                                Background="{StaticResource YourStats.Damage.CardBackground}"
+                                BorderBrush="{StaticResource SolidColorBrush.Accent.Red.6}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Style="{StaticResource TopStats.HighlightIcon}"
+                                        Background="{StaticResource YourStats.Damage.MetricBackground}"
+                                        BorderBrush="{StaticResource SolidColorBrush.Accent.Red.6}">
+                                    <fa5:ImageAwesome Icon="Solid_ChartLine" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                                </Border>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding DataContext.DamageMeterBindings.TranslationPeakDpsFiveSeconds, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=PEAK_DPS_5_SECONDS}"
+                                               Foreground="{StaticResource SolidColorBrush.Accent.Red.2}"
+                                               Style="{StaticResource TopStats.HighlightTitle}" />
+                                    <TextBlock Text="{Binding PeakDpsFiveSeconds.PlayerName}" Style="{StaticResource TopStats.HighlightPlayer}" />
+                                    <TextBlock Text="{Binding PeakDpsFiveSeconds.ValueString}" Style="{StaticResource TopStats.HighlightValue}" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                        <Border Style="{StaticResource TopStats.HighlightCard}"
+                                Background="{StaticResource YourStats.Damage.CardBackground}"
+                                BorderBrush="{StaticResource SolidColorBrush.Accent.Red.6}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Style="{StaticResource TopStats.HighlightIcon}"
+                                        Background="{StaticResource YourStats.Damage.MetricBackground}"
+                                        BorderBrush="{StaticResource SolidColorBrush.Accent.Red.6}">
+                                    <fa5:ImageAwesome Icon="Regular_Clock" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                                </Border>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding DataContext.DamageMeterBindings.TranslationPeakDpsTenSeconds, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=PEAK_DPS_10_SECONDS}"
+                                               Foreground="{StaticResource SolidColorBrush.Accent.Red.2}"
+                                               Style="{StaticResource TopStats.HighlightTitle}" />
+                                    <TextBlock Text="{Binding PeakDpsTenSeconds.PlayerName}" Style="{StaticResource TopStats.HighlightPlayer}" />
+                                    <TextBlock Text="{Binding PeakDpsTenSeconds.ValueString}" Style="{StaticResource TopStats.HighlightValue}" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                        <Border Style="{StaticResource TopStats.HighlightCard}"
+                                Background="{StaticResource YourStats.Healing.CardBackground}"
+                                BorderBrush="{StaticResource SolidColorBrush.Accent.Green.6}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Style="{StaticResource TopStats.HighlightIcon}"
+                                        Background="{StaticResource YourStats.Healing.MetricBackground}"
+                                        BorderBrush="{StaticResource SolidColorBrush.Accent.Green.6}">
+                                    <fa5:ImageAwesome Icon="Regular_Heart" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" />
+                                </Border>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding DataContext.DamageMeterBindings.TranslationTopHealer, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=TOP_HEALER}"
+                                               Foreground="{StaticResource SolidColorBrush.Accent.Green.3}"
+                                               Style="{StaticResource TopStats.HighlightTitle}" />
+                                    <TextBlock Text="{Binding TopHealer.PlayerName}" Style="{StaticResource TopStats.HighlightPlayer}" />
+                                    <TextBlock Text="{Binding TopHealer.ValueString}" Style="{StaticResource TopStats.HighlightValue}" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                        <Border Style="{StaticResource TopStats.HighlightCard}"
+                                Background="{StaticResource YourStats.Defense.CardBackground}"
+                                BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.5}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Style="{StaticResource TopStats.HighlightIcon}"
+                                        Background="{StaticResource YourStats.Defense.MetricBackground}"
+                                        BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.5}">
+                                    <fa5:ImageAwesome Icon="Solid_BalanceScale" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                                </Border>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding DataContext.DamageMeterBindings.TranslationTopDamageTaken, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=TOP_DAMAGE_TAKEN}"
+                                               Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}"
+                                               Style="{StaticResource TopStats.HighlightTitle}" />
+                                    <TextBlock Text="{Binding MostDamageTaken.PlayerName}" Style="{StaticResource TopStats.HighlightPlayer}" />
+                                    <TextBlock Text="{Binding MostDamageTaken.ValueString}" Style="{StaticResource TopStats.HighlightValue}" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                        <Border Style="{StaticResource TopStats.HighlightCard}"
+                                Background="{StaticResource SolidColorBrush.Background.2}"
+                                BorderBrush="{StaticResource SolidColorBrush.Border.1}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Style="{StaticResource TopStats.HighlightIcon}"
+                                        Background="{StaticResource SolidColorBrush.Background.3}"
+                                        BorderBrush="{StaticResource SolidColorBrush.Border.1}">
+                                    <fa5:ImageAwesome Icon="Solid_Users" Foreground="{StaticResource SolidColorBrush.Text.3}" />
+                                </Border>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding DataContext.DamageMeterBindings.TranslationTotalTrackedFights, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=TOTAL_TRACKED_FIGHTS}"
+                                               Foreground="{StaticResource SolidColorBrush.Text.3}"
+                                               Style="{StaticResource TopStats.HighlightTitle}" />
+                                    <TextBlock Text="{Binding TrackedFightCount}" Style="{StaticResource TopStats.HighlightValue}" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding TrackedFightDurationString}" Style="{StaticResource TopStats.HighlightPlayer}" Margin="0" />
+                                        <TextBlock Text="{Binding DataContext.DamageMeterBindings.TranslationTotalLabel, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=TOTAL}"
+                                                   Style="{StaticResource TopStats.HighlightPlayer}" Margin="4,0,0,0" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </UniformGrid>
+                    <UniformGrid Columns="4">
+                        <Border Style="{StaticResource TopStats.RankingCard}"
+                                Background="{StaticResource YourStats.Damage.CardBackground}"
+                                BorderBrush="{StaticResource SolidColorBrush.Accent.Red.6}">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <fa5:ImageAwesome Grid.Column="0" Icon="Solid_Bolt" Width="14" Height="14" Margin="0,0,6,0"
+                                                      Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding DataContext.DamageMeterBindings.TranslationBiggestSingleHitTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=BIGGEST_SINGLE_HIT_TOP_5}"
+                                               Foreground="{StaticResource SolidColorBrush.Accent.Red.2}"
+                                               Style="{StaticResource TopStats.RankingTitle}" />
+                                </Grid>
+                                <ItemsControl ItemsSource="{Binding TopSingleHits}" ItemTemplate="{StaticResource DamageStatsEntryTemplate}"
+                                              Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource TopStats.RankingCard}"
+                                Background="{StaticResource YourStats.Damage.CardBackground}"
+                                BorderBrush="{StaticResource SolidColorBrush.Accent.Red.6}">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <fa5:ImageAwesome Grid.Column="0" Icon="Solid_ChartLine" Width="14" Height="14" Margin="0,0,6,0"
+                                                      Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding DataContext.DamageMeterBindings.TranslationBurstDamageFiveSecondsTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=BURST_DAMAGE_5_SECONDS_TOP_5}"
+                                               Foreground="{StaticResource SolidColorBrush.Accent.Red.2}"
+                                               Style="{StaticResource TopStats.RankingTitle}" />
+                                </Grid>
+                                <ItemsControl ItemsSource="{Binding TopBurstDamageFiveSeconds}" ItemTemplate="{StaticResource DamageStatsEntryTemplate}"
+                                              Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource TopStats.RankingCard}"
+                                Background="{StaticResource YourStats.Damage.CardBackground}"
+                                BorderBrush="{StaticResource SolidColorBrush.Accent.Red.6}">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <fa5:ImageAwesome Grid.Column="0" Icon="Regular_Clock" Width="14" Height="14" Margin="0,0,6,0"
+                                                      Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding DataContext.DamageMeterBindings.TranslationBurstDamageTenSecondsTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=BURST_DAMAGE_10_SECONDS_TOP_5}"
+                                               Foreground="{StaticResource SolidColorBrush.Accent.Red.2}"
+                                               Style="{StaticResource TopStats.RankingTitle}" />
+                                </Grid>
+                                <ItemsControl ItemsSource="{Binding TopBurstDamageTenSeconds}" ItemTemplate="{StaticResource DamageStatsEntryTemplate}"
+                                              Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource TopStats.RankingCard}"
+                                Background="{StaticResource YourStats.Damage.CardBackground}"
+                                BorderBrush="{StaticResource SolidColorBrush.Accent.Red.6}">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <fa5:ImageAwesome Grid.Column="0" Icon="Solid_Bolt" Width="14" Height="14" Margin="0,0,6,0"
+                                                      Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding DataContext.DamageMeterBindings.TranslationTotalDamageTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=TOTAL_DAMAGE_TOP_5}"
+                                               Foreground="{StaticResource SolidColorBrush.Accent.Red.2}"
+                                               Style="{StaticResource TopStats.RankingTitle}" />
+                                </Grid>
+                                <ItemsControl ItemsSource="{Binding TopTotalDamage}" ItemTemplate="{StaticResource DamageStatsEntryTemplate}"
+                                              Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                            </StackPanel>
+                        </Border>
+                    </UniformGrid>
+                    <UniformGrid Columns="4">
+                        <Border Style="{StaticResource TopStats.RankingCard}"
+                                Background="{StaticResource YourStats.Healing.CardBackground}"
+                                BorderBrush="{StaticResource SolidColorBrush.Accent.Green.6}">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <fa5:ImageAwesome Grid.Column="0" Icon="Regular_Heart" Width="14" Height="14" Margin="0,0,6,0"
+                                                      Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" />
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding DataContext.DamageMeterBindings.TranslationEffectiveHealingTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=EFFECTIVE_HEALING_TOP_5}"
+                                               Foreground="{StaticResource SolidColorBrush.Accent.Green.3}"
+                                               Style="{StaticResource TopStats.RankingTitle}" />
+                                </Grid>
+                                <ItemsControl ItemsSource="{Binding TopEffectiveHealing}" ItemTemplate="{StaticResource DamageStatsEntryTemplate}"
+                                              Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" />
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource TopStats.RankingCard}"
+                                Background="{StaticResource YourStats.Healing.CardBackground}"
+                                BorderBrush="{StaticResource SolidColorBrush.Accent.Green.6}">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <fa5:ImageAwesome Grid.Column="0" Icon="Solid_Plus" Width="14" Height="14" Margin="0,0,6,0"
+                                                      Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" />
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding DataContext.DamageMeterBindings.TranslationOverhealTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=OVERHEAL_TOP_5}"
+                                               Foreground="{StaticResource SolidColorBrush.Accent.Green.3}"
+                                               Style="{StaticResource TopStats.RankingTitle}" />
+                                </Grid>
+                                <ItemsControl ItemsSource="{Binding TopOverheals}" ItemTemplate="{StaticResource DamageStatsEntryTemplate}"
+                                              Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" />
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource TopStats.RankingCard}"
+                                Background="{StaticResource YourStats.Defense.CardBackground}"
+                                BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.5}">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <fa5:ImageAwesome Grid.Column="0" Icon="Solid_BalanceScale" Width="14" Height="14" Margin="0,0,6,0"
+                                                      Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding DataContext.DamageMeterBindings.TranslationDamageTakenTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=DAMAGE_TAKEN_TOP_5}"
+                                               Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}"
+                                               Style="{StaticResource TopStats.RankingTitle}" />
+                                </Grid>
+                                <ItemsControl ItemsSource="{Binding TopTakenDamage}" ItemTemplate="{StaticResource DamageStatsEntryTemplate}"
+                                              Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource TopStats.RankingCard}"
+                                Background="{StaticResource YourStats.Defense.CardBackground}"
+                                BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.5}">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <fa5:ImageAwesome Grid.Column="0" Icon="Solid_Users" Width="14" Height="14" Margin="0,0,6,0"
+                                                      Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding DataContext.DamageMeterBindings.TranslationAttackedMobsPlayersTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=ATTACKED_MOBS_PLAYERS_TOP_5}"
+                                               Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}"
+                                               Style="{StaticResource TopStats.RankingTitle}" />
+                                </Grid>
+                                <ItemsControl ItemsSource="{Binding TopAttackedTargets}" ItemTemplate="{StaticResource DamageStatsEntryTemplate}"
+                                              Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                            </StackPanel>
+                        </Border>
+                    </UniformGrid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0"
+                                Style="{StaticResource TopStats.RankingCard}"
+                                Background="{StaticResource YourStats.Combat.CardBackground}"
+                                BorderBrush="{StaticResource SolidColorBrush.Accent.Orange.5}">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <fa5:ImageAwesome Grid.Column="0" Icon="Solid_ExclamationTriangle" Width="14" Height="14" Margin="0,0,6,0"
+                                                      Foreground="{StaticResource SolidColorBrush.Accent.Orange.3}" />
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding DataContext.DamageMeterBindings.TranslationTopMobKillContributionTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=TOP_MOB_KILL_CONTRIBUTION_TOP_5}"
+                                               Foreground="{StaticResource SolidColorBrush.Accent.Orange.3}"
+                                               Style="{StaticResource TopStats.RankingTitle}" />
+                                </Grid>
+                                <ItemsControl ItemsSource="{Binding TopMobKillContribution}"
+                                              ItemTemplate="{StaticResource DamageStatsContributionEntryTemplate}"
+                                              Foreground="{StaticResource SolidColorBrush.Accent.Orange.3}" />
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </StackPanel>
             </ScrollViewer>
         </DataTemplate>
     </UserControl.Resources>

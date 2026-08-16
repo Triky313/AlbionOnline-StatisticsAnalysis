@@ -49177,6 +49177,84 @@
           "seg": "Show fewer kills/deaths"
         }
       ]
+    },
+    {
+      "tuid": "TOTAL_DAMAGE_TOP_5",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gesamtschaden – TOP 5"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total Damage – TOP 5"
+        }
+      ]
+    },
+    {
+      "tuid": "EFFECTIVE_HEALING_TOP_5",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Effektive Heilung – TOP 5"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Effective Healing – TOP 5"
+        }
+      ]
+    },
+    {
+      "tuid": "TOP_MOB_KILL_CONTRIBUTION_TOP_5",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Beitrag zu Mob-Tötungen – TOP 5"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top Mob Kill Contribution – TOP 5"
+        }
+      ]
+    },
+    {
+      "tuid": "TOP_HEALER",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Top-Heiler"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top Healer"
+        }
+      ]
+    },
+    {
+      "tuid": "TOP_DAMAGE_TAKEN",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Höchster erlittener Schaden"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top Damage Taken"
+        }
+      ]
+    },
+    {
+      "tuid": "TOTAL_TRACKED_FIGHTS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Erfasste Kämpfe insgesamt"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total Tracked Fights"
+        }
+      ]
     }
   ]
 }

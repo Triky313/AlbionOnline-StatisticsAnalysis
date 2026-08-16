@@ -832,6 +832,13 @@ public class DamageMeterBindings : BaseViewModel
     public static string TranslationBurstDamageFiveSecondsTop5 => LocalizationController.Translation("BURST_DAMAGE_5_SECONDS_TOP_5");
     public static string TranslationBurstDamageTenSecondsTop5 => LocalizationController.Translation("BURST_DAMAGE_10_SECONDS_TOP_5");
     public static string TranslationAttackedMobsPlayersTop5 => LocalizationController.Translation("ATTACKED_MOBS_PLAYERS_TOP_5");
+    public static string TranslationTotalDamageTop5 => LocalizationController.Translation("TOTAL_DAMAGE_TOP_5");
+    public static string TranslationEffectiveHealingTop5 => LocalizationController.Translation("EFFECTIVE_HEALING_TOP_5");
+    public static string TranslationTopMobKillContributionTop5 => LocalizationController.Translation("TOP_MOB_KILL_CONTRIBUTION_TOP_5");
+    public static string TranslationTopHealer => LocalizationController.Translation("TOP_HEALER");
+    public static string TranslationTopDamageTaken => LocalizationController.Translation("TOP_DAMAGE_TAKEN");
+    public static string TranslationTotalTrackedFights => LocalizationController.Translation("TOTAL_TRACKED_FIGHTS");
+    public static string TranslationTotalLabel => LocalizationController.Translation("TOTAL");
 
     #endregion
 

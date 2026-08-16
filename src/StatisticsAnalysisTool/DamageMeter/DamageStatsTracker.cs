@@ -6,12 +6,11 @@ namespace StatisticsAnalysisTool.DamageMeter;
 
 public sealed class DamageStatsTracker
 {
-    private const int TopCount = 5;
     private readonly object _syncLock = new();
     private readonly Dictionary<Guid, DamageStatsPlayer> _players = new();
     private readonly List<DamageStatsEvent> _damageEvents = [];
 
-    public void RecordDamage(Guid playerGuid, string playerName, long targetObjectId, long value, double newHealthValue)
+    public void RecordDamage(Guid playerGuid, string playerName, long targetObjectId, long value, double newHealthValue, bool isMobTarget)
     {
         if (value <= 0)
         {
@@ -22,6 +21,7 @@ public sealed class DamageStatsTracker
         {
             var player = GetOrAddPlayer(playerGuid, playerName);
             player.BiggestHit = Math.Max(player.BiggestHit, value);
+            player.TotalDamage += value;
             if (targetObjectId > 0)
             {
                 player.AttackedTargetObjectIds.Add(targetObjectId);
@@ -30,6 +30,10 @@ public sealed class DamageStatsTracker
             if (targetObjectId > 0 && newHealthValue <= 0)
             {
                 player.LastHitTargetObjectIds.Add(targetObjectId);
+                if (isMobTarget)
+                {
+                    player.MobLastHitTargetObjectIds.Add(targetObjectId);
+                }
             }
 
             _damageEvents.Add(new DamageStatsEvent
@@ -53,6 +57,7 @@ public sealed class DamageStatsTracker
         {
             var player = GetOrAddPlayer(playerGuid, playerName);
             player.BiggestHeal = Math.Max(player.BiggestHeal, value);
+            player.EffectiveHealing += value;
         }
     }
 
@@ -89,7 +94,10 @@ public sealed class DamageStatsTracker
             {
                 TopSingleHits = CreateTopEntries(players, x => x.BiggestHit),
                 TopSingleHeals = CreateTopEntries(players.Where(x => healingPlayers.Contains(x.PlayerGuid)), x => x.BiggestHeal),
+                TopTotalDamage = CreateTopEntries(players, x => x.TotalDamage),
+                TopEffectiveHealing = CreateTopEntries(players, x => x.EffectiveHealing),
                 TopLastHits = CreateTopEntries(players, x => x.LastHitTargetObjectIds.Count),
+                TopMobKillContribution = CreateTopEntries(players, x => x.MobLastHitTargetObjectIds.Count, true),
                 TopOverheals = CreateTopEntries(players, x => x.Overheal),
                 TopBurstDamageFiveSeconds = CreateBurstDamageEntries(activePlayers, TimeSpan.FromSeconds(5)),
                 TopBurstDamageTenSeconds = CreateBurstDamageEntries(activePlayers, TimeSpan.FromSeconds(10)),
@@ -125,50 +133,30 @@ public sealed class DamageStatsTracker
         return player;
     }
 
-    private static IReadOnlyList<DamageStatsEntry> CreateTopEntries(IEnumerable<DamageStatsPlayer> players, Func<DamageStatsPlayer, long> valueSelector)
+    private static IReadOnlyList<DamageStatsEntry> CreateTopEntries(
+        IEnumerable<DamageStatsPlayer> players,
+        Func<DamageStatsPlayer, long> valueSelector,
+        bool calculateSharePercentage = false)
     {
-        var rank = 1;
-        return players
-            .Select(x => new DamageStatsEntry
+        return DamageStatsEntryFactory.Rank(
+            players.Select(x => new DamageStatsEntry
             {
                 PlayerName = x.PlayerName,
                 Value = valueSelector(x)
-            })
-            .Where(x => x.Value > 0)
-            .OrderByDescending(x => x.Value)
-            .ThenBy(x => x.PlayerName)
-            .Take(TopCount)
-            .Select(x => new DamageStatsEntry
-            {
-                Rank = rank++,
-                PlayerName = x.PlayerName,
-                Value = x.Value
-            })
-            .ToList();
+            }),
+            calculateSharePercentage);
     }
 
     private IReadOnlyList<DamageStatsEntry> CreateBurstDamageEntries(IReadOnlySet<Guid> activePlayerGuids, TimeSpan window)
     {
-        var rank = 1;
-        return _damageEvents
+        return DamageStatsEntryFactory.Rank(_damageEvents
             .Where(x => activePlayerGuids.Contains(x.PlayerGuid))
             .GroupBy(x => x.PlayerGuid)
             .Select(x => new DamageStatsEntry
             {
                 PlayerName = GetPlayerName(x.Key),
                 Value = GetHighestBurstDamage(x.OrderBy(y => y.Timestamp).ToList(), window)
-            })
-            .Where(x => x.Value > 0)
-            .OrderByDescending(x => x.Value)
-            .ThenBy(x => x.PlayerName)
-            .Take(TopCount)
-            .Select(x => new DamageStatsEntry
-            {
-                Rank = rank++,
-                PlayerName = x.PlayerName,
-                Value = x.Value
-            })
-            .ToList();
+            }));
     }
 
     private string GetPlayerName(Guid playerGuid)

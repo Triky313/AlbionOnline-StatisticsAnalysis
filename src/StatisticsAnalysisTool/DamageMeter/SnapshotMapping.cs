@@ -75,7 +75,7 @@ public static class SnapshotMapping
         {
             DamageMeter = damageMeter,
             MobDamageMeter = snapshot?.MobDamageMeter?.Select(Mapping).ToList() ?? [],
-            DamageStats = snapshot?.DamageStats ?? DamageStatsSnapshotFactory.FromSnapshotFragments(damageMeter),
+            DamageStats = DamageStatsSnapshotFactory.WithSnapshotFragmentFallback(snapshot?.DamageStats, damageMeter),
             YourStats = snapshot?.YourStats ?? DamageMeterYourStatsSnapshotFactory.FromSnapshotFragments(damageMeter, null, string.Empty)
         };
     }
