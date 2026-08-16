@@ -79,13 +79,13 @@ public sealed class DungeonController(TrackingController trackingController, Mai
 
     private async Task AddNewDungeonAsync(MapType mapType, Guid? dungeonGuid, string sourceClusterIndex, WorldPosition? sourceExitPosition)
     {
-        ClearRandomDungeonExits();
         await CompleteActiveDungeonsAsync();
 
         var mainMapIndex = GetMainMapIndex(mapType, sourceClusterIndex);
         var newDungeon = CreateNewDungeon(mapType, mainMapIndex, dungeonGuid);
         newDungeon.PartySize = Math.Max(1, mainWindowViewModel.PartyBindings.Party.Count);
         UpdateCurrentDungeonFromEntrance(newDungeon, sourceClusterIndex, sourceExitPosition);
+        ClearRandomDungeonExits();
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             mainWindowViewModel.DungeonBindings.Dungeons.Insert(0, newDungeon);
