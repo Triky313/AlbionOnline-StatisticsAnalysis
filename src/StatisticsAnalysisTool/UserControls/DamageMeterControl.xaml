@@ -1,142 +1,17 @@
-<UserControl x:Class="StatisticsAnalysisTool.UserControls.DamageMeterControl"
+﻿<UserControl x:Class="StatisticsAnalysisTool.UserControls.DamageMeterControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:damageMeter="clr-namespace:StatisticsAnalysisTool.DamageMeter"
              xmlns:enumerations="clr-namespace:StatisticsAnalysisTool.Enumerations"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="700" d:DesignWidth="1200"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
     <UserControl.Resources>
-        <Style x:Key="YourStats.SectionCard" TargetType="{x:Type Border}">
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="CornerRadius" Value="8" />
-            <Setter Property="Padding" Value="9" />
-            <Setter Property="SnapsToDevicePixels" Value="True" />
-        </Style>
-        <Style x:Key="YourStats.MetricCard" TargetType="{x:Type Border}">
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="CornerRadius" Value="4" />
-            <Setter Property="Margin" Value="2" />
-            <Setter Property="Padding" Value="5,4" />
-            <Setter Property="MinHeight" Value="54" />
-            <Setter Property="SnapsToDevicePixels" Value="True" />
-        </Style>
-        <Style x:Key="YourStats.Damage.MetricCard" TargetType="{x:Type Border}" BasedOn="{StaticResource YourStats.MetricCard}">
-            <Setter Property="Background" Value="{StaticResource YourStats.Damage.MetricBackground}" />
-            <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Accent.Red.6}" />
-        </Style>
-        <Style x:Key="YourStats.Healing.MetricCard" TargetType="{x:Type Border}" BasedOn="{StaticResource YourStats.MetricCard}">
-            <Setter Property="Background" Value="{StaticResource YourStats.Healing.MetricBackground}" />
-            <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Accent.Green.6}" />
-        </Style>
-        <Style x:Key="YourStats.Defense.MetricCard" TargetType="{x:Type Border}" BasedOn="{StaticResource YourStats.MetricCard}">
-            <Setter Property="Background" Value="{StaticResource YourStats.Defense.MetricBackground}" />
-            <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Accent.Blue.5}" />
-        </Style>
-        <Style x:Key="YourStats.Combat.MetricCard" TargetType="{x:Type Border}" BasedOn="{StaticResource YourStats.MetricCard}">
-            <Setter Property="Background" Value="{StaticResource YourStats.Combat.MetricBackground}" />
-            <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Accent.Yellow.5}" />
-        </Style>
-        <Style x:Key="YourStats.HeaderIcon" TargetType="{x:Type Border}">
-            <Setter Property="Width" Value="28" />
-            <Setter Property="Height" Value="28" />
-            <Setter Property="Margin" Value="0,0,8,0" />
-            <Setter Property="Padding" Value="6" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="CornerRadius" Value="5" />
-        </Style>
-        <Style x:Key="YourStats.SectionTitle" TargetType="{x:Type TextBlock}">
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="FontWeight" Value="Bold" />
-        </Style>
-        <Style x:Key="YourStats.MetricLabel" TargetType="{x:Type TextBlock}">
-            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.3}" />
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="TextAlignment" Value="Center" />
-            <Setter Property="TextWrapping" Value="Wrap" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-        </Style>
-        <Style x:Key="YourStats.MetricValue" TargetType="{x:Type TextBlock}">
-            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
-            <Setter Property="FontSize" Value="16" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="Margin" Value="0,2,0,0" />
-        </Style>
-        <Style x:Key="TopStats.HighlightCard" TargetType="{x:Type Border}">
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="CornerRadius" Value="6" />
-            <Setter Property="Margin" Value="4" />
-            <Setter Property="Padding" Value="8" />
-            <Setter Property="MinHeight" Value="96" />
-            <Setter Property="SnapsToDevicePixels" Value="True" />
-        </Style>
-
-        <Style x:Key="DamageMeter.RankingCard" TargetType="{x:Type Border}">
-            <Setter Property="MinWidth" Value="164" />
-            <Setter Property="MinHeight" Value="150" />
-            <Setter Property="Margin" Value="0,5,5,5" />
-            <Setter Property="Padding" Value="9,8" />
-            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.2}" />
-            <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.4}" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="CornerRadius" Value="5" />
-        </Style>
-
-        <Style x:Key="TopStats.HighlightIcon" TargetType="{x:Type Border}">
-            <Setter Property="Width" Value="46" />
-            <Setter Property="Height" Value="46" />
-            <Setter Property="Margin" Value="0,0,8,0" />
-            <Setter Property="Padding" Value="10" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="CornerRadius" Value="23" />
-        </Style>
-        <Style x:Key="TopStats.HighlightTitle" TargetType="{x:Type TextBlock}">
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="TextWrapping" Value="Wrap" />
-        </Style>
-        <Style x:Key="TopStats.HighlightPlayer" TargetType="{x:Type TextBlock}">
-            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="Margin" Value="0,3,0,0" />
-            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
-        </Style>
-        <Style x:Key="TopStats.HighlightValue" TargetType="{x:Type TextBlock}">
-            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
-            <Setter Property="FontSize" Value="20" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="Margin" Value="0,2,0,0" />
-        </Style>
-        <Style x:Key="TopStats.RankingTitle" TargetType="{x:Type TextBlock}">
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="TextWrapping" Value="Wrap" />
-        </Style>
-        <Style x:Key="TopStats.RankingBar" TargetType="{x:Type ProgressBar}">
-            <Setter Property="Height" Value="6" />
-            <Setter Property="Minimum" Value="0" />
-            <Setter Property="Maximum" Value="100" />
-            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.4}" />
-            <Setter Property="SnapsToDevicePixels" Value="True" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ProgressBar}">
-                        <Grid>
-                            <Border x:Name="PART_Track" Background="{TemplateBinding Background}" CornerRadius="2" />
-                            <Border x:Name="PART_Indicator" HorizontalAlignment="Left" Background="{TemplateBinding Foreground}" CornerRadius="2" />
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
         <DataTemplate x:Key="DamageStatsEntryTemplate" DataType="{x:Type damageMeter:DamageStatsEntry}">
             <Grid Height="22">
                 <Grid.ColumnDefinitions>
@@ -145,14 +20,14 @@
                     <ColumnDefinition Width="80" />
                     <ColumnDefinition Width="58" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="{Binding Rank, StringFormat='{}{0}.'}" Foreground="{StaticResource SolidColorBrush.Text.2}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center" />
-                <TextBlock Grid.Column="1" Text="{Binding PlayerName}" Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="12" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                <TextBlock Grid.Column="0" Text="{Binding Rank, StringFormat='{}{0}.'}" Style="{StaticResource TopStats.EntryRank}" />
+                <TextBlock Grid.Column="1" Text="{Binding PlayerName}" Style="{StaticResource TopStats.EntryName}" />
                 <ProgressBar Grid.Column="2" Value="{Binding BarPercentage}" Margin="5,0,7,0" VerticalAlignment="Center"
                              Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
                              Style="{StaticResource TopStats.RankingBar}" />
                 <TextBlock Grid.Column="3" Text="{Binding ValueString}"
                            Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
-                           HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="12" FontWeight="Bold" />
+                           Style="{StaticResource TopStats.EntryValue}" />
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="DamageStatsContributionEntryTemplate" DataType="{x:Type damageMeter:DamageStatsEntry}">
@@ -163,14 +38,14 @@
                     <ColumnDefinition Width="80" />
                     <ColumnDefinition Width="58" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="{Binding Rank, StringFormat='{}{0}.'}" Foreground="{StaticResource SolidColorBrush.Text.2}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center" />
-                <TextBlock Grid.Column="1" Text="{Binding PlayerName}" Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="12" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                <TextBlock Grid.Column="0" Text="{Binding Rank, StringFormat='{}{0}.'}" Style="{StaticResource TopStats.EntryRank}" />
+                <TextBlock Grid.Column="1" Text="{Binding PlayerName}" Style="{StaticResource TopStats.EntryName}" />
                 <ProgressBar Grid.Column="2" Value="{Binding BarPercentage}" Margin="5,0,7,0" VerticalAlignment="Center"
                              Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
                              Style="{StaticResource TopStats.RankingBar}" />
                 <TextBlock Grid.Column="3" Text="{Binding SharePercentageString}"
                            Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
-                           HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="12" FontWeight="Bold" />
+                           Style="{StaticResource TopStats.EntryValue}" />
             </Grid>
         </DataTemplate>
 
@@ -189,13 +64,13 @@
                     </Ellipse.Fill>
                 </Ellipse>
                 <TextBlock Grid.Column="1" Text="{Binding DisplayName}"
-                           Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="12" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                           Style="{StaticResource TopStats.EntryName}" />
                 <ProgressBar Grid.Column="2" Value="{Binding BarPercentage}" Margin="4,0,6,0"
                              VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" Style="{StaticResource TopStats.RankingBar}" />
                 <TextBlock Grid.Column="3" Text="{Binding ValueString}"
-                           Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" FontSize="12" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                           Style="{StaticResource TopStats.DamageSpellValue}" />
                 <TextBlock Grid.Column="4" Text="{Binding SharePercentageString}"
-                           Foreground="{StaticResource SolidColorBrush.Text.2}" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                           Style="{StaticResource TopStats.DamageSpellShare}" />
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="DamageTypeStatsEntryTemplate" DataType="{x:Type damageMeter:DamageTypeStatsEntry}">
@@ -244,32 +119,30 @@
             </DataTemplate.Triggers>
         </DataTemplate>
         <DataTemplate x:Key="YourStatsTopEntryTemplate" DataType="{x:Type damageMeter:DamageMeterYourStatsTopEntry}">
-            <Border Margin="2,1" Padding="6,3" Background="{StaticResource YourStats.Defense.MetricBackground}"
-                    BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.5}" BorderThickness="1" CornerRadius="4">
+            <Border Style="{StaticResource YourStats.Defense.TopEntryCard}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="24" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="90" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="{Binding Rank, StringFormat='{}{0}.'}" Foreground="{StaticResource SolidColorBrush.Text.2}" FontSize="12" FontWeight="Bold" />
-                    <TextBlock Grid.Column="1" Text="{Binding Name}" Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="12" TextTrimming="CharacterEllipsis" />
-                    <TextBlock Grid.Column="2" Text="{Binding ValueString}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" HorizontalAlignment="Right" FontSize="13" FontWeight="Bold" />
+                    <TextBlock Grid.Column="0" Text="{Binding Rank, StringFormat='{}{0}.'}" Style="{StaticResource YourStats.TopEntryRank}" />
+                    <TextBlock Grid.Column="1" Text="{Binding Name}" Style="{StaticResource YourStats.TopEntryName}" />
+                    <TextBlock Grid.Column="2" Text="{Binding ValueString}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" Style="{StaticResource YourStats.TopEntryValue}" />
                 </Grid>
             </Border>
         </DataTemplate>
         <DataTemplate x:Key="YourStatsHealingTopEntryTemplate" DataType="{x:Type damageMeter:DamageMeterYourStatsTopEntry}">
-            <Border Margin="2,1" Padding="6,3" Background="{StaticResource YourStats.Healing.MetricBackground}"
-                    BorderBrush="{StaticResource SolidColorBrush.Accent.Green.6}" BorderThickness="1" CornerRadius="4">
+            <Border Style="{StaticResource YourStats.Healing.TopEntryCard}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="24" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="90" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="{Binding Rank, StringFormat='{}{0}.'}" Foreground="{StaticResource SolidColorBrush.Text.2}" FontSize="12" FontWeight="Bold" />
-                    <TextBlock Grid.Column="1" Text="{Binding Name}" Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="12" TextTrimming="CharacterEllipsis" />
-                    <TextBlock Grid.Column="2" Text="{Binding ValueString}" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" HorizontalAlignment="Right" FontSize="13" FontWeight="Bold" />
+                    <TextBlock Grid.Column="0" Text="{Binding Rank, StringFormat='{}{0}.'}" Style="{StaticResource YourStats.TopEntryRank}" />
+                    <TextBlock Grid.Column="1" Text="{Binding Name}" Style="{StaticResource YourStats.TopEntryName}" />
+                    <TextBlock Grid.Column="2" Text="{Binding ValueString}" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" Style="{StaticResource YourStats.TopEntryValue}" />
                 </Grid>
             </Border>
         </DataTemplate>
@@ -288,18 +161,14 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Border Grid.Row="0" Grid.Column="0" Margin="0,2,5,5"
-                            Style="{StaticResource YourStats.SectionCard}"
-                            Background="{StaticResource YourStats.Damage.CardBackground}"
-                            BorderBrush="{StaticResource SolidColorBrush.Accent.Red.6}">
+                            Style="{StaticResource YourStats.Damage.SectionCard}">
                         <StackPanel>
                             <Grid Margin="2,0,2,6">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Border Grid.Column="0" Style="{StaticResource YourStats.HeaderIcon}"
-                                        Background="{StaticResource YourStats.Damage.MetricBackground}"
-                                        BorderBrush="{StaticResource SolidColorBrush.Accent.Red.6}">
+                                <Border Grid.Column="0" Style="{StaticResource YourStats.Damage.HeaderIcon}">
                                     <fa5:ImageAwesome Icon="Solid_FistRaised" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
                                 </Border>
                                 <TextBlock Grid.Column="1"
@@ -370,18 +239,14 @@
                         </StackPanel>
                     </Border>
                     <Border Grid.Row="0" Grid.Column="1" Margin="5,2,0,5"
-                            Style="{StaticResource YourStats.SectionCard}"
-                            Background="{StaticResource YourStats.Healing.CardBackground}"
-                            BorderBrush="{StaticResource SolidColorBrush.Accent.Green.6}">
+                            Style="{StaticResource YourStats.Healing.SectionCard}">
                         <StackPanel>
                             <Grid Margin="2,0,2,6">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Border Grid.Column="0" Style="{StaticResource YourStats.HeaderIcon}"
-                                        Background="{StaticResource YourStats.Healing.MetricBackground}"
-                                        BorderBrush="{StaticResource SolidColorBrush.Accent.Green.6}">
+                                <Border Grid.Column="0" Style="{StaticResource YourStats.Healing.HeaderIcon}">
                                     <fa5:ImageAwesome Icon="Regular_Heart" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" />
                                 </Border>
                                 <TextBlock Grid.Column="1"
@@ -420,18 +285,14 @@
                         </StackPanel>
                     </Border>
                     <Border Grid.Row="1" Grid.Column="0" Margin="0,5,5,2"
-                            Style="{StaticResource YourStats.SectionCard}"
-                            Background="{StaticResource YourStats.Defense.CardBackground}"
-                            BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.5}">
+                            Style="{StaticResource YourStats.Defense.SectionCard}">
                         <StackPanel>
                             <Grid Margin="2,0,2,6">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Border Grid.Column="0" Style="{StaticResource YourStats.HeaderIcon}"
-                                        Background="{StaticResource YourStats.Defense.MetricBackground}"
-                                        BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.5}">
+                                <Border Grid.Column="0" Style="{StaticResource YourStats.Defense.HeaderIcon}">
                                     <fa5:ImageAwesome Icon="Solid_ShieldAlt" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
                                 </Border>
                                 <TextBlock Grid.Column="1"
@@ -465,18 +326,14 @@
                         </StackPanel>
                     </Border>
                     <Border Grid.Row="1" Grid.Column="1" Margin="5,5,0,2"
-                            Style="{StaticResource YourStats.SectionCard}"
-                            Background="{StaticResource YourStats.Combat.CardBackground}"
-                            BorderBrush="{StaticResource SolidColorBrush.Accent.Yellow.5}">
+                            Style="{StaticResource YourStats.Combat.SectionCard}">
                         <StackPanel>
                             <Grid Margin="2,0,2,6">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Border Grid.Column="0" Style="{StaticResource YourStats.HeaderIcon}"
-                                        Background="{StaticResource YourStats.Combat.MetricBackground}"
-                                        BorderBrush="{StaticResource SolidColorBrush.Accent.Yellow.5}">
+                                <Border Grid.Column="0" Style="{StaticResource YourStats.Combat.HeaderIcon}">
                                     <fa5:ImageAwesome Icon="Regular_Clock" Foreground="{StaticResource SolidColorBrush.Accent.Yellow.3}" />
                                 </Border>
                                 <TextBlock Grid.Column="1"
@@ -516,15 +373,13 @@
             <ScrollViewer Margin="0,5,0,0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch">
                 <StackPanel Margin="0,0,0,0">
                     <UniformGrid Columns="6">
-                        <Border Style="{StaticResource TopStats.HighlightCard}" Background="{StaticResource YourStats.Damage.CardBackground}"
-                                BorderBrush="{StaticResource SolidColorBrush.Accent.Red.6}">
+                        <Border Style="{StaticResource TopStats.Damage.HighlightCard}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Border Grid.Column="0" Style="{StaticResource TopStats.HighlightIcon}" Background="{StaticResource YourStats.Damage.MetricBackground}"
-                                        BorderBrush="{StaticResource SolidColorBrush.Accent.Red.6}">
+                                <Border Grid.Column="0" Style="{StaticResource TopStats.Damage.HighlightIcon}">
                                     <iconPacks:PackIconGameIcons Kind="GooeyImpact" Width="24" Height="24" Margin="0,0,0,0" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
                                 </Border>
                                 <StackPanel Grid.Column="1" VerticalAlignment="Center">
@@ -536,16 +391,13 @@
                                 </StackPanel>
                             </Grid>
                         </Border>
-                        <Border Style="{StaticResource TopStats.HighlightCard}" Background="{StaticResource YourStats.Damage.CardBackground}"
-                                BorderBrush="{StaticResource SolidColorBrush.Accent.Red.6}">
+                        <Border Style="{StaticResource TopStats.Damage.HighlightCard}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Border Grid.Column="0" Style="{StaticResource TopStats.HighlightIcon}"
-                                        Background="{StaticResource YourStats.Damage.MetricBackground}"
-                                        BorderBrush="{StaticResource SolidColorBrush.Accent.Red.6}">
+                                <Border Grid.Column="0" Style="{StaticResource TopStats.Damage.HighlightIcon}">
                                     <iconPacks:PackIconGameIcons Kind="BulletImpacts" Width="24" Height="24" Margin="0,0,0,0" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
                                 </Border>
                                 <StackPanel Grid.Column="1" VerticalAlignment="Center">
@@ -557,17 +409,13 @@
                                 </StackPanel>
                             </Grid>
                         </Border>
-                        <Border Style="{StaticResource TopStats.HighlightCard}"
-                                Background="{StaticResource YourStats.Damage.CardBackground}"
-                                BorderBrush="{StaticResource SolidColorBrush.Accent.Red.6}">
+                        <Border Style="{StaticResource TopStats.Damage.HighlightCard}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Border Grid.Column="0" Style="{StaticResource TopStats.HighlightIcon}"
-                                        Background="{StaticResource YourStats.Damage.MetricBackground}"
-                                        BorderBrush="{StaticResource SolidColorBrush.Accent.Red.6}">
+                                <Border Grid.Column="0" Style="{StaticResource TopStats.Damage.HighlightIcon}">
                                     <iconPacks:PackIconGameIcons Kind="BulletImpacts" Width="24" Height="24" Margin="0,0,0,0" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
                                 </Border>
                                 <StackPanel Grid.Column="1" VerticalAlignment="Center">
@@ -579,17 +427,13 @@
                                 </StackPanel>
                             </Grid>
                         </Border>
-                        <Border Style="{StaticResource TopStats.HighlightCard}"
-                                Background="{StaticResource YourStats.Healing.CardBackground}"
-                                BorderBrush="{StaticResource SolidColorBrush.Accent.Green.6}">
+                        <Border Style="{StaticResource TopStats.Healing.HighlightCard}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Border Grid.Column="0" Style="{StaticResource TopStats.HighlightIcon}"
-                                        Background="{StaticResource YourStats.Healing.MetricBackground}"
-                                        BorderBrush="{StaticResource SolidColorBrush.Accent.Green.6}">
+                                <Border Grid.Column="0" Style="{StaticResource TopStats.Healing.HighlightIcon}">
                                     <iconPacks:PackIconGameIcons Kind="Healing" Width="24" Height="24" Margin="0,0,0,0" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" />
                                 </Border>
                                 <StackPanel Grid.Column="1" VerticalAlignment="Center">
@@ -601,17 +445,13 @@
                                 </StackPanel>
                             </Grid>
                         </Border>
-                        <Border Style="{StaticResource TopStats.HighlightCard}"
-                                Background="{StaticResource YourStats.Defense.CardBackground}"
-                                BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.5}">
+                        <Border Style="{StaticResource TopStats.Defense.HighlightCard}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Border Grid.Column="0" Style="{StaticResource TopStats.HighlightIcon}"
-                                        Background="{StaticResource YourStats.Defense.MetricBackground}"
-                                        BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.5}">
+                                <Border Grid.Column="0" Style="{StaticResource TopStats.Defense.HighlightIcon}">
                                     <iconPacks:PackIconGameIcons Kind="SnakeBite" Width="24" Height="24" Margin="0,0,0,0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}"/>
                                 </Border>
                                 <StackPanel Grid.Column="1" VerticalAlignment="Center">
@@ -623,16 +463,13 @@
                                 </StackPanel>
                             </Grid>
                         </Border>
-                        <Border Style="{StaticResource TopStats.HighlightCard}" Background="{StaticResource YourStats.Defense.CardBackground}"
-                                BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.5}">
+                        <Border Style="{StaticResource TopStats.Defense.HighlightCard}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Border Grid.Column="0" Style="{StaticResource TopStats.HighlightIcon}"
-                                        Background="{StaticResource YourStats.Defense.MetricBackground}"
-                                        BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.5}">
+                                <Border Grid.Column="0" Style="{StaticResource TopStats.Defense.HighlightIcon}">
                                     <fa5:ImageAwesome Icon="Solid_Users" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
                                 </Border>
                                 <StackPanel Grid.Column="1" VerticalAlignment="Center">
@@ -657,7 +494,7 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <fa5:ImageAwesome Grid.Column="0" Icon="Solid_Bolt" Width="14" Height="14" Margin="0,0,6,0" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                                    <fa5:ImageAwesome Grid.Column="0" Icon="Solid_Bolt" Style="{StaticResource TopStats.RankingIcon}" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
                                     <TextBlock Grid.Column="1"
                                                Text="{Binding DataContext.DamageMeterBindings.TranslationBiggestSingleHitTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=BIGGEST_SINGLE_HIT_TOP_5}"
                                                Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" Style="{StaticResource TopStats.RankingTitle}" />
@@ -673,7 +510,7 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <fa5:ImageAwesome Grid.Column="0" Icon="Solid_ChartLine" Width="14" Height="14" Margin="0,0,6,0"
+                                    <fa5:ImageAwesome Grid.Column="0" Icon="Solid_ChartLine" Style="{StaticResource TopStats.RankingIcon}"
                                                       Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
                                     <TextBlock Grid.Column="1"
                                                Text="{Binding DataContext.DamageMeterBindings.TranslationBurstDamageFiveSecondsTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=BURST_DAMAGE_5_SECONDS_TOP_5}"
@@ -691,7 +528,7 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <fa5:ImageAwesome Grid.Column="0" Icon="Regular_Clock" Width="14" Height="14" Margin="0,0,6,0"
+                                    <fa5:ImageAwesome Grid.Column="0" Icon="Regular_Clock" Style="{StaticResource TopStats.RankingIcon}"
                                                       Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
                                     <TextBlock Grid.Column="1"
                                                Text="{Binding DataContext.DamageMeterBindings.TranslationBurstDamageTenSecondsTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=BURST_DAMAGE_10_SECONDS_TOP_5}"
@@ -709,7 +546,7 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <fa5:ImageAwesome Grid.Column="0" Icon="Solid_Bolt" Width="14" Height="14" Margin="0,0,6,0"
+                                    <fa5:ImageAwesome Grid.Column="0" Icon="Solid_Bolt" Style="{StaticResource TopStats.RankingIcon}"
                                                       Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
                                     <TextBlock Grid.Column="1"
                                                Text="{Binding DataContext.DamageMeterBindings.TranslationTotalDamageTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=TOTAL_DAMAGE_TOP_5}"
@@ -729,7 +566,7 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <fa5:ImageAwesome Grid.Column="0" Icon="Regular_Heart" Width="14" Height="14" Margin="0,0,6,0"
+                                    <fa5:ImageAwesome Grid.Column="0" Icon="Regular_Heart" Style="{StaticResource TopStats.RankingIcon}"
                                                       Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" />
                                     <TextBlock Grid.Column="1"
                                                Text="{Binding DataContext.DamageMeterBindings.TranslationEffectiveHealingTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=EFFECTIVE_HEALING_TOP_5}"
@@ -747,7 +584,7 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <fa5:ImageAwesome Grid.Column="0" Icon="Solid_Plus" Width="14" Height="14" Margin="0,0,6,0"
+                                    <fa5:ImageAwesome Grid.Column="0" Icon="Solid_Plus" Style="{StaticResource TopStats.RankingIcon}"
                                                       Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" />
                                     <TextBlock Grid.Column="1"
                                                Text="{Binding DataContext.DamageMeterBindings.TranslationOverhealTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=OVERHEAL_TOP_5}"
@@ -765,7 +602,7 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <iconPacks:PackIconGameIcons Grid.Column="0" Grid.Row="0" Kind="SnakeBite" Width="16" Height="16" Margin="0,0,6,0"
+                                    <iconPacks:PackIconGameIcons Grid.Column="0" Grid.Row="0" Kind="SnakeBite" Style="{StaticResource TopStats.RankingGameIcon}"
                                                                  Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}"/>
                                     <TextBlock Grid.Column="1"
                                                Text="{Binding DataContext.DamageMeterBindings.TranslationDamageTakenTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=DAMAGE_TAKEN_TOP_5}"
@@ -783,7 +620,7 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <fa5:ImageAwesome Grid.Column="0" Icon="Solid_Users" Width="14" Height="14" Margin="0,0,6,0"
+                                    <fa5:ImageAwesome Grid.Column="0" Icon="Solid_Users" Style="{StaticResource TopStats.RankingIcon}"
                                                       Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
                                     <TextBlock Grid.Column="1"
                                                Text="{Binding DataContext.DamageMeterBindings.TranslationAttackedMobsPlayersTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=ATTACKED_MOBS_PLAYERS_TOP_5}"
@@ -810,7 +647,7 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <iconPacks:PackIconGameIcons Grid.Column="0" Grid.Row="0" Kind="SkullCrack" Width="16" Height="16" Margin="0,0,6,0" 
+                                    <iconPacks:PackIconGameIcons Grid.Column="0" Grid.Row="0" Kind="SkullCrack" Style="{StaticResource TopStats.RankingGameIcon}"
                                                                  Foreground="{StaticResource SolidColorBrush.Accent.Orange.3}"/>
                                     <TextBlock Grid.Column="1"
                                                Text="{Binding DataContext.DamageMeterBindings.TranslationTopMobKillContributionTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=TOP_MOB_KILL_CONTRIBUTION_TOP_5}"
@@ -853,15 +690,15 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0" Grid.ColumnSpan="2"
                                                Text="{Binding DataContext.DamageMeterBindings.TranslationAbility, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=ABILITY}"
-                                               Foreground="{StaticResource SolidColorBrush.Text.4}" FontSize="9"
+                                               Style="{StaticResource TopStats.AbilityHeader}"
                                                VerticalAlignment="Center" />
                                     <TextBlock Grid.Column="2" Grid.ColumnSpan="2"
                                                Text="{Binding DataContext.DamageMeterBindings.TranslationTotalDamage, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=TOTAL_DAMAGE}"
-                                               Foreground="{StaticResource SolidColorBrush.Text.4}" FontSize="9"
+                                               Style="{StaticResource TopStats.AbilityHeader}"
                                                TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" />
                                     <TextBlock Grid.Column="4"
                                                Text="{Binding DataContext.DamageMeterBindings.TranslationPercentOfTotal, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=%}"
-                                               Foreground="{StaticResource SolidColorBrush.Text.4}" FontSize="9"
+                                               Style="{StaticResource TopStats.AbilityHeader}"
                                                TextAlignment="Right" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"
                                                ToolTip="{Binding DataContext.DamageMeterBindings.TranslationPercentOfTotal, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
                                 </Grid>
@@ -875,9 +712,9 @@
         </DataTemplate>
     </UserControl.Resources>
     <Grid>
-        <TabControl Background="Transparent" BorderThickness="0">
+        <TabControl Background="{StaticResource SolidColorBrush.Transparent}" BorderThickness="0">
             <TabItem Header="{Binding DamageMeterBindings.TranslationLive, FallbackValue=LIVE}">
-                <TabControl Background="Transparent" BorderThickness="0">
+                <TabControl Background="{StaticResource SolidColorBrush.Transparent}" BorderThickness="0">
                     <TabItem Header="{Binding DamageMeterBindings.TranslationMeter, FallbackValue=METER}">
                         <Grid Margin="3,7,3,0">
                             <Grid.RowDefinitions>
@@ -912,20 +749,7 @@
                                                                       Icon="{Binding DamageMeterBindings.DamageMeterActivationToggleIcon, FallbackValue=Solid_ToggleOff}"
                                                                       Foreground="{Binding DamageMeterBindings.DamageMeterActivationToggleColor, FallbackValue={StaticResource SolidColorBrush.Text.1}}"
                                                                       IsHitTestVisible="False" />
-                                                    <TextBlock VerticalAlignment="Center">
-                                                        <TextBlock.Style>
-                                                            <Style TargetType="{x:Type TextBlock}">
-                                                                <Setter Property="Text"
-                                                                        Value="{Binding Translation.TrackingIsNotActive, FallbackValue=TRACKING__IS__NOT__ACTIVE}" />
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding IsDamageMeterTrackingActive}" Value="True">
-                                                                        <Setter Property="Text"
-                                                                                Value="{Binding Translation.TrackingIsActive, FallbackValue=TRACKING__IS__ACTIVE}" />
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </TextBlock.Style>
-                                                    </TextBlock>
+                                                    <TextBlock VerticalAlignment="Center" Style="{StaticResource DamageMeter.TrackingStatusText}" />
                                                 </StackPanel>
                                             </Button>
                                         </StackPanel>
@@ -987,34 +811,14 @@
                                     </StackPanel>
                                 </Grid>
                             </Border>
-                            <ScrollViewer Grid.Row="2" Margin="-3,0,0,0">
-                                <ScrollViewer.Style>
-                                    <Style TargetType="{x:Type ScrollViewer}">
-                                        <Setter Property="Visibility" Value="Visible" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding DamageMeterBindings.DamageMeterSortSelection.DamageMeterSortType}"
-                                                         Value="{x:Static damageMeter:DamageMeterSortType.Mob}">
-                                                <Setter Property="Visibility" Value="Collapsed" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ScrollViewer.Style>
+                            <ScrollViewer Grid.Row="2" Margin="-3,0,0,0"
+                                          Style="{StaticResource DamageMeter.Live.PlayerList}">
                                 <ItemsControl ItemsSource="{Binding DamageMeterBindings.DamageMeter, IsAsync=True, Mode=OneWay}"
                                               ItemTemplate="{StaticResource DamageMeterFragmentTemplate}" />
                             </ScrollViewer>
                             <ScrollViewer Grid.Row="2" Margin="-3,0,0,0"
-                                          HorizontalScrollBarVisibility="Auto">
-                                <ScrollViewer.Style>
-                                    <Style TargetType="{x:Type ScrollViewer}">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding DamageMeterBindings.DamageMeterSortSelection.DamageMeterSortType}"
-                                                         Value="{x:Static damageMeter:DamageMeterSortType.Mob}">
-                                                <Setter Property="Visibility" Value="Visible" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ScrollViewer.Style>
+                                          HorizontalScrollBarVisibility="Auto"
+                                          Style="{StaticResource DamageMeter.Live.MobList}">
                                 <ItemsControl ItemsSource="{Binding DamageMeterBindings.MobDamageMeter, IsAsync=True, Mode=OneWay}"
                                               ItemTemplate="{StaticResource MobDamageMeterFragmentTemplate}" />
                             </ScrollViewer>
@@ -1027,22 +831,16 @@
                                             CanVerticallyScroll="True"
                                             Margin="14,12">
                                     <DockPanel Margin="0,0,0,16">
-                                        <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
+                                        <Grid Style="{StaticResource DamageMeter.DescriptionIcon}">
                                             <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
                                         </Grid>
-                                        <TextBlock Text="{Binding Translation.DamageMeterDescription1}"
-                                                   Foreground="{StaticResource SolidColorBrush.Text.1}"
-                                                   FontSize="16"
-                                                   TextWrapping="Wrap" />
+                                        <TextBlock Text="{Binding Translation.DamageMeterDescription1}" Style="{StaticResource DamageMeter.DescriptionText}" />
                                     </DockPanel>
                                     <DockPanel Margin="0,0,0,16">
-                                        <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
+                                        <Grid Style="{StaticResource DamageMeter.DescriptionIcon}">
                                             <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
                                         </Grid>
-                                        <TextBlock Text="{Binding Translation.DamageMeterDescription2}"
-                                                   Foreground="{StaticResource SolidColorBrush.Text.1}"
-                                                   FontSize="16"
-                                                   TextWrapping="Wrap" />
+                                        <TextBlock Text="{Binding Translation.DamageMeterDescription2}" Style="{StaticResource DamageMeter.DescriptionText}" />
                                     </DockPanel>
                                 </StackPanel>
                             </Grid>
@@ -1167,7 +965,7 @@
                             </WrapPanel>
                         </Grid>
                     </Border>
-                    <TabControl Grid.Row="2" Background="Transparent" BorderThickness="0">
+                    <TabControl Grid.Row="2" Background="{StaticResource SolidColorBrush.Transparent}" BorderThickness="0">
                         <TabItem Header="{Binding DamageMeterBindings.TranslationMeter, FallbackValue=METER}">
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -1193,34 +991,14 @@
                                         </Border>
                                     </Grid>
                                 </Border>
-                                <ScrollViewer Grid.Row="2" Margin="-3,0,0,0">
-                                    <ScrollViewer.Style>
-                                        <Style TargetType="{x:Type ScrollViewer}">
-                                            <Setter Property="Visibility" Value="Visible" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding DamageMeterBindings.DamageMeterSnapshotSortSelection.DamageMeterSortType}"
-                                                             Value="{x:Static damageMeter:DamageMeterSortType.Mob}">
-                                                    <Setter Property="Visibility" Value="Collapsed" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </ScrollViewer.Style>
+                                <ScrollViewer Grid.Row="2" Margin="-3,0,0,0"
+                                              Style="{StaticResource DamageMeter.Snapshot.PlayerList}">
                                     <ItemsControl ItemsSource="{Binding DamageMeterBindings.DamageMeterSnapshotSelection.DamageMeter, IsAsync=True, Mode=OneWay}"
                                                   ItemTemplate="{StaticResource DamageMeterSnapshotFragmentTemplate}" />
                                 </ScrollViewer>
                                 <ScrollViewer Grid.Row="2" Margin="-3,0,0,0"
-                                              HorizontalScrollBarVisibility="Auto">
-                                    <ScrollViewer.Style>
-                                        <Style TargetType="{x:Type ScrollViewer}">
-                                            <Setter Property="Visibility" Value="Collapsed" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding DamageMeterBindings.DamageMeterSnapshotSortSelection.DamageMeterSortType}"
-                                                             Value="{x:Static damageMeter:DamageMeterSortType.Mob}">
-                                                    <Setter Property="Visibility" Value="Visible" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </ScrollViewer.Style>
+                                              HorizontalScrollBarVisibility="Auto"
+                                              Style="{StaticResource DamageMeter.Snapshot.MobList}">
                                     <ItemsControl ItemsSource="{Binding DamageMeterBindings.DamageMeterSnapshotSelection.MobDamageMeter, IsAsync=True, Mode=OneWay}"
                                                   ItemTemplate="{StaticResource MobDamageMeterFragmentTemplate}" />
                                 </ScrollViewer>

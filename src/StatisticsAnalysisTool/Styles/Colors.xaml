@@ -26,6 +26,7 @@
     <Color x:Key="Color.Border.2">#FF242C33</Color>
     <Color x:Key="Color.Border.Focus">#FF3AA6E8</Color>
     <Color x:Key="Color.Overlay.Scrim">#B305080A</Color>
+    <Color x:Key="Color.Transparent">#00FFFFFF</Color>
 
     <!-- Button colors -->
     <Color x:Key="Color.Button.Primary.Normal">#FF185F86</Color>
@@ -297,6 +298,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.Border.2" Color="{StaticResource Color.Border.2}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Border.Focus" Color="{StaticResource Color.Border.Focus}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Overlay.Scrim" Color="{StaticResource Color.Overlay.Scrim}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Transparent" Color="{StaticResource Color.Transparent}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Button.Primary.Normal" Color="{StaticResource Color.Button.Primary.Normal}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Button.Primary.MouseOver" Color="{StaticResource Color.Button.Primary.MouseOver}"/>
