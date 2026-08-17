@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.DamageMeter;
 
@@ -10,7 +11,14 @@ public sealed class DamageStatsTracker
     private readonly Dictionary<Guid, DamageStatsPlayer> _players = new();
     private readonly List<DamageStatsEvent> _damageEvents = [];
 
-    public void RecordDamage(Guid playerGuid, string playerName, long targetObjectId, long value, double newHealthValue, bool isMobTarget)
+    public void RecordDamage(
+        Guid playerGuid,
+        string playerName,
+        long targetObjectId,
+        long value,
+        double newHealthValue,
+        bool isMobTarget,
+        DamageType damageType)
     {
         if (value <= 0)
         {
@@ -22,6 +30,11 @@ public sealed class DamageStatsTracker
             var player = GetOrAddPlayer(playerGuid, playerName);
             player.BiggestHit = Math.Max(player.BiggestHit, value);
             player.TotalDamage += value;
+            if (damageType != DamageType.Unknown)
+            {
+                player.DamageByType[damageType] = player.DamageByType.GetValueOrDefault(damageType) + value;
+            }
+
             if (targetObjectId > 0)
             {
                 player.AttackedTargetObjectIds.Add(targetObjectId);
@@ -101,7 +114,8 @@ public sealed class DamageStatsTracker
                 TopOverheals = CreateTopEntries(players, x => x.Overheal),
                 TopBurstDamageFiveSeconds = CreateBurstDamageEntries(activePlayers, TimeSpan.FromSeconds(5)),
                 TopBurstDamageTenSeconds = CreateBurstDamageEntries(activePlayers, TimeSpan.FromSeconds(10)),
-                TopAttackedTargets = CreateTopEntries(players, x => x.AttackedTargetObjectIds.Count)
+                TopAttackedTargets = CreateTopEntries(players, x => x.AttackedTargetObjectIds.Count),
+                DamageTypeTotals = CreateDamageTypeEntries(players)
             };
         }
     }
@@ -156,6 +170,18 @@ public sealed class DamageStatsTracker
             {
                 PlayerName = GetPlayerName(x.Key),
                 Value = GetHighestBurstDamage(x.OrderBy(y => y.Timestamp).ToList(), window)
+            }));
+    }
+
+    private static IReadOnlyList<DamageTypeStatsEntry> CreateDamageTypeEntries(IEnumerable<DamageStatsPlayer> players)
+    {
+        return DamageTypeStatsEntryFactory.Rank(players
+            .SelectMany(player => player.DamageByType)
+            .GroupBy(entry => entry.Key)
+            .Select(group => new DamageTypeStatsEntry
+            {
+                DamageType = group.Key,
+                Value = group.Sum(entry => entry.Value)
             }));
     }
 

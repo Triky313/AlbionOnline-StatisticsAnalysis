@@ -19,6 +19,7 @@ public sealed class DamageStatsSnapshot
     public IReadOnlyList<DamageStatsEntry> TopBurstDamageFiveSeconds { get; init; } = [];
     public IReadOnlyList<DamageStatsEntry> TopBurstDamageTenSeconds { get; init; } = [];
     public IReadOnlyList<DamageStatsEntry> TopAttackedTargets { get; init; } = [];
+    public IReadOnlyList<DamageTypeStatsEntry> DamageTypeTotals { get; init; } = [];
     public int TrackedFightCount { get; init; }
     public TimeSpan TrackedFightDuration { get; init; }
 
@@ -38,15 +39,11 @@ public sealed class DamageStatsSnapshot
                 return $"{totalHours}h {TrackedFightDuration.Minutes}m";
             }
 
-            return TrackedFightDuration.Minutes > 0
-                ? $"{TrackedFightDuration.Minutes}m {TrackedFightDuration.Seconds}s"
-                : $"{TrackedFightDuration.Seconds}s";
+            return TrackedFightDuration.Minutes > 0 ? $"{TrackedFightDuration.Minutes}m {TrackedFightDuration.Seconds}s" : $"{TrackedFightDuration.Seconds}s";
         }
     }
 
-    private static DamageStatsEntry CreatePeakDpsEntry(
-        IReadOnlyList<DamageStatsEntry> entries,
-        int windowSeconds)
+    private static DamageStatsEntry CreatePeakDpsEntry(IReadOnlyList<DamageStatsEntry> entries, int windowSeconds)
     {
         var entry = entries.FirstOrDefault();
         if (entry == null)

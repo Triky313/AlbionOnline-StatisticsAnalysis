@@ -59,7 +59,13 @@ public class CombatController
 
     public event Action<ObservableCollection<DamageMeterFragment>, List<KeyValuePair<Guid, PlayerGameObject>>> OnDamageUpdate;
 
-    public Task AddDamage(long affectedId, long causerId, double healthChange, double newHealthValue, int causingSpellIndex)
+    public Task AddDamage(
+        long affectedId,
+        long causerId,
+        double healthChange,
+        double newHealthValue,
+        int causingSpellIndex,
+        EffectType effectType)
     {
         var healthChangeType = GetHealthChangeType(healthChange);
         if (!SettingsController.CurrentSettings.IsDamageMeterTrackingActive || (affectedId == causerId && healthChangeType == HealthChangeType.Damage))
@@ -105,8 +111,9 @@ public class CombatController
 
             CombatEventTracker.AddHealthContribution(CombatEventValueType.Damage, causerId, affectedId, damageChangeValue, causingSpellIndex, contentType);
             var isMobTarget = affectedGameObject?.Value is not { ObjectType: GameObjectType.Player };
-            _damageStatsTracker.RecordDamage(causerGameObject.Value.Key, causerGameObjectValue.Name, affectedId, damageChangeValue, newHealthValue, isMobTarget);
-            contentDamageStatsTracker.RecordDamage(causerGameObject.Value.Key, causerGameObjectValue.Name, affectedId, damageChangeValue, newHealthValue, isMobTarget);
+            var damageType = DamageTypeResolver.Resolve(effectType, causingSpellIndex, isMobTarget);
+            _damageStatsTracker.RecordDamage(causerGameObject.Value.Key, causerGameObjectValue.Name, affectedId, damageChangeValue, newHealthValue, isMobTarget, damageType);
+            contentDamageStatsTracker.RecordDamage(causerGameObject.Value.Key, causerGameObjectValue.Name, affectedId, damageChangeValue, newHealthValue, isMobTarget, damageType);
         }
 
         if (healthChangeType == HealthChangeType.Heal)
@@ -1138,7 +1145,7 @@ public class CombatController
         {
             var damage = Random.Next(-5000, 5000);
             var takenDamage = Random.Next(-5000, 5000);
-            await AddDamage(9999, entity.ObjectId ?? -1, damage, Random.Next(2000, 3000), Random.Next(2000, 3000));
+            await AddDamage(9999, entity.ObjectId ?? -1, damage, Random.Next(2000, 3000), Random.Next(2000, 3000), EffectType.Physical);
             await AddTakenDamage(entity.ObjectId ?? -1, 9999, takenDamage, Random.Next(2000, 3000), Random.Next(2000, 3000));
             //Debug.Print($"--- AddDamage - {entity.Name}: {damage}");
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.DamageMeter;
 
@@ -12,6 +13,7 @@ internal sealed class DamageStatsPlayer
     public long TotalDamage { get; set; }
     public long EffectiveHealing { get; set; }
     public long Overheal { get; set; }
+    public Dictionary<DamageType, long> DamageByType { get; } = [];
     public HashSet<long> LastHitTargetObjectIds { get; } = [];
     public HashSet<long> MobLastHitTargetObjectIds { get; } = [];
     public HashSet<long> AttackedTargetObjectIds { get; } = [];

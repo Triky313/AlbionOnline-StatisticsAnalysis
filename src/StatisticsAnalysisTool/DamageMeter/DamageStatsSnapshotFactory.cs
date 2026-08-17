@@ -25,6 +25,7 @@ public static class DamageStatsSnapshotFactory
             TopBurstDamageFiveSeconds = NormalizeEntries(snapshot.TopBurstDamageFiveSeconds),
             TopBurstDamageTenSeconds = NormalizeEntries(snapshot.TopBurstDamageTenSeconds),
             TopAttackedTargets = NormalizeEntries(snapshot.TopAttackedTargets),
+            DamageTypeTotals = NormalizeDamageTypeEntries(snapshot.DamageTypeTotals),
             TrackedFightCount = snapshot.TrackedFightCount,
             TrackedFightDuration = snapshot.TrackedFightDuration
         };
@@ -50,6 +51,7 @@ public static class DamageStatsSnapshotFactory
             TopBurstDamageFiveSeconds = NormalizeEntries(snapshot.TopBurstDamageFiveSeconds),
             TopBurstDamageTenSeconds = NormalizeEntries(snapshot.TopBurstDamageTenSeconds),
             TopAttackedTargets = NormalizeEntries(snapshot.TopAttackedTargets),
+            DamageTypeTotals = SelectDamageTypeEntries(snapshot.DamageTypeTotals, fallback.DamageTypeTotals),
             TrackedFightCount = snapshot.TrackedFightCount,
             TrackedFightDuration = snapshot.TrackedFightDuration
         };
@@ -78,6 +80,7 @@ public static class DamageStatsSnapshotFactory
             TopBurstDamageFiveSeconds = trackerSnapshot.TopBurstDamageFiveSeconds,
             TopBurstDamageTenSeconds = trackerSnapshot.TopBurstDamageTenSeconds,
             TopAttackedTargets = trackerSnapshot.TopAttackedTargets,
+            DamageTypeTotals = trackerSnapshot.DamageTypeTotals,
             TrackedFightCount = trackedFights.Count,
             TrackedFightDuration = trackedFights
                 .Select(GetDuration)
@@ -95,7 +98,8 @@ public static class DamageStatsSnapshotFactory
             TopSingleHeals = CreateTopSpellEntries(snapshotFragments.Where(x => x.Heal > 0), HealthChangeType.Heal),
             TopTotalDamage = CreateTopEntries(snapshotFragments, x => x.Damage),
             TopEffectiveHealing = CreateTopEntries(snapshotFragments, x => x.Heal),
-            TopTakenDamage = CreateTopEntries(snapshotFragments, x => x.TakenDamage)
+            TopTakenDamage = CreateTopEntries(snapshotFragments, x => x.TakenDamage),
+            DamageTypeTotals = CreateDamageTypeEntries(snapshotFragments)
         };
     }
 
@@ -143,6 +147,13 @@ public static class DamageStatsSnapshotFactory
         return NormalizeEntries(entries.Count > 0 ? entries : fallbackEntries);
     }
 
+    private static IReadOnlyList<DamageTypeStatsEntry> SelectDamageTypeEntries(
+        IReadOnlyList<DamageTypeStatsEntry> entries,
+        IReadOnlyList<DamageTypeStatsEntry> fallbackEntries)
+    {
+        return NormalizeDamageTypeEntries(entries != null && entries.Count > 0 ? entries : fallbackEntries);
+    }
+
     private static IReadOnlyList<DamageStatsEntry> NormalizeEntries(
         IReadOnlyList<DamageStatsEntry> entries,
         bool calculateSharePercentage = false)
@@ -155,6 +166,33 @@ public static class DamageStatsSnapshotFactory
         return entries.Any(x => x.BarPercentage > 0)
             ? entries.ToList()
             : DamageStatsEntryFactory.Rank(entries, calculateSharePercentage);
+    }
+
+    private static IReadOnlyList<DamageTypeStatsEntry> NormalizeDamageTypeEntries(
+        IReadOnlyList<DamageTypeStatsEntry> entries)
+    {
+        return entries == null || entries.Count == 0
+            ? []
+            : DamageTypeStatsEntryFactory.Rank(entries);
+    }
+
+    private static IReadOnlyList<DamageTypeStatsEntry> CreateDamageTypeEntries(
+        IEnumerable<DamageMeterSnapshotFragment> fragments)
+    {
+        return DamageTypeStatsEntryFactory.Rank((fragments ?? [])
+            .SelectMany(fragment => fragment.Spells)
+            .Where(spell => spell.HealthChangeType == HealthChangeType.Damage)
+            .Select(spell => new DamageTypeStatsEntry
+            {
+                DamageType = DamageTypeResolver.ResolveFromSpell(spell.SpellIndex),
+                Value = spell.DamageHealValue
+            })
+            .GroupBy(entry => entry.DamageType)
+            .Select(group => new DamageTypeStatsEntry
+            {
+                DamageType = group.Key,
+                Value = group.Sum(entry => entry.Value)
+            }));
     }
 
     private static TimeSpan GetDuration(CombatEvent combatEvent)
