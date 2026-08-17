@@ -49257,6 +49257,32 @@
       ]
     },
     {
+      "tuid": "DAMAGE_BY_ABILITY_TOP_5",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Schaden nach Fähigkeit – Top 5"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Damage by Ability – Top 5"
+        }
+      ]
+    },
+    {
+      "tuid": "ABILITY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Fähigkeit"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Ability"
+        }
+      ]
+    },
+    {
       "tuid": "PHYSICAL_DAMAGE",
       "tuv": [
         {

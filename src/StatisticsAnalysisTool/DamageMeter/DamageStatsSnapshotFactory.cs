@@ -26,6 +26,7 @@ public static class DamageStatsSnapshotFactory
             TopBurstDamageTenSeconds = NormalizeEntries(snapshot.TopBurstDamageTenSeconds),
             TopAttackedTargets = NormalizeEntries(snapshot.TopAttackedTargets),
             DamageTypeTotals = NormalizeDamageTypeEntries(snapshot.DamageTypeTotals),
+            TopDamageSpells = NormalizeDamageSpellEntries(snapshot.TopDamageSpells),
             TrackedFightCount = snapshot.TrackedFightCount,
             TrackedFightDuration = snapshot.TrackedFightDuration
         };
@@ -52,6 +53,7 @@ public static class DamageStatsSnapshotFactory
             TopBurstDamageTenSeconds = NormalizeEntries(snapshot.TopBurstDamageTenSeconds),
             TopAttackedTargets = NormalizeEntries(snapshot.TopAttackedTargets),
             DamageTypeTotals = SelectDamageTypeEntries(snapshot.DamageTypeTotals, fallback.DamageTypeTotals),
+            TopDamageSpells = SelectDamageSpellEntries(snapshot.TopDamageSpells, fallback.TopDamageSpells),
             TrackedFightCount = snapshot.TrackedFightCount,
             TrackedFightDuration = snapshot.TrackedFightDuration
         };
@@ -81,6 +83,7 @@ public static class DamageStatsSnapshotFactory
             TopBurstDamageTenSeconds = trackerSnapshot.TopBurstDamageTenSeconds,
             TopAttackedTargets = trackerSnapshot.TopAttackedTargets,
             DamageTypeTotals = trackerSnapshot.DamageTypeTotals,
+            TopDamageSpells = trackerSnapshot.TopDamageSpells,
             TrackedFightCount = trackedFights.Count,
             TrackedFightDuration = trackedFights
                 .Select(GetDuration)
@@ -99,7 +102,8 @@ public static class DamageStatsSnapshotFactory
             TopTotalDamage = CreateTopEntries(snapshotFragments, x => x.Damage),
             TopEffectiveHealing = CreateTopEntries(snapshotFragments, x => x.Heal),
             TopTakenDamage = CreateTopEntries(snapshotFragments, x => x.TakenDamage),
-            DamageTypeTotals = CreateDamageTypeEntries(snapshotFragments)
+            DamageTypeTotals = CreateDamageTypeEntries(snapshotFragments),
+            TopDamageSpells = CreateDamageSpellEntries(snapshotFragments)
         };
     }
 
@@ -154,6 +158,13 @@ public static class DamageStatsSnapshotFactory
         return NormalizeDamageTypeEntries(entries != null && entries.Count > 0 ? entries : fallbackEntries);
     }
 
+    private static IReadOnlyList<DamageSpellStatsEntry> SelectDamageSpellEntries(
+        IReadOnlyList<DamageSpellStatsEntry> entries,
+        IReadOnlyList<DamageSpellStatsEntry> fallbackEntries)
+    {
+        return NormalizeDamageSpellEntries(entries != null && entries.Count > 0 ? entries : fallbackEntries);
+    }
+
     private static IReadOnlyList<DamageStatsEntry> NormalizeEntries(
         IReadOnlyList<DamageStatsEntry> entries,
         bool calculateSharePercentage = false)
@@ -176,6 +187,19 @@ public static class DamageStatsSnapshotFactory
             : DamageTypeStatsEntryFactory.Rank(entries);
     }
 
+    private static IReadOnlyList<DamageSpellStatsEntry> NormalizeDamageSpellEntries(
+        IReadOnlyList<DamageSpellStatsEntry> entries)
+    {
+        if (entries == null || entries.Count == 0)
+        {
+            return [];
+        }
+
+        return entries.Any(entry => entry.BarPercentage > 0 || entry.SharePercentage > 0)
+            ? entries.OrderBy(entry => entry.Rank).Take(5).ToList()
+            : DamageSpellStatsEntryFactory.Rank(entries);
+    }
+
     private static IReadOnlyList<DamageTypeStatsEntry> CreateDamageTypeEntries(
         IEnumerable<DamageMeterSnapshotFragment> fragments)
     {
@@ -192,6 +216,20 @@ public static class DamageStatsSnapshotFactory
             {
                 DamageType = group.Key,
                 Value = group.Sum(entry => entry.Value)
+            }));
+    }
+
+    private static IReadOnlyList<DamageSpellStatsEntry> CreateDamageSpellEntries(
+        IEnumerable<DamageMeterSnapshotFragment> fragments)
+    {
+        return DamageSpellStatsEntryFactory.Rank((fragments ?? [])
+            .SelectMany(fragment => fragment.Spells)
+            .Where(spell => spell.HealthChangeType == HealthChangeType.Damage)
+            .Select(spell => new DamageSpellStatsEntry
+            {
+                SpellIndex = spell.SpellIndex,
+                UniqueName = spell.UniqueName,
+                Value = spell.DamageHealValue
             }));
     }
 

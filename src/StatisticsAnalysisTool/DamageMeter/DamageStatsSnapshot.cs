@@ -20,6 +20,7 @@ public sealed class DamageStatsSnapshot
     public IReadOnlyList<DamageStatsEntry> TopBurstDamageTenSeconds { get; init; } = [];
     public IReadOnlyList<DamageStatsEntry> TopAttackedTargets { get; init; } = [];
     public IReadOnlyList<DamageTypeStatsEntry> DamageTypeTotals { get; init; } = [];
+    public IReadOnlyList<DamageSpellStatsEntry> TopDamageSpells { get; init; } = [];
     public int TrackedFightCount { get; init; }
     public TimeSpan TrackedFightDuration { get; init; }
 

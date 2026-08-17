@@ -18,6 +18,7 @@ public sealed class DamageStatsTracker
         long value,
         double newHealthValue,
         bool isMobTarget,
+        int causingSpellIndex,
         DamageType damageType)
     {
         if (value <= 0)
@@ -34,6 +35,9 @@ public sealed class DamageStatsTracker
             {
                 player.DamageByType[damageType] = player.DamageByType.GetValueOrDefault(damageType) + value;
             }
+
+            var spellIndex = Math.Max(0, causingSpellIndex);
+            player.DamageBySpellIndex[spellIndex] = player.DamageBySpellIndex.GetValueOrDefault(spellIndex) + value;
 
             if (targetObjectId > 0)
             {
@@ -115,7 +119,8 @@ public sealed class DamageStatsTracker
                 TopBurstDamageFiveSeconds = CreateBurstDamageEntries(activePlayers, TimeSpan.FromSeconds(5)),
                 TopBurstDamageTenSeconds = CreateBurstDamageEntries(activePlayers, TimeSpan.FromSeconds(10)),
                 TopAttackedTargets = CreateTopEntries(players, x => x.AttackedTargetObjectIds.Count),
-                DamageTypeTotals = CreateDamageTypeEntries(players)
+                DamageTypeTotals = CreateDamageTypeEntries(players),
+                TopDamageSpells = CreateDamageSpellEntries(players)
             };
         }
     }
@@ -182,6 +187,17 @@ public sealed class DamageStatsTracker
             {
                 DamageType = group.Key,
                 Value = group.Sum(entry => entry.Value)
+            }));
+    }
+
+    private static IReadOnlyList<DamageSpellStatsEntry> CreateDamageSpellEntries(IEnumerable<DamageStatsPlayer> players)
+    {
+        return DamageSpellStatsEntryFactory.Rank(players
+            .SelectMany(player => player.DamageBySpellIndex)
+            .Select(entry => new DamageSpellStatsEntry
+            {
+                SpellIndex = entry.Key,
+                Value = entry.Value
             }));
     }
 

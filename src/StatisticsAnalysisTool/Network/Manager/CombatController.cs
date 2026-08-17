@@ -112,8 +112,8 @@ public class CombatController
             CombatEventTracker.AddHealthContribution(CombatEventValueType.Damage, causerId, affectedId, damageChangeValue, causingSpellIndex, contentType);
             var isMobTarget = affectedGameObject?.Value is not { ObjectType: GameObjectType.Player };
             var damageType = DamageTypeResolver.Resolve(effectType, causingSpellIndex, isMobTarget);
-            _damageStatsTracker.RecordDamage(causerGameObject.Value.Key, causerGameObjectValue.Name, affectedId, damageChangeValue, newHealthValue, isMobTarget, damageType);
-            contentDamageStatsTracker.RecordDamage(causerGameObject.Value.Key, causerGameObjectValue.Name, affectedId, damageChangeValue, newHealthValue, isMobTarget, damageType);
+            _damageStatsTracker.RecordDamage(causerGameObject.Value.Key, causerGameObjectValue.Name, affectedId, damageChangeValue, newHealthValue, isMobTarget, causingSpellIndex, damageType);
+            contentDamageStatsTracker.RecordDamage(causerGameObject.Value.Key, causerGameObjectValue.Name, affectedId, damageChangeValue, newHealthValue, isMobTarget, causingSpellIndex, damageType);
         }
 
         if (healthChangeType == HealthChangeType.Heal)
