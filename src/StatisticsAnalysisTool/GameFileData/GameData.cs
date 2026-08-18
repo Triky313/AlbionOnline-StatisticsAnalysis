@@ -26,6 +26,54 @@ namespace StatisticsAnalysisTool.GameFileData;
 public static class GameData
 {
     private const int FileBufferSize = 65536;
+    private static readonly HashSet<string> RequiredMobDataProperties =
+    [
+        "@uniquename",
+        "@tier",
+        "@npchostility",
+        "@abilitypower",
+        "@fame",
+        "@roamingradius",
+        "@roamingidletimemin",
+        "@roamingidletimemax",
+        "@aggroradius",
+        "@pursuitradius",
+        "@damageaggrofactor",
+        "@healingaggrofactor",
+        "@shieldaggrofactor",
+        "@alertradius",
+        "@faction",
+        "@attackcollisionradius",
+        "@attacktype",
+        "@attackrange",
+        "@attackdamage",
+        "@hitpointsmax",
+        "@hitpointsregeneration",
+        "@energymax",
+        "@energyregeneration",
+        "@movespeed",
+        "@attackmovespeed",
+        "@meleeattackdamagetime",
+        "@attackspeed",
+        "@physicalarmor",
+        "@magicresistance",
+        "@crowdcontrolresistance",
+        "@respawntimesecondsmin",
+        "@respawntimesecondsmax",
+        "@namelocatag",
+        "@avatar",
+        "@maxcharges",
+        "@timeperchargeseconds",
+        "@dangerstate",
+        "@aggrodelayafterspawn",
+        "@category",
+        "@chargesperchargeup",
+        "@energyrewardspell",
+        "@energyreward",
+        "@mobvalue",
+        "@ignoredifficultybonus",
+        "@chargeupchance"
+    ];
 
     public static async Task<bool> InitializeMainGameDataFilesAsync(
         ServerType serverType,
@@ -119,7 +167,7 @@ public static class GameData
 
             var mobsModifiedFilePath = Path.Combine(gameFilesDirPath, "mobs-modified.json");
             if (Extractor.IsBinFileNewer(mobsModifiedFilePath, mainGameFolderPath, serverType, "mobs")
-                || IsMobDataMissingOpenWorldFields(mobsModifiedFilePath))
+                || IsMobDataMissingRequiredFields(mobsModifiedFilePath))
             {
                 fileNamesToLoad.Add("mobs");
             }
@@ -369,7 +417,7 @@ public static class GameData
             FileOptions.Asynchronous | FileOptions.SequentialScan);
     }
 
-    private static bool IsMobDataMissingOpenWorldFields(string mobDataFilePath)
+    private static bool IsMobDataMissingRequiredFields(string mobDataFilePath)
     {
         if (!File.Exists(mobDataFilePath))
         {
@@ -385,23 +433,22 @@ public static class GameData
                 return false;
             }
 
-            var hasAvatar = false;
-            var hasFaction = false;
-            var hasNameLocatag = false;
+            var missingProperties = new HashSet<string>(RequiredMobDataProperties, StringComparer.Ordinal);
 
             foreach (var mob in document.RootElement.EnumerateArray())
             {
-                hasAvatar |= mob.TryGetProperty("@avatar", out _);
-                hasFaction |= mob.TryGetProperty("@faction", out _);
-                hasNameLocatag |= mob.TryGetProperty("@namelocatag", out _);
+                foreach (var property in mob.EnumerateObject())
+                {
+                    missingProperties.Remove(property.Name);
+                }
 
-                if (hasAvatar && hasFaction && hasNameLocatag)
+                if (missingProperties.Count == 0)
                 {
                     return false;
                 }
             }
 
-            return true;
+            return missingProperties.Count > 0;
         }
         catch (Exception e)
         {
