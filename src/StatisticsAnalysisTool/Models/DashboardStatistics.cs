@@ -176,7 +176,8 @@ public class DashboardStatistics
                         CombatAreaIndex = x.CombatAreaIndex,
                         CombatAreaClusterType = x.CombatAreaClusterType,
                         CombatOpponentName = x.CombatOpponentName,
-                        CombatLootValue = x.CombatLootValue
+                        CombatLootValue = x.CombatLootValue,
+                        MobUniqueName = x.MobUniqueName
                     })
                     .ToList(),
                 Sessions = Sessions.Select(CloneSession).ToList()
