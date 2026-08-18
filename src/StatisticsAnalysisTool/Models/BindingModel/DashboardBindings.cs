@@ -64,6 +64,7 @@ public class DashboardBindings : BaseViewModel
     public DashboardSummaryMetric RepairCostsSummary { get; } = new();
     public DashboardSummaryMetric ItemQualityRerollCostsSummary { get; } = new();
     public DashboardSummaryMetric AwakenedWeaponCostsSummary { get; } = new();
+    public DashboardMobsBindings Mobs { get; } = new();
 
     public IReadOnlyList<DashboardFactionOption> FactionOptions { get; } =
     [
@@ -431,6 +432,7 @@ public class DashboardBindings : BaseViewModel
         TotalGainedReSpecPointsInSession = 0;
         TotalGainedMightInSession = 0;
         TotalGainedFavorInSession = 0;
+        Mobs.ResetStatistics();
     }
 
     #region Per hour values

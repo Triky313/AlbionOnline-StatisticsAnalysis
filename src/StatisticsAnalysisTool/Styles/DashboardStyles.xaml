@@ -1179,4 +1179,216 @@
             </ItemsControl.ItemsPanel>
         </ItemsControl>
     </DataTemplate>
+    <Style x:Key="Dashboard.MobSummaryCard" TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.CombatMetricCard}" />
+
+    <Style x:Key="Dashboard.MobListItem" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Margin" Value="0,0,0,8" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <ContentPresenter />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Dashboard.MobExpander" TargetType="{x:Type Expander}">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Expander}">
+                    <Border Background="{StaticResource SolidColorBrush.Background.2}"
+                            BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                            BorderThickness="1"
+                            CornerRadius="5"
+                            SnapsToDevicePixels="True">
+                        <DockPanel LastChildFill="True">
+                            <ToggleButton DockPanel.Dock="Top" Background="Transparent" BorderThickness="0" Cursor="Hand" Focusable="False"
+                                          IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                        <Border Padding="10,0,10,0" Background="{TemplateBinding Background}">
+                                            <Grid>
+                                                <ContentPresenter Margin="0,0,38,0"
+                                                                  HorizontalAlignment="Stretch"
+                                                                  VerticalAlignment="Center"
+                                                                  Content="{TemplateBinding Content}" />
+                                                <Border Width="28"
+                                                        Height="28"
+                                                        HorizontalAlignment="Right"
+                                                        VerticalAlignment="Center"
+                                                        Background="{StaticResource SolidColorBrush.Background.3}"
+                                                        CornerRadius="14">
+                                                    <fa5:ImageAwesome x:Name="MobExpandIcon"
+                                                                      Width="11"
+                                                                      Height="11"
+                                                                      Icon="Solid_ChevronDown"
+                                                                      Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsChecked" Value="True">
+                                                <Setter TargetName="MobExpandIcon" Property="Icon" Value="Solid_ChevronUp" />
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.3}" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                                <ContentPresenter Content="{TemplateBinding Header}" />
+                            </ToggleButton>
+                            <ContentPresenter x:Name="MobExpandContent"
+                                              Visibility="Collapsed"
+                                              ContentSource="Content" />
+                        </DockPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsExpanded" Value="True">
+                            <Setter TargetName="MobExpandContent" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Dashboard.MobHeaderMetricTitle" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    </Style>
+
+    <Style x:Key="Dashboard.MobHeaderMetricValue" TargetType="{x:Type TextBlock}">
+        <Setter Property="Margin" Value="0,3,0,0" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    </Style>
+
+    <Style x:Key="Dashboard.MobTag" TargetType="{x:Type Border}">
+        <Setter Property="Margin" Value="0,0,7,4" />
+        <Setter Property="Padding" Value="9,3" />
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.3}" />
+        <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Accent.Blue.4}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="3" />
+    </Style>
+    <Style x:Key="Dashboard.MobTierTag" TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.MobTag}">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Tier}" Value="1">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Item.Tier.Color.1}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Tier}" Value="2">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Item.Tier.Color.2}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Tier}" Value="3">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Item.Tier.Color.3}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Tier}" Value="4">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Item.Tier.Color.4}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Tier}" Value="5">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Item.Tier.Color.5}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Tier}" Value="6">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Item.Tier.Color.6}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Tier}" Value="7">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Item.Tier.Color.7}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Tier}" Value="8">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Item.Tier.Color.8}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="Dashboard.MobTypeTag" TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.MobTag}">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding MobTypeCategory}" Value="standard">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.MobType.Standard}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding MobTypeCategory}" Value="boss">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.MobType.Boss}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding MobTypeCategory}" Value="champion">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.MobType.Champion}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding MobTypeCategory}" Value="chest">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.MobType.Chest}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding MobTypeCategory}" Value="critter">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.MobType.Critter}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding MobTypeCategory}" Value="environment">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.MobType.Environment}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding MobTypeCategory}" Value="harmless">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.MobType.Harmless}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding MobTypeCategory}" Value="miniboss">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.MobType.MiniBoss}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding MobTypeCategory}" Value="summon">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.MobType.Summon}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding MobTypeCategory}" Value="trash">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.MobType.Trash}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding MobTypeCategory}" Value="vanity">
+                <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.MobType.Vanity}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+
+    <Style x:Key="Dashboard.MobTagText" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+    </Style>
+
+    <Style x:Key="Dashboard.MobDetailGroup" TargetType="{x:Type Border}">
+        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.4}" />
+        <Setter Property="BorderThickness" Value="0,0,1,0" />
+    </Style>
+
+    <Style x:Key="Dashboard.MobDetailTitle" TargetType="{x:Type TextBlock}">
+        <Setter Property="Margin" Value="0,0,0,5" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+    </Style>
+
+    <DataTemplate x:Key="Dashboard.MobDetailValueTemplate">
+        <Grid MinHeight="23">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Border Grid.ColumnSpan="2"
+                    VerticalAlignment="Bottom"
+                    BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                    BorderThickness="0,0,0,1" />
+            <TextBlock Margin="0,2,8,3"
+                       VerticalAlignment="Center"
+                       FontSize="11"
+                       Foreground="{StaticResource SolidColorBrush.Text.2}"
+                       Text="{Binding Name}"
+                       TextTrimming="CharacterEllipsis" />
+            <TextBlock Grid.Column="1"
+                       Margin="8,2,0,3"
+                       VerticalAlignment="Center"
+                       FontSize="11"
+                       FontWeight="SemiBold"
+                       Foreground="{StaticResource SolidColorBrush.Text.1}"
+                       Text="{Binding Value}"
+                       TextAlignment="Right" />
+        </Grid>
+    </DataTemplate>
 </ResourceDictionary>

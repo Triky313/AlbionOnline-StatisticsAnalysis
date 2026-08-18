@@ -12,12 +12,12 @@
 
     <!-- Background colors -->
     <Color x:Key="Color.Background.1">#FF1D2329</Color>
-    <Color x:Key="Color.Background.2">#FF181E24</Color>
-    <Color x:Key="Color.Background.3">#FF14191F</Color>
-    <Color x:Key="Color.Background.4">#FF10151A</Color>
-    <Color x:Key="Color.Background.5">#FF0D1115</Color>
-    <Color x:Key="Color.Background.6">#FF090D10</Color>
-    <Color x:Key="Color.Background.7">#FF06090C</Color>
+    <Color x:Key="Color.Background.2">#DD181E24</Color>
+    <Color x:Key="Color.Background.3">#DD14191F</Color>
+    <Color x:Key="Color.Background.4">#DD10151A</Color>
+    <Color x:Key="Color.Background.5">#DD0D1115</Color>
+    <Color x:Key="Color.Background.6">#DD090D10</Color>
+    <Color x:Key="Color.Background.7">#DD06090C</Color>
 
     <!-- Structural surface and border colors -->
     <Color x:Key="Color.Surface.Hover">#FF252D34</Color>
@@ -192,6 +192,19 @@
     <Color x:Key="Item.Tier.Color.6">#FFD9822B</Color>
     <Color x:Key="Item.Tier.Color.7">#FFD8B637</Color>
     <Color x:Key="Item.Tier.Color.8">#FFE6E6E6</Color>
+
+    <!-- Mob type colors -->
+    <Color x:Key="Color.MobType.Standard">#FF4C9BE8</Color>
+    <Color x:Key="Color.MobType.Boss">#FFE05252</Color>
+    <Color x:Key="Color.MobType.Champion">#FFE7B744</Color>
+    <Color x:Key="Color.MobType.Chest">#FF3BC8C4</Color>
+    <Color x:Key="Color.MobType.Critter">#FF62BE67</Color>
+    <Color x:Key="Color.MobType.Environment">#FF7C8795</Color>
+    <Color x:Key="Color.MobType.Harmless">#FFA4D97E</Color>
+    <Color x:Key="Color.MobType.MiniBoss">#FFF08A42</Color>
+    <Color x:Key="Color.MobType.Summon">#FF9B6DE3</Color>
+    <Color x:Key="Color.MobType.Trash">#FFA77954</Color>
+    <Color x:Key="Color.MobType.Vanity">#FFE56DB1</Color>
 
     <!-- Item level colors -->
     <Color x:Key="Item.Level.Color.0">#FFb1b0ae</Color>
@@ -449,6 +462,18 @@
     <SolidColorBrush x:Key="SolidColorBrush.Item.Tier.Color.6" Color="{StaticResource Item.Tier.Color.6}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Item.Tier.Color.7" Color="{StaticResource Item.Tier.Color.7}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Item.Tier.Color.8" Color="{StaticResource Item.Tier.Color.8}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.MobType.Standard" Color="{StaticResource Color.MobType.Standard}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.MobType.Boss" Color="{StaticResource Color.MobType.Boss}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.MobType.Champion" Color="{StaticResource Color.MobType.Champion}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.MobType.Chest" Color="{StaticResource Color.MobType.Chest}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.MobType.Critter" Color="{StaticResource Color.MobType.Critter}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.MobType.Environment" Color="{StaticResource Color.MobType.Environment}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.MobType.Harmless" Color="{StaticResource Color.MobType.Harmless}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.MobType.MiniBoss" Color="{StaticResource Color.MobType.MiniBoss}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.MobType.Summon" Color="{StaticResource Color.MobType.Summon}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.MobType.Trash" Color="{StaticResource Color.MobType.Trash}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.MobType.Vanity" Color="{StaticResource Color.MobType.Vanity}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.0" Color="{StaticResource Item.Level.Color.0}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.1" Color="{StaticResource Item.Level.Color.1}"/>

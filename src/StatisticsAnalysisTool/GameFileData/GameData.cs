@@ -30,6 +30,7 @@ public static class GameData
     [
         "@uniquename",
         "@tier",
+        "@mobtypecategory",
         "@npchostility",
         "@abilitypower",
         "@fame",

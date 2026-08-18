@@ -8,6 +8,9 @@ public class MobJsonObject
     public string UniqueName { get; set; }
     [JsonPropertyName("@tier")]
     public short Tier { get; set; }
+    [JsonPropertyName("@mobtypecategory")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string MobTypeCategory { get; set; }
     [JsonPropertyName("@npchostility")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string NpcHostility { get; set; }

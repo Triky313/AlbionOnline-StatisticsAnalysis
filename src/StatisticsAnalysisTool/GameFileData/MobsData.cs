@@ -25,7 +25,7 @@ public static class MobsData
     private const double RandomDungeonLevelTwoUpperHpFactor = 1.47;
     private const double RandomDungeonLevelThreeUpperHpFactor = 1.71;
     private const double RandomDungeonLevelFourUpperHpFactor = 2;
-    private static IEnumerable<MobJsonObject> _mobs;
+    private static IReadOnlyList<MobJsonObject> _mobs;
     private static IReadOnlyDictionary<MobVisualIdentity, string> _nameLocatagByVisualIdentity = new Dictionary<MobVisualIdentity, string>();
 
     public static int GetMobTierByIndex(int index)
@@ -89,6 +89,11 @@ public static class MobsData
     public static string GetFaction(MobJsonObject mob)
     {
         return mob?.Faction ?? string.Empty;
+    }
+
+    public static IReadOnlyList<MobJsonObject> GetMobs()
+    {
+        return _mobs ?? [];
     }
 
     public static IReadOnlyList<string> GetFactions()

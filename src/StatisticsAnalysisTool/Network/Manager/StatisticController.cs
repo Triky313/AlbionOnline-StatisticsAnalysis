@@ -387,6 +387,49 @@ public class StatisticController
         AddPlayerCombatEvent(ValueType.PlayerDeath, killedByName);
     }
 
+    public void AddMobKill(string mobUniqueName)
+    {
+        if (string.IsNullOrWhiteSpace(mobUniqueName)
+            || !_trackingController.IsTrackingAllowedByMainCharacter())
+        {
+            return;
+        }
+
+        var nowUtc = DateTime.UtcNow;
+        var mapType = ClusterController.CurrentCluster.MapType;
+        var dungeonMode = ResolveDungeonMode(mapType);
+
+        lock (_syncRoot)
+        {
+            var session = _dashboardStatistics.GetActiveSession();
+            if (session == null)
+            {
+                Log.Debug(
+                    "Mob kill discarded because no active session exists. MobUniqueName={MobUniqueName}",
+                    mobUniqueName);
+                return;
+            }
+
+            var statisticEntry = new StatisticEntry
+            {
+                SessionId = session.Id,
+                OccurredAtUtc = nowUtc,
+                ValueType = ValueType.MobKill,
+                Value = 1,
+                MapType = mapType,
+                DungeonMode = dungeonMode,
+                ClusterMode = ClusterController.CurrentCluster.ClusterMode,
+                MobUniqueName = mobUniqueName
+            };
+
+            _dashboardStatistics.Add(statisticEntry);
+            _statisticsAggregator.Add(statisticEntry);
+            MarkSessionDirtyInternal(session.Id);
+        }
+
+        UpdateDailyChart();
+    }
+
     private void AddPlayerCombatEvent(ValueType valueType, string opponentName)
     {
         if (!_trackingController.IsTrackingAllowedByMainCharacter())
@@ -727,6 +770,10 @@ public class StatisticController
             _mainWindowViewModel.SelectedDashboardContentFilter?.ContentType);
         UpdateDashboardSummary(selectedRange, chartBuckets, aggregatedValues);
         UpdateDashboardCombatStatistics(selectedRange, currentRangeBucketStarts);
+        UpdateDashboardMobStatistics(
+            selectedRange,
+            currentRangeBucketStarts,
+            previousRangeBucketStarts);
         UpdateDashboardLootStatistics(
             selectedRange,
             currentRangeBucketStarts,
@@ -996,6 +1043,30 @@ public class StatisticController
         return eligibleItemCount > 0
             ? successfulItemCount * 100d / eligibleItemCount
             : 0;
+    }
+
+    private void UpdateDashboardMobStatistics(
+        DashboardChartRangeOption selectedRange,
+        IReadOnlyCollection<DateTime> currentRangeBucketStarts,
+        IReadOnlyCollection<DateTime> previousRangeBucketStarts)
+    {
+        var sessionId = _mainWindowViewModel.SelectedDashboardSessionFilter?.SessionId;
+        var contentType = _mainWindowViewModel.SelectedDashboardContentFilter?.ContentType;
+        var currentEntries = _statisticsAggregator.GetMobKillEntries(
+            currentRangeBucketStarts,
+            selectedRange.Unit,
+            sessionId,
+            contentType);
+        var previousEntries = _statisticsAggregator.GetMobKillEntries(
+            previousRangeBucketStarts,
+            selectedRange.Unit,
+            sessionId,
+            contentType);
+
+        _mainWindowViewModel.DashboardBindings.Mobs.UpdateStatistics(
+            currentEntries,
+            previousEntries,
+            GetRangeHours(selectedRange));
     }
 
     private void UpdateDashboardCombatStatistics(

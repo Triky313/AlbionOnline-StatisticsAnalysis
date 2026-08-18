@@ -772,6 +772,293 @@
                             </Border>
                         </Grid>
                     </TabItem>
+                    <TabItem x:Name="MobsTab" Header="{Binding DashboardBindings.Mobs.TranslationMobs, FallbackValue=MOBS}">
+                        <Grid Margin="0,8,0,0" DataContext="{Binding DashboardBindings.Mobs}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <UniformGrid Grid.Row="0" Columns="3" Rows="1" Margin="0,0,0,8">
+                                <Border Style="{StaticResource Dashboard.MobSummaryCard}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Width="70" Height="70" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,12,0"
+                                               Source="{Binding MostKilledMob.AvatarSource}" Stretch="Uniform" />
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding TranslationMostKilledMob}"
+                                                       Style="{StaticResource Dashboard.SummaryTitle}" />
+                                            <TextBlock Margin="0,3,0,0"
+                                                       FontSize="15"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                                       Text="{Binding MostKilledMob.MobName}"
+                                                       TextTrimming="CharacterEllipsis" />
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="2" MinWidth="52" Margin="12,0,0,0" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding TranslationKills}"
+                                                       Style="{StaticResource Dashboard.MobHeaderMetricTitle}"
+                                                       TextAlignment="Right" />
+                                            <TextBlock Text="{Binding MostKilledMob.Kills, StringFormat='{}{0:N0}', FallbackValue=0}"
+                                                       Style="{StaticResource Dashboard.MobHeaderMetricValue}"
+                                                       TextAlignment="Right" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+
+                                <Border Style="{StaticResource Dashboard.MobSummaryCard}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Width="70"
+                                               Height="70"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,12,0"
+                                               Source="{Binding LastKilledMob.AvatarSource}"
+                                               Stretch="Uniform" />
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding TranslationLastKilledMob}"
+                                                       Style="{StaticResource Dashboard.SummaryTitle}" />
+                                            <TextBlock Margin="0,3,0,0"
+                                                       FontSize="15"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                                       Text="{Binding LastKilledMob.MobName}"
+                                                       TextTrimming="CharacterEllipsis" />
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="2" MinWidth="112" Margin="12,0,0,0" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding TranslationLastKill}"
+                                                       Style="{StaticResource Dashboard.MobHeaderMetricTitle}"
+                                                       TextAlignment="Right" />
+                                            <TextBlock Text="{Binding LastKilledMob.LastKilledDisplay}"
+                                                       Style="{StaticResource Dashboard.MobHeaderMetricValue}"
+                                                       TextAlignment="Right" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+
+                                <Border Style="{StaticResource Dashboard.MobSummaryCard}" Margin="0">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Width="40" Height="40" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,12,0" Source="/Assets/skull_gold.png" Stretch="Uniform" />
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding TranslationKilledMobs}"
+                                                       Style="{StaticResource Dashboard.SummaryTitle}" />
+                                            <ContentControl Content="{Binding TotalKillsSummary}"
+                                                            ContentTemplate="{StaticResource Dashboard.SummaryMetricWithPerHourTemplate}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </UniformGrid>
+
+                            <Border Grid.Row="1" Margin="0,0,0,8" Style="{StaticResource App.TopFilterCard}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0" Style="{StaticResource App.FilterGroup}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding TranslationSearchMobs, FallbackValue=SEARCH_MOBS}" Style="{StaticResource App.FilterLabel}" />
+                                            <TextBox Width="270" Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=250}" />
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border Grid.Column="1" Style="{StaticResource App.FilterGroup}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding TranslationMobTypeCategory}" Style="{StaticResource App.FilterLabel}" />
+                                            <ComboBox Width="200"
+                                                      DisplayMemberPath="Name"
+                                                      ItemsSource="{Binding MobTypeCategoryFilters}"
+                                                      SelectedValue="{Binding SelectedMobTypeCategory, Mode=TwoWay}"
+                                                      SelectedValuePath="Value" />
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border Grid.Column="2" Style="{StaticResource App.FilterGroup}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding TranslationFaction}" Style="{StaticResource App.FilterLabel}" />
+                                            <ComboBox Width="200"
+                                                      DisplayMemberPath="Name"
+                                                      ItemsSource="{Binding FactionFilters}"
+                                                      SelectedValue="{Binding SelectedFaction, Mode=TwoWay}"
+                                                      SelectedValuePath="Value" />
+                                        </StackPanel>
+                                    </Border>
+
+                                    <StackPanel Grid.Column="4" Margin="18,0,4,0" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding TranslationMobs}" Style="{StaticResource App.FilterLabel}" TextAlignment="Right" />
+                                        <TextBlock Margin="0,3,0,0"
+                                                   FontSize="16"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                                   Text="{Binding MobCountText}"
+                                                   TextAlignment="Right" />
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+                            <ListBox x:Name="DashboardMobList"
+                                     Grid.Row="2"
+                                     Height="240"
+                                     Padding="0"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     Focusable="False"
+                                     IsVisibleChanged="DashboardMobList_IsVisibleChanged"
+                                     ItemContainerStyle="{StaticResource Dashboard.MobListItem}"
+                                     ItemsSource="{Binding VisibleMobs}"
+                                     ScrollViewer.CanContentScroll="True"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                     VirtualizingPanel.CacheLength="2"
+                                     VirtualizingPanel.CacheLengthUnit="Page"
+                                     VirtualizingPanel.IsVirtualizing="True"
+                                     VirtualizingPanel.VirtualizationMode="Recycling"
+                                     VirtualizingPanel.ScrollUnit="Pixel">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type models:DashboardMobListItem}">
+                                        <Expander IsExpanded="{Binding IsExpanded, Mode=TwoWay}" Style="{StaticResource Dashboard.MobExpander}">
+                                            <Expander.Header>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="74" />
+                                                        <ColumnDefinition Width="1.4*" />
+                                                        <ColumnDefinition Width="170" />
+                                                        <ColumnDefinition Width="80" />
+                                                        <ColumnDefinition Width="90" />
+                                                        <ColumnDefinition Width="1.6*" />
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <Image Width="70" Height="70" HorizontalAlignment="Left" Source="{Binding AvatarSource}" Stretch="Uniform" />
+                                                    <StackPanel Grid.Column="1" Margin="5,0,5,0" VerticalAlignment="Center">
+                                                        <TextBlock FontSize="16"
+                                                                   FontWeight="SemiBold"
+                                                                   Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                                                   Text="{Binding MobName}"
+                                                                   TextTrimming="CharacterEllipsis" />
+                                                        <TextBlock Margin="0,5,0,0"
+                                                                   FontSize="10"
+                                                                   Foreground="{StaticResource SolidColorBrush.Text.2}"
+                                                                   Text="{Binding NameLocatag}"
+                                                                   TextTrimming="CharacterEllipsis" />
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="2" Margin="5,0,10,0" VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding DataContext.TranslationFirstAttacked, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                                                   Style="{StaticResource Dashboard.MobHeaderMetricTitle}" />
+                                                        <TextBlock Text="{Binding FirstAttackedDisplay}"
+                                                                   Style="{StaticResource Dashboard.MobHeaderMetricValue}" />
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="3" Margin="5,0,10,0" VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding DataContext.TranslationKills, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                                                   Style="{StaticResource Dashboard.MobHeaderMetricTitle}" />
+                                                        <TextBlock Text="{Binding Kills, StringFormat='{}{0:N0}', FallbackValue=0}"
+                                                                   Style="{StaticResource Dashboard.MobHeaderMetricValue}" />
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="4" Margin="5,0,10,0" VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding DataContext.TranslationPerHour, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                                                   Style="{StaticResource Dashboard.MobHeaderMetricTitle}" />
+                                                        <TextBlock Text="{Binding KillsPerHour, StringFormat='{}{0:N1}/h', FallbackValue=0}"
+                                                                   Style="{StaticResource Dashboard.MobHeaderMetricValue}" />
+                                                    </StackPanel>
+                                                    <WrapPanel Grid.Column="5" Margin="5,0,0,0" VerticalAlignment="Center">
+                                                        <Border Style="{StaticResource Dashboard.MobTierTag}"
+                                                                Visibility="{Binding HasTier, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                            <TextBlock Text="{Binding TierDisplay}" Style="{StaticResource Dashboard.MobTagText}" Foreground="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type Border}}}" />
+                                                        </Border>
+                                                        <Border Style="{StaticResource Dashboard.MobTypeTag}"
+                                                                Visibility="{Binding HasMobTypeCategory, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                            <TextBlock Text="{Binding MobTypeCategoryDisplay}" Style="{StaticResource Dashboard.MobTagText}" Foreground="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type Border}}}" />
+                                                        </Border>
+                                                        <Border Style="{StaticResource Dashboard.MobTag}"
+                                                                Visibility="{Binding HasCategory, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                            <TextBlock Text="{Binding CategoryDisplay}" Style="{StaticResource Dashboard.MobTagText}" />
+                                                        </Border>
+                                                        <Border Style="{StaticResource Dashboard.MobTag}"
+                                                                Visibility="{Binding HasFaction, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                            <TextBlock Text="{Binding FactionDisplay}" Style="{StaticResource Dashboard.MobTagText}" />
+                                                        </Border>
+                                                        <Border Style="{StaticResource Dashboard.MobTag}"
+                                                                Visibility="{Binding HasAttackType, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                            <TextBlock Text="{Binding AttackTypeDisplay}" Style="{StaticResource Dashboard.MobTagText}" />
+                                                        </Border>
+                                                    </WrapPanel>
+                                                </Grid>
+                                            </Expander.Header>
+
+                                            <Border BorderBrush="{StaticResource SolidColorBrush.Background.4}" BorderThickness="0,1,0,0">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <Border Grid.Column="0" Style="{StaticResource Dashboard.MobDetailGroup}">
+                                                        <StackPanel>
+                                                            <TextBlock Text="{Binding DataContext.TranslationOverview, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                                                       Style="{StaticResource Dashboard.MobDetailTitle}" />
+                                                            <ItemsControl ItemTemplate="{StaticResource Dashboard.MobDetailValueTemplate}"
+                                                                          ItemsSource="{Binding OverviewStats}" />
+                                                        </StackPanel>
+                                                    </Border>
+                                                    <Border Grid.Column="1" Style="{StaticResource Dashboard.MobDetailGroup}">
+                                                        <StackPanel>
+                                                            <TextBlock Text="{Binding DataContext.TranslationCombatStats, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                                                       Style="{StaticResource Dashboard.MobDetailTitle}" />
+                                                            <ItemsControl ItemTemplate="{StaticResource Dashboard.MobDetailValueTemplate}"
+                                                                          ItemsSource="{Binding CombatStats}" />
+                                                        </StackPanel>
+                                                    </Border>
+                                                    <Border Grid.Column="2" Style="{StaticResource Dashboard.MobDetailGroup}">
+                                                        <StackPanel>
+                                                            <TextBlock Text="{Binding DataContext.TranslationAggroBehavior, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                                                       Style="{StaticResource Dashboard.MobDetailTitle}" />
+                                                            <ItemsControl ItemTemplate="{StaticResource Dashboard.MobDetailValueTemplate}"
+                                                                          ItemsSource="{Binding AggroStats}" />
+                                                        </StackPanel>
+                                                    </Border>
+                                                    <Border Grid.Column="3"
+                                                            BorderThickness="0"
+                                                            Style="{StaticResource Dashboard.MobDetailGroup}">
+                                                        <StackPanel>
+                                                            <TextBlock Text="{Binding DataContext.TranslationSpawnCharges, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                                                       Style="{StaticResource Dashboard.MobDetailTitle}" />
+                                                            <ItemsControl ItemTemplate="{StaticResource Dashboard.MobDetailValueTemplate}"
+                                                                          ItemsSource="{Binding SpawnStats}" />
+                                                        </StackPanel>
+                                                    </Border>
+                                                </Grid>
+                                            </Border>
+                                        </Expander>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+
+                        </Grid>
+                    </TabItem>
                 </TabControl>
             </StackPanel>
         </ScrollViewer>

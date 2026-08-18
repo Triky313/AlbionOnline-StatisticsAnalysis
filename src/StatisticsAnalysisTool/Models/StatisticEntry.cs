@@ -28,4 +28,5 @@ public sealed class StatisticEntry
     public ClusterType CombatAreaClusterType { get; set; }
     public string CombatOpponentName { get; set; } = string.Empty;
     public double CombatLootValue { get; set; }
+    public string MobUniqueName { get; set; } = string.Empty;
 }

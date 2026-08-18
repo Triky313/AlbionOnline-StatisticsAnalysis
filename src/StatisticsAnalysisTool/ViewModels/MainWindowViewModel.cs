@@ -73,6 +73,7 @@ public class MainWindowViewModel : BaseViewModel
         DungeonBindings.RefreshLocalization();
         TradeMonitoringBindings.RefreshLocalization();
         OpenWorldBindings.UpdateStats();
+        DashboardBindings.Mobs.RefreshLocalization();
         RefreshTrackingActivityText();
         MainStatusBindings.RefreshLocalization();
         DamageMeterBindings.RefreshContentFilters();

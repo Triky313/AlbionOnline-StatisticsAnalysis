@@ -38,6 +38,7 @@ public partial class DashboardControl
     public DashboardControl()
     {
         InitializeComponent();
+        SizeChanged += DashboardControl_SizeChanged;
     }
 
     private void OpenDashboardWindow()
@@ -283,6 +284,41 @@ public partial class DashboardControl
     private void DashboardChartSeriesVisibility_Changed(object sender, RoutedEventArgs e)
     {
         RefreshDailyChart();
+    }
+
+    private void DashboardControl_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        UpdateMobListHeight();
+    }
+
+    private void DashboardMobList_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        if (e.NewValue is not true)
+        {
+            return;
+        }
+
+        DashboardScrollViewer.ScrollToTop();
+        Dispatcher.BeginInvoke(
+            System.Windows.Threading.DispatcherPriority.Loaded,
+            new Action(UpdateMobListHeight));
+    }
+
+    private void UpdateMobListHeight()
+    {
+        if (DashboardMobList == null || !MobsTab.IsSelected || ActualHeight <= 0)
+        {
+            return;
+        }
+
+        var listTop = DashboardMobList.TranslatePoint(new Point(0, 0), this).Y;
+        var availableHeight = Math.Max(
+            240,
+            ActualHeight - listTop - DashboardScrollViewer.Padding.Bottom);
+        if (Math.Abs(DashboardMobList.Height - availableHeight) > 0.5)
+        {
+            DashboardMobList.Height = availableHeight;
+        }
     }
 
     private static void RefreshDailyChart()

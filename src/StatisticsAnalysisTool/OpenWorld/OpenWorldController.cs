@@ -27,7 +27,7 @@ public class OpenWorldController(TrackingController trackingController, MainWind
 
     public void TrackLocalPlayerMobDamage(long mobObjectId, long causerId, double healthChange)
     {
-        if (!SettingsController.CurrentSettings.IsOpenWorldTrackingActive || healthChange >= 0 || _localPlayerDamagedMobs.ContainsKey(mobObjectId))
+        if (!IsMobKillTrackingActive() || healthChange >= 0 || _localPlayerDamagedMobs.ContainsKey(mobObjectId))
         {
             return;
         }
@@ -42,7 +42,7 @@ public class OpenWorldController(TrackingController trackingController, MainWind
 
     public async Task TryAddMobKillAsync(long mobObjectId, CombatMobCacheEntry mob, double healthChange, bool hasNewHealthValue)
     {
-        if (!SettingsController.CurrentSettings.IsOpenWorldTrackingActive)
+        if (!IsMobKillTrackingActive())
         {
             return;
         }
@@ -67,7 +67,7 @@ public class OpenWorldController(TrackingController trackingController, MainWind
 
     public async Task<bool> TryAddPendingMobKillAsync(long mobObjectId, CombatMobCacheEntry mob)
     {
-        if (!SettingsController.CurrentSettings.IsOpenWorldTrackingActive || mob == null)
+        if (!IsMobKillTrackingActive() || mob == null)
         {
             return false;
         }
@@ -119,9 +119,16 @@ public class OpenWorldController(TrackingController trackingController, MainWind
 
         _localPlayerDamagedMobs.TryRemove(mobObjectId, out _);
 
+        var mobUniqueName = mob.MobData.UniqueName ?? mob.UniqueName ?? string.Empty;
+        trackingController.StatisticController.AddMobKill(mobUniqueName);
+
+        if (!SettingsController.CurrentSettings.IsOpenWorldTrackingActive)
+        {
+            return true;
+        }
+
         await RemoveEntriesByAutoDeleteDateAsync();
 
-        var mobUniqueName = mob.MobData.UniqueName ?? mob.UniqueName ?? string.Empty;
         var mobName = MobsData.GetLocalizedMobName(mob.MobData);
         var mobKill = new OpenWorldMobKill
         {
@@ -139,6 +146,12 @@ public class OpenWorldController(TrackingController trackingController, MainWind
         });
 
         return true;
+    }
+
+    private bool IsMobKillTrackingActive()
+    {
+        return SettingsController.CurrentSettings.IsOpenWorldTrackingActive
+               || trackingController.IsTrackingAllowedByMainCharacter();
     }
 
     public async Task RemoveEntriesByAutoDeleteDateAsync()

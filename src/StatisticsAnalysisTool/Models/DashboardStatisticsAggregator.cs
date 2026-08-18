@@ -20,6 +20,7 @@ public sealed class DashboardStatisticsAggregator
     private readonly List<StatisticEntry> _lootEntries = [];
     private readonly List<StatisticEntry> _lootedChestEntries = [];
     private readonly List<StatisticEntry> _combatEntries = [];
+    private readonly List<StatisticEntry> _mobKillEntries = [];
 
     public DashboardStatisticsAggregator(DashboardStatistics statistics)
     {
@@ -272,6 +273,29 @@ public sealed class DashboardStatisticsAggregator
         }
     }
 
+    public IReadOnlyList<StatisticEntry> GetMobKillEntries(
+        IReadOnlyCollection<DateTime> bucketStarts,
+        DashboardChartRangeUnit unit,
+        Guid? sessionId,
+        DashboardContentType? contentType)
+    {
+        if (bucketStarts == null || bucketStarts.Count == 0)
+        {
+            return [];
+        }
+
+        var validBuckets = bucketStarts.ToHashSet();
+
+        lock (_syncRoot)
+        {
+            return _mobKillEntries
+                .Where(entry => (!sessionId.HasValue || entry.SessionId == sessionId.Value)
+                                && validBuckets.Contains(GetBucketStart(entry.OccurredAtUtc, unit))
+                                && MatchesContentFilter(contentType, entry.MapType, entry.DungeonMode, entry.ClusterMode))
+                .ToList();
+        }
+    }
+
     private static bool MatchesContentFilter(
         DashboardContentType? selectedContentType,
         MapType mapType,
@@ -337,6 +361,11 @@ public sealed class DashboardStatisticsAggregator
         if (entry.ValueType is ValueType.PlayerKill or ValueType.PlayerDeath)
         {
             _combatEntries.Add(entry);
+        }
+
+        if (entry.ValueType == ValueType.MobKill && !string.IsNullOrWhiteSpace(entry.MobUniqueName))
+        {
+            _mobKillEntries.Add(entry);
         }
 
         if (entry.ValueType == ValueType.RepairCosts)

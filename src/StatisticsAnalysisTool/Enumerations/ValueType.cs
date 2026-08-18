@@ -21,5 +21,6 @@ public enum ValueType
     AwakenedWeaponTraitUpgrade,
     AwakenedWeaponTraitUpgradeProc,
     PlayerKill,
-    PlayerDeath
+    PlayerDeath,
+    MobKill
 }

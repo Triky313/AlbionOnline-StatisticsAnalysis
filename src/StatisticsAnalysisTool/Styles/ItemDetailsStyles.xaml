@@ -1148,7 +1148,7 @@
     </Style>
 
     <DataTemplate x:Key="ItemDetails.Information.SpellTypeTemplate" DataType="{x:Type itemDetailsModels:ItemSpellType}">
-        <Border Margin="0,0,6,0"
+        <Border Margin="0,0,5,0"
                 Padding="6,2"
                 Background="{StaticResource SolidColorBrush.Background.4}"
                 CornerRadius="3">
@@ -1195,7 +1195,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="ItemDetails.Information.SpellToolTipContentTemplate" DataType="{x:Type itemDetailsModels:ItemSpellInformation}">
-        <StackPanel Width="290">
+        <StackPanel Width="300">
             <TextBlock Text="{Binding Name}" FontSize="20" FontWeight="SemiBold" Foreground="{StaticResource SolidColorBrush.Text.1}" TextWrapping="Wrap" />
 
             <ItemsControl Margin="0,6,0,0" ItemsSource="{Binding Types}" ItemTemplate="{StaticResource ItemDetails.Information.SpellTypeTemplate}">
@@ -1219,14 +1219,12 @@
                     TextWrapping="Wrap" />
             </Border>
 
-            <Border Margin="0,12,0,0"
-                    Padding="0,10,0,0"
-                    Background="{StaticResource SolidColorBrush.Background.2}"
+            <Border Margin="5,12,5,0"
+                    Padding="5,10,5,0"
                     BorderBrush="{StaticResource SolidColorBrush.Background.4}"
                     BorderThickness="0,1,0,0"
                     Visibility="{Binding StatsVisibility, Mode=OneWay}">
-                <ItemsControl ItemsSource="{Binding Stats}"
-                              ItemTemplate="{StaticResource ItemDetails.Information.SpellStatTemplate}" />
+                <ItemsControl ItemsSource="{Binding Stats}" ItemTemplate="{StaticResource ItemDetails.Information.SpellStatTemplate}" />
             </Border>
         </StackPanel>
     </DataTemplate>
@@ -1242,17 +1240,15 @@
                 CornerRadius="4"
                 ToolTipService.ShowDuration="60000">
             <Border.ToolTip>
-                <ToolTip Style="{StaticResource ItemDetails.Information.SpellToolTip}"
-                         DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
-                    <ContentControl Content="{Binding}"
-                                    ContentTemplate="{StaticResource ItemDetails.Information.SpellToolTipContentTemplate}" />
+                <ToolTip Style="{StaticResource ItemDetails.Information.SpellToolTip}" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource ItemDetails.Information.SpellToolTipContentTemplate}" />
                 </ToolTip>
             </Border.ToolTip>
             <StackPanel>
                 <Image Source="{Binding Icon}" Width="64" Height="64" HorizontalAlignment="Center" />
                 <TextBlock Margin="2,4,2,0"
                            Text="{Binding Name}"
-                           FontSize="11"
+                           FontSize="12"
                            FontWeight="SemiBold"
                            Foreground="{StaticResource SolidColorBrush.Text.1}"
                            TextAlignment="Center"
@@ -1261,5 +1257,4 @@
             </StackPanel>
         </Border>
     </DataTemplate>
-
 </ResourceDictionary>
