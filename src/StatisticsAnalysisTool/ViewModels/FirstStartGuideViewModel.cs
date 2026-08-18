@@ -371,7 +371,6 @@ public class FirstStartGuideViewModel : BaseViewModel
         SettingsController.CurrentSettings.IsDungeonsNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.Dungeons);
         SettingsController.CurrentSettings.IsDamageMeterNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.DamageMeter);
         SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.TradeMonitoring);
-        SettingsController.CurrentSettings.IsOpenWorldNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.OpenWorld);
         SettingsController.CurrentSettings.IsGatheringNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.Gathering);
         SettingsController.CurrentSettings.IsCraftingNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.Crafting);
         SettingsController.CurrentSettings.IsPartyNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.Party);
@@ -531,7 +530,6 @@ public class FirstStartGuideViewModel : BaseViewModel
         NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.Dungeons, SettingsController.CurrentSettings.IsDungeonsNaviTabActive));
         NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.DamageMeter, SettingsController.CurrentSettings.IsDamageMeterNaviTabActive));
         NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.TradeMonitoring, SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive));
-        NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.OpenWorld, SettingsController.CurrentSettings.IsOpenWorldNaviTabActive));
         NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.Gathering, SettingsController.CurrentSettings.IsGatheringNaviTabActive));
         NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.Crafting, SettingsController.CurrentSettings.IsCraftingNaviTabActive));
         NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.Party, SettingsController.CurrentSettings.IsPartyNaviTabActive));
@@ -573,7 +571,6 @@ public class FirstStartGuideViewModel : BaseViewModel
             NavigationTabFilterType.Dungeons => MainWindowTranslation.Dungeons,
             NavigationTabFilterType.DamageMeter => MainWindowTranslation.DamageMeter,
             NavigationTabFilterType.TradeMonitoring => MainWindowTranslation.TradeMonitoring,
-            NavigationTabFilterType.OpenWorld => MainWindowTranslation.OpenWorld,
             NavigationTabFilterType.Gathering => MainWindowTranslation.Gathering,
             NavigationTabFilterType.Crafting => MainWindowTranslation.Crafting,
             NavigationTabFilterType.Party => MainWindowTranslation.Party,

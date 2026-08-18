@@ -44,8 +44,7 @@ public sealed class ClusterController(TrackingController trackingController, Mai
     public void BeginClusterChange()
     {
         trackingController.CombatController.CombatEventTracker.OnClusterChanged();
-        trackingController.OpenWorldController.ResetRuntimeTracking();
-        Log.Debug("Cluster change started; combat mob cache and Open World runtime tracking reset");
+        Log.Debug("Cluster change started; combat mob cache reset");
     }
 
     public void ChangeClusterInformation(MapType mapType, Guid? mapGuid, string clusterIndex, string instanceName, string worldMapDataType, byte[] dungeonInformation, string mainClusterIndex)
@@ -82,7 +81,6 @@ public sealed class ClusterController(TrackingController trackingController, Mai
         trackingController.TreasureController.UpdateLootedChestsDashboardUi();
         trackingController.LootController.ResetLocalPlayerDiscoveredLoot();
         trackingController.LootController.ResetIdentifiedBodies();
-        _ = trackingController.OpenWorldController.SaveOnClusterChangedAsync();
         _ = trackingController.TradeController.RemoveTradesByDaysInSettingsAsync();
         _ = trackingController.GatheringController.SetGatheredResourcesClosedAsync();
         trackingController.PartyController.UpdateIsPlayerInspectedToFalse();
