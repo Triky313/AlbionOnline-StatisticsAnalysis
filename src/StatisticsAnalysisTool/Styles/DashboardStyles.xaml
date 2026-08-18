@@ -1175,7 +1175,7 @@
         <ItemsControl ItemsSource="{Binding ContentStatistics}" ItemTemplate="{StaticResource Dashboard.LootedChestContentTemplate}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <UniformGrid Columns="3" Rows="2" />
+                    <UniformGrid Columns="3" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
