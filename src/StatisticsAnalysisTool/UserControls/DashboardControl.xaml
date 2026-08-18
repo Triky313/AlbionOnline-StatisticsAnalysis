@@ -6,6 +6,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
              xmlns:bindingModels="clr-namespace:StatisticsAnalysisTool.Models.BindingModel"
              xmlns:userControls="clr-namespace:StatisticsAnalysisTool.UserControls"
@@ -1018,24 +1019,36 @@
 
                                                     <Border Grid.Column="0" Style="{StaticResource Dashboard.MobDetailGroup}">
                                                         <StackPanel>
-                                                            <TextBlock Text="{Binding DataContext.TranslationOverview, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
-                                                                       Style="{StaticResource Dashboard.MobDetailTitle}" />
+                                                            <StackPanel Style="{StaticResource Dashboard.MobDetailTitlePanel}">
+                                                                <iconPacks:PackIconGameIcons Kind="Info"
+                                                                                             Style="{StaticResource Dashboard.MobDetailIcon}" />
+                                                                <TextBlock Text="{Binding DataContext.TranslationOverview, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                                                           Style="{StaticResource Dashboard.MobDetailTitle}" />
+                                                            </StackPanel>
                                                             <ItemsControl ItemTemplate="{StaticResource Dashboard.MobDetailValueTemplate}"
                                                                           ItemsSource="{Binding OverviewStats}" />
                                                         </StackPanel>
                                                     </Border>
                                                     <Border Grid.Column="1" Style="{StaticResource Dashboard.MobDetailGroup}">
                                                         <StackPanel>
-                                                            <TextBlock Text="{Binding DataContext.TranslationCombatStats, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
-                                                                       Style="{StaticResource Dashboard.MobDetailTitle}" />
+                                                            <StackPanel Style="{StaticResource Dashboard.MobDetailTitlePanel}">
+                                                                <iconPacks:PackIconGameIcons Kind="CrossedSwords"
+                                                                                             Style="{StaticResource Dashboard.MobDetailIcon}" />
+                                                                <TextBlock Text="{Binding DataContext.TranslationCombatStats, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                                                           Style="{StaticResource Dashboard.MobDetailTitle}" />
+                                                            </StackPanel>
                                                             <ItemsControl ItemTemplate="{StaticResource Dashboard.MobDetailValueTemplate}"
                                                                           ItemsSource="{Binding CombatStats}" />
                                                         </StackPanel>
                                                     </Border>
                                                     <Border Grid.Column="2" Style="{StaticResource Dashboard.MobDetailGroup}">
                                                         <StackPanel>
-                                                            <TextBlock Text="{Binding DataContext.TranslationAggroBehavior, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
-                                                                       Style="{StaticResource Dashboard.MobDetailTitle}" />
+                                                            <StackPanel Style="{StaticResource Dashboard.MobDetailTitlePanel}">
+                                                                <iconPacks:PackIconGameIcons Kind="Awareness"
+                                                                                             Style="{StaticResource Dashboard.MobDetailIcon}" />
+                                                                <TextBlock Text="{Binding DataContext.TranslationAggroBehavior, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                                                           Style="{StaticResource Dashboard.MobDetailTitle}" />
+                                                            </StackPanel>
                                                             <ItemsControl ItemTemplate="{StaticResource Dashboard.MobDetailValueTemplate}"
                                                                           ItemsSource="{Binding AggroStats}" />
                                                         </StackPanel>
@@ -1044,8 +1057,12 @@
                                                             BorderThickness="0"
                                                             Style="{StaticResource Dashboard.MobDetailGroup}">
                                                         <StackPanel>
-                                                            <TextBlock Text="{Binding DataContext.TranslationSpawnCharges, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
-                                                                       Style="{StaticResource Dashboard.MobDetailTitle}" />
+                                                            <StackPanel Style="{StaticResource Dashboard.MobDetailTitlePanel}">
+                                                                <iconPacks:PackIconGameIcons Kind="Hourglass"
+                                                                                             Style="{StaticResource Dashboard.MobDetailIcon}" />
+                                                                <TextBlock Text="{Binding DataContext.TranslationSpawnCharges, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                                                           Style="{StaticResource Dashboard.MobDetailTitle}" />
+                                                            </StackPanel>
                                                             <ItemsControl ItemTemplate="{StaticResource Dashboard.MobDetailValueTemplate}"
                                                                           ItemsSource="{Binding SpawnStats}" />
                                                         </StackPanel>
