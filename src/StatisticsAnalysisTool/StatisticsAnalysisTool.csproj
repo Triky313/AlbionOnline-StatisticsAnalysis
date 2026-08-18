@@ -732,13 +732,13 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
     <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
-    <PackageReference Include="SkiaSharp" Version="4.150.1" />
-    <PackageReference Include="SkiaSharp.HarfBuzz" Version="4.150.1" />
-    <PackageReference Include="SkiaSharp.Views.WPF" Version="4.150.1" />
+    <PackageReference Include="SkiaSharp" Version="4.151.1" />
+    <PackageReference Include="SkiaSharp.HarfBuzz" Version="4.151.1" />
+    <PackageReference Include="SkiaSharp.Views.WPF" Version="4.151.1" />
     <PackageReference Include="System.Linq.Async" Version="7.0.1" />
     <PackageReference Include="VirtualizingWrapPanel" Version="2.5.4" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="10.0.10" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="10.0.11" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
   </ItemGroup>
   <ItemGroup>
