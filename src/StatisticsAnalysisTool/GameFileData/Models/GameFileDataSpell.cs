@@ -1,6 +1,7 @@
 ﻿namespace StatisticsAnalysisTool.GameFileData.Models;
 
 using System.Collections.Generic;
+using StatisticsAnalysisTool.Enumerations;
 
 public class GameFileDataSpell
 {
@@ -19,4 +20,8 @@ public class GameFileDataSpell
     public string ChannelingTime { get; init; }
     public string StatBlockLocatag { get; init; }
     public IReadOnlyList<string> DescriptionValues { get; init; } = [];
+    public bool? IgnoresArmorAgainstPlayers { get; init; }
+    public bool? IgnoresArmorAgainstMobs { get; init; }
+    public EffectType? DamageEffectTypeAgainstPlayers { get; init; }
+    public EffectType? DamageEffectTypeAgainstMobs { get; init; }
 }

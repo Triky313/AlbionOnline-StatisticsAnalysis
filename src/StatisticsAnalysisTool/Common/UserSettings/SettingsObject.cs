@@ -50,6 +50,8 @@ public class SettingsObject
     public bool IsMainTrackerFilterUnknownLoot { get; set; } = true;
     public bool IsMainTrackerFilterKill { get; set; } = false;
     public bool IsDamageMeterTrackingActive { get; set; } = true;
+    public DashboardContentType? DamageMeterContentType { get; set; }
+    public DashboardContentType? DamageMeterSnapshotContentType { get; set; }
     public bool IsTrackingPartyLootOnly { get; set; } = false;
     public bool IsTrackingSilver { get; set; } = false;
     public bool IsTrackingFame { get; set; } = false;

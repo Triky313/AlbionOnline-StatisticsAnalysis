@@ -1,11 +1,30 @@
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.Enumerations;
+using System.Collections.Generic;
 
 namespace StatisticsAnalysisTool.Models;
 
 public static class DashboardContentTypeResolver
 {
+    public static IReadOnlyList<DashboardContentType> ContentTypes { get; } =
+    [
+        DashboardContentType.SoloDungeon,
+        DashboardContentType.StandardDungeon,
+        DashboardContentType.AvalonDungeon,
+        DashboardContentType.StaticDungeon,
+        DashboardContentType.AvalonianRoads,
+        DashboardContentType.HellGate,
+        DashboardContentType.CorruptedDungeon,
+        DashboardContentType.Expedition,
+        DashboardContentType.Mists,
+        DashboardContentType.MistsDungeon,
+        DashboardContentType.AbyssalDepths,
+        DashboardContentType.OpenWorld,
+        DashboardContentType.Arena,
+        DashboardContentType.Others
+    ];
+
     public static DashboardContentType Resolve(
         MapType mapType,
         DungeonMode dungeonMode,

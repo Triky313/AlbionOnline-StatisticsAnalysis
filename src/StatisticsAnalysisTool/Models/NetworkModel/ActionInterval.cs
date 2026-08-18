@@ -11,5 +11,13 @@ public class ActionInterval
 
     public DateTime StartTime { get; }
     public DateTime? EndTime { get; set; }
-    public TimeSpan TimeSpan => EndTime != null ? (DateTime) EndTime - StartTime : new TimeSpan(0);
+    public TimeSpan TimeSpan => GetDuration(DateTime.UtcNow);
+
+    public TimeSpan GetDuration(DateTime currentTime)
+    {
+        var effectiveEndTime = EndTime ?? currentTime;
+        return effectiveEndTime > StartTime
+            ? effectiveEndTime - StartTime
+            : TimeSpan.Zero;
+    }
 }

@@ -7,5 +7,6 @@ public enum DamageMeterSortType
     Name,
     Heal,
     Hps,
-    TakenDamage
+    TakenDamage,
+    Mob
 }

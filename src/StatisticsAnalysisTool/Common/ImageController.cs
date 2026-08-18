@@ -247,7 +247,7 @@ internal static class ImageController
             userImage.UriSource = new Uri(webPath);
             userImage.EndInit();
 
-            if (freeze)
+            if (freeze && userImage.CanFreeze)
             {
                 userImage.Freeze();
             }

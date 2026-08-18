@@ -343,7 +343,7 @@
                                                             <TextBlock.Style>
                                                                 <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource Dungeon.OverviewMetricValue}">
                                                                     <Setter Property="Text"
-                                                                            Value="{Binding DungeonBindings.Analytics.FastestRunTimeInSeconds, Converter={StaticResource Dungeon.DurationConverter}}" />
+                                                                            Value="{Binding DungeonBindings.Analytics.FastestRunTimeInSeconds, Converter={StaticResource SecondsToTimeFormatConverter}}" />
                                                                     <Style.Triggers>
                                                                         <DataTrigger Binding="{Binding DungeonBindings.Analytics.HasFastestRun}" Value="False">
                                                                             <Setter Property="Text" Value="&#x2014;" />

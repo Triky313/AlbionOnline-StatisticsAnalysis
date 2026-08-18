@@ -19,7 +19,7 @@ public class HealthUpdatesEventHandler(TrackingController trackingController) : 
                 await trackingController.OpenWorldController.TryAddMobKillAsync(healthUpdate.AffectedObjectId, mob, healthUpdate.HealthChange, healthUpdate.HasNewHealthValue);
             }
 
-            await trackingController.CombatController.AddDamage(healthUpdate.AffectedObjectId, healthUpdate.CauserId, healthUpdate.HealthChange, healthUpdate.NewHealthValue, healthUpdate.CausingSpellIndex);
+            await trackingController.CombatController.AddDamage(healthUpdate.AffectedObjectId, healthUpdate.CauserId, healthUpdate.HealthChange, healthUpdate.NewHealthValue, healthUpdate.CausingSpellIndex, healthUpdate.EffectType);
             await trackingController.CombatController.AddTakenDamage(healthUpdate.AffectedObjectId, healthUpdate.CauserId, healthUpdate.HealthChange, healthUpdate.NewHealthValue, healthUpdate.CausingSpellIndex);
         }
     }

@@ -31,6 +31,15 @@ public sealed class DamageMeterSnapshotFragmentDto
 
     #endregion
 
+    #region Taken Damage
+
+    public long TakenDamage { get; set; }
+    public string TakenDamageShortString { get; set; }
+    public double TakenDamageInPercent { get; set; }
+    public double TakenDamagePercentage { get; set; }
+
+    #endregion
+
     #region Spells
 
     public List<SpellFragmentDto> Spells { get; set; } = new ();

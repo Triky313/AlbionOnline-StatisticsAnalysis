@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:damageMeter="clr-namespace:StatisticsAnalysisTool.DamageMeter"
         mc:Ignorable="d"
         Title="{Binding Translation.Title, FallbackValue=TITLE}" 
         Height="450" Width="650" MinHeight="250" MinWidth="400" 
@@ -11,6 +12,7 @@
         ResizeMode="CanResizeWithGrip"
         BorderThickness="1,1,1,1"
         BorderBrush="{StaticResource SolidColorBrush.Background.3}"
+        Foreground="{StaticResource SolidColorBrush.Text.1}"
         AllowsTransparency="True">
     <Grid Background="{StaticResource SolidColorBrush.Background.1}">
         <Grid ZIndex="1" Height="33" VerticalAlignment="Top" Background="{StaticResource SolidColorBrush.Background.2}" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
@@ -24,8 +26,34 @@
 
         <Grid Margin="0,33,-1,0">
             <ScrollViewer>
-                <ItemsControl ItemsSource="{Binding DamageMeter, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource DamageMeterFragmentTemplate}" />
+                <ScrollViewer.Style>
+                    <Style TargetType="{x:Type ScrollViewer}">
+                        <Setter Property="Visibility" Value="Visible" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DamageMeterBindings.DamageMeterSortSelection.DamageMeterSortType}"
+                                         Value="{x:Static damageMeter:DamageMeterSortType.Mob}">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ScrollViewer.Style>
+                <ItemsControl ItemsSource="{Binding DamageMeterBindings.DamageMeter, IsAsync=True, Mode=OneWay}"
+                              ItemTemplate="{StaticResource DamageMeterFragmentTemplate}" />
             </ScrollViewer>
+            <ListBox ItemsSource="{Binding DamageMeterBindings.MobDamageMeter, IsAsync=True, Mode=OneWay}"
+                     ItemTemplate="{StaticResource MobDamageMeterFragmentTemplate}">
+                <ListBox.Style>
+                    <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource DamageMeter.VirtualizedList}">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DamageMeterBindings.DamageMeterSortSelection.DamageMeterSortType}"
+                                         Value="{x:Static damageMeter:DamageMeterSortType.Mob}">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.Style>
+            </ListBox>
         </Grid>
     </Grid>
 </Window>

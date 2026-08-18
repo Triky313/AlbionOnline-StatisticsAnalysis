@@ -26,6 +26,7 @@
     <Color x:Key="Color.Border.2">#FF242C33</Color>
     <Color x:Key="Color.Border.Focus">#FF3AA6E8</Color>
     <Color x:Key="Color.Overlay.Scrim">#B305080A</Color>
+    <Color x:Key="Color.Transparent">#00FFFFFF</Color>
 
     <!-- Button colors -->
     <Color x:Key="Color.Button.Primary.Normal">#FF185F86</Color>
@@ -297,6 +298,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.Border.2" Color="{StaticResource Color.Border.2}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Border.Focus" Color="{StaticResource Color.Border.Focus}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Overlay.Scrim" Color="{StaticResource Color.Overlay.Scrim}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Transparent" Color="{StaticResource Color.Transparent}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Button.Primary.Normal" Color="{StaticResource Color.Button.Primary.Normal}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Button.Primary.MouseOver" Color="{StaticResource Color.Button.Primary.MouseOver}"/>
@@ -383,6 +385,15 @@
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.Transparent.3" Color="{StaticResource Color.Accent.Blue.Transparent.3}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.Transparent.4" Color="{StaticResource Color.Accent.Blue.Transparent.4}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.Transparent.5" Color="{StaticResource Color.Accent.Blue.Transparent.5}"/>
+
+    <SolidColorBrush x:Key="YourStats.Damage.CardBackground" Color="{StaticResource Color.Accent.Red.6}" Opacity="0.10"/>
+    <SolidColorBrush x:Key="YourStats.Damage.MetricBackground" Color="{StaticResource Color.Accent.Red.5}" Opacity="0.2"/>
+    <SolidColorBrush x:Key="YourStats.Healing.CardBackground" Color="{StaticResource Color.Accent.Green.6}" Opacity="0.10"/>
+    <SolidColorBrush x:Key="YourStats.Healing.MetricBackground" Color="{StaticResource Color.Accent.Green.5}" Opacity="0.2"/>
+    <SolidColorBrush x:Key="YourStats.Defense.CardBackground" Color="{StaticResource Color.Accent.Blue.5}" Opacity="0.10"/>
+    <SolidColorBrush x:Key="YourStats.Defense.MetricBackground" Color="{StaticResource Color.Accent.Blue.4}" Opacity="0.2"/>
+    <SolidColorBrush x:Key="YourStats.Combat.CardBackground" Color="{StaticResource Color.Accent.Yellow.5}" Opacity="0.10"/>
+    <SolidColorBrush x:Key="YourStats.Combat.MetricBackground" Color="{StaticResource Color.Accent.Yellow.4}" Opacity="0.2"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.City.Default" Color="{StaticResource Color.City.Default}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.Caerleon" Color="{StaticResource Color.City.Caerleon}"/>

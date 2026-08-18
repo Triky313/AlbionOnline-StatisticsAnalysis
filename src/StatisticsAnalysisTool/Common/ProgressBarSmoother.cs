@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -24,12 +24,19 @@ public class ProgressBarSmoother
 
     private static void Changing(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (double.IsNaN((double) e.OldValue) || double.IsNaN((double) e.NewValue) || double.IsInfinity((double) e.OldValue) || double.IsInfinity((double) e.NewValue))
+        if (d is not ProgressBar progressBar)
         {
             return;
         }
 
-        var anim = new DoubleAnimation((double) e.OldValue, (double) e.NewValue, new TimeSpan(0, 0, 0, 0, 250));
-        (d as ProgressBar)?.BeginAnimation(RangeBase.ValueProperty, anim, HandoffBehavior.Compose);
+        var currentValue = NormalizeValue(progressBar.Value, progressBar.Minimum, progressBar.Maximum);
+        var targetValue = NormalizeValue((double) e.NewValue, progressBar.Minimum, progressBar.Maximum);
+        var animation = new DoubleAnimation(currentValue, targetValue, TimeSpan.FromMilliseconds(250));
+        progressBar.BeginAnimation(RangeBase.ValueProperty, animation, HandoffBehavior.SnapshotAndReplace);
+    }
+
+    private static double NormalizeValue(double value, double minimum, double maximum)
+    {
+        return double.IsNaN(value) || double.IsInfinity(value) ? minimum : Math.Clamp(value, minimum, maximum);
     }
 }

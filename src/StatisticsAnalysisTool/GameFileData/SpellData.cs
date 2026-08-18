@@ -1,4 +1,5 @@
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData.Models;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Properties;
@@ -37,13 +38,7 @@ public static class SpellData
             return new GameFileDataSpell();
         }
 
-        if (index < 0)
-        {
-            uint unsignedIndex = Convert.ToUInt32(index);
-            index = (int) unsignedIndex;
-        }
-
-        return _spells.IsInBounds(index) ? _spells?.ElementAt(index) : new GameFileDataSpell();
+        return _spells.IsInBounds(index) ? _spells[index] : new GameFileDataSpell();
     }
 
     public static GameFileDataSpell GetSpellByUniqueName(string uniqueName)
@@ -190,6 +185,9 @@ public static class SpellData
         var category = element.Attribute("category")?.Value ?? string.Empty;
         var channelingTime = SpellLocalizationReferenceResolver.GetChannelingDuration(element.Element("channelingspell"));
         var descriptionValues = GetDescriptionValues(element, spellElementsByUniqueName);
+        var damageElements = GetDamageElements(element);
+        var playerDamageElements = SelectDamageElements(damageElements, true);
+        var mobDamageElements = SelectDamageElements(damageElements, false);
 
         if (!string.IsNullOrEmpty(uniqueName))
         {
@@ -209,11 +207,92 @@ public static class SpellData
                 CastRange = element.Attribute("castrange")?.Value ?? string.Empty,
                 ChannelingTime = channelingTime,
                 StatBlockLocatag = element.Attribute("statblock")?.Value ?? string.Empty,
-                DescriptionValues = descriptionValues
+                DescriptionValues = descriptionValues,
+                IgnoresArmorAgainstPlayers = GetIgnoresArmor(playerDamageElements),
+                IgnoresArmorAgainstMobs = GetIgnoresArmor(mobDamageElements),
+                DamageEffectTypeAgainstPlayers = GetDamageEffectType(playerDamageElements),
+                DamageEffectTypeAgainstMobs = GetDamageEffectType(mobDamageElements)
             };
         }
 
         return null;
+    }
+
+    private static IReadOnlyList<XElement> GetDamageElements(XElement spellElement)
+    {
+        return spellElement
+            .Descendants()
+            .Where(element =>
+                (element.Name.LocalName == "directattributechange" || element.Name.LocalName == "attributechangeovertime")
+                && element.Attribute("attribute")?.Value == "health"
+                && IsNegativeValue(element.Attribute("change")?.Value))
+            .ToList();
+    }
+
+    private static IReadOnlyList<XElement> SelectDamageElements(
+        IReadOnlyList<XElement> damageElements,
+        bool isPlayerTarget)
+    {
+        var specificElements = damageElements
+            .Where(element => IsTargetSpecific(element, isPlayerTarget))
+            .ToList();
+        if (specificElements.Count > 0)
+        {
+            return specificElements;
+        }
+
+        return damageElements
+            .Where(element => !IsTargetSpecific(element, true) && !IsTargetSpecific(element, false))
+            .ToList();
+    }
+
+    private static bool IsTargetSpecific(XElement element, bool isPlayerTarget)
+    {
+        var target = element.Attribute("target")?.Value ?? string.Empty;
+        return target.Contains(isPlayerTarget ? "player" : "mob", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool IsNegativeValue(string value)
+    {
+        return double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out var parsedValue)
+            ? parsedValue < 0
+            : value?.StartsWith("-", StringComparison.Ordinal) == true;
+    }
+
+    private static bool? GetIgnoresArmor(IReadOnlyList<XElement> damageElements)
+    {
+        if (damageElements.Count == 0)
+        {
+            return null;
+        }
+
+        var values = damageElements
+            .Select(element => string.Equals(
+                element.Attribute("ignorearmor")?.Value,
+                "true",
+                StringComparison.OrdinalIgnoreCase))
+            .Distinct()
+            .ToList();
+        return values.Count == 1 ? values[0] : null;
+    }
+
+    private static EffectType? GetDamageEffectType(IReadOnlyList<XElement> damageElements)
+    {
+        if (damageElements.Count == 0)
+        {
+            return null;
+        }
+
+        var values = damageElements
+            .Select(element => element.Attribute("effecttype")?.Value switch
+            {
+                "physical" => EffectType.Physical,
+                "magic" => EffectType.Magic,
+                _ => EffectType.None
+            })
+            .Distinct()
+            .ToList();
+        return values.Count == 1 && values[0] != EffectType.None ? values[0] : null;
     }
 
     private static IReadOnlyList<string> GetDescriptionValues(

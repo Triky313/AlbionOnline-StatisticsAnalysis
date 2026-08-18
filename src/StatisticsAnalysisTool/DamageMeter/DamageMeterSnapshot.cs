@@ -1,8 +1,10 @@
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Localization;
+using StatisticsAnalysisTool.Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.DamageMeter;
@@ -11,10 +13,13 @@ public sealed class DamageMeterSnapshot : BaseViewModel
 {
     private DateTime _timestamp;
     private List<DamageMeterSnapshotFragment> _damageMeter = new();
+    private List<MobDamageMeterFragment> _mobDamageMeter = [];
     private DamageStatsSnapshot _damageStats = DamageStatsSnapshot.Empty;
     private DamageMeterYourStatsSnapshot _yourStats = DamageMeterYourStatsSnapshot.Empty;
     private string _location = string.Empty;
     private bool _isAutoSave;
+    private DamageMeterContentSnapshot _allContent = new();
+    private Dictionary<DashboardContentType, DamageMeterContentSnapshot> _contentSnapshots = [];
 
     public DamageMeterSnapshot()
     {
@@ -83,6 +88,16 @@ public sealed class DamageMeterSnapshot : BaseViewModel
         }
     }
 
+    public List<MobDamageMeterFragment> MobDamageMeter
+    {
+        get => _mobDamageMeter;
+        set
+        {
+            _mobDamageMeter = value ?? [];
+            OnPropertyChanged();
+        }
+    }
+
     public DamageStatsSnapshot DamageStats
     {
         get => _damageStats;
@@ -101,5 +116,35 @@ public sealed class DamageMeterSnapshot : BaseViewModel
             _yourStats = value ?? DamageMeterYourStatsSnapshot.Empty;
             OnPropertyChanged();
         }
+    }
+
+    public DamageMeterContentSnapshot AllContent
+    {
+        get => _allContent;
+        set => _allContent = value ?? new DamageMeterContentSnapshot();
+    }
+
+    public Dictionary<DashboardContentType, DamageMeterContentSnapshot> ContentSnapshots
+    {
+        get => _contentSnapshots;
+        set => _contentSnapshots = value ?? [];
+    }
+
+    public void ApplyContentFilter(DashboardContentType? contentType)
+    {
+        var selectedContent = AllContent;
+        if (contentType.HasValue)
+        {
+            selectedContent = ContentSnapshots.TryGetValue(contentType.Value, out var contentSnapshot)
+                ? contentSnapshot
+                : new DamageMeterContentSnapshot();
+        }
+
+        DamageMeter = selectedContent.DamageMeter.ToList();
+        MobDamageMeter = (selectedContent.MobDamageMeter ?? [])
+            .OrderByDescending(x => x.FirstAttackTime)
+            .ToList();
+        DamageStats = DamageStatsSnapshotFactory.Clone(selectedContent.DamageStats);
+        YourStats = DamageMeterYourStatsSnapshotFactory.Clone(selectedContent.YourStats);
     }
 }

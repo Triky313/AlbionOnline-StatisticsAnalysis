@@ -156,7 +156,7 @@ public sealed class DamageMeterSnapshotFragment : BaseViewModel
         set
         {
             _takenDamage = value;
-            TakenDamageShortString = _damage.ToShortNumberString();
+            TakenDamageShortString = _takenDamage.ToShortNumberString();
             OnPropertyChanged();
         }
     }
