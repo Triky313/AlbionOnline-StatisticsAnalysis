@@ -1213,21 +1213,14 @@
                                     <ControlTemplate TargetType="{x:Type ToggleButton}">
                                         <Border Padding="10,0,10,0" Background="{TemplateBinding Background}">
                                             <Grid>
-                                                <ContentPresenter Margin="0,0,38,0"
-                                                                  HorizontalAlignment="Stretch"
-                                                                  VerticalAlignment="Center"
-                                                                  Content="{TemplateBinding Content}" />
+                                                <ContentPresenter Margin="0,0,38,0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Content="{TemplateBinding Content}" />
                                                 <Border Width="28"
                                                         Height="28"
                                                         HorizontalAlignment="Right"
                                                         VerticalAlignment="Center"
                                                         Background="{StaticResource SolidColorBrush.Background.3}"
                                                         CornerRadius="14">
-                                                    <fa5:ImageAwesome x:Name="MobExpandIcon"
-                                                                      Width="11"
-                                                                      Height="11"
-                                                                      Icon="Solid_ChevronDown"
-                                                                      Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                                                    <fa5:ImageAwesome x:Name="MobExpandIcon" Width="11" Height="11" Icon="Solid_ChevronDown" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
                                                 </Border>
                                             </Grid>
                                         </Border>
@@ -1243,9 +1236,7 @@
                                 </ToggleButton.Template>
                                 <ContentPresenter Content="{TemplateBinding Header}" />
                             </ToggleButton>
-                            <ContentPresenter x:Name="MobExpandContent"
-                                              Visibility="Collapsed"
-                                              ContentSource="Content" />
+                            <ContentPresenter x:Name="MobExpandContent" Visibility="Collapsed" ContentSource="Content" />
                         </DockPanel>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -1259,7 +1250,7 @@
     </Style>
 
     <Style x:Key="Dashboard.MobHeaderMetricTitle" TargetType="{x:Type TextBlock}">
-        <Setter Property="FontSize" Value="11" />
+        <Setter Property="FontSize" Value="12" />
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.3}" />
         <Setter Property="TextTrimming" Value="CharacterEllipsis" />
     </Style>
