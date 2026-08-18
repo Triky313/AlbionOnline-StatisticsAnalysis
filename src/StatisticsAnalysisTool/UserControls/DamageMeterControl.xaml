@@ -50,29 +50,41 @@
         </DataTemplate>
 
         <DataTemplate x:Key="DamageSpellStatsEntryTemplate" DataType="{x:Type damageMeter:DamageSpellStatsEntry}">
-            <Grid Height="20">
+            <Grid Height="38" Margin="0,0,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="42" />
+                    <ColumnDefinition Width="150" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="62" />
-                    <ColumnDefinition Width="52" />
-                    <ColumnDefinition Width="46" />
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="70" />
                 </Grid.ColumnDefinitions>
-                <Ellipse Grid.Column="0" Width="15" Height="15" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <TextBlock Grid.Column="0" Text="{Binding Rank, StringFormat='{}{0}.'}" Style="{StaticResource TopStats.EntryRank}" Margin="5,0,0,0" />
+                <Ellipse Grid.Column="1" Width="40" Height="40" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTipService.ShowDuration="60000">
+                    <Ellipse.ToolTip>
+                        <ToolTip Style="{StaticResource ItemDetails.Information.SpellToolTip}"
+                                 DataContext="{Binding PlacementTarget.DataContext.SpellInformation, RelativeSource={RelativeSource Self}}">
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource ItemDetails.Information.SpellToolTipContentTemplate}" />
+                        </ToolTip>
+                    </Ellipse.ToolTip>
                     <Ellipse.Fill>
                         <ImageBrush ImageSource="{Binding Icon}" Stretch="UniformToFill" />
                     </Ellipse.Fill>
                 </Ellipse>
-                <TextBlock Grid.Column="1" Text="{Binding DisplayName}"
-                           Style="{StaticResource TopStats.EntryName}" />
-                <ProgressBar Grid.Column="2" Value="{Binding BarPercentage}" Margin="4,0,6,0"
+                <TextBlock Grid.Column="2" Margin="5,0,0,0" Text="{Binding DisplayName}" Style="{StaticResource TopStats.EntryName}" />
+                <ProgressBar Grid.Column="3" Value="{Binding BarPercentage}" Margin="5,0,5,0"
                              VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" Style="{StaticResource TopStats.RankingBar}" />
-                <TextBlock Grid.Column="3" Text="{Binding ValueString}"
-                           Style="{StaticResource TopStats.DamageSpellValue}" />
-                <TextBlock Grid.Column="4" Text="{Binding SharePercentageString}"
-                           Style="{StaticResource TopStats.DamageSpellShare}" />
+                <TextBlock Grid.Column="4" Text="{Binding ValueString}" Style="{StaticResource TopStats.DamageSpellValue}" />
+                <TextBlock Grid.Column="5" Text="{Binding SharePercentageString}" Style="{StaticResource TopStats.DamageSpellShare}" Margin="0,0,10,0" />
             </Grid>
         </DataTemplate>
+
+        <DataTemplate x:Key="DamageSpellStatsColumnTemplate">
+            <StackPanel Margin="5,5,5,5">
+                <ItemsControl ItemsSource="{Binding}" ItemTemplate="{StaticResource DamageSpellStatsEntryTemplate}" />
+            </StackPanel>
+        </DataTemplate>
+
         <DataTemplate x:Key="DamageTypeStatsEntryTemplate" DataType="{x:Type damageMeter:DamageTypeStatsEntry}">
             <Border Margin="3" Padding="7,6" MinHeight="118"
                     Background="{StaticResource SolidColorBrush.Background.3}"
@@ -636,9 +648,11 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
                         <Border Grid.Column="0"
                                 Style="{StaticResource DamageMeter.RankingCard}">
                             <StackPanel>
@@ -674,36 +688,29 @@
                                 </ItemsControl>
                             </StackPanel>
                         </Border>
-                        <Border Grid.Column="2" Style="{StaticResource DamageMeter.RankingCard}">
+                        <Border Grid.Row="1"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                Style="{StaticResource DamageMeter.RankingCard}">
                             <StackPanel>
-                                <TextBlock Text="{Binding DataContext.DamageMeterBindings.TranslationDamageByAbilityTop5, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=DAMAGE_BY_ABILITY_TOP_5}"
+                                <TextBlock Text="{Binding DataContext.DamageMeterBindings.TranslationDamageByAbilityTop10, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=DAMAGE_BY_ABILITY_TOP_10}"
                                            Foreground="{StaticResource SolidColorBrush.Accent.Red.2}"
                                            Margin="2,0,0,4"
                                            Style="{StaticResource TopStats.RankingTitle}" />
-                                <Grid Height="22" Margin="0,0,0,2">
+                                <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="20" />
                                         <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="62" />
-                                        <ColumnDefinition Width="52" />
-                                        <ColumnDefinition Width="46" />
+                                        <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Grid.ColumnSpan="2"
-                                               Text="{Binding DataContext.DamageMeterBindings.TranslationAbility, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=ABILITY}"
-                                               Style="{StaticResource TopStats.AbilityHeader}"
-                                               VerticalAlignment="Center" />
-                                    <TextBlock Grid.Column="2" Grid.ColumnSpan="2"
-                                               Text="{Binding DataContext.DamageMeterBindings.TranslationTotalDamage, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=TOTAL_DAMAGE}"
-                                               Style="{StaticResource TopStats.AbilityHeader}"
-                                               TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" />
-                                    <TextBlock Grid.Column="4"
-                                               Text="{Binding DataContext.DamageMeterBindings.TranslationPercentOfTotal, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=%}"
-                                               Style="{StaticResource TopStats.AbilityHeader}"
-                                               TextAlignment="Right" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"
-                                               ToolTip="{Binding DataContext.DamageMeterBindings.TranslationPercentOfTotal, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                                    <ContentControl Grid.Column="0"
+                                                    Content="{Binding TopDamageSpellsLeftColumn}"
+                                                    ContentTemplate="{StaticResource DamageSpellStatsColumnTemplate}"
+                                                    HorizontalContentAlignment="Stretch" />
+                                    <ContentControl Grid.Column="1"
+                                                    Content="{Binding TopDamageSpellsRightColumn}"
+                                                    ContentTemplate="{StaticResource DamageSpellStatsColumnTemplate}"
+                                                    HorizontalContentAlignment="Stretch" />
                                 </Grid>
-                                <ItemsControl ItemsSource="{Binding TopDamageSpells}"
-                                              ItemTemplate="{StaticResource DamageSpellStatsEntryTemplate}" />
                             </StackPanel>
                         </Border>
                     </Grid>

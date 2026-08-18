@@ -29,7 +29,7 @@ internal static class DamageSpellStatsEntryFactory
         var maximum = orderedEntries[0].Value;
         var total = orderedEntries.Sum(entry => entry.Value);
         return orderedEntries
-            .Take(5)
+            .Take(10)
             .Select((entry, index) => new DamageSpellStatsEntry
             {
                 Rank = index + 1,

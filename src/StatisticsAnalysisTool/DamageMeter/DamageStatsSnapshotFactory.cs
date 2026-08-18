@@ -65,6 +65,7 @@ public static class DamageStatsSnapshotFactory
         IEnumerable<CombatEvent> combatEvents)
     {
         trackerSnapshot ??= DamageStatsSnapshot.Empty;
+        var activePlayers = (players ?? []).Where(player => player != null).ToList();
         var trackedFights = (combatEvents ?? [])
             .Where(x => x.Contributions.Count > 0)
             .ToList();
@@ -78,12 +79,14 @@ public static class DamageStatsSnapshotFactory
             TopLastHits = trackerSnapshot.TopLastHits,
             TopMobKillContribution = trackerSnapshot.TopMobKillContribution,
             TopOverheals = trackerSnapshot.TopOverheals,
-            TopTakenDamage = CreateTopTakenDamageEntries(players),
+            TopTakenDamage = CreateTopTakenDamageEntries(activePlayers),
             TopBurstDamageFiveSeconds = trackerSnapshot.TopBurstDamageFiveSeconds,
             TopBurstDamageTenSeconds = trackerSnapshot.TopBurstDamageTenSeconds,
             TopAttackedTargets = trackerSnapshot.TopAttackedTargets,
             DamageTypeTotals = trackerSnapshot.DamageTypeTotals,
-            TopDamageSpells = trackerSnapshot.TopDamageSpells,
+            TopDamageSpells = SelectDamageSpellEntries(
+                trackerSnapshot.TopDamageSpells,
+                CreateDamageSpellEntries(activePlayers)),
             TrackedFightCount = trackedFights.Count,
             TrackedFightDuration = trackedFights
                 .Select(GetDuration)
@@ -162,7 +165,12 @@ public static class DamageStatsSnapshotFactory
         IReadOnlyList<DamageSpellStatsEntry> entries,
         IReadOnlyList<DamageSpellStatsEntry> fallbackEntries)
     {
-        return NormalizeDamageSpellEntries(entries != null && entries.Count > 0 ? entries : fallbackEntries);
+        var normalizedEntries = NormalizeDamageSpellEntries(entries);
+        var normalizedFallbackEntries = NormalizeDamageSpellEntries(fallbackEntries);
+
+        return normalizedFallbackEntries.Count > normalizedEntries.Count
+            ? normalizedFallbackEntries
+            : normalizedEntries;
     }
 
     private static IReadOnlyList<DamageStatsEntry> NormalizeEntries(
@@ -196,7 +204,7 @@ public static class DamageStatsSnapshotFactory
         }
 
         return entries.Any(entry => entry.BarPercentage > 0 || entry.SharePercentage > 0)
-            ? entries.OrderBy(entry => entry.Rank).Take(5).ToList()
+            ? entries.OrderBy(entry => entry.Rank).Take(10).ToList()
             : DamageSpellStatsEntryFactory.Rank(entries);
     }
 
@@ -224,6 +232,20 @@ public static class DamageStatsSnapshotFactory
     {
         return DamageSpellStatsEntryFactory.Rank((fragments ?? [])
             .SelectMany(fragment => fragment.Spells)
+            .Where(spell => spell.HealthChangeType == HealthChangeType.Damage)
+            .Select(spell => new DamageSpellStatsEntry
+            {
+                SpellIndex = spell.SpellIndex,
+                UniqueName = spell.UniqueName,
+                Value = spell.DamageHealValue
+            }));
+    }
+
+    private static IReadOnlyList<DamageSpellStatsEntry> CreateDamageSpellEntries(
+        IEnumerable<PlayerGameObject> players)
+    {
+        return DamageSpellStatsEntryFactory.Rank((players ?? [])
+            .SelectMany(player => player.Spells)
             .Where(spell => spell.HealthChangeType == HealthChangeType.Damage)
             .Select(spell => new DamageSpellStatsEntry
             {

@@ -96,16 +96,15 @@ public sealed class DamageStatsTracker
     {
         lock (_syncLock)
         {
-            var activePlayers = activePlayerGuids?.ToHashSet() ?? [];
-            var healingPlayers = healingPlayerGuids?.ToHashSet() ?? [];
-            if (activePlayers.Count <= 0)
+            var trackedPlayers = _players.Values.ToList();
+            if (trackedPlayers.Count == 0)
             {
                 return DamageStatsSnapshot.Empty;
             }
 
-            var players = _players.Values
-                .Where(x => activePlayers.Contains(x.PlayerGuid))
-                .ToList();
+            var activePlayers = ResolveTrackedPlayerGuids(activePlayerGuids, trackedPlayers);
+            var healingPlayers = ResolveHealingPlayerGuids(healingPlayerGuids, trackedPlayers);
+            var players = trackedPlayers.Where(x => activePlayers.Contains(x.PlayerGuid)).ToList();
 
             return new DamageStatsSnapshot
             {
@@ -123,6 +122,33 @@ public sealed class DamageStatsTracker
                 TopDamageSpells = CreateDamageSpellEntries(players)
             };
         }
+    }
+
+    private static IReadOnlySet<Guid> ResolveTrackedPlayerGuids(
+        IEnumerable<Guid> activePlayerGuids,
+        IReadOnlyCollection<DamageStatsPlayer> trackedPlayers)
+    {
+        var trackedPlayerGuids = trackedPlayers.Select(player => player.PlayerGuid).ToHashSet();
+        var matchingPlayerGuids = (activePlayerGuids ?? [])
+            .Where(trackedPlayerGuids.Contains)
+            .ToHashSet();
+
+        return matchingPlayerGuids.Count > 0 ? matchingPlayerGuids : trackedPlayerGuids;
+    }
+
+    private static IReadOnlySet<Guid> ResolveHealingPlayerGuids(
+        IEnumerable<Guid> healingPlayerGuids,
+        IReadOnlyCollection<DamageStatsPlayer> trackedPlayers)
+    {
+        var trackedHealingPlayerGuids = trackedPlayers
+            .Where(player => player.EffectiveHealing > 0 || player.BiggestHeal > 0)
+            .Select(player => player.PlayerGuid)
+            .ToHashSet();
+        var matchingPlayerGuids = (healingPlayerGuids ?? [])
+            .Where(trackedHealingPlayerGuids.Contains)
+            .ToHashSet();
+
+        return matchingPlayerGuids.Count > 0 ? matchingPlayerGuids : trackedHealingPlayerGuids;
     }
 
     public void Clear()

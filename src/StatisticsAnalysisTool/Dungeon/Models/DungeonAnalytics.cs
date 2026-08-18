@@ -106,7 +106,7 @@ public sealed class DungeonAnalytics : BaseViewModel
         }
     }
 
-    public double FastestRunTimeInSeconds
+    public int FastestRunTimeInSeconds
     {
         get;
         internal set
@@ -156,14 +156,10 @@ public sealed class DungeonAnalytics : BaseViewModel
         }
     } = [];
 
-    public void Update(
-        IReadOnlyList<DungeonBaseFragment> currentDungeons,
-        IReadOnlyList<DungeonBaseFragment> previousDungeons,
-        string comparisonText,
-        DungeonMode selectedMode)
+    public void Update(IReadOnlyList<DungeonBaseFragment> currentDungeons, IReadOnlyList<DungeonBaseFragment> previousDungeons, string comparisonText)
     {
         ComparisonText = comparisonText;
-        DungeonAnalyticsService.Populate(this, currentDungeons, previousDungeons, selectedMode);
+        DungeonAnalyticsService.Populate(this, currentDungeons, previousDungeons);
     }
 
     public void RefreshLocalization()

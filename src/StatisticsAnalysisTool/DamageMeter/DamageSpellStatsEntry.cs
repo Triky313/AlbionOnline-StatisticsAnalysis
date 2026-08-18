@@ -1,6 +1,7 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Localization;
+using StatisticsAnalysisTool.Models.ItemDetailsModel;
 using System;
 using System.Text.Json.Serialization;
 using System.Windows;
@@ -10,6 +11,13 @@ namespace StatisticsAnalysisTool.DamageMeter;
 
 public sealed class DamageSpellStatsEntry
 {
+    private readonly Lazy<ItemSpellInformation> _spellInformation;
+
+    public DamageSpellStatsEntry()
+    {
+        _spellInformation = new Lazy<ItemSpellInformation>(() => new ItemSpellInformation(ResolveUniqueName()));
+    }
+
     public int Rank { get; init; }
     public int SpellIndex { get; init; }
     public string UniqueName { get; init; } = string.Empty;
@@ -18,6 +26,8 @@ public sealed class DamageSpellStatsEntry
     public double BarPercentage { get; init; }
     public double SharePercentage { get; init; }
     public string SharePercentageString => $"{SharePercentage:N1}%";
+    [JsonIgnore]
+    public ItemSpellInformation SpellInformation => _spellInformation.Value;
 
     public string DisplayName
     {
@@ -56,7 +66,7 @@ public sealed class DamageSpellStatsEntry
 
     private BitmapImage GetIcon()
     {
-        return ImageController.GetSpellImage(ResolveUniqueName(), 32, 32, true);
+        return ImageController.GetSpellImage(ResolveUniqueName(), 48, 48, true);
     }
 
     private string ResolveUniqueName()

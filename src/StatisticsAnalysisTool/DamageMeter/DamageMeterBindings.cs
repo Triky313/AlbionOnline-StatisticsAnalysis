@@ -836,7 +836,7 @@ public class DamageMeterBindings : BaseViewModel
     public static string TranslationEffectiveHealingTop5 => LocalizationController.Translation("EFFECTIVE_HEALING_TOP_5");
     public static string TranslationTopMobKillContributionTop5 => LocalizationController.Translation("TOP_MOB_KILL_CONTRIBUTION_TOP_5");
     public static string TranslationDamageByType => LocalizationController.Translation("DAMAGE_BY_TYPE");
-    public static string TranslationDamageByAbilityTop5 => LocalizationController.Translation("DAMAGE_BY_ABILITY_TOP_5");
+    public static string TranslationDamageByAbilityTop10 => LocalizationController.Translation("DAMAGE_BY_ABILITY_TOP_10");
     public static string TranslationAbility => LocalizationController.Translation("ABILITY");
     public static string TranslationPercentOfTotal => LocalizationController.Translation("PERCENT_OF_TOTAL");
     public static string TranslationTopHealer => LocalizationController.Translation("TOP_HEALER");

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.DamageMeter;
 
@@ -21,6 +22,11 @@ public sealed class DamageStatsSnapshot
     public IReadOnlyList<DamageStatsEntry> TopAttackedTargets { get; init; } = [];
     public IReadOnlyList<DamageTypeStatsEntry> DamageTypeTotals { get; init; } = [];
     public IReadOnlyList<DamageSpellStatsEntry> TopDamageSpells { get; init; } = [];
+    [JsonIgnore]
+    public IReadOnlyList<DamageSpellStatsEntry> TopDamageSpellsLeftColumn => TopDamageSpells.Take(5).ToList();
+
+    [JsonIgnore]
+    public IReadOnlyList<DamageSpellStatsEntry> TopDamageSpellsRightColumn => TopDamageSpells.Skip(5).Take(5).ToList();
     public int TrackedFightCount { get; init; }
     public TimeSpan TrackedFightDuration { get; init; }
 

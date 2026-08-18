@@ -49257,15 +49257,15 @@
       ]
     },
     {
-      "tuid": "DAMAGE_BY_ABILITY_TOP_5",
+      "tuid": "DAMAGE_BY_ABILITY_TOP_10",
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Schaden nach Fähigkeit – Top 5"
+          "seg": "Schaden nach Fähigkeit – Top 10"
         },
         {
           "lang": "en-US",
-          "seg": "Damage by Ability – Top 5"
+          "seg": "Damage by Ability – Top 10"
         }
       ]
     },

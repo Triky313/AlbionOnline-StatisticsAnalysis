@@ -407,7 +407,7 @@ public class DungeonBindings : BaseViewModel
 
             Stats.Set(filteredPeriods.Current);
             UpdateStatsView();
-            Analytics.Update(filteredPeriods.Current, filteredPeriods.Previous, GetComparisonText(selectedRange), selectedMode);
+            Analytics.Update(filteredPeriods.Current, filteredPeriods.Previous, GetComparisonText(selectedRange));
         }
 
         if (Application.Current?.Dispatcher is { } dispatcher && !dispatcher.CheckAccess())

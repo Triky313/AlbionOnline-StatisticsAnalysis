@@ -1194,6 +1194,43 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="ItemDetails.Information.SpellToolTipContentTemplate" DataType="{x:Type itemDetailsModels:ItemSpellInformation}">
+        <StackPanel Width="290">
+            <TextBlock Text="{Binding Name}" FontSize="20" FontWeight="SemiBold" Foreground="{StaticResource SolidColorBrush.Text.1}" TextWrapping="Wrap" />
+
+            <ItemsControl Margin="0,6,0,0" ItemsSource="{Binding Types}" ItemTemplate="{StaticResource ItemDetails.Information.SpellTypeTemplate}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+
+            <Border Margin="0,11,0,0"
+                    Padding="0,11,0,0"
+                    BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                    BorderThickness="0,1,0,0"
+                    Visibility="{Binding DescriptionVisibility, Mode=OneWay}">
+                <controls:SpellDescriptionTextBlock
+                    Segments="{Binding DescriptionSegments, Mode=OneWay}"
+                    Foreground="{StaticResource ItemDetails.Information.SpellText}"
+                    FontSize="12"
+                    LineHeight="18"
+                    TextWrapping="Wrap" />
+            </Border>
+
+            <Border Margin="0,12,0,0"
+                    Padding="0,10,0,0"
+                    Background="{StaticResource SolidColorBrush.Background.2}"
+                    BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                    BorderThickness="0,1,0,0"
+                    Visibility="{Binding StatsVisibility, Mode=OneWay}">
+                <ItemsControl ItemsSource="{Binding Stats}"
+                              ItemTemplate="{StaticResource ItemDetails.Information.SpellStatTemplate}" />
+            </Border>
+        </StackPanel>
+    </DataTemplate>
+
     <DataTemplate x:Key="ItemDetails.Information.SpellTemplate" DataType="{x:Type itemDetailsModels:ItemSpellInformation}">
         <Border Width="154"
                 MinHeight="112"
@@ -1207,46 +1244,8 @@
             <Border.ToolTip>
                 <ToolTip Style="{StaticResource ItemDetails.Information.SpellToolTip}"
                          DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
-                    <StackPanel Width="390">
-                        <TextBlock Text="{Binding Name}"
-                                   FontSize="20"
-                                   FontWeight="SemiBold"
-                                   Foreground="{StaticResource SolidColorBrush.Text.1}"
-                                   TextWrapping="Wrap" />
-
-                        <ItemsControl Margin="0,6,0,0"
-                                      ItemsSource="{Binding Types}"
-                                      ItemTemplate="{StaticResource ItemDetails.Information.SpellTypeTemplate}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <WrapPanel />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
-
-                        <Border Margin="0,11,0,0"
-                                Padding="0,11,0,0"
-                                BorderBrush="{StaticResource SolidColorBrush.Background.4}"
-                                BorderThickness="0,1,0,0"
-                                Visibility="{Binding DescriptionVisibility, Mode=OneWay}">
-                            <controls:SpellDescriptionTextBlock
-                                Segments="{Binding DescriptionSegments, Mode=OneWay}"
-                                Foreground="{StaticResource ItemDetails.Information.SpellText}"
-                                FontSize="12"
-                                LineHeight="18"
-                                TextWrapping="Wrap" />
-                        </Border>
-
-                        <Border Margin="0,12,0,0"
-                                Padding="0,10,0,0"
-                                Background="{StaticResource SolidColorBrush.Background.2}"
-                                BorderBrush="{StaticResource SolidColorBrush.Background.4}"
-                                BorderThickness="0,1,0,0"
-                                Visibility="{Binding StatsVisibility, Mode=OneWay}">
-                            <ItemsControl ItemsSource="{Binding Stats}"
-                                          ItemTemplate="{StaticResource ItemDetails.Information.SpellStatTemplate}" />
-                        </Border>
-                    </StackPanel>
+                    <ContentControl Content="{Binding}"
+                                    ContentTemplate="{StaticResource ItemDetails.Information.SpellToolTipContentTemplate}" />
                 </ToolTip>
             </Border.ToolTip>
             <StackPanel>

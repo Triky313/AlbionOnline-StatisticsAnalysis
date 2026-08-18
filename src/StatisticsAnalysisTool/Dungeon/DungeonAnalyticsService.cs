@@ -13,8 +13,7 @@ public static class DungeonAnalyticsService
     public static void Populate(
         DungeonAnalytics analytics,
         IReadOnlyList<DungeonBaseFragment> currentDungeons,
-        IReadOnlyList<DungeonBaseFragment> previousDungeons,
-        DungeonMode selectedMode)
+        IReadOnlyList<DungeonBaseFragment> previousDungeons)
     {
         var current = CalculateTotals(currentDungeons);
         var previous = CalculateTotals(previousDungeons);
@@ -29,7 +28,7 @@ public static class DungeonAnalyticsService
         analytics.Deaths.Update(current.Deaths, previous.Deaths);
         analytics.AverageRunTime.Update(current.AverageRunTimeInSeconds, previous.AverageRunTimeInSeconds);
 
-        UpdateOverview(analytics, currentDungeons, selectedMode);
+        UpdateOverview(analytics, currentDungeons);
         analytics.EfficiencyEntries = CreateEfficiencyEntries(currentDungeons);
     }
 
@@ -59,7 +58,7 @@ public static class DungeonAnalyticsService
         return new PeriodTotals(dungeons.Count, durationInSeconds, fame, reSpec, silver, might, favor, lootValue, deaths, averageRunTime);
     }
 
-    private static void UpdateOverview(DungeonAnalytics analytics, IReadOnlyList<DungeonBaseFragment> dungeons, DungeonMode selectedMode)
+    private static void UpdateOverview(DungeonAnalytics analytics, IReadOnlyList<DungeonBaseFragment> dungeons)
     {
         var tierGroups = dungeons
             .Where(x => x.Tier != Tier.Unknown)
@@ -99,15 +98,10 @@ public static class DungeonAnalyticsService
         analytics.BestDungeonMap = bestMap?.Name ?? "—";
         analytics.BestDungeonMapAverageLoot = bestMap?.AverageLoot ?? 0;
 
-        DungeonBaseFragment fastestRun = null;
-        if (selectedMode != DungeonMode.Unknown)
-        {
-            fastestRun = dungeons
-                .Where(x => x.EffectiveRunTimeInSeconds > 0)
-                .OrderBy(x => x.EffectiveRunTimeInSeconds)
-                .FirstOrDefault()
-                ?? dungeons.FirstOrDefault();
-        }
+        var fastestRun = dungeons
+            .Where(x => x.EffectiveRunTimeInSeconds > 0)
+            .OrderBy(x => x.EffectiveRunTimeInSeconds)
+            .FirstOrDefault();
 
         analytics.HasFastestRun = fastestRun is not null;
         analytics.FastestRunTimeInSeconds = fastestRun?.EffectiveRunTimeInSeconds ?? 0;
