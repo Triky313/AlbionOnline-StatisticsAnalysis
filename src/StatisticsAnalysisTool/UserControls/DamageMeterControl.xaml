@@ -823,12 +823,10 @@
                                 <ItemsControl ItemsSource="{Binding DamageMeterBindings.DamageMeter, IsAsync=True, Mode=OneWay}"
                                               ItemTemplate="{StaticResource DamageMeterFragmentTemplate}" />
                             </ScrollViewer>
-                            <ScrollViewer Grid.Row="2" Margin="-3,0,0,0"
-                                          HorizontalScrollBarVisibility="Auto"
-                                          Style="{StaticResource DamageMeter.Live.MobList}">
-                                <ItemsControl ItemsSource="{Binding DamageMeterBindings.MobDamageMeter, IsAsync=True, Mode=OneWay}"
-                                              ItemTemplate="{StaticResource MobDamageMeterFragmentTemplate}" />
-                            </ScrollViewer>
+                            <ListBox Grid.Row="2" Margin="-3,0,0,0"
+                                     Style="{StaticResource DamageMeter.Live.MobList}"
+                                     ItemsSource="{Binding DamageMeterBindings.MobDamageMeter, IsAsync=True, Mode=OneWay}"
+                                     ItemTemplate="{StaticResource MobDamageMeterFragmentTemplate}" />
 
                             <Grid Grid.Row="2"
                                   Panel.ZIndex="1"
@@ -1003,12 +1001,10 @@
                                     <ItemsControl ItemsSource="{Binding DamageMeterBindings.DamageMeterSnapshotSelection.DamageMeter, IsAsync=True, Mode=OneWay}"
                                                   ItemTemplate="{StaticResource DamageMeterSnapshotFragmentTemplate}" />
                                 </ScrollViewer>
-                                <ScrollViewer Grid.Row="2" Margin="-3,0,0,0"
-                                              HorizontalScrollBarVisibility="Auto"
-                                              Style="{StaticResource DamageMeter.Snapshot.MobList}">
-                                    <ItemsControl ItemsSource="{Binding DamageMeterBindings.DamageMeterSnapshotSelection.MobDamageMeter, IsAsync=True, Mode=OneWay}"
-                                                  ItemTemplate="{StaticResource MobDamageMeterFragmentTemplate}" />
-                                </ScrollViewer>
+                                <ListBox Grid.Row="2" Margin="-3,0,0,0"
+                                         Style="{StaticResource DamageMeter.Snapshot.MobList}"
+                                         ItemsSource="{Binding DamageMeterBindings.DamageMeterSnapshotSelection.MobDamageMeter, IsAsync=True, Mode=OneWay}"
+                                         ItemTemplate="{StaticResource MobDamageMeterFragmentTemplate}" />
                             </Grid>
                         </TabItem>
                         <TabItem Header="{Binding DamageMeterBindings.TranslationTopStats, FallbackValue=TOP_STATS}">

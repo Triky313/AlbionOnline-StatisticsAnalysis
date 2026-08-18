@@ -14,12 +14,19 @@ public static class MobDamageMeterFragmentFactory
         IReadOnlyCollection<CombatMobDamageStats> mobStats,
         Func<Guid, int, int> spellItemResolver)
     {
+        var totalMobDamage = mobStats?.Sum(x => x.Damage) ?? 0;
+        return Create(mobStats, totalMobDamage, spellItemResolver);
+    }
+
+    public static IReadOnlyList<MobDamageMeterFragment> Create(
+        IReadOnlyCollection<CombatMobDamageStats> mobStats,
+        long totalMobDamage,
+        Func<Guid, int, int> spellItemResolver)
+    {
         if (mobStats == null || mobStats.Count == 0)
         {
             return [];
         }
-
-        var totalMobDamage = mobStats.Sum(x => x.Damage);
 
         return mobStats
             .OrderByDescending(x => x.FirstDamageTime)

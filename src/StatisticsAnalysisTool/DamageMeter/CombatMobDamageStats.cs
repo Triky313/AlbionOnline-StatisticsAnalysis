@@ -24,16 +24,19 @@ public sealed class CombatMobDamageStats
     public DateTime LastDamageTime { get; private set; }
     public double MaxHealth { get; private set; }
     public long Damage { get; private set; }
+    public long Version { get; private set; }
     public IReadOnlyCollection<CombatMobPlayerDamageStats> Players => _players.Values;
 
-    internal void UpdateMob(CombatMobCacheEntry mob)
+    internal bool UpdateMob(CombatMobCacheEntry mob)
     {
+        var wasConfirmedMob = IsConfirmedMob;
         MobIndex = mob.MobIndex;
         UniqueName = mob.UniqueName;
         TypeId = mob.TypeId;
         MaxHealth = mob.MaxHealth;
         MapTier = mob.MapTier;
         IsConfirmedMob = !mob.IsProvisional;
+        return !wasConfirmedMob && IsConfirmedMob;
     }
 
     internal void RecordDamage(Guid? playerGuid, string playerName, int causingSpellIndex, int weaponItemIndex, long value, DateTime timestamp)
@@ -64,6 +67,11 @@ public sealed class CombatMobDamageStats
         playerStats.RecordDamage(playerName, causingSpellIndex, weaponItemIndex, value, timestamp);
     }
 
+    internal void MarkUpdated(long version)
+    {
+        Version = version;
+    }
+
     internal CombatMobDamageStats Clone()
     {
         var clone = new CombatMobDamageStats
@@ -82,7 +90,8 @@ public sealed class CombatMobDamageStats
             FirstDamageTime = FirstDamageTime,
             LastDamageTime = LastDamageTime,
             MaxHealth = MaxHealth,
-            Damage = Damage
+            Damage = Damage,
+            Version = Version
         };
 
         foreach (var player in _players)

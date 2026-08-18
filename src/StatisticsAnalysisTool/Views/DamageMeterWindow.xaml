@@ -40,9 +40,10 @@
                 <ItemsControl ItemsSource="{Binding DamageMeterBindings.DamageMeter, IsAsync=True, Mode=OneWay}"
                               ItemTemplate="{StaticResource DamageMeterFragmentTemplate}" />
             </ScrollViewer>
-            <ScrollViewer HorizontalScrollBarVisibility="Auto">
-                <ScrollViewer.Style>
-                    <Style TargetType="{x:Type ScrollViewer}">
+            <ListBox ItemsSource="{Binding DamageMeterBindings.MobDamageMeter, IsAsync=True, Mode=OneWay}"
+                     ItemTemplate="{StaticResource MobDamageMeterFragmentTemplate}">
+                <ListBox.Style>
+                    <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource DamageMeter.VirtualizedList}">
                         <Setter Property="Visibility" Value="Collapsed" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding DamageMeterBindings.DamageMeterSortSelection.DamageMeterSortType}"
@@ -51,10 +52,8 @@
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </ScrollViewer.Style>
-                <ItemsControl ItemsSource="{Binding DamageMeterBindings.MobDamageMeter, IsAsync=True, Mode=OneWay}"
-                              ItemTemplate="{StaticResource MobDamageMeterFragmentTemplate}" />
-            </ScrollViewer>
+                </ListBox.Style>
+            </ListBox>
         </Grid>
     </Grid>
 </Window>

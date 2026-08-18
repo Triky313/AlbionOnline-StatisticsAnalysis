@@ -207,6 +207,9 @@ public class CombatController
     }
 
     private static bool _isUiUpdateActive;
+    private readonly object _mobDamageMeterUiStateLock = new();
+    private long _mobDamageMeterVersion;
+    private int _damageMeterViewVersion;
 
     private DashboardContentType GetCurrentContentType()
     {
@@ -272,17 +275,48 @@ public class CombatController
 
         try
         {
-            var mobStats = CombatEventTracker.GetMobDamageStats(contentType);
+            var mobDamageMeterState = GetMobDamageMeterUiState();
+            var mobUpdate = CombatEventTracker.GetMobDamageStatsUpdate(
+                contentType,
+                mobDamageMeterState.DamageVersion);
+
+            if (!IsMobDamageMeterViewCurrent(mobDamageMeterState.ViewVersion))
+            {
+                return;
+            }
+
+            if (mobUpdate.ChangedMobs.Count == 0)
+            {
+                _ = TryAdvanceMobDamageMeterVersion(mobDamageMeterState.ViewVersion, mobUpdate.Version);
+                return;
+            }
+
             var playersByGuid = _trackingController.EntityController
                 .GetAllEntities()
                 .Where(x => x.Value != null)
                 .ToDictionary(x => x.Key, x => x.Value);
             var fragments = MobDamageMeterFragmentFactory.Create(
-                mobStats,
+                mobUpdate.ChangedMobs,
+                mobUpdate.TotalDamage,
                 (playerGuid, spellIndex) => ResolvePlayerSpellItemIndex(playersByGuid, playerGuid, spellIndex));
+            var updateApplied = false;
 
             await Application.Current.Dispatcher.InvokeAsync(
-                () => _mainWindowViewModel.DamageMeterBindings.SetMobDamageMeter(fragments));
+                () =>
+                {
+                    if (!IsMobDamageMeterViewCurrent(mobDamageMeterState.ViewVersion))
+                    {
+                        return;
+                    }
+
+                    _mainWindowViewModel.DamageMeterBindings.ApplyMobDamageMeterUpdate(fragments, mobUpdate.TotalDamage);
+                    updateApplied = true;
+                });
+
+            if (updateApplied)
+            {
+                _ = TryAdvanceMobDamageMeterVersion(mobDamageMeterState.ViewVersion, mobUpdate.Version);
+            }
         }
         catch (Exception e)
         {
@@ -291,6 +325,50 @@ public class CombatController
         finally
         {
             _isUiUpdateActive = false;
+        }
+    }
+
+    private (int ViewVersion, long DamageVersion) GetMobDamageMeterUiState()
+    {
+        lock (_mobDamageMeterUiStateLock)
+        {
+            return (_damageMeterViewVersion, _mobDamageMeterVersion);
+        }
+    }
+
+    private bool IsMobDamageMeterViewCurrent(int viewVersion)
+    {
+        lock (_mobDamageMeterUiStateLock)
+        {
+            return viewVersion == _damageMeterViewVersion;
+        }
+    }
+
+    private bool TryAdvanceMobDamageMeterVersion(int viewVersion, long damageVersion)
+    {
+        lock (_mobDamageMeterUiStateLock)
+        {
+            if (viewVersion != _damageMeterViewVersion)
+            {
+                return false;
+            }
+
+            _mobDamageMeterVersion = damageVersion;
+            return true;
+        }
+    }
+
+    private void InvalidateMobDamageMeterView(bool resetDamageVersion)
+    {
+        lock (_mobDamageMeterUiStateLock)
+        {
+            _damageMeterViewVersion++;
+            if (!resetDamageVersion)
+            {
+                return;
+            }
+
+            _mobDamageMeterVersion = 0;
         }
     }
 
@@ -324,13 +402,34 @@ public class CombatController
 
     private async Task UpdateDamageMeterUiCoreAsync(ObservableCollection<DamageMeterFragment> damageMeter, List<KeyValuePair<Guid, PlayerGameObject>> entities)
     {
-        var maximumDamage = entities.GetCurrentTotalDamage();
-        var maximumHeal = entities.GetCurrentTotalHeal();
-        var maximumTakenDamage = entities.GetCurrentTotalTakenDamage();
+        long maximumDamage = 0;
+        long maximumHeal = 0;
+        long maximumTakenDamage = 0;
+        long totalDamage = 0;
+        long totalHeal = 0;
+        long totalTakenDamage = 0;
 
-        var fragmentsByCauser = damageMeter
-            .GroupBy(x => x.CauserGuid)
-            .ToDictionary(x => x.Key, x => x.First());
+        foreach (var entity in entities)
+        {
+            maximumDamage = Math.Max(maximumDamage, entity.Value.Damage);
+            maximumHeal = Math.Max(maximumHeal, entity.Value.Heal);
+            maximumTakenDamage = Math.Max(maximumTakenDamage, entity.Value.TakenDamage);
+            totalDamage += entity.Value.Damage;
+            totalHeal += entity.Value.Heal;
+            totalTakenDamage += entity.Value.TakenDamage;
+        }
+
+        var fragmentsByCauser = new Dictionary<Guid, DamageMeterFragment>();
+        var fragmentNames = new HashSet<string>(StringComparer.Ordinal);
+        var hasDuplicateFragments = false;
+        foreach (var fragment in damageMeter)
+        {
+            fragmentsByCauser.TryAdd(fragment.CauserGuid, fragment);
+            if (!fragmentNames.Add(fragment.Name ?? string.Empty))
+            {
+                hasDuplicateFragments = true;
+            }
+        }
 
         foreach (var healthChangeObject in entities)
         {
@@ -342,20 +441,40 @@ public class CombatController
             fragmentsByCauser.TryGetValue(healthChangeObject.Value.UserGuid, out var fragment);
             if (fragment != null)
             {
-                await UpdateDamageMeterFragmentAsync(fragment, healthChangeObject, entities, maximumDamage, maximumHeal, maximumTakenDamage);
+                await UpdateDamageMeterFragmentAsync(
+                    fragment,
+                    healthChangeObject,
+                    maximumDamage,
+                    maximumHeal,
+                    maximumTakenDamage,
+                    totalDamage,
+                    totalHeal,
+                    totalTakenDamage);
             }
             else
             {
-                await AddDamageMeterFragmentAsync(damageMeter, healthChangeObject, entities, maximumDamage, maximumHeal, maximumTakenDamage).ConfigureAwait(true);
+                await AddDamageMeterFragmentAsync(
+                    damageMeter,
+                    healthChangeObject,
+                    maximumDamage,
+                    maximumHeal,
+                    maximumTakenDamage,
+                    totalDamage,
+                    totalHeal,
+                    totalTakenDamage).ConfigureAwait(true);
             }
         }
 
-        await RemoveDuplicatesAsync(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter);
+        if (hasDuplicateFragments)
+        {
+            await RemoveDuplicatesAsync(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter);
+        }
+
         Application.Current.Dispatcher.Invoke(() => _mainWindowViewModel.DamageMeterBindings?.SetDamageMeterSort());
     }
 
     private static async Task UpdateDamageMeterFragmentAsync(DamageMeterFragment fragment, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
-        List<KeyValuePair<Guid, PlayerGameObject>> entities, long maximumDamage, long maximumHeal, long maximumTakenDamage)
+        long maximumDamage, long maximumHeal, long maximumTakenDamage, long totalDamage, long totalHeal, long totalTakenDamage)
     {
         var healthChangeObjectValue = healthChangeObject.Value;
         var combatTime = healthChangeObjectValue.GetCombatTime(DateTime.UtcNow);
@@ -385,9 +504,9 @@ public class CombatController
         if (healthChangeObjectValue != null)
         {
             fragment.CombatTime = combatTime;
-            fragment.DamagePercentage = entities.GetDamagePercentage(healthChangeObjectValue.Damage);
-            fragment.HealPercentage = entities.GetHealPercentage(healthChangeObjectValue.Heal);
-            fragment.TakenDamagePercentage = entities.GetTakenDamagePercentage(healthChangeObjectValue.TakenDamage);
+            fragment.DamagePercentage = CalculateBarPercentage(healthChangeObjectValue.Damage, totalDamage);
+            fragment.HealPercentage = CalculateBarPercentage(healthChangeObjectValue.Heal, totalHeal);
+            fragment.TakenDamagePercentage = CalculateBarPercentage(healthChangeObjectValue.TakenDamage, totalTakenDamage);
             fragment.OverhealedPercentageOfTotalHealing = GetOverhealedPercentageOfHealWithOverhealed(healthChangeObjectValue.Overhealed, healthChangeObjectValue.Heal);
         }
     }
@@ -406,7 +525,7 @@ public class CombatController
     }
 
     private static async Task AddDamageMeterFragmentAsync(ICollection<DamageMeterFragment> damageMeter, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
-        List<KeyValuePair<Guid, PlayerGameObject>> entities, long maximumDamage, long maximumHeal, long maximumTakenDamage)
+        long maximumDamage, long maximumHeal, long maximumTakenDamage, long totalDamage, long totalHeal, long totalTakenDamage)
     {
         if (healthChangeObject.Value == null
             || (double.IsNaN(healthChangeObject.Value.Damage) && double.IsNaN(healthChangeObject.Value.Heal) && double.IsNaN(healthChangeObject.Value.Overhealed))
@@ -430,18 +549,18 @@ public class CombatController
             Damage = healthChangeObjectValue.Damage,
             Dps = healthChangeObjectValue.Dps,
             DamageInPercent = CalculateBarPercentage(healthChangeObjectValue.Damage, maximumDamage),
-            DamagePercentage = entities.GetDamagePercentage(healthChangeObjectValue.Damage),
+            DamagePercentage = CalculateBarPercentage(healthChangeObjectValue.Damage, totalDamage),
 
             Heal = healthChangeObjectValue.Heal,
             Hps = healthChangeObjectValue.Hps,
             HealInPercent = CalculateBarPercentage(healthChangeObjectValue.Heal, maximumHeal),
-            HealPercentage = entities.GetHealPercentage(healthChangeObjectValue.Heal),
+            HealPercentage = CalculateBarPercentage(healthChangeObjectValue.Heal, totalHeal),
             Overhealed = healthChangeObjectValue.Overhealed,
             OverhealedPercentageOfTotalHealing = GetOverhealedPercentageOfHealWithOverhealed(healthChangeObjectValue.Overhealed, healthChangeObjectValue.Heal),
 
             TakenDamage = healthChangeObjectValue.TakenDamage,
             TakenDamageInPercent = CalculateBarPercentage(healthChangeObjectValue.TakenDamage, maximumTakenDamage),
-            TakenDamagePercentage = entities.GetTakenDamagePercentage(healthChangeObjectValue.TakenDamage),
+            TakenDamagePercentage = CalculateBarPercentage(healthChangeObjectValue.TakenDamage, totalTakenDamage),
 
             Name = healthChangeObjectValue.Name,
             CauserMainHand = item,
@@ -455,35 +574,24 @@ public class CombatController
         });
     }
 
-    private static bool HasDamageMeterDupes(IEnumerable<DamageMeterFragment> damageMeter)
-    {
-        return damageMeter?.ToList().GroupBy(x => x?.Name).Any(g => g.Count() > 1) ?? false;
-    }
-
     private static async Task RemoveDuplicatesAsync(ICollection<DamageMeterFragment> damageMeter)
     {
-        if (!HasDamageMeterDupes(damageMeter))
+        if (damageMeter == null || damageMeter.Count <= 1)
         {
             return;
         }
 
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
-            var damageMeterWithoutDupes = (from dmf in damageMeter.ToList()
-                                           group dmf by dmf.Name into x
-                                           select new DamageMeterFragment(x.FirstOrDefault())).ToList();
-
-            if (damageMeterWithoutDupes.Count <= 0)
+            var names = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var fragment in damageMeter.ToList())
             {
-                return;
-            }
-
-            foreach (var damageMeterFragment in damageMeter.ToList())
-            {
-                if (damageMeterWithoutDupes.Any(x => x.Equals(damageMeterFragment)))
+                if (names.Add(fragment.Name ?? string.Empty))
                 {
-                    damageMeter.Remove(damageMeterFragment);
+                    continue;
                 }
+
+                damageMeter.Remove(fragment);
             }
         });
     }
@@ -542,6 +650,7 @@ public class CombatController
 
     public void ResetDamageMeter()
     {
+        InvalidateMobDamageMeterView(true);
         lock (_damageStatsUiUpdateLock)
         {
             _damageStatsVersion++;
@@ -633,6 +742,7 @@ public class CombatController
 
     private void OnDamageMeterContentFilterChanged(DashboardContentType? contentType)
     {
+        InvalidateMobDamageMeterView(true);
         lock (_damageStatsUiUpdateLock)
         {
             _damageStatsVersion++;
@@ -656,6 +766,7 @@ public class CombatController
 
     private void OnDamageMeterDisplayChanged()
     {
+        InvalidateMobDamageMeterView(false);
         _lastDamageUiUpdate = DateTime.MinValue;
         _isUiUpdateActive = false;
         UpdateDamageMeterUiForSelectedContent();
@@ -1022,65 +1133,60 @@ public class CombatController
 
     private static async Task AddOrUpdateSpellFragmentAsync(ObservableCollection<UsedSpellFragment> spellsFragments, IReadOnlyCollection<UsedSpell> spells)
     {
-        var fragmentsToAdd = new List<UsedSpellFragment>();
-        var fragmentsToUpdate = new List<UsedSpellFragment>();
-        var totalDamage = spells.Sum(spell => spell?.DamageHealValue) ?? 0;
-        var maxDamage = spells.Max(spell => spell?.DamageHealValue) ?? 0;
+        var spellSnapshot = spells?.Where(x => x != null).ToList() ?? [];
+        long totalDamage = 0;
+        long maximumDamage = 0;
 
-        await Application.Current.Dispatcher.InvokeAsync(async () =>
+        foreach (var spell in spellSnapshot)
         {
-            await foreach (var spell in spells.ToList().ToAsyncEnumerable())
-            {
-                var existingFragment = spellsFragments.FirstOrDefault(x => x.SpellIndex == spell.SpellIndex && x.HealthChangeType == spell.HealthChangeType);
+            totalDamage += spell.DamageHealValue;
+            maximumDamage = Math.Max(maximumDamage, spell.DamageHealValue);
+        }
 
-                if (existingFragment != null)
+        await Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            var existingFragments = spellsFragments
+                .GroupBy(x => (x.SpellIndex, x.HealthChangeType))
+                .ToDictionary(x => x.Key, x => x.First());
+
+            foreach (var spell in spellSnapshot)
+            {
+                var damageInPercent = CalculateBarPercentage(spell.DamageHealValue, maximumDamage);
+                var damagePercentage = CalculateBarPercentage(spell.DamageHealValue, totalDamage);
+                var key = (spell.SpellIndex, spell.HealthChangeType);
+
+                if (existingFragments.TryGetValue(key, out var existingFragment))
                 {
                     existingFragment.ItemIndex = spell.ItemIndex;
+                    existingFragment.UniqueName = spell.UniqueName;
+                    existingFragment.Category = spell.Category;
+                    existingFragment.Target = spell.Target;
                     existingFragment.DamageHealValue = spell.DamageHealValue;
                     existingFragment.Ticks = spell.Ticks;
-                    existingFragment.DamageInPercent = (maxDamage != 0) ? (double) spell.DamageHealValue / maxDamage * 100 : 0;
-                    existingFragment.DamagePercentage = (totalDamage != 0) ? 100.00 / totalDamage * spell.DamageHealValue : 0;
-                    fragmentsToUpdate.Add(existingFragment);
+                    existingFragment.DamageInPercent = damageInPercent;
+                    existingFragment.DamagePercentage = damagePercentage;
+                    continue;
                 }
-                else
+
+                var fragment = new UsedSpellFragment
                 {
-                    var damageInPercent = (maxDamage != 0) ? (double) spell.DamageHealValue / maxDamage * 100 : 0;
-                    var damagePercentage = (totalDamage != 0) ? 100.00 / totalDamage * spell.DamageHealValue : 0;
-
-                    fragmentsToAdd.Add(new UsedSpellFragment
-                    {
-                        SpellIndex = spell.SpellIndex,
-                        ItemIndex = spell.ItemIndex,
-                        UniqueName = spell.UniqueName,
-                        DamageHealValue = spell.DamageHealValue,
-                        Category = spell.Category,
-                        Target = spell.Target,
-                        Ticks = spell.Ticks,
-                        HealthChangeType = spell.HealthChangeType,
-                        DamageInPercent = damageInPercent > 100 ? 100 : damageInPercent,
-                        DamagePercentage = damagePercentage > 100 ? 100 : damagePercentage
-                    });
-                }
-            }
-
-            foreach (var fragment in fragmentsToAdd)
-            {
+                    SpellIndex = spell.SpellIndex,
+                    ItemIndex = spell.ItemIndex,
+                    UniqueName = spell.UniqueName,
+                    DamageHealValue = spell.DamageHealValue,
+                    Category = spell.Category,
+                    Target = spell.Target,
+                    Ticks = spell.Ticks,
+                    HealthChangeType = spell.HealthChangeType,
+                    DamageInPercent = damageInPercent,
+                    DamagePercentage = damagePercentage
+                };
                 spellsFragments.Add(fragment);
+                existingFragments.Add(key, fragment);
             }
 
-            foreach (var fragment in fragmentsToUpdate)
-            {
-                var updatedFragment = fragmentsToAdd.FirstOrDefault(x => x.SpellIndex == fragment.SpellIndex);
-                if (updatedFragment != null)
-                {
-                    fragment.DamageHealValue = updatedFragment.DamageHealValue;
-                    fragment.Ticks = updatedFragment.Ticks;
-                    fragment.DamageInPercent = updatedFragment.DamageInPercent;
-                    fragment.DamagePercentage = updatedFragment.DamagePercentage;
-                }
-            }
-
-            spellsFragments.SortByDescending(x => x.DamageHealValue);
+            spellsFragments.OrderByReference(
+                spellsFragments.OrderByDescending(x => x.DamageHealValue).ToList());
         });
     }
 

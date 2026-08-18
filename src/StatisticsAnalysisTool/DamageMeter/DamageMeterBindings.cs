@@ -23,6 +23,7 @@ public class DamageMeterBindings : BaseViewModel
     private Brush _damageMeterActivationToggleColor;
     private ObservableCollection<DamageMeterFragment> _damageMeter = new();
     private ObservableCollection<MobDamageMeterFragment> _mobDamageMeter = [];
+    private readonly Dictionary<(Guid MobInstanceId, DashboardContentType ContentType), MobDamageMeterFragment> _mobDamageMeterByKey = [];
     private List<DamageMeterSnapshot> _damageMeterSnapshots = new();
     private DamageMeterSnapshot _damageMeterSnapshotSelection;
     private DamageMeterSortStruct _damageMeterSnapshotSortSelection;
@@ -155,40 +156,51 @@ public class DamageMeterBindings : BaseViewModel
         }
     }
 
-    public void SetMobDamageMeter(IReadOnlyCollection<MobDamageMeterFragment> fragments)
+    public void ApplyMobDamageMeterUpdate(
+        IReadOnlyCollection<MobDamageMeterFragment> updatedFragments,
+        long totalDamage)
     {
-        var updatedFragments = fragments.ToList();
-        var updatedKeys = updatedFragments
-            .Select(GetMobFragmentKey)
-            .ToHashSet();
-
-        for (var index = MobDamageMeter.Count - 1; index >= 0; index--)
+        if (updatedFragments == null)
         {
-            if (!updatedKeys.Contains(GetMobFragmentKey(MobDamageMeter[index])))
-            {
-                MobDamageMeter.RemoveAt(index);
-            }
+            return;
         }
 
-        var existingFragments = MobDamageMeter.ToDictionary(GetMobFragmentKey);
-        for (var targetIndex = 0; targetIndex < updatedFragments.Count; targetIndex++)
+        foreach (var updatedFragment in updatedFragments)
         {
-            var updatedFragment = updatedFragments[targetIndex];
             var key = GetMobFragmentKey(updatedFragment);
-            if (!existingFragments.TryGetValue(key, out var existingFragment))
+            if (_mobDamageMeterByKey.TryGetValue(key, out var existingFragment))
             {
-                MobDamageMeter.Insert(targetIndex, updatedFragment);
-                existingFragments.Add(key, updatedFragment);
+                existingFragment.UpdateFrom(updatedFragment);
                 continue;
             }
 
-            existingFragment.UpdateFrom(updatedFragment);
-            var currentIndex = MobDamageMeter.IndexOf(existingFragment);
-            if (currentIndex != targetIndex)
+            InsertMobDamageMeterFragment(updatedFragment);
+            _mobDamageMeterByKey.Add(key, updatedFragment);
+        }
+
+        foreach (var fragment in MobDamageMeter)
+        {
+            var damagePercentage = totalDamage > 0
+                ? fragment.Damage / (double) totalDamage * 100
+                : 0;
+
+            if (!fragment.DamagePercentage.Equals(damagePercentage))
             {
-                MobDamageMeter.Move(currentIndex, targetIndex);
+                fragment.DamagePercentage = damagePercentage;
             }
         }
+    }
+
+    private void InsertMobDamageMeterFragment(MobDamageMeterFragment fragment)
+    {
+        var insertionIndex = MobDamageMeter.Count;
+        while (insertionIndex > 0
+               && fragment.FirstAttackTime > MobDamageMeter[insertionIndex - 1].FirstAttackTime)
+        {
+            insertionIndex--;
+        }
+
+        MobDamageMeter.Insert(insertionIndex, fragment);
     }
 
     private static (Guid MobInstanceId, DashboardContentType ContentType) GetMobFragmentKey(MobDamageMeterFragment fragment)
@@ -199,6 +211,7 @@ public class DamageMeterBindings : BaseViewModel
     public void ClearMobDamageMeter()
     {
         MobDamageMeter.Clear();
+        _mobDamageMeterByKey.Clear();
     }
 
     public ObservableCollection<DamageMeterContentFilterOption> DamageMeterContentFilters

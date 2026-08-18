@@ -24,6 +24,9 @@ public sealed class CombatEventTracker(TrackingController trackingController)
     private readonly ConcurrentDictionary<long, CombatMobCacheEntry> _recentlyLeftMobs = new();
     private readonly List<CombatEvent> _combatEvents = [];
     private readonly Dictionary<Guid, Dictionary<DashboardContentType, CombatMobDamageStats>> _mobDamageStatsByInstance = [];
+    private readonly Dictionary<DashboardContentType, long> _confirmedMobDamageByContent = [];
+    private long _confirmedMobDamage;
+    private long _mobDamageStatsVersion;
     private readonly HashSet<long> _partyPlayersInCombat = [];
     private readonly MobDataResolver _mobDataResolver = new();
     private CombatEvent _activeCombatEvent;
@@ -81,6 +84,30 @@ public sealed class CombatEventTracker(TrackingController trackingController)
                 .Where(x => !contentType.HasValue || x.ContentType == contentType.Value)
                 .Select(x => x.Clone())
                 .ToList();
+        }
+    }
+
+    public CombatMobDamageStatsUpdate GetMobDamageStatsUpdate(DashboardContentType? contentType, long afterVersion)
+    {
+        lock (_syncLock)
+        {
+            var effectiveAfterVersion = afterVersion <= _mobDamageStatsVersion ? afterVersion : 0;
+            var changedMobs = _mobDamageStatsByInstance.Values
+                .SelectMany(x => x.Values)
+                .Where(x => x.IsConfirmedMob)
+                .Where(x => !contentType.HasValue || x.ContentType == contentType.Value)
+                .Where(x => x.Version > effectiveAfterVersion)
+                .Select(x => x.Clone())
+                .ToList();
+
+            return new CombatMobDamageStatsUpdate
+            {
+                Version = _mobDamageStatsVersion,
+                TotalDamage = contentType.HasValue
+                    ? _confirmedMobDamageByContent.GetValueOrDefault(contentType.Value)
+                    : _confirmedMobDamage,
+                ChangedMobs = changedMobs
+            };
         }
     }
 
@@ -233,7 +260,10 @@ public sealed class CombatEventTracker(TrackingController trackingController)
             _combatEvents.Clear();
             _partyPlayersInCombat.Clear();
             _mobDamageStatsByInstance.Clear();
+            _confirmedMobDamageByContent.Clear();
             _recentlyLeftMobs.Clear();
+            _confirmedMobDamage = 0;
+            _mobDamageStatsVersion++;
         }
     }
 
@@ -425,7 +455,7 @@ public sealed class CombatEventTracker(TrackingController trackingController)
                 ContentType = contentType,
                 FirstSeen = mob.FirstSeen
             };
-            mobDamageStats.UpdateMob(mob);
+            _ = mobDamageStats.UpdateMob(mob);
             statsByContent.Add(contentType, mobDamageStats);
         }
 
@@ -436,6 +466,13 @@ public sealed class CombatEventTracker(TrackingController trackingController)
             sourcePlayer?.LastContributionWeaponItemIndex ?? 0,
             value,
             DateTime.UtcNow);
+        mobDamageStats.MarkUpdated(++_mobDamageStatsVersion);
+
+        if (mobDamageStats.IsConfirmedMob)
+        {
+            _confirmedMobDamage += value;
+            _confirmedMobDamageByContent[contentType] = _confirmedMobDamageByContent.GetValueOrDefault(contentType) + value;
+        }
     }
 
     private void UpdateMobDamageStats(CombatMobCacheEntry mob)
@@ -446,7 +483,15 @@ public sealed class CombatEventTracker(TrackingController trackingController)
             {
                 foreach (var mobDamageStats in statsByContent.Values)
                 {
-                    mobDamageStats.UpdateMob(mob);
+                    var becameConfirmedMob = mobDamageStats.UpdateMob(mob);
+                    mobDamageStats.MarkUpdated(++_mobDamageStatsVersion);
+
+                    if (becameConfirmedMob)
+                    {
+                        _confirmedMobDamage += mobDamageStats.Damage;
+                        _confirmedMobDamageByContent[mobDamageStats.ContentType] =
+                            _confirmedMobDamageByContent.GetValueOrDefault(mobDamageStats.ContentType) + mobDamageStats.Damage;
+                    }
                 }
             }
 

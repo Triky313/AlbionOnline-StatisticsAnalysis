@@ -11,10 +11,14 @@ public static class MobAvatarImageProvider
     private const string DefaultAvatarFileName = "p_questgiver_client.png";
     private static readonly string AvatarResourceBasePath = $"pack://application:,,,/{Assembly.GetExecutingAssembly().GetName().Name};component/Assets/MobAvatars/";
     private static readonly ConcurrentDictionary<string, BitmapImage> AvatarCache = new(StringComparer.OrdinalIgnoreCase);
+    private static readonly ConcurrentDictionary<string, string> AvatarFileNameCache = new(StringComparer.OrdinalIgnoreCase);
 
     public static BitmapImage GetAvatarSource(string avatar)
     {
-        var avatarFileName = GetExistingAvatarFileName(avatar);
+        var avatarCacheKey = string.IsNullOrWhiteSpace(avatar) ? DefaultAvatarFileName : avatar;
+        var avatarFileName = AvatarFileNameCache.GetOrAdd(
+            avatarCacheKey,
+            GetExistingAvatarFileName);
         if (AvatarCache.TryGetValue(avatarFileName, out var cachedAvatar))
         {
             return cachedAvatar;
@@ -31,7 +35,7 @@ public static class MobAvatarImageProvider
 
     private static string GetExistingAvatarFileName(string avatar)
     {
-        return !string.IsNullOrWhiteSpace(avatar) && AvatarResourceExists(avatar)
+        return AvatarResourceExists(avatar)
             ? avatar
             : DefaultAvatarFileName;
     }
@@ -40,7 +44,14 @@ public static class MobAvatarImageProvider
     {
         try
         {
-            return Application.GetResourceStream(CreateAvatarUri(avatar)) != null;
+            var resourceStream = Application.GetResourceStream(CreateAvatarUri(avatar));
+            if (resourceStream == null)
+            {
+                return false;
+            }
+
+            resourceStream.Stream?.Dispose();
+            return true;
         }
         catch
         {

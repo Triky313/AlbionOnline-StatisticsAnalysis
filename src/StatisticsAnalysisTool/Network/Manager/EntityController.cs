@@ -20,6 +20,7 @@ namespace StatisticsAnalysisTool.Network.Manager;
 public class EntityController
 {
     private readonly ConcurrentDictionary<Guid, PlayerGameObject> _knownEntities = new();
+    private readonly ConcurrentDictionary<long, Guid> _entityGuidsByObjectId = new();
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly ObservableCollection<EquipmentItemInternal> _newEquipmentItems = [];
     private readonly ObservableCollection<SpellEffect> _spellEffects = [];
@@ -45,6 +46,7 @@ public class EntityController
 
         if (_knownEntities.TryRemove(entity.UserGuid, out var oldEntity))
         {
+            RemoveObjectIdIndex(oldEntity);
             // Parties are recreated several times in HCE's and therefore the ObjectId may only be set to zero once after a map change.
             // However, this must not happen in AddEntity
             long? newUserObjectId = oldEntity.ObjectId;
@@ -109,7 +111,10 @@ public class EntityController
             _tempCharacterEquipmentData.TryRemove((long) entity.ObjectId, out _);
         }
 
-        _knownEntities.TryAdd(gameObject.UserGuid, gameObject);
+        if (_knownEntities.TryAdd(gameObject.UserGuid, gameObject))
+        {
+            AddObjectIdIndex(gameObject);
+        }
     }
 
     public void RemoveEntitiesByLastUpdate(int withoutAnUpdateForMinutes)
@@ -120,18 +125,30 @@ public class EntityController
                      && !IsEntityInParty(x.Key)
                      && new DateTime(x.Value.LastUpdate).AddMinutes(withoutAnUpdateForMinutes).Ticks < DateTime.UtcNow.Ticks))
         {
-            _knownEntities.TryRemove(entity.Key, out _);
+            if (_knownEntities.TryRemove(entity.Key, out var removedEntity))
+            {
+                RemoveObjectIdIndex(removedEntity);
+            }
         }
 
         foreach (var entity in _knownEntities.Where(x => x.Value.ObjectSubType != GameObjectSubType.LocalPlayer))
         {
+            RemoveObjectIdIndex(entity.Value);
             entity.Value.ObjectId = null;
         }
     }
 
     public KeyValuePair<Guid, PlayerGameObject>? GetEntity(long objectId)
     {
-        return _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
+        if (!_entityGuidsByObjectId.TryGetValue(objectId, out var entityGuid)
+            || !_knownEntities.TryGetValue(entityGuid, out var entity)
+            || entity.ObjectId != objectId)
+        {
+            RemoveObjectIdIndex(objectId, entityGuid);
+            return null;
+        }
+
+        return new KeyValuePair<Guid, PlayerGameObject>(entityGuid, entity);
     }
 
     public KeyValuePair<Guid, PlayerGameObject>? GetEntity(string uniqueName)
@@ -141,7 +158,9 @@ public class EntityController
 
     public KeyValuePair<Guid, PlayerGameObject> GetEntity(Guid guid)
     {
-        return _knownEntities.FirstOrDefault(x => x.Key == guid);
+        return _knownEntities.TryGetValue(guid, out var entity)
+            ? new KeyValuePair<Guid, PlayerGameObject>(guid, entity)
+            : default;
     }
 
     public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntities(bool onlyInParty = false)
@@ -153,7 +172,7 @@ public class EntityController
     {
         return _knownEntities
             .ToArray()
-            .Where(x => IsEntityInParty(x.Key))
+            .Where(x => x.Value.IsInParty)
             .Select(x => new KeyValuePair<Guid, PlayerGameObject>(
                 x.Key,
                 contentType.HasValue ? x.Value.CreateDamageMeterContentView(contentType.Value) : x.Value))
@@ -167,7 +186,7 @@ public class EntityController
 
     public bool ExistEntity(Guid guid)
     {
-        return _knownEntities?.Any(x => x.Key == guid) ?? false;
+        return _knownEntities.ContainsKey(guid);
     }
 
     public void SetItemPower(Guid guid, double itemPower)
@@ -217,6 +236,7 @@ public class EntityController
         {
             if (_knownEntities.TryRemove(staleLocalEntity.Key, out _))
             {
+                RemoveObjectIdIndex(staleLocalEntity.Value);
                 Log.Information("Removed stale local entity after local player changed. RemovedGuid={RemovedGuid}, CurrentGuid={CurrentGuid}, Name={Name}", staleLocalEntity.Key, currentLocalUserGuid, staleLocalEntity.Value.Name);
             }
         }
@@ -332,13 +352,13 @@ public class EntityController
 
     public bool IsEntityInParty(long objectId)
     {
-        var entity = _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
+        var entity = GetEntity(objectId);
         return entity?.Value?.IsInParty ?? false;
     }
 
     public bool IsEntityInParty(Guid guid)
     {
-        return _knownEntities?.FirstOrDefault(x => x.Key == guid).Value?.IsInParty ?? false;
+        return _knownEntities.TryGetValue(guid, out var entity) && entity.IsInParty;
     }
 
     public bool IsAnyEntityInParty(List<Guid> guids)
@@ -361,7 +381,7 @@ public class EntityController
 
     public async Task SetCharacterEquipmentAsync(long objectId, CharacterEquipment equipment)
     {
-        var entity = _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
+        var entity = GetEntity(objectId);
         if (entity?.Value != null)
         {
             entity.Value.Value.CharacterEquipment = equipment;
@@ -472,7 +492,7 @@ public class EntityController
 
     private void SetCharacterMainHand(long objectId, int itemIndex)
     {
-        var entity = _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
+        var entity = GetEntity(objectId);
         var entityValue = entity?.Value;
 
         if (entityValue == null)
@@ -484,6 +504,33 @@ public class EntityController
         {
             MainHand = itemIndex
         };
+    }
+
+    private void AddObjectIdIndex(PlayerGameObject entity)
+    {
+        if (entity?.ObjectId is { } objectId)
+        {
+            _entityGuidsByObjectId[objectId] = entity.UserGuid;
+        }
+    }
+
+    private void RemoveObjectIdIndex(PlayerGameObject entity)
+    {
+        if (entity?.ObjectId is { } objectId)
+        {
+            RemoveObjectIdIndex(objectId, entity.UserGuid);
+        }
+    }
+
+    private void RemoveObjectIdIndex(long objectId, Guid entityGuid)
+    {
+        if (entityGuid == Guid.Empty)
+        {
+            return;
+        }
+
+        var indexedEntity = new KeyValuePair<long, Guid>(objectId, entityGuid);
+        _ = ((ICollection<KeyValuePair<long, Guid>>) _entityGuidsByObjectId).Remove(indexedEntity);
     }
 
     private void RemoveSpellAndEquipmentObjects()

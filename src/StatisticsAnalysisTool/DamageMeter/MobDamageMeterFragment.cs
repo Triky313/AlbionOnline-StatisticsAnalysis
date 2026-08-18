@@ -132,7 +132,10 @@ public sealed class MobDamageMeterFragment : BaseViewModel
     internal void UpdateFrom(MobDamageMeterFragment updatedFragment)
     {
         var damageChanged = Damage != updatedFragment.Damage;
-        DamagePercentage = updatedFragment.DamagePercentage;
+        if (!DamagePercentage.Equals(updatedFragment.DamagePercentage))
+        {
+            DamagePercentage = updatedFragment.DamagePercentage;
+        }
 
         if (!damageChanged)
         {
@@ -173,6 +176,11 @@ public sealed class MobDamageMeterFragment : BaseViewModel
             }
 
             UpdatePlayer(existingPlayer, updatedPlayer);
+            if (targetIndex < Players.Count && ReferenceEquals(Players[targetIndex], existingPlayer))
+            {
+                continue;
+            }
+
             var currentIndex = Players.IndexOf(existingPlayer);
             if (currentIndex != targetIndex)
             {
@@ -255,6 +263,11 @@ public sealed class MobDamageMeterFragment : BaseViewModel
             }
 
             UpdateSpell(existingSpell, updatedSpell);
+            if (targetIndex < spells.Count && ReferenceEquals(spells[targetIndex], existingSpell))
+            {
+                continue;
+            }
+
             var currentIndex = spells.IndexOf(existingSpell);
             if (currentIndex != targetIndex)
             {
