@@ -3,7 +3,6 @@ using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Network.PacketProviders;
-using StatisticsAnalysisTool.OpenWorld;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
@@ -81,7 +80,6 @@ public class SettingsObject
     public List<MainTabLocationFilterSettingsObject> ItemDetailsLocationFilters { get; set; } = new();
     public double GatheringGridSplitterPosition { get; set; } = 125;
     public bool IsGatheringActive { get; set; }
-    public bool IsOpenWorldTrackingActive { get; set; } = true;
     public bool IsDashboardNaviTabActive { get; set; } = true;
     public bool IsItemSearchNaviTabActive { get; set; } = true;
     public double ItemSearchIconColumnWidth { get; set; } = 75;
@@ -91,7 +89,6 @@ public class SettingsObject
     public bool IsDungeonsNaviTabActive { get; set; } = true;
     public bool IsDamageMeterNaviTabActive { get; set; } = true;
     public bool IsTradeMonitoringNaviTabActive { get; set; } = true;
-    public bool IsOpenWorldNaviTabActive { get; set; } = true;
     public bool IsGatheringNaviTabActive { get; set; } = true;
     public bool IsCraftingNaviTabActive { get; set; } = true;
     public bool IsPartyNaviTabActive { get; set; } = true;
@@ -102,7 +99,6 @@ public class SettingsObject
     public bool IsNotificationFilterTradeActive { get; set; } = false;
     public bool IsNotificationTrackingStatusActive { get; set; } = false;
     public AutoDeleteGatheringStats AutoDeleteGatheringStats { get; set; } = AutoDeleteGatheringStats.NeverDelete;
-    public OpenWorldAutoDeleteStats OpenWorldAutoDeleteStats { get; set; } = OpenWorldAutoDeleteStats.NeverDelete;
     public short ExactMatchPlayerNamesLineNumber { get; set; } = 0;
     public DateTime TradeMonitoringDatePickerTradeFrom { get; set; } = new(2017, 1, 1);
     public DateTime TradeMonitoringDatePickerTradeTo { get; set; } = DateTime.UtcNow.AddDays(1);

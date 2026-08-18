@@ -100,16 +100,32 @@ public sealed class MobDamageMeterFragment : BaseViewModel
     }
 
     public string DpsShortString => Dps.ToShortNumberString();
-    public Tier MobTier { get; init; } = Tier.Unknown;
+    public Tier MobTier { get; init; } = StatisticsAnalysisTool.Enumerations.Tier.Unknown;
     public string MobTierString => (int) MobTier is >= 1 and <= 8 ? MobTier.ToString() : "T?";
     public string MobType { get; init; } = string.Empty;
     public MobRankCategory MobRankCategory => MobRankCategoryResolver.Resolve(UniqueName);
     public string MobRank => MobRankCategoryResolver.GetDisplayName(MobRankCategory);
+    public short Tier => (short) MobTier;
+    public string TierDisplay => Tier > 0 ? $"T{Tier}" : string.Empty;
+    public string MobTypeCategory { get; init; } = string.Empty;
+    public string MobTypeCategoryDisplay => MobDisplayNameFormatter.Humanize(MobTypeCategory);
+    public string Category { get; init; } = string.Empty;
+    public string CategoryDisplay => MobDisplayNameFormatter.Humanize(Category);
+    public string Faction { get; init; } = string.Empty;
+    public string FactionDisplay => MobDisplayNameFormatter.Humanize(Faction);
+    public string AttackType { get; init; } = string.Empty;
+    public string AttackTypeDisplay => MobDisplayNameFormatter.Humanize(AttackType);
+    public bool HasTier => !string.IsNullOrWhiteSpace(TierDisplay);
+    public bool HasMobTypeCategory => !string.IsNullOrWhiteSpace(MobTypeCategoryDisplay);
+    public bool HasCategory => !string.IsNullOrWhiteSpace(CategoryDisplay);
+    public bool HasFaction => !string.IsNullOrWhiteSpace(FactionDisplay);
+    public bool HasAttackType => !string.IsNullOrWhiteSpace(AttackTypeDisplay);
+
     public DashboardContentType ContentType { get; init; }
     public string ContentTypeName => LocalizationController.Translation(DashboardContentTypeResolver.GetTranslationKey(ContentType));
     public string MapName { get; init; } = string.Empty;
-    public Tier MapTier { get; init; } = Tier.Unknown;
-    public string MapTierString => MapTier == Tier.Unknown ? "T?" : MapTier.ToString();
+    public Tier MapTier { get; init; } = StatisticsAnalysisTool.Enumerations.Tier.Unknown;
+    public string MapTierString => MapTier == StatisticsAnalysisTool.Enumerations.Tier.Unknown ? "T?" : MapTier.ToString();
 
     public ObservableCollection<DamageMeterFragment> Players
     {

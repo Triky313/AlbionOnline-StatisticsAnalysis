@@ -27959,27 +27959,6 @@
       ]
     },
     {
-      "tuid": "OPEN_WORLD_ACTIVE",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Offene Welt aktiv"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Open World active"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Monde Ouvert actif"
-        },
-        {
-          "lang": "zh-CN",
-          "seg": "开放世界激活"
-        }
-      ]
-    },
-    {
       "tuid": "KILLED_MAMMOTHS",
       "tuv": [
         {
@@ -28225,55 +28204,6 @@
       ]
     },
     {
-      "tuid": "RESET_OPEN_WORLD_STATS",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Open World Statistik zurücksetzen"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Reset Open World stats"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Reset Open World stats"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Réinitialiser les statistiques du Monde Ouvert"
-        },
-        {
-          "lang": "ja-JP",
-          "seg": "Reset Open World stats"
-        },
-        {
-          "lang": "ko-KR",
-          "seg": "Reset Open World stats"
-        },
-        {
-          "lang": "pl-PL",
-          "seg": "Reset Open World stats"
-        },
-        {
-          "lang": "pt-BR",
-          "seg": "Reset Open World stats"
-        },
-        {
-          "lang": "ru-RU",
-          "seg": "Reset Open World stats"
-        },
-        {
-          "lang": "zh-CN",
-          "seg": "重置开放世界统计"
-        },
-        {
-          "lang": "zh-TW",
-          "seg": "Reset Open World stats"
-        }
-      ]
-    },
-    {
       "tuid": "RESET_ALL",
       "tuv": [
         {
@@ -28319,55 +28249,6 @@
         {
           "lang": "zh-TW",
           "seg": "Reset all"
-        }
-      ]
-    },
-    {
-      "tuid": "SURE_YOU_WANT_TO_RESET_OPEN_WORLD_STATS",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Möchtest du die Open World Statistik wirklich zurücksetzen ?"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Are you sure you want to reset the Open World stats ?"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Are you sure you want to reset the Open World stats ?"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Veux-tu vraiment réinitialiser les statistiques du monde ouvert ?"
-        },
-        {
-          "lang": "ja-JP",
-          "seg": "Are you sure you want to reset the Open World stats ?"
-        },
-        {
-          "lang": "ko-KR",
-          "seg": "Are you sure you want to reset the Open World stats ?"
-        },
-        {
-          "lang": "pl-PL",
-          "seg": "Are you sure you want to reset the Open World stats ?"
-        },
-        {
-          "lang": "pt-BR",
-          "seg": "Are you sure you want to reset the Open World stats ?"
-        },
-        {
-          "lang": "ru-RU",
-          "seg": "Are you sure you want to reset the Open World stats ?"
-        },
-        {
-          "lang": "zh-CN",
-          "seg": "确定要重置开放世界统计吗？"
-        },
-        {
-          "lang": "zh-TW",
-          "seg": "Are you sure you want to reset the Open World stats ?"
         }
       ]
     },

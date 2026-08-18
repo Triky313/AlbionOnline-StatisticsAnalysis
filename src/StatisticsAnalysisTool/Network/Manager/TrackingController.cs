@@ -14,7 +14,6 @@ using StatisticsAnalysisTool.Guild;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.PacketProviders;
-using StatisticsAnalysisTool.OpenWorld;
 using StatisticsAnalysisTool.Party;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.StorageHistory;
@@ -62,7 +61,7 @@ public class TrackingController : ITrackingController
     public readonly TradeController TradeController;
     public readonly VaultController VaultController;
     public readonly GatheringController GatheringController;
-    public readonly OpenWorldController OpenWorldController;
+    public readonly MobKillController MobKillController;
     public readonly PartyController PartyController;
     public readonly GuildController GuildController;
     public readonly CraftingController CraftingController;
@@ -83,7 +82,7 @@ public class TrackingController : ITrackingController
         TradeController = new TradeController(this, mainWindowViewModel);
         VaultController = new VaultController(mainWindowViewModel);
         GatheringController = new GatheringController(this, mainWindowViewModel);
-        OpenWorldController = new OpenWorldController(this, mainWindowViewModel);
+        MobKillController = new MobKillController(this);
         PartyController = new PartyController(this, mainWindowViewModel);
         GuildController = new GuildController(this, mainWindowViewModel);
         CraftingController = new CraftingController(this, mainWindowViewModel);
@@ -329,7 +328,6 @@ public class TrackingController : ITrackingController
             StatisticController.SaveInFileAsync(),
             DungeonController.SaveInFileAsync(),
             GatheringController.SaveInFileAsync(),
-            OpenWorldController.SaveInFileAsync(),
             GuildController.SaveInFileAsync(),
             CombatController.SaveInFileAsync(),
             MarketController.SaveInFileAsync(),
@@ -352,7 +350,6 @@ public class TrackingController : ITrackingController
             (Settings.Default.TreasureStatsFileName, TreasureController.LoadFromFileAsync),
             (Settings.Default.DungeonRunsFileName, DungeonController.LoadDungeonFromFileAsync),
             (Settings.Default.GatheringFileName, GatheringController.LoadFromFileAsync),
-            ("OpenWorldMobKills.json", OpenWorldController.LoadFromFileAsync),
             (Settings.Default.VaultsFileName, VaultController.LoadFromFileAsync),
             (Settings.Default.GuildFileName, GuildController.LoadFromFileAsync),
             (Settings.Default.DamageMeterSnapshotsFileName, CombatController.LoadFromFileAsync),

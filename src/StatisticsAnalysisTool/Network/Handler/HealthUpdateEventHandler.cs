@@ -9,11 +9,11 @@ public class HealthUpdateEventHandler(TrackingController trackingController) : E
     protected override async Task OnActionAsync(HealthUpdateEvent value)
     {
         var mob = trackingController.CombatController.CombatEventTracker.GetKnownMobOrDefault(value.AffectedObjectId);
-        trackingController.OpenWorldController.TrackLocalPlayerMobDamage(value.AffectedObjectId, value.CauserId, value.HealthChange);
+        trackingController.MobKillController.TrackLocalPlayerMobDamage(value.AffectedObjectId, value.CauserId, value.HealthChange);
 
         if (value.HealthChange < 0 && !value.HasNewHealthValue)
         {
-            await trackingController.OpenWorldController.TryAddMobKillAsync(value.AffectedObjectId, mob, value.HealthChange, value.HasNewHealthValue);
+            trackingController.MobKillController.TryAddMobKill(value.AffectedObjectId, mob, value.HealthChange, value.HasNewHealthValue);
         }
 
         await trackingController.CombatController.AddDamage(value.AffectedObjectId, value.CauserId, value.HealthChange, value.NewHealthValue, value.CausingSpellIndex, value.EffectType);

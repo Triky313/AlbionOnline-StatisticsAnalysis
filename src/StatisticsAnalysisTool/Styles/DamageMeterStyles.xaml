@@ -754,7 +754,7 @@
                     <Grid Margin="5,5,5,5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="80" />
-                            <ColumnDefinition Width="225" />
+                            <ColumnDefinition Width="375" />
                             <ColumnDefinition Width="130" />
                             <ColumnDefinition Width="110" />
                             <ColumnDefinition Width="110" />
@@ -772,17 +772,28 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Row="0" VerticalAlignment="Center" FontSize="14" FontWeight="SemiBold" Text="{Binding Name}" TextTrimming="CharacterEllipsis" />
-                            <StackPanel Grid.Row="1" Orientation="Horizontal">
-                                <Border Style="{StaticResource DamageMeter.TierBadge}" Tag="{Binding MobTier}">
-                                    <TextBlock FontSize="12" FontWeight="Bold" Text="{Binding MobTierString}" />
+                            <WrapPanel Grid.Row="1" VerticalAlignment="Center">
+                                <Border Style="{StaticResource Dashboard.MobTierTag}"
+                                        Visibility="{Binding HasTier, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <TextBlock Text="{Binding TierDisplay}" Style="{StaticResource Dashboard.MobTagText}" Foreground="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type Border}}}" />
                                 </Border>
-                                <Border Style="{StaticResource DamageMeter.MobBadge}" MaxWidth="120">
-                                    <TextBlock FontSize="12" Text="{Binding MobType}" TextTrimming="CharacterEllipsis" />
+                                <Border Style="{StaticResource Dashboard.MobTypeTag}"
+                                        Visibility="{Binding HasMobTypeCategory, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <TextBlock Text="{Binding MobTypeCategoryDisplay}" Style="{StaticResource Dashboard.MobTagText}" Foreground="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type Border}}}" />
                                 </Border>
-                                <Border Style="{StaticResource DamageMeter.MobRankBadge}">
-                                    <TextBlock FontSize="12" Text="{Binding MobRank}" />
+                                <Border Style="{StaticResource Dashboard.MobTag}"
+                                        Visibility="{Binding HasCategory, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <TextBlock Text="{Binding CategoryDisplay}" Style="{StaticResource Dashboard.MobTagText}" />
                                 </Border>
-                            </StackPanel>
+                                <Border Style="{StaticResource Dashboard.MobTag}"
+                                        Visibility="{Binding HasFaction, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <TextBlock Text="{Binding FactionDisplay}" Style="{StaticResource Dashboard.MobTagText}" />
+                                </Border>
+                                <Border Style="{StaticResource Dashboard.MobTag}"
+                                        Visibility="{Binding HasAttackType, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <TextBlock Text="{Binding AttackTypeDisplay}" Style="{StaticResource Dashboard.MobTagText}" />
+                                </Border>
+                            </WrapPanel>
                         </Grid>
 
                         <StackPanel Grid.Column="2" Margin="0,0" VerticalAlignment="Center" ToolTip="{Binding TranslationFirstAttackTime}">

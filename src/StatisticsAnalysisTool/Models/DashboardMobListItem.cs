@@ -6,14 +6,12 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Text.RegularExpressions;
 using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Models;
 
 public sealed class DashboardMobListItem : BaseViewModel
 {
-    private static readonly Regex WordBoundaryRegex = new("(?<=[a-z])(?=[A-Z])", RegexOptions.Compiled);
     private readonly MobJsonObject _mob;
     private IReadOnlyList<DetailValue> _overviewStats;
     private IReadOnlyList<DetailValue> _combatStats;
@@ -37,10 +35,10 @@ public sealed class DashboardMobListItem : BaseViewModel
         Tier = mob.Tier;
         TierDisplay = Tier > 0 ? $"T{Tier}" : string.Empty;
         MobTypeCategory = mob.MobTypeCategory ?? string.Empty;
-        MobTypeCategoryDisplay = Humanize(MobTypeCategory);
-        CategoryDisplay = Humanize(mob.Category);
-        FactionDisplay = Humanize(mob.Faction);
-        AttackTypeDisplay = Humanize(mob.AttackType);
+        MobTypeCategoryDisplay = MobDisplayNameFormatter.Humanize(MobTypeCategory);
+        CategoryDisplay = MobDisplayNameFormatter.Humanize(mob.Category);
+        FactionDisplay = MobDisplayNameFormatter.Humanize(mob.Faction);
+        AttackTypeDisplay = MobDisplayNameFormatter.Humanize(mob.AttackType);
         Kills = kills;
         KillsPerHour = rangeHours > 0 ? kills / rangeHours : 0;
         FirstAttackedDisplay = FormatDate(firstAttackedUtc);
@@ -92,7 +90,7 @@ public sealed class DashboardMobListItem : BaseViewModel
             new DetailValue(DashboardMobsBindings.TranslationHealth, FormatNumber(_mob.HitPointsMax, "N0")),
             new DetailValue(DashboardMobsBindings.TranslationEnergy, FormatNumber(_mob.EnergyMax, "N0")),
             new DetailValue(DashboardMobsBindings.TranslationMoveSpeed, FormatNumber(_mob.MoveSpeed)),
-            new DetailValue(DashboardMobsBindings.TranslationDangerState, Humanize(_mob.DangerState, true)),
+            new DetailValue(DashboardMobsBindings.TranslationDangerState, MobDisplayNameFormatter.Humanize(_mob.DangerState, true)),
             new DetailValue(DashboardMobsBindings.TranslationEnergyReward, FormatInteger(_mob.EnergyReward)),
             new DetailValue(DashboardMobsBindings.TranslationMobValue, FormatInteger(_mob.MobValue))
         ];
@@ -194,21 +192,6 @@ public sealed class DashboardMobListItem : BaseViewModel
         return bool.TryParse(value, out var parsedValue)
             ? parsedValue ? DashboardMobsBindings.TranslationTrue : DashboardMobsBindings.TranslationFalse
             : "—";
-    }
-
-    private static string Humanize(string value, bool preserveEmpty = false)
-    {
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            return preserveEmpty ? "—" : string.Empty;
-        }
-
-        var normalized = value
-            .Replace("_", " ", StringComparison.Ordinal)
-            .Replace("miniboss", "mini boss", StringComparison.OrdinalIgnoreCase)
-            .Replace("hidemob", "hide mob", StringComparison.OrdinalIgnoreCase);
-        normalized = WordBoundaryRegex.Replace(normalized, " ");
-        return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(normalized.ToLower(CultureInfo.CurrentCulture));
     }
 
     public sealed class DetailValue

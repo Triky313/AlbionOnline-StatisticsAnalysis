@@ -199,7 +199,8 @@ public sealed class StatisticSessionStorage
             CombatAreaIndex = entry.CombatAreaIndex,
             CombatAreaClusterType = entry.CombatAreaClusterType,
             CombatOpponentName = entry.CombatOpponentName,
-            CombatLootValue = entry.CombatLootValue
+            CombatLootValue = entry.CombatLootValue,
+            MobUniqueName = entry.MobUniqueName
         };
     }
 }
