@@ -1,6 +1,7 @@
-﻿namespace StatisticsAnalysisTool.Network;
+namespace StatisticsAnalysisTool.Network;
 
-public interface IPacketHandler
+public interface IPacketHandler<in TPacket>
 {
-    Task HandleAsync(object request);
+    int Code { get; }
+    Task HandleAsync(TPacket packet);
 }

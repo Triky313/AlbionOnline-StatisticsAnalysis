@@ -1,25 +1,17 @@
-﻿namespace StatisticsAnalysisTool.Network;
+namespace StatisticsAnalysisTool.Network;
 
 public abstract class EventPacketHandler<TEvent> : PacketHandler<EventPacket>
 {
-    private readonly int _eventCode;
+    private static readonly Func<Dictionary<byte, object>, TEvent> Factory = PacketModelFactory<TEvent>.Factory;
 
-    protected EventPacketHandler(int eventCode)
+    protected EventPacketHandler(int eventCode) : base(eventCode)
     {
-        _eventCode = eventCode;
     }
 
     protected abstract Task OnActionAsync(TEvent value);
 
     protected override Task OnHandleAsync(EventPacket packet)
     {
-        if (_eventCode != packet.EventCode)
-        {
-            return NextAsync(packet);
-        }
-
-        TEvent instance = (TEvent) Activator.CreateInstance(typeof(TEvent), packet.Parameters);
-
-        return OnActionAsync(instance ?? throw new InvalidOperationException());
+        return OnActionAsync(Factory(packet.Parameters));
     }
 }

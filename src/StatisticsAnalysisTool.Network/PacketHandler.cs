@@ -1,28 +1,18 @@
-﻿namespace StatisticsAnalysisTool.Network;
+namespace StatisticsAnalysisTool.Network;
 
-public abstract class PacketHandler<TPacket> : IPacketHandler
+public abstract class PacketHandler<TPacket> : IPacketHandler<TPacket>
 {
-    private IPacketHandler _nextHandler;
-
-    public void SetNext(IPacketHandler handler)
+    protected PacketHandler(int code)
     {
-        _nextHandler = handler;
+        Code = code;
     }
 
-    public Task HandleAsync(object request)
-    {
-        if (request is TPacket packet)
-        {
-            return OnHandleAsync(packet);
-        }
+    public int Code { get; }
 
-        return _nextHandler != null ? NextAsync(request) : Task.CompletedTask;
+    public Task HandleAsync(TPacket packet)
+    {
+        return OnHandleAsync(packet);
     }
 
     protected abstract Task OnHandleAsync(TPacket packet);
-
-    protected Task NextAsync(object request)
-    {
-        return _nextHandler?.HandleAsync(request) ?? Task.CompletedTask;
-    }
 }
