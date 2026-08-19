@@ -15,6 +15,11 @@ public abstract class PhotonParser : IPhotonReceiver
 
     public void ReceivePacket(byte[] payload)
     {
+        ReceivePacket(payload.AsSpan());
+    }
+
+    public void ReceivePacket(ReadOnlySpan<byte> payload)
+    {
         if (payload.Length < PhotonHeaderLength)
         {
             return;
@@ -63,9 +68,16 @@ public abstract class PhotonParser : IPhotonReceiver
             {
                 return;
             }
-            NumberSerializer.Serialize(0, payload, ref offset);
 
-            if (crc != CrcCalculator.Calculate(payload, payload.Length))
+            int crcOffset = offset;
+            if (crcOffset > payload.Length - sizeof(int))
+            {
+                return;
+            }
+
+            offset += sizeof(int);
+
+            if (crc != CrcCalculator.Calculate(payload, crcOffset, sizeof(int)))
             {
                 // Invalid crc
                 return;
@@ -76,18 +88,6 @@ public abstract class PhotonParser : IPhotonReceiver
         {
             HandleCommand(payload, ref offset);
         }
-    }
-
-    public void ReceivePacket(ReadOnlySpan<byte> payload)
-    {
-        if (payload.IsEmpty)
-        {
-            return;
-        }
-
-        var tmp = new byte[payload.Length];
-        payload.CopyTo(tmp);
-        ReceivePacket(tmp);
     }
 
     public void ReceivePacket(ReadOnlySequence<byte> payload)
@@ -115,7 +115,7 @@ public abstract class PhotonParser : IPhotonReceiver
 
     protected abstract void OnEvent(byte code, Dictionary<byte, object> parameters);
 
-    private void HandleCommand(byte[] source, ref int offset)
+    private void HandleCommand(ReadOnlySpan<byte> source, ref int offset)
     {
         if (!ReadByte(out byte commandType, source, ref offset))
         {
@@ -171,7 +171,7 @@ public abstract class PhotonParser : IPhotonReceiver
         }
     }
 
-    private void HandleSendReliable(byte[] source, ref int offset, ref int commandLength)
+    private void HandleSendReliable(ReadOnlySpan<byte> source, ref int offset, ref int commandLength)
     {
         // Skip 1 byte
         offset++;
@@ -180,30 +180,27 @@ public abstract class PhotonParser : IPhotonReceiver
         commandLength--;
 
         int operationLength = commandLength;
-        var payload = new Protocol18Stream(operationLength);
-        payload.Write(source, offset, operationLength);
-        payload.Seek(0L, SeekOrigin.Begin);
-
+        ReadOnlySpan<byte> operationPayload = source.Slice(offset, operationLength);
         offset += operationLength;
         switch ((MessageType) messageType)
         {
             case MessageType.OperationRequest:
                 {
-                    OperationRequest requestData = Protocol18Deserializer.DeserializeOperationRequest(payload);
+                    OperationRequest requestData = Protocol18Deserializer.DeserializeOperationRequest(operationPayload);
                     DebugConsole.LogOperationRequest(requestData.OperationCode, requestData.Parameters);
                     OnRequest(requestData.OperationCode, requestData.Parameters);
                     break;
                 }
             case MessageType.OperationResponse:
                 {
-                    OperationResponse responseData = Protocol18Deserializer.DeserializeOperationResponse(payload);
+                    OperationResponse responseData = Protocol18Deserializer.DeserializeOperationResponse(operationPayload);
                     DebugConsole.LogOperationResponse(responseData.OperationCode, responseData.ReturnCode, responseData.DebugMessage, responseData.Parameters);
                     OnResponse(responseData.OperationCode, responseData.ReturnCode, responseData.DebugMessage, responseData.Parameters);
                     break;
                 }
             case MessageType.Event:
                 {
-                    EventData eventData = Protocol18Deserializer.DeserializeEventData(payload);
+                    EventData eventData = Protocol18Deserializer.DeserializeEventData(operationPayload);
                     DebugConsole.LogEvent(eventData.Code, eventData.Parameters);
                     OnEvent(eventData.Code, eventData.Parameters);
                     break;
@@ -211,7 +208,7 @@ public abstract class PhotonParser : IPhotonReceiver
         }
     }
 
-    private void HandleSendFragment(byte[] source, ref int offset, ref int commandLength)
+    private void HandleSendFragment(ReadOnlySpan<byte> source, ref int offset, ref int commandLength)
     {
         if (!NumberDeserializer.Deserialize(out int startSequenceNumber, source, ref offset))
         {
@@ -255,7 +252,7 @@ public abstract class PhotonParser : IPhotonReceiver
         HandleSendReliable(totalPayload, ref offset, ref commandLength);
     }
 
-    private void HandleSegmentedPayload(int startSequenceNumber, int totalLength, int fragmentLength, int fragmentOffset, byte[] source, ref int offset)
+    private void HandleSegmentedPayload(int startSequenceNumber, int totalLength, int fragmentLength, int fragmentOffset, ReadOnlySpan<byte> source, ref int offset)
     {
         SegmentedPackage segmentedPackage = GetSegmentedPackage(startSequenceNumber, totalLength);
 
@@ -277,7 +274,8 @@ public abstract class PhotonParser : IPhotonReceiver
             return;
         }
 
-        Buffer.BlockCopy(source, offset, segmentedPackage.TotalPayload, fragmentOffset, fragmentLength);
+        source.Slice(offset, fragmentLength)
+            .CopyTo(segmentedPackage.TotalPayload.AsSpan(fragmentOffset, fragmentLength));
         offset += fragmentLength;
 
         int fragmentEnd = fragmentOffset + fragmentLength;
@@ -322,7 +320,7 @@ public abstract class PhotonParser : IPhotonReceiver
         return segmentedPackage;
     }
 
-    private bool ReadByte(out byte value, byte[] source, ref int offset)
+    private bool ReadByte(out byte value, ReadOnlySpan<byte> source, ref int offset)
     {
         value = 0;
 
