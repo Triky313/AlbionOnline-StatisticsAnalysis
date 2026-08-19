@@ -833,7 +833,9 @@ public class TradeMonitoringBindings : BaseViewModel
 
     public async Task UpdateProfitOverTimeChartAsync(IEnumerable<Trade> filteredTrades = null)
     {
-        var tradeSnapshot = filteredTrades?.ToList() ?? await GetFilteredTradeSnapshotAsync();
+        var tradeSnapshot = filteredTrades as IReadOnlyList<Trade>
+                            ?? filteredTrades?.ToList()
+                            ?? await GetFilteredTradeSnapshotAsync();
         var chartResult = await Task.Run(() =>
         {
             return _tradeProfitTimeSeriesService.BuildTimeSeries(
@@ -851,7 +853,9 @@ public class TradeMonitoringBindings : BaseViewModel
 
     public async Task UpdateProfitByTimeOfDayChartAsync(IEnumerable<Trade> filteredTrades = null)
     {
-        var tradeSnapshot = filteredTrades?.ToList() ?? await GetFilteredTradeSnapshotAsync();
+        var tradeSnapshot = filteredTrades as IReadOnlyList<Trade>
+                            ?? filteredTrades?.ToList()
+                            ?? await GetFilteredTradeSnapshotAsync();
         var chartResult = await Task.Run(() => _tradeProfitTimeOfDayService.Build(tradeSnapshot));
 
         await Application.Current.Dispatcher.InvokeAsync(() =>
@@ -862,7 +866,9 @@ public class TradeMonitoringBindings : BaseViewModel
 
     public async Task UpdateTopItemRankingsAsync(IEnumerable<Trade> filteredTrades = null)
     {
-        var tradeSnapshot = filteredTrades?.ToList() ?? await GetFilteredTradeSnapshotAsync();
+        var tradeSnapshot = filteredTrades as IReadOnlyList<Trade>
+                            ?? filteredTrades?.ToList()
+                            ?? await GetFilteredTradeSnapshotAsync();
         var rankingResult = await Task.Run(() => _tradeItemRankingService.BuildRankings(tradeSnapshot, TopItemRankingLimit));
 
         await Application.Current.Dispatcher.InvokeAsync(() =>
@@ -877,7 +883,9 @@ public class TradeMonitoringBindings : BaseViewModel
 
     public async Task UpdateLocationStatisticsAsync(IEnumerable<Trade> filteredTrades = null)
     {
-        var tradeSnapshot = filteredTrades?.ToList() ?? await GetFilteredTradeSnapshotAsync();
+        var tradeSnapshot = filteredTrades as IReadOnlyList<Trade>
+                            ?? filteredTrades?.ToList()
+                            ?? await GetFilteredTradeSnapshotAsync();
         var selectedLocations = GetSelectedLocationFilterValues(LocationFilters);
         var statistics = await Task.Run(() => _tradeLocationStatisticsService.Build(tradeSnapshot, selectedLocations));
 
@@ -889,7 +897,9 @@ public class TradeMonitoringBindings : BaseViewModel
 
     private async Task UpdateStatisticViewsAsync(IEnumerable<Trade> filteredTrades = null)
     {
-        var tradeSnapshot = filteredTrades?.ToList() ?? await GetFilteredTradeSnapshotAsync();
+        var tradeSnapshot = filteredTrades as IReadOnlyList<Trade>
+                            ?? filteredTrades?.ToList()
+                            ?? await GetFilteredTradeSnapshotAsync();
 
         await Task.WhenAll(
             UpdateProfitOverTimeChartAsync(tradeSnapshot),
