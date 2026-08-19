@@ -13,6 +13,8 @@ internal sealed class DamageStatsPlayer
     public long TotalDamage { get; set; }
     public long EffectiveHealing { get; set; }
     public long Overheal { get; set; }
+    public RollingDamageWindow BurstDamageFiveSeconds { get; } = new(TimeSpan.FromSeconds(5));
+    public RollingDamageWindow BurstDamageTenSeconds { get; } = new(TimeSpan.FromSeconds(10));
     public Dictionary<DamageType, long> DamageByType { get; } = [];
     public Dictionary<int, long> DamageBySpellIndex { get; } = [];
     public HashSet<long> LastHitTargetObjectIds { get; } = [];

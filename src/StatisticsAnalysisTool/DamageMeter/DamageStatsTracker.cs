@@ -9,7 +9,6 @@ public sealed class DamageStatsTracker
 {
     private readonly object _syncLock = new();
     private readonly Dictionary<Guid, DamageStatsPlayer> _players = new();
-    private readonly List<DamageStatsEvent> _damageEvents = [];
 
     public void RecordDamage(
         Guid playerGuid,
@@ -29,8 +28,11 @@ public sealed class DamageStatsTracker
         lock (_syncLock)
         {
             var player = GetOrAddPlayer(playerGuid, playerName);
+            var damageEvent = new DamageStatsEvent(DateTime.UtcNow, value);
             player.BiggestHit = Math.Max(player.BiggestHit, value);
             player.TotalDamage += value;
+            player.BurstDamageFiveSeconds.AddDamage(damageEvent);
+            player.BurstDamageTenSeconds.AddDamage(damageEvent);
             if (damageType != DamageType.Unknown)
             {
                 player.DamageByType[damageType] = player.DamageByType.GetValueOrDefault(damageType) + value;
@@ -52,14 +54,6 @@ public sealed class DamageStatsTracker
                     player.MobLastHitTargetObjectIds.Add(targetObjectId);
                 }
             }
-
-            _damageEvents.Add(new DamageStatsEvent
-            {
-                Timestamp = DateTime.UtcNow,
-                PlayerGuid = playerGuid,
-                TargetObjectId = targetObjectId,
-                Value = value
-            });
         }
     }
 
@@ -115,8 +109,8 @@ public sealed class DamageStatsTracker
                 TopLastHits = CreateTopEntries(players, x => x.LastHitTargetObjectIds.Count),
                 TopMobKillContribution = CreateTopEntries(players, x => x.MobLastHitTargetObjectIds.Count, true),
                 TopOverheals = CreateTopEntries(players, x => x.Overheal),
-                TopBurstDamageFiveSeconds = CreateBurstDamageEntries(activePlayers, TimeSpan.FromSeconds(5)),
-                TopBurstDamageTenSeconds = CreateBurstDamageEntries(activePlayers, TimeSpan.FromSeconds(10)),
+                TopBurstDamageFiveSeconds = CreateTopEntries(players, x => x.BurstDamageFiveSeconds.HighestDamage),
+                TopBurstDamageTenSeconds = CreateTopEntries(players, x => x.BurstDamageTenSeconds.HighestDamage),
                 TopAttackedTargets = CreateTopEntries(players, x => x.AttackedTargetObjectIds.Count),
                 DamageTypeTotals = CreateDamageTypeEntries(players),
                 TopDamageSpells = CreateDamageSpellEntries(players)
@@ -156,7 +150,6 @@ public sealed class DamageStatsTracker
         lock (_syncLock)
         {
             _players.Clear();
-            _damageEvents.Clear();
         }
     }
 
@@ -192,18 +185,6 @@ public sealed class DamageStatsTracker
             calculateSharePercentage);
     }
 
-    private IReadOnlyList<DamageStatsEntry> CreateBurstDamageEntries(IReadOnlySet<Guid> activePlayerGuids, TimeSpan window)
-    {
-        return DamageStatsEntryFactory.Rank(_damageEvents
-            .Where(x => activePlayerGuids.Contains(x.PlayerGuid))
-            .GroupBy(x => x.PlayerGuid)
-            .Select(x => new DamageStatsEntry
-            {
-                PlayerName = GetPlayerName(x.Key),
-                Value = GetHighestBurstDamage(x.OrderBy(y => y.Timestamp).ToList(), window)
-            }));
-    }
-
     private static IReadOnlyList<DamageTypeStatsEntry> CreateDamageTypeEntries(IEnumerable<DamageStatsPlayer> players)
     {
         return DamageTypeStatsEntryFactory.Rank(players
@@ -225,32 +206,5 @@ public sealed class DamageStatsTracker
                 SpellIndex = entry.Key,
                 Value = entry.Value
             }));
-    }
-
-    private string GetPlayerName(Guid playerGuid)
-    {
-        return _players.TryGetValue(playerGuid, out var player) ? player.PlayerName : string.Empty;
-    }
-
-    private static long GetHighestBurstDamage(IReadOnlyList<DamageStatsEvent> events, TimeSpan window)
-    {
-        long highestDamage = 0;
-        long currentDamage = 0;
-        var startIndex = 0;
-
-        for (var endIndex = 0; endIndex < events.Count; endIndex++)
-        {
-            currentDamage += events[endIndex].Value;
-
-            while (events[endIndex].Timestamp - events[startIndex].Timestamp > window)
-            {
-                currentDamage -= events[startIndex].Value;
-                startIndex++;
-            }
-
-            highestDamage = Math.Max(highestDamage, currentDamage);
-        }
-
-        return highestDamage;
     }
 }

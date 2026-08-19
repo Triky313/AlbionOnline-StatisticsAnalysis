@@ -683,13 +683,15 @@ public class CombatController
     public bool IsMaxHealthReached(long objectId, double newHealthValue)
     {
         var gameObject = _trackingController?.EntityController?.GetEntity(objectId);
-        var playerHealth = LastPlayersHealth?.ToArray().FirstOrDefault(x => x.Key == gameObject?.Value?.UserGuid);
-        if (playerHealth?.Value.CompareTo(newHealthValue) == 0)
+        var userGuid = gameObject?.Value?.UserGuid;
+        if (userGuid is { } notNullGuid
+            && LastPlayersHealth.TryGetValue(notNullGuid, out var playerHealth)
+            && playerHealth.CompareTo(newHealthValue) == 0)
         {
             return true;
         }
 
-        SetLastPlayersHealth(gameObject?.Value?.UserGuid, newHealthValue);
+        SetLastPlayersHealth(userGuid, newHealthValue);
         return false;
     }
 
@@ -700,21 +702,7 @@ public class CombatController
             return;
         }
 
-        if (LastPlayersHealth.ContainsKey(notNullGuid))
-        {
-            LastPlayersHealth[notNullGuid] = value;
-        }
-        else
-        {
-            try
-            {
-                LastPlayersHealth.TryAdd(notNullGuid, value);
-            }
-            catch (Exception e)
-            {
-                Log.Warning(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            }
-        }
+        LastPlayersHealth[notNullGuid] = value;
     }
 
     private static HealthChangeType GetHealthChangeType(double healthChange) => healthChange <= 0 ? HealthChangeType.Damage : HealthChangeType.Heal;
