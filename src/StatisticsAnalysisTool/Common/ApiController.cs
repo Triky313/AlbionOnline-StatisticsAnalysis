@@ -10,19 +10,20 @@ using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Common;
 
 public static class ApiController
 {
+    private static readonly HttpClient ApiClient = CreateHttpClient();
+
     /// <summary>
     ///     Returns a list of all city item prices by uniqueName.
     /// </summary>
@@ -59,19 +60,11 @@ public static class ApiController
             url = qualities.Aggregate(url, (current, quality) => current + $"{quality},");
         }
 
-        using var clientHandler = new HttpClientHandler
-        {
-            SslProtocols = System.Security.Authentication.SslProtocols.Tls13 | System.Security.Authentication.SslProtocols.Tls12,
-        };
-        clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
-
-        using var client = new HttpClient(clientHandler);
-        client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
-        client.Timeout = TimeSpan.FromSeconds(30);
+        using var timeoutCts = CreateTimeout(30);
 
         try
         {
-            using var response = await client.GetAsync(url);
+            using var response = await ApiClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, timeoutCts.Token);
             if (response.StatusCode == (HttpStatusCode) 429)
             {
                 throw new TooManyRequestsException();
@@ -79,9 +72,7 @@ public static class ApiController
 
             response.EnsureSuccessStatusCode();
 
-            Stream decompressedStream = await DecompressedStream(response);
-
-            var result = await JsonSerializer.DeserializeAsync<List<MarketResponse>>(decompressedStream);
+            var result = await DeserializeResponseAsync<List<MarketResponse>>(response, timeoutCts.Token);
             return MergeMarketAndPortalLocations(result);
         }
         catch (TooManyRequestsException)
@@ -112,17 +103,11 @@ public static class ApiController
         url += $"&qualities={qualitiesString}";
         url += $"&time-scale={timeScale}";
 
-        using var clientHandler = new HttpClientHandler();
-        clientHandler.SslProtocols = System.Security.Authentication.SslProtocols.Tls13 | System.Security.Authentication.SslProtocols.Tls12;
-        clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
-
-        using var client = new HttpClient(clientHandler);
-        client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
-        client.Timeout = TimeSpan.FromSeconds(300);
+        using var timeoutCts = CreateTimeout(300);
 
         try
         {
-            using var response = await client.GetAsync(url);
+            using var response = await ApiClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, timeoutCts.Token);
 
             if (response.StatusCode == (HttpStatusCode) 429)
             {
@@ -132,18 +117,7 @@ public static class ApiController
 
             response.EnsureSuccessStatusCode();
 
-            await using var responseStream = await response.Content.ReadAsStreamAsync();
-            using var memoryStream = new MemoryStream();
-            await responseStream.CopyToAsync(memoryStream);
-            memoryStream.Position = 0;
-
-            Stream decompressedStream = memoryStream;
-            if (response.Content.Headers.ContentEncoding.Contains("gzip"))
-            {
-                decompressedStream = new GZipStream(memoryStream, CompressionMode.Decompress);
-            }
-
-            var result = await JsonSerializer.DeserializeAsync<List<MarketHistoriesResponse>>(decompressedStream);
+            var result = await DeserializeResponseAsync<List<MarketHistoriesResponse>>(response, timeoutCts.Token);
             return MergeCityAndPortalCity(result);
         }
         catch (Exception e)
@@ -159,28 +133,19 @@ public static class ApiController
         var gameInfoSearchResponse = new GameInfoSearchResponse();
         var url = $"{GetServerBaseUrlByCurrentServer()}/api/gameinfo/search?q={username}";
 
-        using var clientHandler = new HttpClientHandler
-        {
-            SslProtocols = System.Security.Authentication.SslProtocols.Tls13 | System.Security.Authentication.SslProtocols.Tls12,
-            ServerCertificateCustomValidationCallback = (_, _, _, _) => true
-        };
-
-        using var client = new HttpClient(clientHandler)
-        {
-            Timeout = TimeSpan.FromSeconds(120)
-        };
+        using var timeoutCts = CreateTimeout(120);
 
         try
         {
-            using var response = await client.GetAsync(url);
-            using var content = response.Content;
+            using var response = await ApiClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, timeoutCts.Token);
 
             if (!response.IsSuccessStatusCode)
             {
                 return gameInfoSearchResponse;
             }
 
-            return JsonSerializer.Deserialize<GameInfoSearchResponse>(await content.ReadAsStringAsync()) ?? gameInfoSearchResponse;
+            return await DeserializeResponseAsync<GameInfoSearchResponse>(response, timeoutCts.Token)
+                   ?? gameInfoSearchResponse;
         }
         catch (JsonException ex)
         {
@@ -200,29 +165,19 @@ public static class ApiController
         var gameInfoPlayerResponse = new GameInfoPlayersResponse();
         var url = $"{GetServerBaseUrlByCurrentServer()}/api/gameinfo/players/{userid}";
 
-        using var clientHandler = new HttpClientHandler
-        {
-            SslProtocols = System.Security.Authentication.SslProtocols.Tls13 | System.Security.Authentication.SslProtocols.Tls12,
-            ServerCertificateCustomValidationCallback = (_, _, _, _) => true
-        };
-
-        using var client = new HttpClient(clientHandler)
-        {
-            Timeout = TimeSpan.FromSeconds(120)
-        };
+        using var timeoutCts = CreateTimeout(120);
 
         try
         {
-            using var response = await client.GetAsync(url);
-            using var content = response.Content;
+            using var response = await ApiClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, timeoutCts.Token);
 
             if (!response.IsSuccessStatusCode)
             {
                 return gameInfoPlayerResponse;
             }
 
-            return JsonSerializer.Deserialize<GameInfoPlayersResponse>(await content.ReadAsStringAsync()) ??
-                   gameInfoPlayerResponse;
+            return await DeserializeResponseAsync<GameInfoPlayersResponse>(response, timeoutCts.Token)
+                   ?? gameInfoPlayerResponse;
         }
         catch (Exception e)
         {
@@ -244,23 +199,14 @@ public static class ApiController
         var killsDeathsExtensionString = gameInfoPlayersType == GameInfoPlayersType.Kills ? "kills" : "deaths";
         var url = $"{GetServerBaseUrlByCurrentServer()}/api/gameinfo/players/{userid}/{killsDeathsExtensionString}";
 
-        using var clientHandler = new HttpClientHandler
-        {
-            SslProtocols = System.Security.Authentication.SslProtocols.Tls13 | System.Security.Authentication.SslProtocols.Tls12,
-            ServerCertificateCustomValidationCallback = (_, _, _, _) => true
-        };
-
-        using var client = new HttpClient(clientHandler)
-        {
-            Timeout = TimeSpan.FromSeconds(120)
-        };
+        using var timeoutCts = CreateTimeout(120);
 
         try
         {
-            using var response = await client.GetAsync(url);
-            using var content = response.Content;
+            using var response = await ApiClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, timeoutCts.Token);
 
-            return JsonSerializer.Deserialize<List<GameInfoPlayerKillsDeaths>>(await content.ReadAsStringAsync()) ?? values;
+            return await DeserializeResponseAsync<List<GameInfoPlayerKillsDeaths>>(response, timeoutCts.Token)
+                   ?? values;
         }
         catch (Exception e)
         {
@@ -291,21 +237,14 @@ public static class ApiController
 
         var url = $"{GetServerBaseUrlByCurrentServer()}/api/gameinfo/players/{userid}/topkills?range={unitOfTimeString}&offset=0";
 
-        using var clientHandler = new HttpClientHandler();
-        clientHandler.SslProtocols = System.Security.Authentication.SslProtocols.Tls13 | System.Security.Authentication.SslProtocols.Tls12;
-        clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
-
-        using var client = new HttpClient(clientHandler)
-        {
-            Timeout = TimeSpan.FromSeconds(120)
-        };
+        using var timeoutCts = CreateTimeout(120);
 
         try
         {
-            using var response = await client.GetAsync(url);
-            using var content = response.Content;
+            using var response = await ApiClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, timeoutCts.Token);
 
-            return JsonSerializer.Deserialize<List<GameInfoPlayerKillsDeaths>>(await content.ReadAsStringAsync()) ?? values;
+            return await DeserializeResponseAsync<List<GameInfoPlayerKillsDeaths>>(response, timeoutCts.Token)
+                   ?? values;
         }
         catch (Exception e)
         {
@@ -335,28 +274,22 @@ public static class ApiController
 
         var url = $"{GetServerBaseUrlByCurrentServer()}/api/gameinfo/players/{userid}/solokills?range={unitOfTimeString}&offset=0";
 
-        using var clientHandler = new HttpClientHandler
-        {
-            SslProtocols = System.Security.Authentication.SslProtocols.Tls13 | System.Security.Authentication.SslProtocols.Tls12,
-            ServerCertificateCustomValidationCallback = (_, _, _, _) => true
-        };
-
-        using var client = new HttpClient(clientHandler)
-        {
-            Timeout = TimeSpan.FromSeconds(120)
-        };
+        using var timeoutCts = CreateTimeout(120);
 
         try
         {
-            var response = await client.GetAsync(url);
+            using var response = await ApiClient.GetAsync(
+                url,
+                HttpCompletionOption.ResponseHeadersRead,
+                timeoutCts.Token);
             if (!response.IsSuccessStatusCode)
             {
                 Log.Warning("Request failed: {url}, Status: {statusCode}, Reason: {reason}", url, response.StatusCode, response.ReasonPhrase);
                 return values;
             }
 
-            var jsonResponse = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<GameInfoPlayerKillsDeaths>>(jsonResponse) ?? values;
+            return await DeserializeResponseAsync<List<GameInfoPlayerKillsDeaths>>(response, timeoutCts.Token)
+                   ?? values;
         }
         catch (JsonException e)
         {
@@ -382,29 +315,14 @@ public static class ApiController
         var url = Path.Combine(GetAoDataProjectServerBaseUrlByCurrentServer(), "stats/");
         url += $"gold?count={count}";
 
-        using var clientHandler = new HttpClientHandler
-        {
-            SslProtocols = System.Security.Authentication.SslProtocols.Tls13 | System.Security.Authentication.SslProtocols.Tls12,
-        };
-        clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
-
-        using var client = new HttpClient(clientHandler);
-        client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
-        client.Timeout = TimeSpan.FromSeconds(timeout);
+        using var timeoutCts = CreateTimeout(timeout);
         try
         {
-            using var response = await client.GetAsync(url);
+            using var response = await ApiClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, timeoutCts.Token);
 
             response.EnsureSuccessStatusCode();
 
-            await using var responseStream = await response.Content.ReadAsStreamAsync();
-            Stream decompressedStream = responseStream;
-            if (response.Content.Headers.ContentEncoding.Contains("gzip"))
-            {
-                decompressedStream = new GZipStream(responseStream, CompressionMode.Decompress);
-            }
-
-            var result = await JsonSerializer.DeserializeAsync<List<GoldResponseModel>>(decompressedStream);
+            var result = await DeserializeResponseAsync<List<GoldResponseModel>>(response, timeoutCts.Token);
             return result ?? new List<GoldResponseModel>();
         }
         catch (Exception e)
@@ -420,22 +338,12 @@ public static class ApiController
         var values = new List<Donation>();
         var url = Settings.Default.DonationsUrl;
 
-        using var clientHandler = new HttpClientHandler
-        {
-            SslProtocols = System.Security.Authentication.SslProtocols.Tls13 | System.Security.Authentication.SslProtocols.Tls12,
-            ServerCertificateCustomValidationCallback = (_, _, _, _) => true
-        };
-
-        using var client = new HttpClient(clientHandler)
-        {
-            Timeout = TimeSpan.FromSeconds(600)
-        };
+        using var timeoutCts = CreateTimeout(600);
 
         try
         {
-            using var response = await client.GetAsync(url);
-            using var content = response.Content;
-            return JsonSerializer.Deserialize<List<Donation>>(await content.ReadAsStringAsync()) ?? values;
+            using var response = await ApiClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, timeoutCts.Token);
+            return await DeserializeResponseAsync<List<Donation>>(response, timeoutCts.Token) ?? values;
         }
         catch (Exception e)
         {
@@ -445,20 +353,34 @@ public static class ApiController
         }
     }
 
-    private static async Task<Stream> DecompressedStream(HttpResponseMessage response)
+    private static HttpClient CreateHttpClient()
     {
-        var responseStream = await response.Content.ReadAsStreamAsync();
-        var memoryStream = new MemoryStream();
-        await responseStream.CopyToAsync(memoryStream);
-        memoryStream.Position = 0;
-
-        if (response.Content.Headers.ContentEncoding.Contains("gzip"))
+        var handler = new HttpClientHandler
         {
-            return new GZipStream(memoryStream, CompressionMode.Decompress);
-        }
+            SslProtocols = System.Security.Authentication.SslProtocols.Tls13 | System.Security.Authentication.SslProtocols.Tls12,
+            ServerCertificateCustomValidationCallback = (_, _, _, _) => true,
+            AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate | DecompressionMethods.Brotli
+        };
 
-        memoryStream.Position = 0;
-        return memoryStream;
+        return new HttpClient(handler)
+        {
+            Timeout = Timeout.InfiniteTimeSpan
+        };
+    }
+
+    private static CancellationTokenSource CreateTimeout(int seconds)
+    {
+        return new CancellationTokenSource(TimeSpan.FromSeconds(seconds));
+    }
+
+    private static async Task<T> DeserializeResponseAsync<T>(
+        HttpResponseMessage response,
+        CancellationToken cancellationToken)
+    {
+        await using var responseStream = await response.Content.ReadAsStreamAsync(cancellationToken);
+        return await JsonSerializer.DeserializeAsync<T>(
+            responseStream,
+            cancellationToken: cancellationToken);
     }
 
     #region Merge history data
