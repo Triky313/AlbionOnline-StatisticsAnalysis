@@ -91,7 +91,7 @@
                         </Border>
                     </WrapPanel>
                 </Border>
-                <TabControl Grid.Row="1" Style="{StaticResource Dashboard.ContentTabControl}" ItemContainerStyle="{StaticResource Dashboard.ContentTabItem}" SelectedIndex="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                <TabControl Grid.Row="1" Style="{StaticResource Dashboard.ContentTabControl}" ItemContainerStyle="{StaticResource Dashboard.ContentTabItem}" SelectedIndex="{Binding GatheringBindings.SelectedGatheringTabIndex, Mode=TwoWay}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                     <TabItem Header="{Binding GatheringBindings.TranslationGenerally, FallbackValue=GENERALLY}">
                         <ScrollViewer x:Name="GenerallyScrollViewer" Margin="0,8,0,0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch">
                             <StackPanel MinWidth="1050" Width="{Binding ViewportWidth, ElementName=GenerallyScrollViewer, Mode=OneWay}">

@@ -23,6 +23,26 @@ public partial class GatheringControl
     public GatheringControl()
     {
         InitializeComponent();
+        Loaded += GatheringControl_Loaded;
+        IsVisibleChanged += GatheringControl_IsVisibleChanged;
+    }
+
+    private void GatheringControl_Loaded(object sender, RoutedEventArgs e)
+    {
+        UpdateViewVisibility();
+    }
+
+    private void GatheringControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        UpdateViewVisibility();
+    }
+
+    private void UpdateViewVisibility()
+    {
+        if (DataContext is MainWindowViewModel mainWindowViewModel)
+        {
+            mainWindowViewModel.GatheringBindings.SetViewVisibility(IsVisible);
+        }
     }
 
     private void GatheringActivationToggle_Click(object sender, RoutedEventArgs e)
