@@ -1,4 +1,4 @@
-﻿using FontAwesome5;
+using FontAwesome5;
 using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
@@ -283,7 +283,7 @@ public partial class DashboardControl
 
     private void DashboardChartSeriesVisibility_Changed(object sender, RoutedEventArgs e)
     {
-        RefreshDailyChart();
+        RefreshDashboardChartSeries();
     }
 
     private void DashboardControl_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -325,5 +325,11 @@ public partial class DashboardControl
     {
         var trackingController = ServiceLocator.Resolve<TrackingController>();
         trackingController?.StatisticController?.UpdateDailyChart(true);
+    }
+
+    private static void RefreshDashboardChartSeries()
+    {
+        var trackingController = ServiceLocator.Resolve<TrackingController>();
+        trackingController?.StatisticController?.UpdateDashboardChartSeries();
     }
 }

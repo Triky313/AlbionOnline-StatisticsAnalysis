@@ -41,21 +41,11 @@ public class StatisticController
     private readonly SemaphoreSlim _sessionPersistenceSemaphore = new(1, 1);
     private readonly Dispatcher _uiDispatcher;
     private readonly DispatcherTimer _dashboardChartRefreshTimer;
-    private readonly HashSet<ValueType> _chartValueTypes =
-    [
-        ValueType.Fame,
-        ValueType.Silver,
-        ValueType.ReSpec,
-        ValueType.PaidSilverForReSpec,
-        ValueType.RepairCosts,
-        ValueType.ItemQualityRerollCosts,
-        ValueType.FactionStanding,
-        ValueType.FactionPoints,
-        ValueType.Might,
-        ValueType.Favor
-    ];
+    private readonly Dictionary<ValueType, LineSeries<ObservablePoint>> _dashboardChartSeries = [];
+    private readonly Dictionary<ValueType, ObservableCollection<ObservablePoint>> _dashboardChartPoints = [];
 
     private int _isDashboardChartRefreshSchedulingPending;
+    private DashboardUpdateScope _pendingDashboardUpdateScopes = DashboardUpdateScope.All;
     private DashboardStatistics _dashboardStatistics = new();
     private DashboardStatisticsAggregator _statisticsAggregator = new(new DashboardStatistics());
 
@@ -92,6 +82,7 @@ public class StatisticController
             return;
         }
 
+        var updateScope = ResolveDashboardUpdateScope(valueType);
         var nowUtc = DateTime.UtcNow;
         var mapType = ClusterController.CurrentCluster.MapType;
         var dungeonMode = ResolveDungeonMode(mapType);
@@ -121,10 +112,11 @@ public class StatisticController
 
             _dashboardStatistics.Add(statisticEntry);
             _statisticsAggregator.Add(statisticEntry);
+            MarkDashboardDirtyInternal(updateScope);
             MarkSessionDirtyInternal(session.Id);
         }
 
-        if (_chartValueTypes.Contains(valueType))
+        if (updateScope != DashboardUpdateScope.None)
         {
             UpdateDailyChart();
         }
@@ -223,6 +215,7 @@ public class StatisticController
                 _statisticsAggregator.Add(entry);
             }
 
+            MarkDashboardDirtyInternal(DashboardUpdateScope.Economy);
             MarkSessionDirtyInternal(session.Id);
         }
 
@@ -302,6 +295,7 @@ public class StatisticController
                 _statisticsAggregator.Add(entry);
             }
 
+            MarkDashboardDirtyInternal(DashboardUpdateScope.Economy);
             MarkSessionDirtyInternal(session.Id);
         }
 
@@ -359,6 +353,7 @@ public class StatisticController
 
             _dashboardStatistics.Add(statisticEntry);
             _statisticsAggregator.Add(statisticEntry);
+            MarkDashboardDirtyInternal(DashboardUpdateScope.Loot);
             MarkSessionDirtyInternal(session.Id);
         }
 
@@ -424,6 +419,7 @@ public class StatisticController
 
             _dashboardStatistics.Add(statisticEntry);
             _statisticsAggregator.Add(statisticEntry);
+            MarkDashboardDirtyInternal(DashboardUpdateScope.Mobs);
             MarkSessionDirtyInternal(session.Id);
         }
 
@@ -474,6 +470,7 @@ public class StatisticController
 
             _dashboardStatistics.Add(statisticEntry);
             _statisticsAggregator.Add(statisticEntry);
+            MarkDashboardDirtyInternal(DashboardUpdateScope.Combat);
             MarkSessionDirtyInternal(session.Id);
         }
 
@@ -506,6 +503,7 @@ public class StatisticController
                 DateTime.UtcNow.Subtract(CombatLootAssociationWindow));
             if (wasUpdated)
             {
+                MarkDashboardDirtyInternal(DashboardUpdateScope.Combat);
                 MarkSessionDirtyInternal(session.Id);
             }
         }
@@ -558,6 +556,7 @@ public class StatisticController
 
             _dashboardStatistics.Add(statisticEntry);
             _statisticsAggregator.Add(statisticEntry);
+            MarkDashboardDirtyInternal(DashboardUpdateScope.LootedChests);
             MarkSessionDirtyInternal(session.Id);
         }
 
@@ -726,10 +725,22 @@ public class StatisticController
             return;
         }
 
+        MarkDashboardDirty(DashboardUpdateScope.All);
+        RefreshDashboard();
+    }
+
+    public void UpdateDashboardChartSeries()
+    {
+        MarkDashboardDirty(DashboardUpdateScope.Chart);
+        RefreshDashboard();
+    }
+
+    private void RefreshDashboard()
+    {
         if (!_uiDispatcher.CheckAccess())
         {
             _ = _uiDispatcher.InvokeAsync(
-                () => UpdateDailyChart(true),
+                RefreshDashboard,
                 DispatcherPriority.Background);
             return;
         }
@@ -742,92 +753,180 @@ public class StatisticController
             return;
         }
 
-        var selectedSeriesFilters = (_mainWindowViewModel.DashboardChartSeriesFilters ?? [])
-            .Where(x => x.IsSelected)
-            .ToList();
+        var updateScopes = TakeDashboardUpdateScopes();
+        if (updateScopes == DashboardUpdateScope.None)
+        {
+            return;
+        }
 
         var chartBuckets = CreateChartBuckets(selectedRange);
         var currentRangeBucketStarts = chartBuckets.Select(x => x.Start).ToArray();
         var previousRangeBucketStarts = currentRangeBucketStarts
             .Select(x => AddBuckets(x, -selectedRange.BucketCount, selectedRange.Unit))
             .ToArray();
-        var aggregationBucketStarts = currentRangeBucketStarts
-            .Concat(previousRangeBucketStarts).Distinct().ToArray();
 
-        var xAxes = new[]
+        IReadOnlyDictionary<ValueType, Dictionary<DateTime, double>> aggregatedValues = new Dictionary<ValueType, Dictionary<DateTime, double>>();
+        var aggregationScopes = DashboardUpdateScope.Chart
+                                | DashboardUpdateScope.Summary
+                                | DashboardUpdateScope.Loot;
+        if ((updateScopes & aggregationScopes) != 0)
         {
-            new Axis
-            {
-                LabelsRotation = 15,
-                Labels = chartBuckets.Select(x => x.Label).ToArray()
-            }
-        };
-
-        var aggregatedValues = _statisticsAggregator.AggregateChartValues(
-            aggregationBucketStarts,
-            selectedRange.Unit,
-            _mainWindowViewModel.SelectedDashboardSessionFilter?.SessionId,
-            _mainWindowViewModel.SelectedDashboardContentFilter?.ContentType);
-        UpdateDashboardSummary(selectedRange, chartBuckets, aggregatedValues);
-        UpdateDashboardCombatStatistics(selectedRange, currentRangeBucketStarts);
-        UpdateDashboardMobStatistics(
-            selectedRange,
-            currentRangeBucketStarts,
-            previousRangeBucketStarts);
-        UpdateDashboardLootStatistics(
-            selectedRange,
-            currentRangeBucketStarts,
-            previousRangeBucketStarts,
-            aggregatedValues);
-        UpdateDashboardLootedChestStatistics(
-            selectedRange,
-            currentRangeBucketStarts,
-            previousRangeBucketStarts);
-        UpdateDashboardContentRankings(selectedRange, currentRangeBucketStarts);
-        UpdateDashboardEconomyStatistics(
-            selectedRange,
-            currentRangeBucketStarts,
-            previousRangeBucketStarts,
-            chartBuckets[0].Start,
-            DateTime.UtcNow);
-
-        if (selectedSeriesFilters.Count == 0)
-        {
-            _mainWindowViewModel.XAxesDashboardHourValues = xAxes;
-            _mainWindowViewModel.SeriesDashboardHourValues = [];
-            return;
+            var aggregationBucketStarts = currentRangeBucketStarts
+                .Concat(previousRangeBucketStarts)
+                .Distinct()
+                .ToArray();
+            aggregatedValues = _statisticsAggregator.AggregateChartValues(
+                aggregationBucketStarts,
+                selectedRange.Unit,
+                _mainWindowViewModel.SelectedDashboardSessionFilter?.SessionId,
+                _mainWindowViewModel.SelectedDashboardContentFilter?.ContentType);
         }
 
-        var seriesCollection = new ObservableCollection<ISeries>();
+        if ((updateScopes & DashboardUpdateScope.Summary) != 0)
+        {
+            UpdateDashboardSummary(selectedRange, chartBuckets, aggregatedValues);
+        }
+
+        if ((updateScopes & DashboardUpdateScope.Combat) != 0)
+        {
+            UpdateDashboardCombatStatistics(selectedRange, currentRangeBucketStarts);
+        }
+
+        if ((updateScopes & DashboardUpdateScope.Mobs) != 0)
+        {
+            UpdateDashboardMobStatistics(
+                selectedRange,
+                currentRangeBucketStarts,
+                previousRangeBucketStarts);
+        }
+
+        if ((updateScopes & DashboardUpdateScope.Loot) != 0)
+        {
+            UpdateDashboardLootStatistics(
+                selectedRange,
+                currentRangeBucketStarts,
+                previousRangeBucketStarts,
+                aggregatedValues);
+        }
+
+        if ((updateScopes & DashboardUpdateScope.LootedChests) != 0)
+        {
+            UpdateDashboardLootedChestStatistics(
+                selectedRange,
+                currentRangeBucketStarts,
+                previousRangeBucketStarts);
+        }
+
+        if ((updateScopes & DashboardUpdateScope.ContentRankings) != 0)
+        {
+            UpdateDashboardContentRankings(selectedRange, currentRangeBucketStarts);
+        }
+
+        if ((updateScopes & DashboardUpdateScope.Economy) != 0)
+        {
+            UpdateDashboardEconomyStatistics(
+                selectedRange,
+                currentRangeBucketStarts,
+                previousRangeBucketStarts,
+                chartBuckets[0].Start,
+                DateTime.UtcNow);
+        }
+
+        if ((updateScopes & DashboardUpdateScope.Chart) != 0)
+        {
+            UpdateDashboardChart(chartBuckets, aggregatedValues);
+        }
+    }
+
+    private void UpdateDashboardChart(
+        IReadOnlyList<ChartBucket> chartBuckets,
+        IReadOnlyDictionary<ValueType, Dictionary<DateTime, double>> aggregatedValues)
+    {
+        var labels = chartBuckets.Select(x => x.Label).ToArray();
+        var xAxes = _mainWindowViewModel.XAxesDashboardHourValues;
+        if (xAxes is not { Length: 1 })
+        {
+            xAxes =
+            [
+                new Axis
+                {
+                    LabelsRotation = 15,
+                    Labels = labels
+                }
+            ];
+            _mainWindowViewModel.XAxesDashboardHourValues = xAxes;
+        }
+        else
+        {
+            xAxes[0].LabelsRotation = 15;
+            xAxes[0].Labels = labels;
+        }
+
+        var selectedSeriesFilters = (_mainWindowViewModel.DashboardChartSeriesFilters ?? [])
+            .Where(filter => filter.IsSelected)
+            .ToArray();
+        var visibleSeries = new List<ISeries>(selectedSeriesFilters.Length);
 
         foreach (var selectedSeriesFilter in selectedSeriesFilters)
         {
-            var valuesLookup = aggregatedValues.GetValueOrDefault(selectedSeriesFilter.ValueType) ?? [];
-            var points = new ObservableCollection<ObservablePoint>();
+            if (!_dashboardChartSeries.TryGetValue(selectedSeriesFilter.ValueType, out var series))
+            {
+                var points = new ObservableCollection<ObservablePoint>();
+                series = new LineSeries<ObservablePoint>
+                {
+                    Values = points,
+                    Fill = GetValueTypeBrush(selectedSeriesFilter.ValueType, true),
+                    Stroke = GetValueTypeBrush(selectedSeriesFilter.ValueType, false),
+                    GeometryStroke = GetValueTypeBrush(selectedSeriesFilter.ValueType, false),
+                    GeometryFill = GetValueTypeBrush(selectedSeriesFilter.ValueType, false),
+                    GeometrySize = 5,
+                    YToolTipLabelFormatter = chartPoint => chartPoint.Coordinate.PrimaryValue.ToChartTooltipNumberString()
+                };
+                _dashboardChartSeries[selectedSeriesFilter.ValueType] = series;
+                _dashboardChartPoints[selectedSeriesFilter.ValueType] = points;
+            }
 
+            series.Name = selectedSeriesFilter.Name;
+            var seriesPoints = _dashboardChartPoints[selectedSeriesFilter.ValueType];
+            while (seriesPoints.Count > chartBuckets.Count)
+            {
+                seriesPoints.RemoveAt(seriesPoints.Count - 1);
+            }
+
+            while (seriesPoints.Count < chartBuckets.Count)
+            {
+                seriesPoints.Add(new ObservablePoint());
+            }
+
+            var valuesLookup = aggregatedValues.GetValueOrDefault(selectedSeriesFilter.ValueType) ?? [];
             for (var i = 0; i < chartBuckets.Count; i++)
             {
                 var value = valuesLookup.GetValueOrDefault(chartBuckets[i].Start);
-                points.Add(new ObservablePoint(i, value));
+                var point = seriesPoints[i];
+                if (point.X != i)
+                {
+                    point.X = i;
+                }
+
+                if (point.Y != value)
+                {
+                    point.Y = value;
+                }
             }
 
-            var lineSeries = new LineSeries<ObservablePoint>
-            {
-                Name = selectedSeriesFilter.Name,
-                Values = points,
-                Fill = GetValueTypeBrush(selectedSeriesFilter.ValueType, true),
-                Stroke = GetValueTypeBrush(selectedSeriesFilter.ValueType, false),
-                GeometryStroke = GetValueTypeBrush(selectedSeriesFilter.ValueType, false),
-                GeometryFill = GetValueTypeBrush(selectedSeriesFilter.ValueType, false),
-                GeometrySize = 5,
-                YToolTipLabelFormatter = chartPoint => chartPoint.Coordinate.PrimaryValue.ToChartTooltipNumberString()
-            };
-
-            seriesCollection.Add(lineSeries);
+            visibleSeries.Add(series);
         }
 
-        _mainWindowViewModel.XAxesDashboardHourValues = xAxes;
-        _mainWindowViewModel.SeriesDashboardHourValues = seriesCollection;
+        var targetSeries = _mainWindowViewModel.SeriesDashboardHourValues;
+        if (targetSeries == null)
+        {
+            targetSeries = [];
+            _mainWindowViewModel.SeriesDashboardHourValues = targetSeries;
+        }
+
+        ReplaceDashboardItems(
+            targetSeries,
+            visibleSeries);
     }
 
     private void ScheduleDashboardChartRefresh()
@@ -861,7 +960,7 @@ public class StatisticController
     private void OnDashboardChartRefreshTimerTick(object sender, EventArgs e)
     {
         _dashboardChartRefreshTimer.Stop();
-        UpdateDailyChart(true);
+        RefreshDashboard();
     }
 
     public void UpdateDashboardSessionTime(DateTime nowUtc)
@@ -1418,10 +1517,25 @@ public class StatisticController
         ObservableCollection<T> target,
         IEnumerable<T> items)
     {
-        target.Clear();
-        foreach (var item in items)
+        var newItems = items as IReadOnlyList<T> ?? items.ToArray();
+        var sharedItemCount = Math.Min(target.Count, newItems.Count);
+
+        for (var i = 0; i < sharedItemCount; i++)
         {
-            target.Add(item);
+            if (!EqualityComparer<T>.Default.Equals(target[i], newItems[i]))
+            {
+                target[i] = newItems[i];
+            }
+        }
+
+        while (target.Count > newItems.Count)
+        {
+            target.RemoveAt(target.Count - 1);
+        }
+
+        for (var i = target.Count; i < newItems.Count; i++)
+        {
+            target.Add(newItems[i]);
         }
     }
 
@@ -1562,20 +1676,22 @@ public class StatisticController
             .ToList();
         var highestValue = topValues.FirstOrDefault().Value;
 
-        ranking.Clear();
-        updateTotal(total);
+        var rankingItems = topValues
+            .Select(item =>
+            {
+                var sharePercentage = total > 0 ? item.Value / total * 100 : 0;
+                var barPercentage = highestValue > 0 ? item.Value / highestValue * 100 : 0;
+                return new DashboardContentRankingItem(
+                    LocalizationController.Translation(DashboardContentTypeResolver.GetTranslationKey(item.Key)),
+                    item.Value,
+                    sharePercentage,
+                    barPercentage,
+                    ResolveContentBrush(item.Key));
+            })
+            .ToArray();
 
-        foreach (var (contentType, value) in topValues)
-        {
-            var sharePercentage = total > 0 ? value / total * 100 : 0;
-            var barPercentage = highestValue > 0 ? value / highestValue * 100 : 0;
-            ranking.Add(new DashboardContentRankingItem(
-                LocalizationController.Translation(DashboardContentTypeResolver.GetTranslationKey(contentType)),
-                value,
-                sharePercentage,
-                barPercentage,
-                ResolveContentBrush(contentType)));
-        }
+        updateTotal(total);
+        ReplaceDashboardItems(ranking, rankingItems);
     }
 
     private static Brush ResolveContentBrush(DashboardContentType contentType)
@@ -1686,6 +1802,59 @@ public class StatisticController
             DashboardChartRangeUnit.Day => bucketStart.AddDays(bucketCount),
             _ => bucketStart.AddDays(bucketCount)
         };
+    }
+
+    private static DashboardUpdateScope ResolveDashboardUpdateScope(ValueType valueType)
+    {
+        return valueType switch
+        {
+            ValueType.Fame or ValueType.Silver => DashboardUpdateScope.Chart
+                                                 | DashboardUpdateScope.Summary
+                                                 | DashboardUpdateScope.ContentRankings,
+            ValueType.ReSpec => DashboardUpdateScope.Chart
+                                | DashboardUpdateScope.Summary
+                                | DashboardUpdateScope.Economy,
+            ValueType.FactionStanding
+                or ValueType.FactionPoints
+                or ValueType.Might
+                or ValueType.Favor => DashboardUpdateScope.Chart | DashboardUpdateScope.Summary,
+            ValueType.PaidSilverForReSpec
+                or ValueType.RepairCosts
+                or ValueType.ItemQualityRerollCosts
+                or ValueType.ItemQualityRerollResult
+                or ValueType.ItemQualityRerollAttempt
+                or ValueType.AwakenedWeaponCosts
+                or ValueType.AwakenedWeaponTraitUpgrade
+                or ValueType.AwakenedWeaponTraitUpgradeProc => DashboardUpdateScope.Economy,
+            ValueType.LootValue => DashboardUpdateScope.Loot,
+            ValueType.PlayerKill or ValueType.PlayerDeath => DashboardUpdateScope.Combat,
+            ValueType.MobKill => DashboardUpdateScope.Mobs,
+            ValueType.LootedChest => DashboardUpdateScope.LootedChests,
+            _ => DashboardUpdateScope.None
+        };
+    }
+
+    private void MarkDashboardDirty(DashboardUpdateScope updateScopes)
+    {
+        lock (_syncRoot)
+        {
+            MarkDashboardDirtyInternal(updateScopes);
+        }
+    }
+
+    private void MarkDashboardDirtyInternal(DashboardUpdateScope updateScopes)
+    {
+        _pendingDashboardUpdateScopes |= updateScopes;
+    }
+
+    private DashboardUpdateScope TakeDashboardUpdateScopes()
+    {
+        lock (_syncRoot)
+        {
+            var updateScopes = _pendingDashboardUpdateScopes;
+            _pendingDashboardUpdateScopes = DashboardUpdateScope.None;
+            return updateScopes;
+        }
     }
 
     private void MarkSessionDirtyInternal(Guid sessionId)

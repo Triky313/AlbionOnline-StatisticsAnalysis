@@ -1361,7 +1361,7 @@ public class MainWindowViewModel : BaseViewModel
             field = value;
             OnPropertyChanged();
         }
-    }
+    } = [];
 
     public Axis[] XAxesDashboardHourValues
     {

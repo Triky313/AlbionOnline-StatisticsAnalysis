@@ -12,15 +12,15 @@ namespace StatisticsAnalysisTool.Models;
 public sealed class DashboardStatisticsAggregator
 {
     private readonly object _syncRoot = new();
-    private readonly Dictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode, CityFaction CityFaction), double> _minuteValues = new();
-    private readonly Dictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode, CityFaction CityFaction), double> _hourlyValues = new();
-    private readonly Dictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode, CityFaction CityFaction), double> _dailyValues = new();
-    private readonly List<(DateTime OccurredAtUtc, double Value)> _repairCostEntries = [];
-    private readonly List<(Guid SessionId, DateTime OccurredAtUtc, ValueType ValueType, double Value, ItemQuality ItemQuality, int ItemQuantity)> _economyEntries = [];
-    private readonly List<StatisticEntry> _lootEntries = [];
-    private readonly List<StatisticEntry> _lootedChestEntries = [];
-    private readonly List<StatisticEntry> _combatEntries = [];
-    private readonly List<StatisticEntry> _mobKillEntries = [];
+    private readonly Dictionary<DateTime, Dictionary<(ValueType ValueType, Guid SessionId, MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode, CityFaction CityFaction), double>> _minuteValues = [];
+    private readonly Dictionary<DateTime, Dictionary<(ValueType ValueType, Guid SessionId, MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode, CityFaction CityFaction), double>> _hourlyValues = [];
+    private readonly Dictionary<DateTime, Dictionary<(ValueType ValueType, Guid SessionId, MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode, CityFaction CityFaction), double>> _dailyValues = [];
+    private readonly EntryBucketIndex _repairCostEntries = new();
+    private readonly EntryBucketIndex _economyEntries = new();
+    private readonly EntryBucketIndex _lootEntries = new();
+    private readonly EntryBucketIndex _lootedChestEntries = new();
+    private readonly EntryBucketIndex _combatEntries = new();
+    private readonly EntryBucketIndex _mobKillEntries = new();
 
     public DashboardStatisticsAggregator(DashboardStatistics statistics)
     {
@@ -58,8 +58,6 @@ public sealed class DashboardStatisticsAggregator
             return result;
         }
 
-        var validBuckets = bucketStarts.ToHashSet();
-
         lock (_syncRoot)
         {
             var indexedValues = unit switch
@@ -70,17 +68,24 @@ public sealed class DashboardStatisticsAggregator
                 _ => _dailyValues
             };
 
-            foreach (var (key, value) in indexedValues)
+            foreach (var bucketStart in bucketStarts.Distinct())
             {
-                if (!validBuckets.Contains(key.Bucket)
-                    || sessionId.HasValue && key.SessionId != sessionId.Value
-                    || !MatchesContentFilter(contentType, key.MapType, key.DungeonMode, key.ClusterMode)
-                    || cityFaction.HasValue && key.CityFaction != cityFaction.Value)
+                if (!indexedValues.TryGetValue(bucketStart, out var bucketValues))
                 {
                     continue;
                 }
 
-                AddValue(result, key.ValueType, key.Bucket, value);
+                foreach (var (key, value) in bucketValues)
+                {
+                    if (sessionId.HasValue && key.SessionId != sessionId.Value
+                        || !MatchesContentFilter(contentType, key.MapType, key.DungeonMode, key.ClusterMode)
+                        || cityFaction.HasValue && key.CityFaction != cityFaction.Value)
+                    {
+                        continue;
+                    }
+
+                    AddValue(result, key.ValueType, bucketStart, value);
+                }
             }
         }
 
@@ -100,8 +105,6 @@ public sealed class DashboardStatisticsAggregator
             return result;
         }
 
-        var validBuckets = bucketStarts.ToHashSet();
-
         lock (_syncRoot)
         {
             var indexedValues = unit switch
@@ -112,25 +115,32 @@ public sealed class DashboardStatisticsAggregator
                 _ => _dailyValues
             };
 
-            foreach (var (key, value) in indexedValues)
+            foreach (var bucketStart in bucketStarts.Distinct())
             {
-                if (key.ValueType != valueType
-                    || !validBuckets.Contains(key.Bucket)
-                    || sessionId.HasValue && key.SessionId != sessionId.Value
-                    || !MatchesContentFilter(contentType, key.MapType, key.DungeonMode, key.ClusterMode))
+                if (!indexedValues.TryGetValue(bucketStart, out var bucketValues))
                 {
                     continue;
                 }
 
-                var contentKey = (
-                    key.MapType,
-                    key.MapType == MapType.RandomDungeon
-                        ? key.DungeonMode
-                        : DungeonMode.Unknown,
-                    key.MapType == MapType.Unknown
-                        ? key.ClusterMode
-                        : ClusterMode.Unknown);
-                result[contentKey] = result.GetValueOrDefault(contentKey) + value;
+                foreach (var (key, value) in bucketValues)
+                {
+                    if (key.ValueType != valueType
+                        || sessionId.HasValue && key.SessionId != sessionId.Value
+                        || !MatchesContentFilter(contentType, key.MapType, key.DungeonMode, key.ClusterMode))
+                    {
+                        continue;
+                    }
+
+                    var contentKey = (
+                        key.MapType,
+                        key.MapType == MapType.RandomDungeon
+                            ? key.DungeonMode
+                            : DungeonMode.Unknown,
+                        key.MapType == MapType.Unknown
+                            ? key.ClusterMode
+                            : ClusterMode.Unknown);
+                    result[contentKey] = result.GetValueOrDefault(contentKey) + value;
+                }
             }
         }
 
@@ -148,55 +158,18 @@ public sealed class DashboardStatisticsAggregator
             return result;
         }
 
-        var validBuckets = bucketStarts.ToHashSet();
-
         lock (_syncRoot)
         {
-            foreach (var entry in _economyEntries)
+            foreach (var bucketStart in bucketStarts.Distinct())
             {
-                if (sessionId.HasValue && entry.SessionId != sessionId.Value
-                    || !validBuckets.Contains(GetBucketStart(entry.OccurredAtUtc, unit)))
+                foreach (var entry in _economyEntries.GetEntries(bucketStart, unit))
                 {
-                    continue;
-                }
+                    if (sessionId.HasValue && entry.SessionId != sessionId.Value)
+                    {
+                        continue;
+                    }
 
-                var absoluteValue = Math.Abs(entry.Value);
-                switch (entry.ValueType)
-                {
-                    case ValueType.ReSpec:
-                        result.ReSpec += entry.Value;
-                        if (entry.Value < 0)
-                        {
-                            result.SpentReSpec += absoluteValue;
-                        }
-                        break;
-                    case ValueType.PaidSilverForReSpec:
-                        result.ReSpecSilverCost += absoluteValue;
-                        break;
-                    case ValueType.RepairCosts:
-                        result.RepairCosts += absoluteValue;
-                        result.HighestRepairCost = Math.Max(result.HighestRepairCost, absoluteValue);
-                        break;
-                    case ValueType.ItemQualityRerollCosts:
-                        result.ItemQualityRerollCosts += absoluteValue;
-                        AddItemQualityCount(result, entry.ItemQuality, entry.ItemQuantity);
-                        break;
-                    case ValueType.ItemQualityRerollResult:
-                        AddItemQualityCount(result, entry.ItemQuality, entry.ItemQuantity);
-                        AddSuccessfulItemQualityRerollCount(result, entry.ItemQuality, entry.ItemQuantity);
-                        break;
-                    case ValueType.ItemQualityRerollAttempt:
-                        AddEligibleItemQualityRerollCounts(result, entry.ItemQuality, entry.ItemQuantity);
-                        break;
-                    case ValueType.AwakenedWeaponCosts:
-                        result.AwakenedWeaponCosts += absoluteValue;
-                        break;
-                    case ValueType.AwakenedWeaponTraitUpgrade:
-                        result.AwakenedWeaponTraitUpgradeCount += entry.ItemQuantity;
-                        break;
-                    case ValueType.AwakenedWeaponTraitUpgradeProc:
-                        result.AwakenedWeaponTraitUpgradeProcCount += entry.ItemQuantity;
-                        break;
+                    AddEconomyEntry(result, entry);
                 }
             }
         }
@@ -215,16 +188,7 @@ public sealed class DashboardStatisticsAggregator
             return [];
         }
 
-        var validBuckets = bucketStarts.ToHashSet();
-
-        lock (_syncRoot)
-        {
-            return _lootEntries
-                .Where(entry => (!sessionId.HasValue || entry.SessionId == sessionId.Value)
-                                && validBuckets.Contains(GetBucketStart(entry.OccurredAtUtc, unit))
-                                && MatchesContentFilter(contentType, entry.MapType, entry.DungeonMode, entry.ClusterMode))
-                .ToList();
-        }
+        return GetEntries(_lootEntries, bucketStarts, unit, sessionId, contentType);
     }
 
     public IReadOnlyList<StatisticEntry> GetLootedChestEntries(
@@ -238,16 +202,7 @@ public sealed class DashboardStatisticsAggregator
             return [];
         }
 
-        var validBuckets = bucketStarts.ToHashSet();
-
-        lock (_syncRoot)
-        {
-            return _lootedChestEntries
-                .Where(entry => (!sessionId.HasValue || entry.SessionId == sessionId.Value)
-                                && validBuckets.Contains(GetBucketStart(entry.OccurredAtUtc, unit))
-                                && MatchesContentFilter(contentType, entry.MapType, entry.DungeonMode, entry.ClusterMode))
-                .ToList();
-        }
+        return GetEntries(_lootedChestEntries, bucketStarts, unit, sessionId, contentType);
     }
 
     public IReadOnlyList<StatisticEntry> GetCombatEntries(
@@ -261,16 +216,7 @@ public sealed class DashboardStatisticsAggregator
             return [];
         }
 
-        var validBuckets = bucketStarts.ToHashSet();
-
-        lock (_syncRoot)
-        {
-            return _combatEntries
-                .Where(entry => (!sessionId.HasValue || entry.SessionId == sessionId.Value)
-                                && validBuckets.Contains(GetBucketStart(entry.OccurredAtUtc, unit))
-                                && MatchesContentFilter(contentType, entry.MapType, entry.DungeonMode, entry.ClusterMode))
-                .ToList();
-        }
+        return GetEntries(_combatEntries, bucketStarts, unit, sessionId, contentType);
     }
 
     public IReadOnlyList<StatisticEntry> GetMobKillEntries(
@@ -284,16 +230,34 @@ public sealed class DashboardStatisticsAggregator
             return [];
         }
 
-        var validBuckets = bucketStarts.ToHashSet();
+        return GetEntries(_mobKillEntries, bucketStarts, unit, sessionId, contentType);
+    }
+
+    private IReadOnlyList<StatisticEntry> GetEntries(
+        EntryBucketIndex index,
+        IReadOnlyCollection<DateTime> bucketStarts,
+        DashboardChartRangeUnit unit,
+        Guid? sessionId,
+        DashboardContentType? contentType)
+    {
+        var result = new List<StatisticEntry>();
 
         lock (_syncRoot)
         {
-            return _mobKillEntries
-                .Where(entry => (!sessionId.HasValue || entry.SessionId == sessionId.Value)
-                                && validBuckets.Contains(GetBucketStart(entry.OccurredAtUtc, unit))
-                                && MatchesContentFilter(contentType, entry.MapType, entry.DungeonMode, entry.ClusterMode))
-                .ToList();
+            foreach (var bucketStart in bucketStarts.Distinct())
+            {
+                foreach (var entry in index.GetEntries(bucketStart, unit))
+                {
+                    if ((!sessionId.HasValue || entry.SessionId == sessionId.Value)
+                        && MatchesContentFilter(contentType, entry.MapType, entry.DungeonMode, entry.ClusterMode))
+                    {
+                        result.Add(entry);
+                    }
+                }
+            }
         }
+
+        return result;
     }
 
     private static bool MatchesContentFilter(
@@ -312,15 +276,27 @@ public sealed class DashboardStatisticsAggregator
 
     public double SumRepairCosts(DateTime localStartInclusive, DateTime localEndExclusive)
     {
+        if (localEndExclusive <= localStartInclusive)
+        {
+            return 0;
+        }
+
         var startUtc = localStartInclusive.ToUniversalTime();
         var endUtc = localEndExclusive.ToUniversalTime();
+        var result = 0d;
 
         lock (_syncRoot)
         {
-            return _repairCostEntries
-                .Where(x => x.OccurredAtUtc >= startUtc && x.OccurredAtUtc < endUtc)
-                .Sum(x => x.Value);
+            for (var day = localStartInclusive.Date; day < localEndExclusive; day = day.AddDays(1))
+            {
+                result += _repairCostEntries
+                    .GetEntries(day, DashboardChartRangeUnit.Day)
+                    .Where(entry => entry.OccurredAtUtc >= startUtc && entry.OccurredAtUtc < endUtc)
+                    .Sum(entry => entry.Value);
+            }
         }
+
+        return result;
     }
 
     private void AddInternal(StatisticEntry entry)
@@ -349,41 +325,77 @@ public sealed class DashboardStatisticsAggregator
             or ValueType.AwakenedWeaponTraitUpgrade
             or ValueType.AwakenedWeaponTraitUpgradeProc)
         {
-            _economyEntries.Add((
-                entry.SessionId,
-                entry.OccurredAtUtc,
-                entry.ValueType,
-                entry.Value,
-                entry.ItemQuality,
-                entry.ItemQuantity));
+            _economyEntries.Add(entry, minuteBucket, hourBucket, dayBucket);
         }
 
         if (entry.ValueType is ValueType.PlayerKill or ValueType.PlayerDeath)
         {
-            _combatEntries.Add(entry);
+            _combatEntries.Add(entry, minuteBucket, hourBucket, dayBucket);
         }
 
         if (entry.ValueType == ValueType.MobKill && !string.IsNullOrWhiteSpace(entry.MobUniqueName))
         {
-            _mobKillEntries.Add(entry);
+            _mobKillEntries.Add(entry, minuteBucket, hourBucket, dayBucket);
         }
 
         if (entry.ValueType == ValueType.RepairCosts)
         {
-            _repairCostEntries.Add((entry.OccurredAtUtc, entry.Value));
+            _repairCostEntries.Add(entry, minuteBucket, hourBucket, dayBucket);
         }
 
         if (entry.ValueType == ValueType.LootValue
             && entry.ItemIndex > 0
             && entry.ItemQuantity > 0)
         {
-            _lootEntries.Add(entry);
+            _lootEntries.Add(entry, minuteBucket, hourBucket, dayBucket);
         }
 
         if (entry.ValueType == ValueType.LootedChest
             && entry.TreasureRarity != TreasureRarity.Unknown)
         {
-            _lootedChestEntries.Add(entry);
+            _lootedChestEntries.Add(entry, minuteBucket, hourBucket, dayBucket);
+        }
+    }
+
+    private static void AddEconomyEntry(DashboardEconomyStatistics result, StatisticEntry entry)
+    {
+        var absoluteValue = Math.Abs(entry.Value);
+        switch (entry.ValueType)
+        {
+            case ValueType.ReSpec:
+                result.ReSpec += entry.Value;
+                if (entry.Value < 0)
+                {
+                    result.SpentReSpec += absoluteValue;
+                }
+                break;
+            case ValueType.PaidSilverForReSpec:
+                result.ReSpecSilverCost += absoluteValue;
+                break;
+            case ValueType.RepairCosts:
+                result.RepairCosts += absoluteValue;
+                result.HighestRepairCost = Math.Max(result.HighestRepairCost, absoluteValue);
+                break;
+            case ValueType.ItemQualityRerollCosts:
+                result.ItemQualityRerollCosts += absoluteValue;
+                AddItemQualityCount(result, entry.ItemQuality, entry.ItemQuantity);
+                break;
+            case ValueType.ItemQualityRerollResult:
+                AddItemQualityCount(result, entry.ItemQuality, entry.ItemQuantity);
+                AddSuccessfulItemQualityRerollCount(result, entry.ItemQuality, entry.ItemQuantity);
+                break;
+            case ValueType.ItemQualityRerollAttempt:
+                AddEligibleItemQualityRerollCounts(result, entry.ItemQuality, entry.ItemQuantity);
+                break;
+            case ValueType.AwakenedWeaponCosts:
+                result.AwakenedWeaponCosts += absoluteValue;
+                break;
+            case ValueType.AwakenedWeaponTraitUpgrade:
+                result.AwakenedWeaponTraitUpgradeCount += entry.ItemQuantity;
+                break;
+            case ValueType.AwakenedWeaponTraitUpgradeProc:
+                result.AwakenedWeaponTraitUpgradeProcCount += entry.ItemQuantity;
+                break;
         }
     }
 
@@ -469,26 +481,19 @@ public sealed class DashboardStatisticsAggregator
         }
     }
 
-    private static DateTime GetBucketStart(DateTime occurredAtUtc, DashboardChartRangeUnit unit)
-    {
-        var localDate = occurredAtUtc.ToLocalTime();
-        return unit switch
-        {
-            DashboardChartRangeUnit.Minute => new DateTime(localDate.Year, localDate.Month, localDate.Day, localDate.Hour, localDate.Minute, 0),
-            DashboardChartRangeUnit.Hour => new DateTime(localDate.Year, localDate.Month, localDate.Day, localDate.Hour, 0, 0),
-            DashboardChartRangeUnit.Day => localDate.Date,
-            _ => localDate.Date
-        };
-    }
-
     private static void AddIndexedValue(
-        IDictionary<(ValueType ValueType, DateTime Bucket, Guid SessionId, MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode, CityFaction CityFaction), double> values,
+        IDictionary<DateTime, Dictionary<(ValueType ValueType, Guid SessionId, MapType MapType, DungeonMode DungeonMode, ClusterMode ClusterMode, CityFaction CityFaction), double>> values,
         StatisticEntry entry,
         DateTime bucket)
     {
-        var key = (entry.ValueType, bucket, entry.SessionId, entry.MapType, entry.DungeonMode, entry.ClusterMode, entry.CityFaction);
-        var currentValue = values.TryGetValue(key, out var existingValue) ? existingValue : 0;
-        values[key] = currentValue + entry.Value;
+        if (!values.TryGetValue(bucket, out var bucketValues))
+        {
+            bucketValues = [];
+            values[bucket] = bucketValues;
+        }
+
+        var key = (entry.ValueType, entry.SessionId, entry.MapType, entry.DungeonMode, entry.ClusterMode, entry.CityFaction);
+        bucketValues[key] = bucketValues.GetValueOrDefault(key) + entry.Value;
     }
 
     private static void AddValue(
@@ -504,5 +509,52 @@ public sealed class DashboardStatisticsAggregator
         }
 
         valuesByBucket[bucket] = valuesByBucket.GetValueOrDefault(bucket) + value;
+    }
+
+    private sealed class EntryBucketIndex
+    {
+        private readonly Dictionary<DateTime, List<StatisticEntry>> _minuteEntries = [];
+        private readonly Dictionary<DateTime, List<StatisticEntry>> _hourlyEntries = [];
+        private readonly Dictionary<DateTime, List<StatisticEntry>> _dailyEntries = [];
+
+        public void Add(
+            StatisticEntry entry,
+            DateTime minuteBucket,
+            DateTime hourBucket,
+            DateTime dayBucket)
+        {
+            AddEntry(_minuteEntries, minuteBucket, entry);
+            AddEntry(_hourlyEntries, hourBucket, entry);
+            AddEntry(_dailyEntries, dayBucket, entry);
+        }
+
+        public IReadOnlyList<StatisticEntry> GetEntries(
+            DateTime bucketStart,
+            DashboardChartRangeUnit unit)
+        {
+            var entries = unit switch
+            {
+                DashboardChartRangeUnit.Minute => _minuteEntries,
+                DashboardChartRangeUnit.Hour => _hourlyEntries,
+                DashboardChartRangeUnit.Day => _dailyEntries,
+                _ => _dailyEntries
+            };
+
+            return entries.GetValueOrDefault(bucketStart) ?? [];
+        }
+
+        private static void AddEntry(
+            IDictionary<DateTime, List<StatisticEntry>> entries,
+            DateTime bucket,
+            StatisticEntry entry)
+        {
+            if (!entries.TryGetValue(bucket, out var bucketEntries))
+            {
+                bucketEntries = [];
+                entries[bucket] = bucketEntries;
+            }
+
+            bucketEntries.Add(entry);
+        }
     }
 }
