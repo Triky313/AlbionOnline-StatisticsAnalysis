@@ -200,6 +200,8 @@ public sealed class StatisticSessionStorage
             CombatAreaClusterType = entry.CombatAreaClusterType,
             CombatOpponentName = entry.CombatOpponentName,
             CombatLootValue = entry.CombatLootValue,
+            CombatKiller = entry.CombatKiller?.CreateSnapshot(),
+            CombatVictim = entry.CombatVictim?.CreateSnapshot(),
             MobUniqueName = entry.MobUniqueName
         };
     }

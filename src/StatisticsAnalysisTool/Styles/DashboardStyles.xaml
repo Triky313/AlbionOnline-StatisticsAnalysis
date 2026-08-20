@@ -648,34 +648,169 @@
         </Grid>
     </DataTemplate>
 
+    <Style x:Key="Dashboard.CombatEventExpander" TargetType="{x:Type Expander}">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Expander}">
+                    <Border BorderBrush="{StaticResource SolidColorBrush.Background.4}" BorderThickness="0,0,0,1">
+                        <DockPanel LastChildFill="True">
+                            <ToggleButton DockPanel.Dock="Top"
+                                          Background="Transparent"
+                                          BorderThickness="0"
+                                          Cursor="Hand"
+                                          Focusable="False"
+                                          IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                        <Border x:Name="CombatEventHeader" Background="{TemplateBinding Background}">
+                                            <Grid>
+                                                <ContentPresenter Margin="0,0,42,0"
+                                                                  HorizontalAlignment="Stretch"
+                                                                  VerticalAlignment="Center"
+                                                                  Content="{TemplateBinding Content}"
+                                                                  ContentTemplate="{TemplateBinding ContentTemplate}" />
+                                                <Border Width="26"
+                                                        Height="26"
+                                                        Margin="0,0,7,0"
+                                                        HorizontalAlignment="Right"
+                                                        VerticalAlignment="Center"
+                                                        Background="{StaticResource SolidColorBrush.Background.3}"
+                                                        CornerRadius="13">
+                                                    <fa5:ImageAwesome x:Name="CombatEventExpandIcon"
+                                                                      Width="10"
+                                                                      Height="10"
+                                                                      Icon="Solid_ChevronDown"
+                                                                      Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsChecked" Value="True">
+                                                <Setter TargetName="CombatEventExpandIcon" Property="Icon" Value="Solid_ChevronUp" />
+                                                <Setter TargetName="CombatEventHeader" Property="Background" Value="{StaticResource SolidColorBrush.Background.3}" />
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="CombatEventHeader" Property="Background" Value="{StaticResource SolidColorBrush.Background.3}" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                                <ContentPresenter Content="{TemplateBinding Header}" ContentTemplate="{TemplateBinding HeaderTemplate}" />
+                            </ToggleButton>
+                            <ContentPresenter x:Name="CombatEventContent" Visibility="Collapsed" ContentSource="Content" />
+                        </DockPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsExpanded" Value="True">
+                            <Setter TargetName="CombatEventContent" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <DataTemplate x:Key="Dashboard.CombatPlayerItemTemplate" DataType="{x:Type models:DashboardCombatPlayerItem}">
+        <Grid MinHeight="44">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="180" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="105" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Margin="0,0,12,0"
+                       VerticalAlignment="Center"
+                       FontSize="13"
+                       FontWeight="SemiBold"
+                       Foreground="{StaticResource SolidColorBrush.Text.1}"
+                       Text="{Binding Name}"
+                       TextTrimming="CharacterEllipsis" />
+            <ItemsControl Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding Equipment}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Width="36"
+                                Height="36"
+                                Margin="0,0,4,0"
+                                Padding="2"
+                                Background="{StaticResource SolidColorBrush.Background.3}"
+                                BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                                BorderThickness="1"
+                                CornerRadius="3">
+                            <Image Source="{Binding Icon, IsAsync=True, Mode=OneWay}"
+                                   Stretch="Uniform"
+                                   ToolTip="{Binding LocalizedName, IsAsync=True, Mode=OneWay}" />
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <StackPanel Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal">
+                <Image Width="14" Height="14" Margin="0,0,5,0" Source="../Resources/silver.png" />
+                <TextBlock VerticalAlignment="Center"
+                           FontSize="13"
+                           FontWeight="SemiBold"
+                           Foreground="{StaticResource SolidColorBrush.Text.1}"
+                           Text="{Binding EstimatedValue, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}" />
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
     <DataTemplate x:Key="Dashboard.CombatEventItemTemplate" DataType="{x:Type models:DashboardCombatEventItem}">
-        <Border MinHeight="34" BorderBrush="{StaticResource SolidColorBrush.Background.4}" BorderThickness="0,0,0,1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="115" />
-                    <ColumnDefinition Width="90" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="110" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="{Binding RelativeTime}" Style="{StaticResource Dashboard.CombatRowText}" />
-                <TextBlock Grid.Column="1" Text="{Binding Result}" FontWeight="SemiBold" VerticalAlignment="Center">
-                    <TextBlock.Style>
-                        <Style TargetType="{x:Type TextBlock}">
-                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.2}" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsKill}" Value="False">
-                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.2}" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-                <TextBlock Grid.Column="2" Text="{Binding MapName}" Style="{StaticResource Dashboard.CombatRowText}" Margin="0,0,12,0" />
-                <TextBlock Grid.Column="3" Text="{Binding OpponentName}" Style="{StaticResource Dashboard.CombatRowText}" />
-                <TextBlock Grid.Column="4" Text="{Binding EstimatedValue, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dashboard.CombatRowText}" TextAlignment="Right" />
-            </Grid>
-        </Border>
+        <Expander Style="{StaticResource Dashboard.CombatEventExpander}">
+            <Expander.Header>
+                <Grid MinHeight="34">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="115" />
+                        <ColumnDefinition Width="90" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="90" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding RelativeTime}" Style="{StaticResource Dashboard.CombatRowText}" />
+                    <TextBlock Grid.Column="1" Text="{Binding Result}" FontWeight="SemiBold" VerticalAlignment="Center">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.2}" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsKill}" Value="False">
+                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.2}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <TextBlock Grid.Column="2" Text="{Binding MapName}" Style="{StaticResource Dashboard.CombatRowText}" Margin="0,0,12,0" />
+                    <TextBlock Grid.Column="3" Text="{Binding OpponentName}" Style="{StaticResource Dashboard.CombatRowText}" />
+                    <TextBlock Grid.Column="4"
+                               Text="{Binding EstimatedValue, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}"
+                               Style="{StaticResource Dashboard.CombatRowText}"
+                               TextAlignment="Right" />
+                </Grid>
+            </Expander.Header>
+            <Border Padding="14,10"
+                    Background="{StaticResource SolidColorBrush.Background.1}"
+                    BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                    BorderThickness="0,1,0,0">
+                <StackPanel>
+                    <ContentControl Content="{Binding Killer}" ContentTemplate="{StaticResource Dashboard.CombatPlayerItemTemplate}" />
+                    <Border Margin="0,5"
+                            Padding="0,4"
+                            BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                            BorderThickness="0,1,0,1">
+                        <TextBlock HorizontalAlignment="Center"
+                                   FontSize="11"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"
+                                   Text="VS" />
+                    </Border>
+                    <ContentControl Content="{Binding Victim}" ContentTemplate="{StaticResource Dashboard.CombatPlayerItemTemplate}" />
+                </StackPanel>
+            </Border>
+        </Expander>
     </DataTemplate>
 
     <DataTemplate x:Key="KillDeathStatsTemplate" DataType="{x:Type bindingModel:DashboardBindings}">

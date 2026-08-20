@@ -12,6 +12,7 @@ using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.BindingModel;
+using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -360,26 +361,46 @@ public class StatisticController
         UpdateDailyChart();
     }
 
-    public void AddPlayerKill(string killedPlayerName)
+    public void AddPlayerKill(
+        string killedPlayerName,
+        long killedPlayerObjectId)
     {
         if (string.IsNullOrWhiteSpace(killedPlayerName))
         {
             return;
         }
 
-        AddPlayerCombatEvent(ValueType.PlayerKill, killedPlayerName);
+        var entityController = _trackingController.EntityController;
+        AddPlayerCombatEvent(
+            ValueType.PlayerKill,
+            killedPlayerName,
+            CreateCombatPlayerSnapshot(
+                entityController.LocalUserData.Username,
+                entityController.GetLastLocalCharacterEquipment()),
+            CreateCombatPlayerSnapshot(
+                killedPlayerName,
+                entityController.GetLastKnownCharacterEquipment(killedPlayerObjectId)));
     }
 
     public void AddPlayerDeath(string diedPlayerName, string killedByName)
     {
-        var localPlayerName = _trackingController.EntityController.LocalUserData.Username;
+        var entityController = _trackingController.EntityController;
+        var localPlayerName = entityController.LocalUserData.Username;
         if (string.IsNullOrWhiteSpace(localPlayerName)
             || !string.Equals(diedPlayerName, localPlayerName, StringComparison.OrdinalIgnoreCase))
         {
             return;
         }
 
-        AddPlayerCombatEvent(ValueType.PlayerDeath, killedByName);
+        AddPlayerCombatEvent(
+            ValueType.PlayerDeath,
+            killedByName,
+            CreateCombatPlayerSnapshot(
+                killedByName,
+                entityController.GetLastKnownCharacterEquipment(killedByName)),
+            CreateCombatPlayerSnapshot(
+                localPlayerName,
+                entityController.GetLastLocalCharacterEquipment()));
     }
 
     public void AddMobKill(string mobUniqueName)
@@ -426,7 +447,11 @@ public class StatisticController
         UpdateDailyChart();
     }
 
-    private void AddPlayerCombatEvent(ValueType valueType, string opponentName)
+    private void AddPlayerCombatEvent(
+        ValueType valueType,
+        string opponentName,
+        CombatPlayerSnapshot killer,
+        CombatPlayerSnapshot victim)
     {
         if (!_trackingController.IsTrackingAllowedByMainCharacter())
         {
@@ -465,7 +490,9 @@ public class StatisticController
                 ClusterMode = ClusterController.CurrentCluster.ClusterMode,
                 CombatAreaIndex = combatAreaIndex,
                 CombatAreaClusterType = combatAreaClusterType,
-                CombatOpponentName = opponentName ?? string.Empty
+                CombatOpponentName = opponentName ?? string.Empty,
+                CombatKiller = killer,
+                CombatVictim = victim
             };
 
             _dashboardStatistics.Add(statisticEntry);
@@ -475,6 +502,24 @@ public class StatisticController
         }
 
         UpdateDailyChart();
+    }
+
+    private static CombatPlayerSnapshot CreateCombatPlayerSnapshot(
+        string playerName,
+        CharacterEquipment equipment)
+    {
+        var itemIndexes = equipment?.GetEquippedItemIndexes().ToList() ?? [];
+        var estimatedEquipmentValue = itemIndexes
+            .Select(itemIndex => ItemController.GetItemByIndex(itemIndex))
+            .Where(item => item != null)
+            .Sum(item => Math.Max(item.AverageEstMarketValue, 0L));
+
+        return new CombatPlayerSnapshot
+        {
+            Name = playerName ?? string.Empty,
+            EquipmentItemIndexes = itemIndexes,
+            EstimatedEquipmentValue = estimatedEquipmentValue
+        };
     }
 
     public void AddCombatLootValue(string lootedFromName, double value)
@@ -1180,6 +1225,8 @@ public class StatisticController
         var kills = entries.Where(entry => entry.ValueType == ValueType.PlayerKill).ToArray();
         var deaths = entries.Where(entry => entry.ValueType == ValueType.PlayerDeath).ToArray();
         var combatStatistics = _mainWindowViewModel.DashboardBindings.CombatStatistics;
+        var characterNamesBySession = _dashboardStatistics.CreateSessionSnapshot()
+            .ToDictionary(session => session.Id, session => session.CharacterName ?? string.Empty);
 
         combatStatistics.KillCount = kills.LongLength;
         combatStatistics.DeathCount = deaths.LongLength;
@@ -1201,6 +1248,20 @@ public class StatisticController
                 .Select(entry =>
                 {
                     var isKill = entry.ValueType == ValueType.PlayerKill;
+                    var opponentName = string.IsNullOrWhiteSpace(entry.CombatOpponentName)
+                        ? "\u2014"
+                        : entry.CombatOpponentName;
+                    var localPlayerName = characterNamesBySession.TryGetValue(entry.SessionId, out var characterName)
+                        ? characterName
+                        : _trackingController.EntityController.LocalUserData.Username ?? string.Empty;
+                    var killer = CreateDashboardCombatPlayerItem(
+                        entry.CombatKiller,
+                        isKill ? localPlayerName : opponentName);
+                    var victim = CreateDashboardCombatPlayerItem(
+                        entry.CombatVictim,
+                        isKill ? opponentName : localPlayerName,
+                        entry.CombatVictim == null ? entry.CombatLootValue : 0);
+
                     return new DashboardCombatEventItem(
                         FormatRelativeTime(entry.OccurredAtUtc),
                         isKill
@@ -1208,10 +1269,33 @@ public class StatisticController
                             : TranslateCombatText("DEATH", "Tod", "Death"),
                         isKill,
                         ResolveCombatAreaName(entry),
-                        string.IsNullOrWhiteSpace(entry.CombatOpponentName) ? "\u2014" : entry.CombatOpponentName,
-                        entry.CombatLootValue);
+                        opponentName,
+                        killer,
+                        victim);
                 })
                 .ToArray());
+    }
+
+    private static DashboardCombatPlayerItem CreateDashboardCombatPlayerItem(
+        CombatPlayerSnapshot snapshot,
+        string fallbackName,
+        double fallbackEstimatedValue = 0)
+    {
+        var equipment = (snapshot?.EquipmentItemIndexes ?? [])
+            .Select(itemIndex => ItemController.GetItemByIndex(itemIndex))
+            .Where(item => item != null)
+            .ToArray();
+        var playerName = string.IsNullOrWhiteSpace(snapshot?.Name)
+            ? fallbackName
+            : snapshot.Name;
+        var estimatedValue = snapshot == null
+            ? fallbackEstimatedValue
+            : snapshot.EstimatedEquipmentValue;
+
+        return new DashboardCombatPlayerItem(
+            string.IsNullOrWhiteSpace(playerName) ? "\u2014" : playerName,
+            equipment,
+            double.IsFinite(estimatedValue) ? Math.Max(estimatedValue, 0) : 0);
     }
 
     private static IReadOnlyCollection<DashboardCombatLocationItem> CreateCombatLocations(

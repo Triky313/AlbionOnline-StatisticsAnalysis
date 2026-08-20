@@ -177,6 +177,8 @@ public class DashboardStatistics
                         CombatAreaClusterType = x.CombatAreaClusterType,
                         CombatOpponentName = x.CombatOpponentName,
                         CombatLootValue = x.CombatLootValue,
+                        CombatKiller = x.CombatKiller?.CreateSnapshot(),
+                        CombatVictim = x.CombatVictim?.CreateSnapshot(),
                         MobUniqueName = x.MobUniqueName
                     })
                     .ToList(),

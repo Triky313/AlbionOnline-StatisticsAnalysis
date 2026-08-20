@@ -26,6 +26,15 @@ public class DashboardBindings : BaseViewModel
         KillDeathStatsVisibility = SettingsController.CurrentSettings.IsKillDeathStatsVisible ? Visibility.Visible : Visibility.Collapsed;
         KillDeathStatsToggleIcon = SettingsController.CurrentSettings.IsKillDeathStatsVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
 
+        TopKillLocationsVisibility = SettingsController.CurrentSettings.IsTopKillLocationsVisible ? Visibility.Visible : Visibility.Collapsed;
+        TopKillLocationsToggleIcon = SettingsController.CurrentSettings.IsTopKillLocationsVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
+
+        TopDeathLocationsVisibility = SettingsController.CurrentSettings.IsTopDeathLocationsVisible ? Visibility.Visible : Visibility.Collapsed;
+        TopDeathLocationsToggleIcon = SettingsController.CurrentSettings.IsTopDeathLocationsVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
+
+        RecentKillsDeathsVisibility = SettingsController.CurrentSettings.IsRecentKillsDeathsVisible ? Visibility.Visible : Visibility.Collapsed;
+        RecentKillsDeathsToggleIcon = SettingsController.CurrentSettings.IsRecentKillsDeathsVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
+
         FactionSummaryVisibility = SettingsController.CurrentSettings.IsFactionSummaryVisible ? Visibility.Visible : Visibility.Collapsed;
         FactionSummaryToggleIcon = SettingsController.CurrentSettings.IsFactionSummaryVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
 
@@ -162,6 +171,69 @@ public class DashboardBindings : BaseViewModel
     }
 
     public EFontAwesomeIcon KillDeathStatsToggleIcon
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility TopKillLocationsVisibility
+    {
+        get;
+        set
+        {
+            field = value;
+            SettingsController.CurrentSettings.IsTopKillLocationsVisible = value == Visibility.Visible;
+            OnPropertyChanged();
+        }
+    }
+
+    public EFontAwesomeIcon TopKillLocationsToggleIcon
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility TopDeathLocationsVisibility
+    {
+        get;
+        set
+        {
+            field = value;
+            SettingsController.CurrentSettings.IsTopDeathLocationsVisible = value == Visibility.Visible;
+            OnPropertyChanged();
+        }
+    }
+
+    public EFontAwesomeIcon TopDeathLocationsToggleIcon
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility RecentKillsDeathsVisibility
+    {
+        get;
+        set
+        {
+            field = value;
+            SettingsController.CurrentSettings.IsRecentKillsDeathsVisible = value == Visibility.Visible;
+            OnPropertyChanged();
+        }
+    }
+
+    public EFontAwesomeIcon RecentKillsDeathsToggleIcon
     {
         get;
         set

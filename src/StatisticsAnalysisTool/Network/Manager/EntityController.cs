@@ -21,6 +21,7 @@ public class EntityController
 {
     private readonly ConcurrentDictionary<Guid, PlayerGameObject> _knownEntities = new();
     private readonly ConcurrentDictionary<long, Guid> _entityGuidsByObjectId = new();
+    private readonly ConcurrentDictionary<Guid, CharacterEquipment> _lastKnownCharacterEquipment = new();
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly ObservableCollection<EquipmentItemInternal> _newEquipmentItems = [];
     private readonly ObservableCollection<SpellEffect> _spellEffects = [];
@@ -110,6 +111,8 @@ public class EntityController
             gameObject.CharacterEquipment = characterEquipmentData.CharacterEquipment;
             _tempCharacterEquipmentData.TryRemove((long) entity.ObjectId, out _);
         }
+
+        RememberCharacterEquipment(gameObject.UserGuid, gameObject.CharacterEquipment);
 
         if (_knownEntities.TryAdd(gameObject.UserGuid, gameObject))
         {
@@ -385,6 +388,7 @@ public class EntityController
         if (entity?.Value != null)
         {
             entity.Value.Value.CharacterEquipment = equipment;
+            RememberCharacterEquipment(entity.Value.Key, equipment);
 
             if (entity.Value.Value.IsInParty)
             {
@@ -399,6 +403,71 @@ public class EntityController
                 TimeStamp = DateTime.UtcNow
             });
         }
+    }
+
+    public CharacterEquipment GetLastKnownCharacterEquipment(long objectId)
+    {
+        var entity = GetEntity(objectId);
+        return entity.HasValue
+            ? GetLastKnownCharacterEquipment(entity.Value)
+            : null;
+    }
+
+    public CharacterEquipment GetLastKnownCharacterEquipment(string playerName)
+    {
+        if (string.IsNullOrWhiteSpace(playerName))
+        {
+            return null;
+        }
+
+        var entity = _knownEntities
+            .FirstOrDefault(knownEntity => string.Equals(
+                knownEntity.Value.Name,
+                playerName,
+                StringComparison.OrdinalIgnoreCase));
+        return entity.Value != null
+            ? GetLastKnownCharacterEquipment(entity)
+            : null;
+    }
+
+    public CharacterEquipment GetLastLocalCharacterEquipment()
+    {
+        var localEntity = GetLocalEntity();
+        if (localEntity?.Value != null)
+        {
+            return GetLastKnownCharacterEquipment(localEntity.Value);
+        }
+
+        if (!LocalUserData.Guid.HasValue
+            || !_lastKnownCharacterEquipment.TryGetValue(LocalUserData.Guid.Value, out var equipment))
+        {
+            return null;
+        }
+
+        return equipment.CreateSnapshot();
+    }
+
+    private CharacterEquipment GetLastKnownCharacterEquipment(KeyValuePair<Guid, PlayerGameObject> entity)
+    {
+        if (entity.Value.CharacterEquipment?.HasEquippedItems() == true)
+        {
+            RememberCharacterEquipment(entity.Key, entity.Value.CharacterEquipment);
+            return entity.Value.CharacterEquipment.CreateSnapshot();
+        }
+
+        return _lastKnownCharacterEquipment.TryGetValue(entity.Key, out var equipment)
+            ? equipment.CreateSnapshot()
+            : null;
+    }
+
+    private void RememberCharacterEquipment(Guid userGuid, CharacterEquipment equipment)
+    {
+        if (userGuid == Guid.Empty || equipment?.HasEquippedItems() != true)
+        {
+            return;
+        }
+
+        _lastKnownCharacterEquipment[userGuid] = equipment.CreateSnapshot();
     }
 
     public void ResetTempCharacterEquipment()

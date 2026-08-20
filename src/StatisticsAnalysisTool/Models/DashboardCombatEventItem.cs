@@ -6,12 +6,15 @@ public sealed class DashboardCombatEventItem(
     bool isKill,
     string mapName,
     string opponentName,
-    double estimatedValue)
+    DashboardCombatPlayerItem killer,
+    DashboardCombatPlayerItem victim)
 {
     public string RelativeTime { get; } = relativeTime;
     public string Result { get; } = result;
     public bool IsKill { get; } = isKill;
     public string MapName { get; } = mapName;
     public string OpponentName { get; } = opponentName;
-    public double EstimatedValue { get; } = estimatedValue;
+    public DashboardCombatPlayerItem Killer { get; } = killer;
+    public DashboardCombatPlayerItem Victim { get; } = victim;
+    public double EstimatedValue => Victim.EstimatedValue;
 }

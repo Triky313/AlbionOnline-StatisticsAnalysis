@@ -151,6 +151,51 @@ public partial class DashboardControl
         }
     }
 
+    private void TopKillLocationsToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        var vm = (MainWindowViewModel) DataContext;
+        if (vm.DashboardBindings.TopKillLocationsVisibility == Visibility.Visible)
+        {
+            vm.DashboardBindings.TopKillLocationsVisibility = Visibility.Collapsed;
+            vm.DashboardBindings.TopKillLocationsToggleIcon = EFontAwesomeIcon.Solid_Plus;
+        }
+        else
+        {
+            vm.DashboardBindings.TopKillLocationsVisibility = Visibility.Visible;
+            vm.DashboardBindings.TopKillLocationsToggleIcon = EFontAwesomeIcon.Solid_Minus;
+        }
+    }
+
+    private void TopDeathLocationsToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        var vm = (MainWindowViewModel) DataContext;
+        if (vm.DashboardBindings.TopDeathLocationsVisibility == Visibility.Visible)
+        {
+            vm.DashboardBindings.TopDeathLocationsVisibility = Visibility.Collapsed;
+            vm.DashboardBindings.TopDeathLocationsToggleIcon = EFontAwesomeIcon.Solid_Plus;
+        }
+        else
+        {
+            vm.DashboardBindings.TopDeathLocationsVisibility = Visibility.Visible;
+            vm.DashboardBindings.TopDeathLocationsToggleIcon = EFontAwesomeIcon.Solid_Minus;
+        }
+    }
+
+    private void RecentKillsDeathsToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        var vm = (MainWindowViewModel) DataContext;
+        if (vm.DashboardBindings.RecentKillsDeathsVisibility == Visibility.Visible)
+        {
+            vm.DashboardBindings.RecentKillsDeathsVisibility = Visibility.Collapsed;
+            vm.DashboardBindings.RecentKillsDeathsToggleIcon = EFontAwesomeIcon.Solid_Plus;
+        }
+        else
+        {
+            vm.DashboardBindings.RecentKillsDeathsVisibility = Visibility.Visible;
+            vm.DashboardBindings.RecentKillsDeathsToggleIcon = EFontAwesomeIcon.Solid_Minus;
+        }
+    }
+
     private void FactionSummaryToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         var vm = (MainWindowViewModel) DataContext;
