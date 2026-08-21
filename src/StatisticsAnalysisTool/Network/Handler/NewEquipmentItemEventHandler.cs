@@ -26,11 +26,7 @@ public class NewEquipmentItemEventHandler(TrackingController trackingController)
         EstimatedMarketValueController.Add(value.Item.ItemIndex, value.Item.EstimatedMarketValueInternal, value.Item.Quality);
 
         var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();
-        mainWindowViewModel?.CraftingBindings?.BlackMarket?.RecordEstimatedDailyPrice(
-            value.Item.ItemIndex,
-            (int) value.Item.Quality + 1,
-            value.EstimatedBlackMarketValueInternal,
-            value.Item.UtcDiscoveryTime);
+        mainWindowViewModel?.CraftingBindings?.BlackMarket?.RecordEstimatedDailyPrice(value.Item.ItemIndex, (int) value.Item.Quality + 1, value.EstimatedBlackMarketValueInternal, value.Item.UtcDiscoveryTime);
 
         trackingController.TrackEquipmentItem(value.Item);
 

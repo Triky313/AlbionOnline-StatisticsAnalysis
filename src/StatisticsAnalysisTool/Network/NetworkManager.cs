@@ -46,6 +46,7 @@ public class NetworkManager
 
         // Event
         builder.AddEventHandler(new NewEquipmentItemEventHandler(trackingController));
+        builder.AddEventHandler(new NewSiegeBannerItemEventHandler());
         builder.AddEventHandler(new NewSimpleItemEventHandler(trackingController));
         builder.AddEventHandler(new NewFurnitureItemEventHandler(trackingController));
         builder.AddEventHandler(new NewKillTrophyItemHandler(trackingController));

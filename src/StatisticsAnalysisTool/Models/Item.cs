@@ -4,6 +4,7 @@ using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
+using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.Json.Serialization;
@@ -12,7 +13,7 @@ using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Models;
 
-public class Item
+public class Item : BaseViewModel
 {
     public string LocalizationNameVariable { get; set; }
     public string LocalizationDescriptionVariable { get; set; }
@@ -56,7 +57,18 @@ public class Item
     public bool IsFavorite { get; set; }
 
     [JsonIgnore]
-    public List<EstQualityValue> EstimatedMarketValues { get; set; }
+    public List<EstQualityValue> EstimatedMarketValues
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(AverageEstMarketValue));
+            OnPropertyChanged(nameof(LastEstimatedUpdateTimeString));
+            OnPropertyChanged(nameof(EstimatedMarketValueStatus));
+        }
+    }
 
     [JsonIgnore]
     public long AverageEstMarketValue => EstimatedMarketValueController.CalculateNearestToAverage(EstimatedMarketValues).MarketValue.IntegerValue;
