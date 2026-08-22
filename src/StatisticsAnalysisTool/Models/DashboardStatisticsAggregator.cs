@@ -28,7 +28,7 @@ public sealed class DashboardStatisticsAggregator
 
         foreach (var entry in statistics.Entries ?? [])
         {
-            AddInternal(entry);
+            AddInternal(NormalizeHistoricalArenaCombatEntry(entry));
         }
     }
 
@@ -206,17 +206,30 @@ public sealed class DashboardStatisticsAggregator
     }
 
     public IReadOnlyList<StatisticEntry> GetCombatEntries(
-        IReadOnlyCollection<DateTime> bucketStarts,
-        DashboardChartRangeUnit unit,
+        DateTime rangeStartUtc,
+        DateTime rangeEndUtc,
         Guid? sessionId,
         DashboardContentType? contentType)
     {
-        if (bucketStarts == null || bucketStarts.Count == 0)
+        if (rangeStartUtc >= rangeEndUtc)
         {
             return [];
         }
 
-        return GetEntries(_combatEntries, bucketStarts, unit, sessionId, contentType);
+        var firstLocalDate = rangeStartUtc.ToLocalTime().Date;
+        var lastLocalDate = rangeEndUtc.ToLocalTime().Date;
+        var dayBucketStarts = Enumerable.Range(0, (lastLocalDate - firstLocalDate).Days + 1)
+            .Select(dayOffset => firstLocalDate.AddDays(dayOffset))
+            .ToArray();
+
+        return GetEntries(
+                _combatEntries,
+                dayBucketStarts,
+                DashboardChartRangeUnit.Day,
+                sessionId,
+                contentType)
+            .Where(entry => entry.OccurredAtUtc >= rangeStartUtc && entry.OccurredAtUtc < rangeEndUtc)
+            .ToArray();
     }
 
     public IReadOnlyList<StatisticEntry> GetMobKillEntries(
@@ -328,7 +341,10 @@ public sealed class DashboardStatisticsAggregator
             _economyEntries.Add(entry, minuteBucket, hourBucket, dayBucket);
         }
 
-        if (entry.ValueType is ValueType.PlayerKill or ValueType.PlayerDeath)
+        if (entry.ValueType is ValueType.PlayerKill
+            or ValueType.PlayerDeath
+            or ValueType.PlayerKnockout
+            or ValueType.PlayerKnockedOut)
         {
             _combatEntries.Add(entry, minuteBucket, hourBucket, dayBucket);
         }
@@ -355,6 +371,38 @@ public sealed class DashboardStatisticsAggregator
         {
             _lootedChestEntries.Add(entry, minuteBucket, hourBucket, dayBucket);
         }
+    }
+
+    private static StatisticEntry NormalizeHistoricalArenaCombatEntry(StatisticEntry entry)
+    {
+        var normalizedValueType = (entry.MapType, entry.ValueType) switch
+        {
+            (MapType.Arena, ValueType.PlayerKill) => ValueType.PlayerKnockout,
+            (MapType.Arena, ValueType.PlayerDeath) => ValueType.PlayerKnockedOut,
+            _ => entry.ValueType
+        };
+        if (normalizedValueType == entry.ValueType)
+        {
+            return entry;
+        }
+
+        return new StatisticEntry
+        {
+            SessionId = entry.SessionId,
+            OccurredAtUtc = entry.OccurredAtUtc,
+            ValueType = normalizedValueType,
+            Value = entry.Value,
+            MapType = entry.MapType,
+            DungeonMode = entry.DungeonMode,
+            ClusterMode = entry.ClusterMode,
+            CityFaction = entry.CityFaction,
+            CombatAreaIndex = entry.CombatAreaIndex,
+            CombatAreaClusterType = entry.CombatAreaClusterType,
+            CombatOpponentName = entry.CombatOpponentName,
+            CombatLootValue = entry.CombatLootValue,
+            CombatKiller = entry.CombatKiller,
+            CombatVictim = entry.CombatVictim
+        };
     }
 
     private static void AddEconomyEntry(DashboardEconomyStatistics result, StatisticEntry entry)

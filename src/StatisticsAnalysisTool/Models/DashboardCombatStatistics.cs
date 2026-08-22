@@ -26,6 +26,26 @@ public sealed class DashboardCombatStatistics : BaseViewModel
         }
     }
 
+    public long KnockoutCount
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public long KnockedOutCount
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
     public double KillDeathRatio
     {
         get;

@@ -16,7 +16,7 @@ public sealed class KilledPlayerEventHandler(TrackingController trackingControll
             return Task.CompletedTask;
         }
 
-        trackingController.StatisticController.AddPlayerKill(
+        trackingController.StatisticController.TrackPlayerKillCandidate(
             value.KilledPlayerName,
             value.KilledPlayerObjectId);
         return Task.CompletedTask;

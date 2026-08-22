@@ -20,7 +20,12 @@ public class DiedEventHandler(TrackingController trackingController) : EventPack
         }
 
         trackingController.PartyController.PlayerHasDied(value.Died);
-        trackingController.StatisticController.AddPlayerDeath(value.Died, value.KilledBy);
+        trackingController.StatisticController.ResolvePlayerCombatResult(
+            value.DiedObjectId,
+            value.Died,
+            value.KillerObjectId,
+            value.KilledBy,
+            value.IsLethal);
 
         if (trackingController.IsKillTrackingEnabled)
         {

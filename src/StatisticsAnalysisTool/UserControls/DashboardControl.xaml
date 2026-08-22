@@ -473,7 +473,7 @@
 
                     <TabItem Header="{Binding DashboardBindings.TranslationCombatTitle, FallbackValue=COMBAT}">
                         <StackPanel Margin="0,8,0,0">
-                            <UniformGrid Rows="1" Columns="4" Margin="0,0,0,8">
+                            <UniformGrid Rows="1" Columns="6" Margin="0,0,0,8">
                                 <Border Style="{StaticResource Dashboard.CombatMetricCard}">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -508,7 +508,35 @@
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <Image Source="/Assets/skull_blue.png" Width="34" Height="34" Margin="0,0,12,0" />
+                                        <Image Source="/Assets/combat_swords.png" Width="34" Height="34" Margin="0,0,12,0" />
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="{Binding DashboardBindings.TranslationKnockouts, FallbackValue=KNOCKOUTS}" Style="{StaticResource Dashboard.CombatMetricTitle}" />
+                                            <TextBlock Text="{Binding DashboardBindings.CombatStatistics.KnockoutCount, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.CombatMetricValue}" Foreground="{StaticResource SolidColorBrush.Accent.Yellow.2}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+
+                                <Border Style="{StaticResource Dashboard.CombatMetricCard}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="/Assets/skull_gold.png" Width="34" Height="34" Margin="0,0,12,0" />
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="{Binding DashboardBindings.TranslationKnockedOut, FallbackValue=KNOCKED OUT}" Style="{StaticResource Dashboard.CombatMetricTitle}" />
+                                            <TextBlock Text="{Binding DashboardBindings.CombatStatistics.KnockedOutCount, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dashboard.CombatMetricValue}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+
+                                <Border Style="{StaticResource Dashboard.CombatMetricCard}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="/Assets/skull.png" Width="34" Height="34" Margin="0,0,12,0" />
                                         <StackPanel Grid.Column="1">
                                             <TextBlock Text="{Binding DashboardBindings.TranslationKillDeathRatio, FallbackValue=K/D RATIO}" Style="{StaticResource Dashboard.CombatMetricTitle}" />
                                             <TextBlock Text="{Binding DashboardBindings.CombatStatistics.KillDeathRatio, StringFormat='{}{0:N2}', FallbackValue=0}" Style="{StaticResource Dashboard.CombatMetricValue}" />

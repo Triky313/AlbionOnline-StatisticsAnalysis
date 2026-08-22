@@ -3,7 +3,7 @@ namespace StatisticsAnalysisTool.Models;
 public sealed class DashboardCombatEventItem(
     string relativeTime,
     string result,
-    bool isKill,
+    bool isPositiveResult,
     string mapName,
     string opponentName,
     DashboardCombatPlayerItem killer,
@@ -11,7 +11,7 @@ public sealed class DashboardCombatEventItem(
 {
     public string RelativeTime { get; } = relativeTime;
     public string Result { get; } = result;
-    public bool IsKill { get; } = isKill;
+    public bool IsPositiveResult { get; } = isPositiveResult;
     public string MapName { get; } = mapName;
     public string OpponentName { get; } = opponentName;
     public DashboardCombatPlayerItem Killer { get; } = killer;

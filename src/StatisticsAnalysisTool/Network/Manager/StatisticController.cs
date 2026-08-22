@@ -4,6 +4,7 @@ using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using Serilog;
 using SkiaSharp;
+using StatisticsAnalysisTool.Combat;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Dungeon;
@@ -32,12 +33,14 @@ public class StatisticController
 {
     private static readonly TimeSpan DashboardChartRefreshDelay = TimeSpan.FromMilliseconds(500);
     private static readonly TimeSpan CombatLootAssociationWindow = TimeSpan.FromMinutes(30);
+    private static readonly TimeSpan PendingPlayerKillLifetime = TimeSpan.FromSeconds(30);
     private const int DashboardContentRankingLimit = 8;
 
     private readonly TrackingController _trackingController;
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly object _syncRoot = new();
     private readonly StatisticSessionStorage _sessionStorage = new();
+    private readonly List<PendingPlayerKill> _pendingPlayerKills = [];
     private readonly Dictionary<Guid, long> _dirtySessionVersions = [];
     private readonly SemaphoreSlim _sessionPersistenceSemaphore = new(1, 1);
     private readonly Dispatcher _uiDispatcher;
@@ -361,46 +364,122 @@ public class StatisticController
         UpdateDailyChart();
     }
 
-    public void AddPlayerKill(
+    public void TrackPlayerKillCandidate(
         string killedPlayerName,
         long killedPlayerObjectId)
     {
-        if (string.IsNullOrWhiteSpace(killedPlayerName))
+        if (string.IsNullOrWhiteSpace(killedPlayerName)
+            || !_trackingController.IsTrackingAllowedByMainCharacter())
         {
             return;
         }
 
         var entityController = _trackingController.EntityController;
-        AddPlayerCombatEvent(
-            ValueType.PlayerKill,
+        var nowUtc = DateTime.UtcNow;
+        var pendingPlayerKill = new PendingPlayerKill(
+            killedPlayerObjectId,
             killedPlayerName,
             CreateCombatPlayerSnapshot(
                 entityController.LocalUserData.Username,
                 entityController.GetLastLocalCharacterEquipment()),
             CreateCombatPlayerSnapshot(
                 killedPlayerName,
-                entityController.GetLastKnownCharacterEquipment(killedPlayerObjectId)));
+                entityController.GetLastKnownCharacterEquipment(killedPlayerObjectId)),
+            nowUtc);
+
+        lock (_syncRoot)
+        {
+            RemoveExpiredPendingPlayerKillsInternal(nowUtc);
+            _pendingPlayerKills.RemoveAll(candidate => candidate.Matches(killedPlayerObjectId, killedPlayerName));
+            _pendingPlayerKills.Add(pendingPlayerKill);
+        }
     }
 
-    public void AddPlayerDeath(string diedPlayerName, string killedByName)
+    public void ResolvePlayerCombatResult(
+        long diedPlayerObjectId,
+        string diedPlayerName,
+        long killerObjectId,
+        string killerPlayerName,
+        bool isLethal)
     {
         var entityController = _trackingController.EntityController;
         var localPlayerName = entityController.LocalUserData.Username;
-        if (string.IsNullOrWhiteSpace(localPlayerName)
-            || !string.Equals(diedPlayerName, localPlayerName, StringComparison.OrdinalIgnoreCase))
+        var pendingPlayerKill = TakePendingPlayerKill(diedPlayerObjectId, diedPlayerName, DateTime.UtcNow);
+        var combatResult = PlayerCombatResultResolver.Resolve(
+            diedPlayerObjectId,
+            diedPlayerName,
+            killerObjectId,
+            killerPlayerName,
+            isLethal,
+            entityController.LocalUserData.UserObjectId,
+            localPlayerName);
+
+        if (combatResult == PlayerCombatResult.None)
         {
             return;
         }
 
+        var valueType = combatResult switch
+        {
+            PlayerCombatResult.Kill => ValueType.PlayerKill,
+            PlayerCombatResult.Death => ValueType.PlayerDeath,
+            PlayerCombatResult.Knockout => ValueType.PlayerKnockout,
+            PlayerCombatResult.KnockedOut => ValueType.PlayerKnockedOut,
+            _ => throw new ArgumentOutOfRangeException(nameof(combatResult), combatResult, null)
+        };
+
+        if (combatResult is PlayerCombatResult.Kill or PlayerCombatResult.Knockout)
+        {
+            AddPlayerCombatEvent(
+                valueType,
+                diedPlayerName,
+                pendingPlayerKill?.Killer ?? CreateCombatPlayerSnapshot(
+                    localPlayerName,
+                    entityController.GetLastLocalCharacterEquipment()),
+                pendingPlayerKill?.Victim ?? CreateCombatPlayerSnapshot(
+                    diedPlayerName,
+                    entityController.GetLastKnownCharacterEquipment(diedPlayerObjectId)));
+            return;
+        }
+
         AddPlayerCombatEvent(
-            ValueType.PlayerDeath,
-            killedByName,
+            valueType,
+            killerPlayerName,
             CreateCombatPlayerSnapshot(
-                killedByName,
-                entityController.GetLastKnownCharacterEquipment(killedByName)),
+                killerPlayerName,
+                killerObjectId > 0
+                    ? entityController.GetLastKnownCharacterEquipment(killerObjectId)
+                    : entityController.GetLastKnownCharacterEquipment(killerPlayerName)),
             CreateCombatPlayerSnapshot(
                 localPlayerName,
                 entityController.GetLastLocalCharacterEquipment()));
+    }
+
+    private PendingPlayerKill TakePendingPlayerKill(
+        long killedPlayerObjectId,
+        string killedPlayerName,
+        DateTime nowUtc)
+    {
+        lock (_syncRoot)
+        {
+            RemoveExpiredPendingPlayerKillsInternal(nowUtc);
+            var candidateIndex = _pendingPlayerKills.FindLastIndex(
+                candidate => candidate.Matches(killedPlayerObjectId, killedPlayerName));
+            if (candidateIndex < 0)
+            {
+                return null;
+            }
+
+            var candidate = _pendingPlayerKills[candidateIndex];
+            _pendingPlayerKills.RemoveAt(candidateIndex);
+            return candidate;
+        }
+    }
+
+    private void RemoveExpiredPendingPlayerKillsInternal(DateTime nowUtc)
+    {
+        _pendingPlayerKills.RemoveAll(
+            candidate => nowUtc - candidate.OccurredAtUtc > PendingPlayerKillLifetime);
     }
 
     public void AddMobKill(string mobUniqueName)
@@ -834,7 +913,7 @@ public class StatisticController
 
         if ((updateScopes & DashboardUpdateScope.Combat) != 0)
         {
-            UpdateDashboardCombatStatistics(selectedRange, currentRangeBucketStarts);
+            UpdateDashboardCombatStatistics(selectedRange);
         }
 
         if ((updateScopes & DashboardUpdateScope.Mobs) != 0)
@@ -1213,23 +1292,27 @@ public class StatisticController
             GetRangeHours(selectedRange));
     }
 
-    private void UpdateDashboardCombatStatistics(
-        DashboardChartRangeOption selectedRange,
-        IReadOnlyCollection<DateTime> currentRangeBucketStarts)
+    private void UpdateDashboardCombatStatistics(DashboardChartRangeOption selectedRange)
     {
+        var rangeEndUtc = DateTime.UtcNow;
+        var rangeStartUtc = AddBuckets(rangeEndUtc, -selectedRange.BucketCount, selectedRange.Unit);
         var entries = _statisticsAggregator.GetCombatEntries(
-            currentRangeBucketStarts,
-            selectedRange.Unit,
+            rangeStartUtc,
+            rangeEndUtc,
             _mainWindowViewModel.SelectedDashboardSessionFilter?.SessionId,
             _mainWindowViewModel.SelectedDashboardContentFilter?.ContentType);
         var kills = entries.Where(entry => entry.ValueType == ValueType.PlayerKill).ToArray();
         var deaths = entries.Where(entry => entry.ValueType == ValueType.PlayerDeath).ToArray();
+        var knockouts = entries.Where(entry => entry.ValueType == ValueType.PlayerKnockout).ToArray();
+        var knockedOut = entries.Where(entry => entry.ValueType == ValueType.PlayerKnockedOut).ToArray();
         var combatStatistics = _mainWindowViewModel.DashboardBindings.CombatStatistics;
         var characterNamesBySession = _dashboardStatistics.CreateSessionSnapshot()
             .ToDictionary(session => session.Id, session => session.CharacterName ?? string.Empty);
 
         combatStatistics.KillCount = kills.LongLength;
         combatStatistics.DeathCount = deaths.LongLength;
+        combatStatistics.KnockoutCount = knockouts.LongLength;
+        combatStatistics.KnockedOutCount = knockedOut.LongLength;
         combatStatistics.KillDeathRatio = deaths.Length > 0
             ? (double) kills.Length / deaths.Length
             : kills.Length;
@@ -1247,7 +1330,7 @@ public class StatisticController
                 .OrderByDescending(entry => entry.OccurredAtUtc)
                 .Select(entry =>
                 {
-                    var isKill = entry.ValueType == ValueType.PlayerKill;
+                    var isPositiveResult = entry.ValueType is ValueType.PlayerKill or ValueType.PlayerKnockout;
                     var opponentName = string.IsNullOrWhiteSpace(entry.CombatOpponentName)
                         ? "\u2014"
                         : entry.CombatOpponentName;
@@ -1256,18 +1339,16 @@ public class StatisticController
                         : _trackingController.EntityController.LocalUserData.Username ?? string.Empty;
                     var killer = CreateDashboardCombatPlayerItem(
                         entry.CombatKiller,
-                        isKill ? localPlayerName : opponentName);
+                        isPositiveResult ? localPlayerName : opponentName);
                     var victim = CreateDashboardCombatPlayerItem(
                         entry.CombatVictim,
-                        isKill ? opponentName : localPlayerName,
+                        isPositiveResult ? opponentName : localPlayerName,
                         entry.CombatVictim == null ? entry.CombatLootValue : 0);
 
                     return new DashboardCombatEventItem(
                         FormatRelativeTime(entry.OccurredAtUtc),
-                        isKill
-                            ? TranslateCombatText("KILL", "T\u00F6tung", "Kill")
-                            : TranslateCombatText("DEATH", "Tod", "Death"),
-                        isKill,
+                        ResolveCombatResultName(entry.ValueType),
+                        isPositiveResult,
                         ResolveCombatAreaName(entry),
                         opponentName,
                         killer,
@@ -1306,8 +1387,11 @@ public class StatisticController
             .Where(entry => entry.ValueType == valueType)
             .GroupBy(entry => new
             {
+                entry.MapType,
                 entry.DungeonMode,
-                AreaIndex = entry.CombatAreaIndex ?? string.Empty,
+                AreaIndex = entry.MapType == MapType.Arena
+                    ? string.Empty
+                    : entry.CombatAreaIndex ?? string.Empty,
                 entry.CombatAreaClusterType
             })
             .Select(group => new
@@ -1331,6 +1415,18 @@ public class StatisticController
                 location.EstimatedLootValue,
                 location.FirstEntry.CombatAreaClusterType))
             .ToArray();
+    }
+
+    private static string ResolveCombatResultName(ValueType valueType)
+    {
+        return valueType switch
+        {
+            ValueType.PlayerKill => TranslateCombatText("KILL", "T\u00F6tung", "Kill"),
+            ValueType.PlayerDeath => TranslateCombatText("DEATH", "Tod", "Death"),
+            ValueType.PlayerKnockout => TranslateCombatText("KNOCKOUT", "Knockout", "Knockout"),
+            ValueType.PlayerKnockedOut => TranslateCombatText("KNOCKED_OUT", "Ausgeknockt", "Knocked out"),
+            _ => string.Empty
+        };
     }
 
     private static string ResolveCombatAreaName(StatisticEntry entry)
@@ -1911,7 +2007,10 @@ public class StatisticController
                 or ValueType.AwakenedWeaponTraitUpgrade
                 or ValueType.AwakenedWeaponTraitUpgradeProc => DashboardUpdateScope.Economy,
             ValueType.LootValue => DashboardUpdateScope.Loot,
-            ValueType.PlayerKill or ValueType.PlayerDeath => DashboardUpdateScope.Combat,
+            ValueType.PlayerKill
+                or ValueType.PlayerDeath
+                or ValueType.PlayerKnockout
+                or ValueType.PlayerKnockedOut => DashboardUpdateScope.Combat,
             ValueType.MobKill => DashboardUpdateScope.Mobs,
             ValueType.LootedChest => DashboardUpdateScope.LootedChests,
             _ => DashboardUpdateScope.None

@@ -776,7 +776,7 @@
                             <Style TargetType="{x:Type TextBlock}">
                                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.2}" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsKill}" Value="False">
+                                    <DataTrigger Binding="{Binding IsPositiveResult}" Value="False">
                                         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.2}" />
                                     </DataTrigger>
                                 </Style.Triggers>
