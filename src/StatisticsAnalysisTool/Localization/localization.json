@@ -38608,7 +38608,7 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Truhen Dateien laden"
+          "seg": "Truhen-Dateien laden"
         },
         {
           "lang": "en-US",
@@ -38807,7 +38807,7 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Loot Logs hinzugefügt"
+          "seg": "Loot-Log-Dateien hinzufügen"
         },
         {
           "lang": "en-US",
@@ -39824,19 +39824,19 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Um die Truhen Logs aus dem Spiel zu erhalten muss folgendes getan werden:"
+          "seg": "So erhältst du die Truhenlogs aus dem Spiel:"
         },
         {
           "lang": "en-US",
-          "seg": "To obtain the chest logs from the game, follow these steps:"
+          "seg": "Follow these steps to obtain the chest logs from the game:"
         },
         {
           "lang": "fr-FR",
-          "seg": "Pour obtenir les journaux de coffre du jeu, suivez ces étapes :"
+          "seg": "Suivez ces étapes pour obtenir les journaux de coffre du jeu :"
         },
         {
           "lang": "ru-RU",
-          "seg": "Чтобы получить логи сундуков из игры, выполните следующие действия:"
+          "seg": "Чтобы получить журналы сундука из игры, выполните следующие действия:"
         },
         {
           "lang": "zh-CN",
@@ -39849,23 +39849,23 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "1. Klicke auf den Actions Button in deiner Gilden Bank"
+          "seg": "1. Klicke in deiner Gildenbank auf „Actions“."
         },
         {
           "lang": "en-US",
-          "seg": "1. Click on the Actions button in your guild bank"
+          "seg": "1. Click \"Actions\" in your guild bank."
         },
         {
           "lang": "fr-FR",
-          "seg": "1. Cliquez sur le bouton Actions dans votre banque de guilde"
+          "seg": "1. Cliquez sur « Actions » dans votre banque de guilde."
         },
         {
           "lang": "ru-RU",
-          "seg": "1. Нажмите на кнопку Действия в вашем банке гильдии."
+          "seg": "1. Нажмите « Actions » в банке вашей гильдии."
         },
         {
           "lang": "zh-CN",
-          "seg": "1. 点击公会仓库中的‘行动’按钮;"
+          "seg": "1. 在公会仓库中点击“Actions”。"
         }
       ]
     },
@@ -39874,23 +39874,23 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "2. Klicke auf den verwalten Button"
+          "seg": "2. Klicke auf „Manage“."
         },
         {
           "lang": "en-US",
-          "seg": "2. Click on the Manage button."
+          "seg": "2. Click \"Manage\"."
         },
         {
           "lang": "fr-FR",
-          "seg": "2. Cliquez sur le bouton Gérer."
+          "seg": "2. Cliquez sur « Manage »."
         },
         {
           "lang": "ru-RU",
-          "seg": "2. Нажмите на кнопку Управление."
+          "seg": "2. Нажмите « Manage »."
         },
         {
           "lang": "zh-CN",
-          "seg": "2. 点击‘管理’按钮;"
+          "seg": "2. 点击“Manage”。"
         }
       ]
     },
@@ -39899,23 +39899,23 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "3. Klicke auf den Button mit den 3 Strichen"
+          "seg": "3. Öffne „Chest Log“."
         },
         {
           "lang": "en-US",
-          "seg": "3. Click on the button with the three lines."
+          "seg": "3. Open \"Chest Log\"."
         },
         {
           "lang": "fr-FR",
-          "seg": "3. Cliquez sur le bouton avec les trois lignes."
+          "seg": "3. Ouvrez « Chest Log »."
         },
         {
           "lang": "ru-RU",
-          "seg": "3. Нажмите на кнопку с тремя строчками."
+          "seg": "3. Откройте « Chest Log »."
         },
         {
           "lang": "zh-CN",
-          "seg": "3. 点击带有三条横线的按钮;"
+          "seg": "3. 打开“Chest Log”。"
         }
       ]
     },
@@ -39924,23 +39924,23 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "4. Klicke auf den Copy to clipboard Button"
+          "seg": "4. Klicke auf „Copy to clipboard“."
         },
         {
           "lang": "en-US",
-          "seg": "4. Click on the Copy to clipboard button."
+          "seg": "4. Click \"Copy to clipboard\"."
         },
         {
           "lang": "fr-FR",
-          "seg": "4. Cliquez sur le bouton Copier vers le presse-papier."
+          "seg": "4. Cliquez sur « Copy to clipboard »."
         },
         {
           "lang": "ru-RU",
-          "seg": "4. Нажмите на кнопку Копировать в буфер обмена."
+          "seg": "4. Нажмите « Copy to clipboard »."
         },
         {
           "lang": "zh-CN",
-          "seg": "4. 点击‘复制到剪贴板’按钮。"
+          "seg": "4. 点击“Copy to clipboard”。"
         }
       ]
     },
@@ -39949,23 +39949,23 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Erstelle jetzt eine CSV Datei, also eine Datei mit der extension .csv z.B. 'logs.csv'. In diese Datei kopierst du alle logs rein und speicherst die Datei."
+          "seg": "Füge den kopierten Truhenlog direkt in das Feld „Chest-Log-Eingabe“ ein und klicke auf „Chest Logs hinzufügen“."
         },
         {
           "lang": "en-US",
-          "seg": "Next, create a CSV file, i.e., a file with the extension .csv (for example, 'logs.csv'). Paste all the logs into this file and save it."
+          "seg": "Paste the copied chest log directly into the \"Chest log input\" field and click \"Add chest logs\"."
         },
         {
           "lang": "fr-FR",
-          "seg": "Collez ensuite tous les journaux dans un fichier finissant par l'extension '.csv' (par exemple : 'logs.csv') et enregistrez-le."
+          "seg": "Collez le journal de coffre copié directement dans le champ de saisie du journal de coffre, puis cliquez sur le bouton permettant d'ajouter les journaux."
         },
         {
           "lang": "ru-RU",
-          "seg": "Затем создайте CSV-файл, то есть файл с расширением .csv (например, 'logs.csv'). Вставьте все журналы в этот файл и сохраните его."
+          "seg": "Вставьте скопированный журнал сундука непосредственно в поле ввода журнала сундука и нажмите кнопку добавления журналов."
         },
         {
           "lang": "zh-CN",
-          "seg": "接下来，创建一个 CSV 文件（即扩展名为 .csv 的文件，例如 'logs.csv'）。将所有日志粘贴到该文件中并保存。"
+          "seg": "将复制的箱子日志直接粘贴到箱子日志输入框中，然后点击添加箱子日志按钮。"
         }
       ]
     },
@@ -39974,23 +39974,23 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Im Tool kannst du jetzt den Button Upload Chest File anklicken und deine Datei laden."
+          "seg": "Alternativ kannst du über „Truhen-Dateien laden“ eine oder mehrere .csv-Dateien auswählen. Unterstützt werden Truhenlogs mit tabulatorgetrennten Spalten, wie sie aus der Zwischenablage kopiert werden, sowie kommagetrennte CSV-Dateien. Andere Dateiformate werden nicht unterstützt."
         },
         {
           "lang": "en-US",
-          "seg": "In the tool, you can now click the Upload Chest File button and load your file."
+          "seg": "Alternatively, use \"Upload chest files\" to select one or more .csv files. Chest logs with tab-separated columns, as copied from the clipboard, and comma-separated CSV files are supported. Other file formats are not supported."
         },
         {
           "lang": "fr-FR",
-          "seg": "Dans l'outil, vous pouvez maintenant cliquer sur le bouton 'Télécharger les données' et charger votre fichier."
+          "seg": "Vous pouvez également sélectionner un ou plusieurs fichiers .csv à l'aide du bouton de chargement des fichiers de coffre. Les journaux de coffre avec des colonnes séparées par des tabulations, tels qu'ils sont copiés depuis le presse-papiers, ainsi que les fichiers CSV séparés par des virgules sont pris en charge. Les autres formats de fichier ne sont pas pris en charge."
         },
         {
           "lang": "ru-RU",
-          "seg": "Теперь в этом инструменте вы можете нажать кнопку 'Загрузить файл сундука' и загрузить свой файл."
+          "seg": "Также можно выбрать один или несколько файлов .csv с помощью кнопки загрузки файлов сундука. Поддерживаются журналы сундука со столбцами, разделёнными табуляцией, как при копировании из буфера обмена, а также CSV-файлы с разделителем-запятой. Другие форматы файлов не поддерживаются."
         },
         {
           "lang": "zh-CN",
-          "seg": "在工具中，你现在可以点击‘上传箱子记录’按钮，然后加载你的文件。"
+          "seg": "你也可以通过加载箱子日志文件按钮选择一个或多个 .csv 文件。支持从剪贴板复制的制表符分隔箱子日志和逗号分隔的 CSV 文件。不支持其他文件格式。"
         }
       ]
     },
@@ -40024,23 +40024,23 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Loot-Log-Dateien können im Logging-Tab über den grünen CSV-Button gespeichert werden. Diese Datei kann anschließend in einem anderen Tool hinzugefügt werden."
+          "seg": "Loot-Logs werden im Logging-Tab über den grünen CSV-Button exportiert. Im Loot Comparator kannst du über „Loot-Log-Dateien hinzufügen“ eine oder mehrere dieser .csv-Dateien laden. Unterstützt werden semikolongetrennte Loot-Log-CSV-Dateien mit der erwarteten Kopfzeile; JSON und andere Dateiformate werden nicht unterstützt. Klicke anschließend auf „Logs vergleichen“."
         },
         {
           "lang": "en-US",
-          "seg": "Loot log files can be saved in the Logging tab using the green CSV button. This file can then be added in another tool."
+          "seg": "Export loot logs from the Logging tab using the green CSV button. In the Loot Comparator, use \"Add loot log files\" to load one or more of these .csv files. Semicolon-separated loot log CSV files with the expected header are supported; JSON and other file formats are not supported. Then click \"Compare logs\"."
         },
         {
           "lang": "fr-FR",
-          "seg": "Les fichiers journaux de butin peuvent être enregistrés dans l'onglet « Journalisation » à l'aide du bouton CSV vert. Ce fichier peut ensuite être importé dans un autre outil."
+          "seg": "Exportez les journaux de butin depuis l'onglet de journalisation à l'aide du bouton CSV vert. Dans le comparateur de butin, utilisez le bouton d'ajout des fichiers journaux de butin pour charger un ou plusieurs de ces fichiers .csv. Les fichiers CSV séparés par des points-virgules et contenant l'en-tête attendu sont pris en charge ; les fichiers JSON et les autres formats ne le sont pas. Cliquez ensuite sur le bouton permettant de comparer les journaux."
         },
         {
           "lang": "ru-RU",
-          "seg": "Файлы журнала добычи можно сохранить на вкладке Ведение журнала с помощью зеленой кнопки CSV. Затем этот файл можно добавить в другой инструмент."
+          "seg": "Экспортируйте журналы добычи на вкладке ведения журнала с помощью зелёной кнопки CSV. В Loot Comparator загрузите один или несколько этих файлов .csv с помощью кнопки добавления файлов журнала добычи. Поддерживаются CSV-файлы журнала добычи с разделителем-точкой с запятой и ожидаемой строкой заголовка; JSON и другие форматы не поддерживаются. Затем нажмите кнопку сравнения журналов."
         },
         {
           "lang": "zh-CN",
-          "seg": "战利品日志文件可以在‘日志’选项卡中，通过绿色的 CSV 按钮进行保存。之后，这个文件还能被导入到另一个工具中。"
+          "seg": "在日志选项卡中使用绿色 CSV 按钮导出战利品日志。在战利品对比器中，通过添加战利品日志文件按钮加载一个或多个此类 .csv 文件。仅支持具有预期表头的分号分隔战利品日志 CSV 文件；不支持 JSON 和其他文件格式。然后点击比较日志。"
         }
       ]
     },
@@ -40049,11 +40049,11 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Was bedeuten die Farben der Gegenstandslots?"
+          "seg": "Was bedeuten die Farben der Gegenstands-Slots?"
         },
         {
           "lang": "en-US",
-          "seg": "What the item slots colors mean?"
+          "seg": "What do the item slot colors mean?"
         },
         {
           "lang": "fr-FR",
@@ -40074,23 +40074,23 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Gegenstände in Graustufen signalisieren aufgelöste Gegenstände. Dies bedeutet, dass die Gegenstände entweder verloren gegangen sind oder bereits in einer Truhe deponiert wurden."
+          "seg": "Graue Gegenstände wurden entweder als verloren erkannt oder stammen aus einem Truheneintrag, der keinem früheren Loot-Eintrag sicher zugeordnet werden konnte. Verloren bedeutet, dass ein anderer Spieler denselben Gegenstand später vom ursprünglichen Plünderer aufgehoben hat."
         },
         {
           "lang": "en-US",
-          "seg": "Items shown in greyscale indicate dissolved items. This means the items have either been lost or already deposited in a chest."
+          "seg": "Grey items were either detected as lost or come from a chest entry that could not be matched reliably to an earlier loot entry. Lost means that another player later picked up the same item from the original looter."
         },
         {
           "lang": "fr-FR",
-          "seg": "Les objets en gris indiquent qu'ils ont été détruits. Cela signifie qu'ils ont été perdus ou déjà déposés dans un autre coffre."
+          "seg": "Les objets gris ont été détectés comme perdus ou proviennent d'une entrée de coffre qui n'a pas pu être associée de manière fiable à une entrée de butin antérieure. Perdu signifie qu'un autre joueur a récupéré plus tard le même objet sur le premier récupérateur."
         },
         {
           "lang": "ru-RU",
-          "seg": "Предметы, выделенные оттенками серого, означают исчезнувшие предметы. Это означает, что предметы были либо потеряны, либо уже помещены в сундук."
+          "seg": "Серые предметы либо распознаны как потерянные, либо относятся к записи сундука, которую не удалось надёжно сопоставить с более ранней записью добычи. Потеря означает, что позднее другой игрок подобрал тот же предмет с первоначального владельца добычи."
         },
         {
           "lang": "zh-CN",
-          "seg": "显示为灰色的物品表示已被分解。这意味着这些物品要么已经损失了，要么已经存入其他仓库中"
+          "seg": "灰色物品表示已检测为丢失，或来自无法可靠匹配到较早战利品记录的箱子记录。丢失表示另一名玩家后来从最初拾取者身上拾取了相同物品。"
         }
       ]
     },
@@ -40099,23 +40099,23 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Gegenstände in grüner Farbe bedeuten, dass sie in einer Truhe deponiert wurden."
+          "seg": "Grüne Gegenstände sind Loot-Einträge, denen ein späterer Truheneintrag desselben Spielers mit demselben Gegenstand und derselben Menge zugeordnet wurde."
         },
         {
           "lang": "en-US",
-          "seg": "Items highlighted in green mean they have been deposited in a chest."
+          "seg": "Green items are loot entries matched to a later chest entry from the same player with the same item and quantity."
         },
         {
           "lang": "fr-FR",
-          "seg": "Les objets en vert signifient qu'ils ont été déposés dans le coffre."
+          "seg": "Les objets verts sont des entrées de butin associées à une entrée de coffre ultérieure du même joueur, avec le même objet et la même quantité."
         },
         {
           "lang": "ru-RU",
-          "seg": "Предметы, выделенные зеленым цветом, означают, что они были помещены в сундук."
+          "seg": "Зелёные предметы — это записи добычи, сопоставленные с более поздней записью сундука того же игрока, с тем же предметом и количеством."
         },
         {
           "lang": "zh-CN",
-          "seg": "绿色高亮的物品表示已被存入"
+          "seg": "绿色物品表示该战利品记录已匹配到同一玩家之后存入箱子的相同物品和数量。"
         }
       ]
     },
@@ -40124,23 +40124,23 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Gegenstand wurde gespendet, ist nicht vorher von einem toten Spieler aufgesammelt wurden."
+          "seg": "Blaue Gegenstände sind positive Truheneinträge, für die kein passender früherer Loot-Eintrag gefunden wurde und die das Tool anhand der zeitlichen Reihenfolge deshalb als Spende einordnet."
         },
         {
           "lang": "en-US",
-          "seg": "The item was donated and was not previously picked up from a dead player."
+          "seg": "Blue items are positive chest entries for which no matching earlier loot entry was found and which the tool therefore classifies as donations based on the event order."
         },
         {
           "lang": "fr-FR",
-          "seg": "Les objets en bleu ont été donnés et n'ont pas été récupérés sur un joueur mort."
+          "seg": "Les objets bleus sont des entrées positives de coffre pour lesquelles aucune entrée de butin antérieure correspondante n'a été trouvée et que l'outil classe donc comme des dons selon l'ordre des événements."
         },
         {
           "lang": "ru-RU",
-          "seg": "Предмет был подарен и ранее не был подобран с тела погибшего игрока."
+          "seg": "Синие предметы — это положительные записи сундука, для которых не найдено соответствующей более ранней записи добычи и которые поэтому классифицируются инструментом как пожертвования с учётом порядка событий."
         },
         {
           "lang": "zh-CN",
-          "seg": "该物品为捐赠所得，且此前并非从阵亡玩家身上拾取"
+          "seg": "蓝色物品表示未找到匹配的较早战利品记录的正数箱子记录，工具会根据事件顺序将其归类为捐赠。"
         }
       ]
     },
@@ -40149,23 +40149,23 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Gegenstände in Rot wurden von einem toten Spieler aufgesammelt aber noch nicht in der Truhe deponiert."
+          "seg": "Rote Gegenstände sind noch nicht aufgelöste Loot-Einträge. Es wurde weder ein passender späterer Truheneintrag noch ein späterer Verlust gefunden. Die Farbe belegt nicht, dass der Spieler den Gegenstand noch besitzt."
         },
         {
           "lang": "en-US",
-          "seg": "Items in red were picked up from a dead player but have not yet been deposited in a chest."
+          "seg": "Red items are unresolved loot entries. No matching later chest entry or later loss was found. The color does not prove that the player still owns the item."
         },
         {
           "lang": "fr-FR",
-          "seg": "Les objets en rouge ont été récupérés sur un joueur mort mais n'ont pas encore été déposés dans un coffre."
+          "seg": "Les objets rouges sont des entrées de butin non résolues. Aucune entrée de coffre ultérieure correspondante ni aucune perte ultérieure n'a été trouvée. La couleur ne prouve pas que le joueur possède encore l'objet."
         },
         {
           "lang": "ru-RU",
-          "seg": "Предметы, отмеченные красным, были подобраны с убитого игрока, но еще не сложены в сундук."
+          "seg": "Красные предметы — это неразрешённые записи добычи. Не найдено ни соответствующей более поздней записи сундука, ни последующей потери. Цвет не доказывает, что предмет всё ещё находится у игрока."
         },
         {
           "lang": "zh-CN",
-          "seg": "红色物品是从阵亡玩家身上拾取的，但尚未存入"
+          "seg": "红色物品表示尚未解析的战利品记录。未找到匹配的后续箱子记录或后续丢失记录。该颜色并不能证明玩家仍然拥有此物品。"
         }
       ]
     },
