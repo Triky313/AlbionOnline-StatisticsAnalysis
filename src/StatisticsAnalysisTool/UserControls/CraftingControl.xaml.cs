@@ -361,7 +361,7 @@ public partial class CraftingControl
         mainWindowViewModel.CraftingBindings.BlackMarket?.ResetFilters();
     }
 
-    private void CraftingItemFilterReset_MouseUp(object sender, MouseButtonEventArgs e)
+    private void CraftingItemFilterReset_Click(object sender, RoutedEventArgs e)
     {
         if (DataContext is not MainWindowViewModel mainWindowViewModel)
         {

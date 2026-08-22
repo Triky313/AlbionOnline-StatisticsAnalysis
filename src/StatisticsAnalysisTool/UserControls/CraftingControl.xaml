@@ -192,59 +192,82 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Grid Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,8" Panel.ZIndex="20">
-                    <StackPanel Orientation="Vertical">
-                        <StackPanel Width="360" Height="24" Orientation="Horizontal" HorizontalAlignment="Left">
-                            <TextBox x:Name="CraftingItemSearchTextBox" Text="{Binding CraftingBindings.ItemSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     GotKeyboardFocus="CraftingItemSearch_OnGotKeyboardFocus"
-                                     LostKeyboardFocus="CraftingItemSearch_OnLostKeyboardFocus"
-                                     PreviewMouseLeftButtonUp="CraftingItemSearch_OnPreviewMouseLeftButtonUp"
-                                     Width="300" Height="24" TextWrapping="NoWrap" />
-                            <Grid Width="22" Height="22" Margin="5,1,0,0" HorizontalAlignment="Left">
-                                <fa5:ImageAwesome Icon="Solid_Redo" Foreground="{StaticResource SolidColorBrush.Text.1}" MouseUp="CraftingItemFilterReset_MouseUp" />
+                <Grid Grid.Row="0" Grid.ColumnSpan="2" Panel.ZIndex="20">
+                    <Border Style="{StaticResource App.TopFilterCard}" Margin="0,0,0,8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="5*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid Grid.Column="0" Margin="4,0,4,6" VerticalAlignment="Bottom">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <fa5:ImageAwesome Grid.Column="0" Icon="Solid_Search" Width="16" Height="16" Margin="0,0,9,0"
+                                                  VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.2}" />
+                                <TextBox x:Name="CraftingItemSearchTextBox" Grid.Column="1"
+                                         Text="{Binding CraftingBindings.ItemSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         GotKeyboardFocus="CraftingItemSearch_OnGotKeyboardFocus"
+                                         LostKeyboardFocus="CraftingItemSearch_OnLostKeyboardFocus"
+                                         PreviewMouseLeftButtonUp="CraftingItemSearch_OnPreviewMouseLeftButtonUp"
+                                         Style="{StaticResource ItemSearchTextBoxStyle}" />
+                                <Button Grid.Column="2" Width="32" Height="32" Margin="6,0,0,0" Padding="0"
+                                        ToolTip="{x:Static translation:MainWindowTranslation.ResetFilters}"
+                                        Style="{StaticResource Style.Button.Neutral}"
+                                        Click="CraftingItemFilterReset_Click">
+                                    <fa5:ImageAwesome Icon="Solid_Redo" Width="14" Height="14" IsHitTestVisible="False"
+                                                      Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                </Button>
                             </Grid>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <ComboBox ItemsSource="{Binding CraftingBindings.ItemShopCategories}"
-                                      SelectedItem="{Binding CraftingBindings.SelectedItemShopCategory, Mode=TwoWay}"
-                                      SelectedValuePath="Id"
-                                      DisplayMemberPath="DisplayName"
-                                      HorizontalAlignment="Left"
-                                      Margin="0,5,5,5"
-                                      VerticalAlignment="Top"
-                                      Width="150" />
-                            <ComboBox ItemsSource="{Binding CraftingBindings.ItemSubCategories1}"
-                                      SelectedItem="{Binding CraftingBindings.SelectedItemShopSubCategory1, Mode=TwoWay}"
-                                      SelectedValuePath="Id"
-                                      DisplayMemberPath="DisplayName"
-                                      HorizontalAlignment="Left"
-                                      Margin="5,5"
-                                      VerticalAlignment="Top"
-                                      Width="150" />
-                            <ComboBox ItemsSource="{Binding CraftingBindings.ItemSubCategories2}"
-                                      SelectedItem="{Binding CraftingBindings.SelectedItemShopSubCategory2, Mode=TwoWay}"
-                                      SelectedValuePath="Id"
-                                      DisplayMemberPath="DisplayName"
-                                      HorizontalAlignment="Left"
-                                      Margin="5,5"
-                                      VerticalAlignment="Top"
-                                      Width="150" />
-                            <ComboBox ItemsSource="{Binding CraftingBindings.ItemTiers}"
-                                      SelectedValue="{Binding CraftingBindings.SelectedItemTier, Mode=TwoWay}"
-                                      SelectedValuePath="Key"
-                                      DisplayMemberPath="Value"
-                                      HorizontalAlignment="Left"
-                                      Margin="5,5"
-                                      MinWidth="70" />
-                            <ComboBox ItemsSource="{Binding CraftingBindings.ItemLevels}"
-                                      SelectedValue="{Binding CraftingBindings.SelectedItemLevel, Mode=TwoWay}"
-                                      SelectedValuePath="Key"
-                                      DisplayMemberPath="Value"
-                                      HorizontalAlignment="Left"
-                                      Margin="5,5"
-                                      MinWidth="70" />
-                        </StackPanel>
-                    </StackPanel>
+
+                            <UniformGrid Grid.Column="1" Columns="5">
+                                <StackPanel Style="{StaticResource ItemSearch.FilterField}">
+                                    <TextBlock Text="{x:Static translation:MainWindowTranslation.ShopCategory}"
+                                               Style="{StaticResource App.FilterLabel}" />
+                                    <ComboBox ItemsSource="{Binding CraftingBindings.ItemShopCategories}"
+                                              SelectedItem="{Binding CraftingBindings.SelectedItemShopCategory, Mode=TwoWay}"
+                                              SelectedValuePath="Id" DisplayMemberPath="DisplayName"
+                                              Style="{StaticResource ItemSearch.FilterComboBox}" />
+                                </StackPanel>
+                                <StackPanel Style="{StaticResource ItemSearch.FilterField}">
+                                    <TextBlock Text="{x:Static translation:MainWindowTranslation.ShopSubCategory1}"
+                                               Style="{StaticResource App.FilterLabel}" />
+                                    <ComboBox ItemsSource="{Binding CraftingBindings.ItemSubCategories1}"
+                                              SelectedItem="{Binding CraftingBindings.SelectedItemShopSubCategory1, Mode=TwoWay}"
+                                              SelectedValuePath="Id" DisplayMemberPath="DisplayName"
+                                              Style="{StaticResource ItemSearch.FilterComboBox}" />
+                                </StackPanel>
+                                <StackPanel Style="{StaticResource ItemSearch.FilterField}">
+                                    <TextBlock Text="{x:Static translation:MainWindowTranslation.ShopSubCategory2}"
+                                               Style="{StaticResource App.FilterLabel}" />
+                                    <ComboBox ItemsSource="{Binding CraftingBindings.ItemSubCategories2}"
+                                              SelectedItem="{Binding CraftingBindings.SelectedItemShopSubCategory2, Mode=TwoWay}"
+                                              SelectedValuePath="Id" DisplayMemberPath="DisplayName"
+                                              Style="{StaticResource ItemSearch.FilterComboBox}" />
+                                </StackPanel>
+                                <StackPanel Style="{StaticResource ItemSearch.FilterField}">
+                                    <TextBlock Text="{x:Static translation:MainWindowTranslation.Tier}"
+                                               Style="{StaticResource App.FilterLabel}" />
+                                    <ComboBox ItemsSource="{Binding CraftingBindings.ItemTiers}"
+                                              SelectedValue="{Binding CraftingBindings.SelectedItemTier, Mode=TwoWay}"
+                                              SelectedValuePath="Key" DisplayMemberPath="Value"
+                                              Style="{StaticResource ItemSearch.FilterComboBox}" />
+                                </StackPanel>
+                                <StackPanel Style="{StaticResource ItemSearch.FilterField}">
+                                    <TextBlock Text="{x:Static translation:MainWindowTranslation.Level}"
+                                               Style="{StaticResource App.FilterLabel}" />
+                                    <ComboBox ItemsSource="{Binding CraftingBindings.ItemLevels}"
+                                              SelectedValue="{Binding CraftingBindings.SelectedItemLevel, Mode=TwoWay}"
+                                              SelectedValuePath="Key" DisplayMemberPath="Value"
+                                              Style="{StaticResource ItemSearch.FilterComboBox}" />
+                                </StackPanel>
+                            </UniformGrid>
+                        </Grid>
+                    </Border>
                     <Popup PlacementTarget="{Binding ElementName=CraftingItemSearchTextBox}" Placement="Bottom"
                            IsOpen="{Binding CraftingBindings.IsItemSearchPopupOpen, Mode=TwoWay}" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Slide">
                             <Border DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
@@ -270,7 +293,7 @@
                                     </ListBox.ItemTemplate>
                                 </ListBox>
                             </Border>
-                        </Popup>
+                    </Popup>
                 </Grid>
 
                 <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical">
