@@ -233,12 +233,12 @@ public partial class CraftingControl
         mainWindowViewModel.CraftingBindings.OpenSellPriceOptions();
     }
 
-    private void OutputUnitPrice_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+    private void PriceTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
     {
         var newFocus = e.NewFocus as DependencyObject;
 
-        if (IsElementOrChildOf(newFocus, OutputUnitPriceTextBox)
-            || IsElementOrChildOf(newFocus, SellPriceOptionsListBox))
+        if ((sender is DependencyObject textBox && IsElementOrChildOf(newFocus, textBox))
+            || IsPriceOptionPopupClick(newFocus))
         {
             return;
         }

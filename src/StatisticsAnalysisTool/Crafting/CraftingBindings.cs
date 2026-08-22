@@ -67,6 +67,7 @@ public class CraftingBindings : BaseViewModel
     private string _returnRatePercentText = FormatPercentInput(0m);
     private string _salesTaxPercentText = FormatPercentInput(4m);
     private string _setupFeePercentText = FormatPercentInput(2.5m);
+    private int _priceOptionRequestVersion;
     private BlackMarketBindings _blackMarket;
 
     public CraftingBindings()
@@ -695,19 +696,23 @@ public class CraftingBindings : BaseViewModel
         {
             if (SelectedItem == null)
             {
-                SellPriceOptions.Clear();
-                IsSellPricePopupOpen = false;
+                ClearSellPriceOptions();
                 return;
             }
 
             if (string.Equals(_sellPriceOptionsItemUniqueName, SelectedItem.UniqueName, StringComparison.Ordinal)
                 && SellPriceOptions.Count > 0)
             {
+                CloseAllPriceOptionPopups();
                 IsSellPricePopupOpen = true;
                 return;
             }
 
-            await LoadSellPriceOptionsAsync();
+            var requestVersion = BeginPriceOptionRequest();
+            if (await LoadSellPriceOptionsAsync(requestVersion))
+            {
+                IsSellPricePopupOpen = SellPriceOptions.Count > 0;
+            }
         }
         catch (Exception e)
         {
@@ -742,8 +747,12 @@ public class CraftingBindings : BaseViewModel
                 return;
             }
 
-            await LoadPriceOptionsAsync(resource.UniqueName, resource.PriceOptions, CraftingPricePreference.LowerIsBetter);
-            CloseAllPriceOptionPopups();
+            var requestVersion = BeginPriceOptionRequest();
+            if (!await LoadPriceOptionsAsync(resource.UniqueName, resource.PriceOptions, CraftingPricePreference.LowerIsBetter, requestVersion))
+            {
+                return;
+            }
+
             resource.IsPricePopupOpen = resource.PriceOptions.Count > 0;
         }
         catch (Exception e)
@@ -774,8 +783,14 @@ public class CraftingBindings : BaseViewModel
                 return;
             }
 
-            await LoadPriceOptionsAsync(Journal.EmptyJournalUniqueName, Journal.EmptyJournalPriceOptions, CraftingPricePreference.LowerIsBetter);
-            CloseAllPriceOptionPopups();
+            var journal = Journal;
+            var requestVersion = BeginPriceOptionRequest();
+            if (!await LoadPriceOptionsAsync(journal.EmptyJournalUniqueName, journal.EmptyJournalPriceOptions, CraftingPricePreference.LowerIsBetter, requestVersion)
+                || !ReferenceEquals(Journal, journal))
+            {
+                return;
+            }
+
             Journal.IsEmptyJournalPricePopupOpen = Journal.EmptyJournalPriceOptions.Count > 0;
         }
         catch (Exception e)
@@ -799,8 +814,14 @@ public class CraftingBindings : BaseViewModel
                 return;
             }
 
-            await LoadPriceOptionsAsync(Journal.FullJournalUniqueName, Journal.FullJournalPriceOptions, CraftingPricePreference.HigherIsBetter);
-            CloseAllPriceOptionPopups();
+            var journal = Journal;
+            var requestVersion = BeginPriceOptionRequest();
+            if (!await LoadPriceOptionsAsync(journal.FullJournalUniqueName, journal.FullJournalPriceOptions, CraftingPricePreference.HigherIsBetter, requestVersion)
+                || !ReferenceEquals(Journal, journal))
+            {
+                return;
+            }
+
             Journal.IsFullJournalPricePopupOpen = Journal.FullJournalPriceOptions.Count > 0;
         }
         catch (Exception e)
@@ -839,6 +860,7 @@ public class CraftingBindings : BaseViewModel
 
     public void CloseAllPriceOptionPopups()
     {
+        _priceOptionRequestVersion++;
         IsSellPricePopupOpen = false;
 
         foreach (var resource in Resources)
@@ -1382,35 +1404,34 @@ public class CraftingBindings : BaseViewModel
         }
     }
 
-    private async Task LoadSellPriceOptionsAsync()
+    private async Task<bool> LoadSellPriceOptionsAsync(int requestVersion)
     {
         var selectedItem = SelectedItem;
         if (selectedItem == null)
         {
-            return;
+            return false;
         }
 
         var itemUniqueName = selectedItem.UniqueName;
-
-        if (!string.Equals(SelectedItem?.UniqueName, itemUniqueName, StringComparison.Ordinal))
+        if (!await LoadPriceOptionsAsync(itemUniqueName, SellPriceOptions, CraftingPricePreference.HigherIsBetter, requestVersion)
+            || !string.Equals(SelectedItem?.UniqueName, itemUniqueName, StringComparison.Ordinal))
         {
-            return;
+            return false;
         }
 
-        await LoadPriceOptionsAsync(itemUniqueName, SellPriceOptions, CraftingPricePreference.HigherIsBetter);
-
         _sellPriceOptionsItemUniqueName = itemUniqueName;
-        IsSellPricePopupOpen = SellPriceOptions.Count > 0;
+        return true;
     }
 
-    private static async Task LoadPriceOptionsAsync(
+    private async Task<bool> LoadPriceOptionsAsync(
         string itemUniqueName,
         ObservableCollection<CraftingSellPriceOption> target,
-        CraftingPricePreference pricePreference)
+        CraftingPricePreference pricePreference,
+        int requestVersion)
     {
         if (target == null)
         {
-            return;
+            return false;
         }
 
         var prices = await ApiController.GetCityItemPricesFromJsonAsync(itemUniqueName).ConfigureAwait(true) ?? [];
@@ -1430,12 +1451,19 @@ public class CraftingBindings : BaseViewModel
             );
         }
 
+        if (requestVersion != _priceOptionRequestVersion)
+        {
+            return false;
+        }
+
         target.Clear();
 
         foreach (var priceOption in ApplyPriceRankIndicators(priceOptions, pricePreference))
         {
             target.Add(priceOption);
         }
+
+        return true;
     }
 
     private static IEnumerable<CraftingSellPriceOption> ApplyPriceRankIndicators(
@@ -1476,9 +1504,16 @@ public class CraftingBindings : BaseViewModel
 
     private void ClearSellPriceOptions()
     {
+        _priceOptionRequestVersion++;
         _sellPriceOptionsItemUniqueName = string.Empty;
         SellPriceOptions.Clear();
         IsSellPricePopupOpen = false;
+    }
+
+    private int BeginPriceOptionRequest()
+    {
+        CloseAllPriceOptionPopups();
+        return _priceOptionRequestVersion;
     }
 
     private static CraftingSellPriceOptionValue GetSellPriceOptionValue(IEnumerable<MarketResponse> prices, MarketLocation location)

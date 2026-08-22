@@ -383,7 +383,7 @@
                                      VerticalAlignment="Top"
                                      common:TextBoxHelper.OnlyNumeric="Double"
                                      GotKeyboardFocus="OutputUnitPrice_OnGotKeyboardFocus"
-                                     LostKeyboardFocus="OutputUnitPrice_OnLostKeyboardFocus"
+                                     LostKeyboardFocus="PriceTextBox_OnLostKeyboardFocus"
                                      PreviewMouseLeftButtonDown="PriceTextBox_OnPreviewMouseLeftButtonDown"
                                      PreviewMouseLeftButtonUp="OutputUnitPrice_OnPreviewMouseLeftButtonUp" />
                             <Popup PlacementTarget="{Binding ElementName=OutputUnitPriceTextBox}"
@@ -522,6 +522,7 @@
                                                          Height="22"
                                                          common:TextBoxHelper.OnlyNumeric="Double"
                                                          GotKeyboardFocus="ResourcePrice_OnGotKeyboardFocus"
+                                                         LostKeyboardFocus="PriceTextBox_OnLostKeyboardFocus"
                                                          PreviewMouseLeftButtonDown="PriceTextBox_OnPreviewMouseLeftButtonDown"
                                                          PreviewMouseLeftButtonUp="ResourcePrice_OnPreviewMouseLeftButtonUp" />
                                                 <Popup PlacementTarget="{Binding ElementName=ResourceUnitPriceTextBox}"
@@ -636,6 +637,7 @@
                                     <TextBox x:Name="EmptyJournalPriceTextBox" HorizontalAlignment="Left"
                                              Text="{Binding CraftingBindings.Journal.EmptyJournalPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                              Width="90" Height="22" common:TextBoxHelper.OnlyNumeric="Double" GotKeyboardFocus="JournalEmptyPrice_OnGotKeyboardFocus"
+                                             LostKeyboardFocus="PriceTextBox_OnLostKeyboardFocus"
                                              PreviewMouseLeftButtonDown="PriceTextBox_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="JournalEmptyPrice_OnPreviewMouseLeftButtonUp" />
                                     <Popup PlacementTarget="{Binding ElementName=EmptyJournalPriceTextBox}"
                                            Placement="Bottom"
@@ -681,6 +683,7 @@
                                     <TextBox x:Name="FullJournalPriceTextBox" HorizontalAlignment="Left" 
                                              Text="{Binding CraftingBindings.Journal.FullJournalPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              Width="90" Height="22" common:TextBoxHelper.OnlyNumeric="Double" GotKeyboardFocus="JournalFullPrice_OnGotKeyboardFocus"
+                                             LostKeyboardFocus="PriceTextBox_OnLostKeyboardFocus"
                                              PreviewMouseLeftButtonDown="PriceTextBox_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="JournalFullPrice_OnPreviewMouseLeftButtonUp" />
                                     <Popup PlacementTarget="{Binding ElementName=FullJournalPriceTextBox}"
                                            Placement="Bottom" IsOpen="{Binding CraftingBindings.Journal.IsFullJournalPricePopupOpen, Mode=TwoWay}"
