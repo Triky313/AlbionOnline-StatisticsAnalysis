@@ -59,7 +59,7 @@
     </Style>
 
     <Style x:Key="App.FilterCard" TargetType="{x:Type Border}">
-        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.2}" />
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.T.2}" />
         <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.4}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="5" />

@@ -12,12 +12,20 @@
 
     <!-- Background colors -->
     <Color x:Key="Color.Background.1">#FF1D2329</Color>
-    <Color x:Key="Color.Background.2">#DD181E24</Color>
-    <Color x:Key="Color.Background.3">#DD14191F</Color>
-    <Color x:Key="Color.Background.4">#DD10151A</Color>
-    <Color x:Key="Color.Background.5">#DD0D1115</Color>
-    <Color x:Key="Color.Background.6">#DD090D10</Color>
-    <Color x:Key="Color.Background.7">#DD06090C</Color>
+    <Color x:Key="Color.Background.2">#FF181E24</Color>
+    <Color x:Key="Color.Background.3">#FF14191F</Color>
+    <Color x:Key="Color.Background.4">#FF10151A</Color>
+    <Color x:Key="Color.Background.5">#FF0D1115</Color>
+    <Color x:Key="Color.Background.6">#FF090D10</Color>
+    <Color x:Key="Color.Background.7">#FF06090C</Color>
+
+    <Color x:Key="Color.Background.T.1">#DD1D2329</Color>
+    <Color x:Key="Color.Background.T.2">#DD181E24</Color>
+    <Color x:Key="Color.Background.T.3">#DD14191F</Color>
+    <Color x:Key="Color.Background.T.4">#DD10151A</Color>
+    <Color x:Key="Color.Background.T.5">#DD0D1115</Color>
+    <Color x:Key="Color.Background.T.6">#DD090D10</Color>
+    <Color x:Key="Color.Background.T.7">#DD06090C</Color>
 
     <!-- Structural surface and border colors -->
     <Color x:Key="Color.Surface.Hover">#FF252D34</Color>
@@ -304,6 +312,14 @@
     <SolidColorBrush x:Key="SolidColorBrush.Background.5" Color="{StaticResource Color.Background.5}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Background.6" Color="{StaticResource Color.Background.6}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Background.7" Color="{StaticResource Color.Background.7}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Background.T.1" Color="{StaticResource Color.Background.T.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Background.T.2" Color="{StaticResource Color.Background.T.2}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Background.T.3" Color="{StaticResource Color.Background.T.3}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Background.T.4" Color="{StaticResource Color.Background.T.4}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Background.T.5" Color="{StaticResource Color.Background.T.5}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Background.T.6" Color="{StaticResource Color.Background.T.6}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Background.T.7" Color="{StaticResource Color.Background.T.7}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Surface.Hover" Color="{StaticResource Color.Surface.Hover}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Surface.Selected" Color="{StaticResource Color.Surface.Selected}"/>

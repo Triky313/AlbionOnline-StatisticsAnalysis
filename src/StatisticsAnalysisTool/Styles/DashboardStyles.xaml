@@ -15,7 +15,7 @@
     <converters:DurationSecondsToCompactStringConverter x:Key="DurationSecondsToCompactStringConverter" />
 
     <Style x:Key="Dashboard.Section" TargetType="{x:Type Border}">
-        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.2}" />
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.T.2}" />
         <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.4}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="4" />
@@ -34,7 +34,7 @@
         <Setter Property="MinHeight" Value="82" />
         <Setter Property="Margin" Value="0,0,6,0" />
         <Setter Property="Padding" Value="9,8" />
-        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.2}" />
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.T.2}" />
         <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.4}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="5" />
@@ -587,7 +587,7 @@
         <Setter Property="MinHeight" Value="96" />
         <Setter Property="Margin" Value="0,0,8,0" />
         <Setter Property="Padding" Value="14,12" />
-        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.3}" />
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.T.2}" />
     </Style>
 
     <Style x:Key="Dashboard.CombatMetricTitle" TargetType="{x:Type TextBlock}">
