@@ -1317,7 +1317,7 @@ public class StatisticController
             ? (double) kills.Length / deaths.Length
             : kills.Length;
         combatStatistics.TotalKillLootValue = kills.Sum(entry => entry.CombatLootValue);
-        combatStatistics.TotalDeathLootValue = deaths.Sum(entry => entry.CombatLootValue);
+        combatStatistics.TotalDeathLootValue = deaths.Sum(ResolveCombatEstimatedValue);
 
         ReplaceDashboardItems(
             combatStatistics.TopKillLocations,
@@ -1398,7 +1398,7 @@ public class StatisticController
             {
                 FirstEntry = group.First(),
                 Count = group.LongCount(),
-                EstimatedLootValue = group.Sum(entry => entry.CombatLootValue)
+                EstimatedLootValue = group.Sum(ResolveCombatEstimatedValue)
             })
             .OrderByDescending(location => location.Count)
             .ThenBy(location => ResolveCombatAreaName(location.FirstEntry), StringComparer.CurrentCultureIgnoreCase)
@@ -1415,6 +1415,15 @@ public class StatisticController
                 location.EstimatedLootValue,
                 location.FirstEntry.CombatAreaClusterType))
             .ToArray();
+    }
+
+    internal static double ResolveCombatEstimatedValue(StatisticEntry entry)
+    {
+        var estimatedValue = entry.ValueType == ValueType.PlayerDeath
+            ? entry.CombatVictim?.EstimatedEquipmentValue ?? 0
+            : entry.CombatLootValue;
+
+        return double.IsFinite(estimatedValue) ? Math.Max(estimatedValue, 0) : 0;
     }
 
     private static string ResolveCombatResultName(ValueType valueType)
