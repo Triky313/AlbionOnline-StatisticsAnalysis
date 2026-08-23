@@ -134,7 +134,6 @@ public sealed class DungeonController(TrackingController trackingController, Mai
             or MapType.HellGate
             or MapType.Mists
             or MapType.MistsDungeon
-            or MapType.AbyssalDepths
             or MapType.DragonArea
             or MapType.StaticDungeon;
     }
