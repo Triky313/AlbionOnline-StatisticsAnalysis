@@ -81,11 +81,13 @@ public class MainWindowViewModel : BaseViewModel
     {
         var selectedDashboardChartRange = SelectedDashboardChartRange;
         var selectedDashboardChartSeriesFilters = DashboardChartSeriesFilters.ToDictionary(x => x.ValueType, x => x.IsSelected);
+        var settings = SettingsController.CurrentSettings;
 
         DashboardChartRanges = new ObservableCollection<DashboardChartRangeOption>(DashboardChartRangeOption.CreateDefault());
-        SelectedDashboardChartRange = selectedDashboardChartRange is null ? DashboardChartRanges.FirstOrDefault()
-            : DashboardChartRanges.FirstOrDefault(x => x.BucketCount == selectedDashboardChartRange.BucketCount && x.Unit == selectedDashboardChartRange.Unit)
-              ?? DashboardChartRanges.FirstOrDefault();
+        var selectedBucketCount = selectedDashboardChartRange?.BucketCount ?? settings.SelectedDashboardChartRangeBucketCount;
+        var selectedRangeUnit = selectedDashboardChartRange?.Unit ?? settings.SelectedDashboardChartRangeUnit;
+        SelectedDashboardChartRange = DashboardChartRanges.FirstOrDefault(x => x.BucketCount == selectedBucketCount && x.Unit == selectedRangeUnit)
+                                      ?? DashboardChartRanges.FirstOrDefault();
 
         DashboardChartSeriesFilters = new ObservableCollection<DashboardChartSeriesFilter>(CreateDashboardChartSeriesFilters(selectedDashboardChartSeriesFilters));
         RefreshDashboardMetadataFilters();
@@ -125,7 +127,9 @@ public class MainWindowViewModel : BaseViewModel
 
     private void RefreshDashboardMetadataFilters()
     {
-        var selectedContentType = SelectedDashboardContentFilter?.ContentType;
+        var selectedContentType = SelectedDashboardContentFilter is null
+            ? SettingsController.CurrentSettings.SelectedDashboardContentType
+            : SelectedDashboardContentFilter.ContentType;
 
         DashboardContentFilters = new ObservableCollection<DashboardContentFilterOption>
         {
@@ -1389,6 +1393,11 @@ public class MainWindowViewModel : BaseViewModel
         set
         {
             field = value;
+            if (value != null)
+            {
+                SettingsController.CurrentSettings.SelectedDashboardChartRangeBucketCount = value.BucketCount;
+                SettingsController.CurrentSettings.SelectedDashboardChartRangeUnit = value.Unit;
+            }
             OnPropertyChanged();
         }
     }
@@ -1419,6 +1428,7 @@ public class MainWindowViewModel : BaseViewModel
         set
         {
             field = value;
+            SettingsController.CurrentSettings.SelectedDashboardContentType = value?.ContentType;
             OnPropertyChanged();
         }
     }
@@ -1439,6 +1449,10 @@ public class MainWindowViewModel : BaseViewModel
         set
         {
             field = value;
+            if (DashboardSessionFilters.Count > 1 || SettingsController.CurrentSettings.SelectedDashboardSessionId is null)
+            {
+                SettingsController.CurrentSettings.SelectedDashboardSessionId = value?.SessionId;
+            }
             OnPropertyChanged();
         }
     }

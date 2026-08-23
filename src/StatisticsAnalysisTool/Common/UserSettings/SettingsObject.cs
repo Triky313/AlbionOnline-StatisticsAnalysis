@@ -1,4 +1,5 @@
 using StatisticAnalysisTool.Extractor.Enums;
+using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Models;
@@ -120,7 +121,14 @@ public class SettingsObject
     public bool IsReSpecStatsVisible { get; set; } = true;
     public bool IsRepairCostsStatsVisible { get; set; } = true;
     public bool IsActivityChartVisible { get; set; } = true;
+    public int SelectedDashboardChartRangeBucketCount { get; set; } = 10;
+    public DashboardChartRangeUnit SelectedDashboardChartRangeUnit { get; set; } = DashboardChartRangeUnit.Minute;
+    public DashboardContentType? SelectedDashboardContentType { get; set; }
+    public Guid? SelectedDashboardSessionId { get; set; }
     public CityFaction SelectedDashboardFaction { get; set; } = CityFaction.Caerleon;
+    public int SelectedDungeonChartRangeBucketCount { get; set; } = 30;
+    public DashboardChartRangeUnit SelectedDungeonChartRangeUnit { get; set; } = DashboardChartRangeUnit.Minute;
+    public DungeonMode SelectedDungeonMode { get; set; } = DungeonMode.Unknown;
     public string ProxyUrlWithPort { get; set; }
     public string DebugConsoleFilter { get; set; }
     public bool IsOpenDebugConsoleWhenStartingTheToolChecked { get; set; } = false;

@@ -7,6 +7,7 @@ using SkiaSharp;
 using StatisticsAnalysisTool.Combat;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
@@ -2305,7 +2306,8 @@ public class StatisticController
 
         void ApplyFilters()
         {
-            var selectedSessionId = _mainWindowViewModel.SelectedDashboardSessionFilter?.SessionId;
+            var selectedSessionId = _mainWindowViewModel.SelectedDashboardSessionFilter?.SessionId
+                                    ?? SettingsController.CurrentSettings.SelectedDashboardSessionId;
             var filters = new List<DashboardSessionFilterOption>
             {
                 new(null, LocalizationController.Translation("ALL_SESSIONS"))
@@ -2322,6 +2324,7 @@ public class StatisticController
             _mainWindowViewModel.SelectedDashboardSessionFilter = filters
                 .FirstOrDefault(x => x.SessionId == selectedSessionId)
                 ?? filters[0];
+            SettingsController.CurrentSettings.SelectedDashboardSessionId = _mainWindowViewModel.SelectedDashboardSessionFilter.SessionId;
         }
 
         var dispatcher = Application.Current?.Dispatcher;

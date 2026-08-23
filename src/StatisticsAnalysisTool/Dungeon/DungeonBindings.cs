@@ -109,6 +109,8 @@ public class DungeonBindings : BaseViewModel
             }
 
             _selectedStatsTimeType = value;
+            SettingsController.CurrentSettings.SelectedDungeonChartRangeBucketCount = value.BucketCount;
+            SettingsController.CurrentSettings.SelectedDungeonChartRangeUnit = value.Unit;
             OnPropertyChanged();
             _ = UpdateFilteredDungeonsAsync();
         }
@@ -135,6 +137,7 @@ public class DungeonBindings : BaseViewModel
             }
 
             _selectedDungeonStatsType = value;
+            SettingsController.CurrentSettings.SelectedDungeonMode = value.StatsViewType;
             UpdateFilterAvailability();
             UpdateStatsView();
             OnPropertyChanged();
@@ -195,16 +198,23 @@ public class DungeonBindings : BaseViewModel
     public void RefreshLocalization()
     {
         var selectedRange = SelectedStatsTimeType;
-        var selectedMode = SelectedDungeonStatsType.StatsViewType;
+        var selectedMode = DungeonStatsType.Count == 0
+            ? SettingsController.CurrentSettings.SelectedDungeonMode
+            : SelectedDungeonStatsType.StatsViewType;
+        var selectedBucketCount = selectedRange?.BucketCount
+                                  ?? SettingsController.CurrentSettings.SelectedDungeonChartRangeBucketCount;
+        var selectedRangeUnit = selectedRange?.Unit
+                                ?? SettingsController.CurrentSettings.SelectedDungeonChartRangeUnit;
 
         DungeonStatTimeTypes = DashboardChartRangeOption.CreateDefault().Skip(1).ToList();
         DungeonStatsType = CreateContentTabs();
 
-        _selectedStatsTimeType = selectedRange is null
-            ? DungeonStatTimeTypes[0]
-            : DungeonStatTimeTypes.FirstOrDefault(x => x.BucketCount == selectedRange.BucketCount && x.Unit == selectedRange.Unit)
-              ?? DungeonStatTimeTypes[0];
+        _selectedStatsTimeType = DungeonStatTimeTypes.FirstOrDefault(x => x.BucketCount == selectedBucketCount && x.Unit == selectedRangeUnit)
+                                 ?? DungeonStatTimeTypes[0];
         _selectedDungeonStatsType = DungeonStatsType.FirstOrDefault(x => x.StatsViewType == selectedMode);
+        SettingsController.CurrentSettings.SelectedDungeonChartRangeBucketCount = _selectedStatsTimeType.BucketCount;
+        SettingsController.CurrentSettings.SelectedDungeonChartRangeUnit = _selectedStatsTimeType.Unit;
+        SettingsController.CurrentSettings.SelectedDungeonMode = _selectedDungeonStatsType.StatsViewType;
         Translation = new DungeonsTranslation();
         UpdateFilterAvailability();
 
