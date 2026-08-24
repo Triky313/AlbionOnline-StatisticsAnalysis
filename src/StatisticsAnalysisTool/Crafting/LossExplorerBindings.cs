@@ -283,11 +283,19 @@ public sealed class LossExplorerBindings : BaseViewModel, IDisposable
             if (string.Equals(requestedCachePath, AppDataPaths.UserDataFile(LossExplorerService.CacheFileName), StringComparison.OrdinalIgnoreCase))
             {
                 _cache = updatedCache;
-                RunOnUiThread(() =>
+                await RunOnUiThreadAsync(() =>
                 {
                     ApplyCacheToUi(updatedCache);
                     StatusText = CreateReadyStatusText();
-                });
+                }).ConfigureAwait(false);
+
+                if (!showProgress)
+                {
+                    Log.Information(
+                        "Loss Explorer background refresh completed. StoredEvents={StoredEvents}, LastSuccessfulSyncUtc={LastSuccessfulSyncUtc}",
+                        StoredEventCount,
+                        updatedCache.LastSuccessfulSyncUtc);
+                }
             }
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
@@ -328,6 +336,7 @@ public sealed class LossExplorerBindings : BaseViewModel, IDisposable
     {
         try
         {
+            Log.Information("Loss Explorer background monitoring started. RefreshInterval={RefreshInterval}", RefreshInterval);
             await LoadInternalAsync(cancellationToken, false).ConfigureAwait(false);
             using var timer = new PeriodicTimer(RefreshInterval);
             while (await timer.WaitForNextTickAsync(cancellationToken).ConfigureAwait(false))
@@ -371,22 +380,22 @@ public sealed class LossExplorerBindings : BaseViewModel, IDisposable
         {
             _cache = new LossExplorerCache();
             _cacheFilePath = string.Empty;
-            RunOnUiThread(() =>
+            await RunOnUiThreadAsync(() =>
             {
                 ApplyCacheToUi(_cache);
                 StatusText = TranslationServerUnavailable;
-            });
+            }).ConfigureAwait(false);
             return;
         }
 
         var cacheFilePath = AppDataPaths.UserDataFile(LossExplorerService.CacheFileName);
         _cache = await _service.LoadCacheAsync(cacheFilePath).ConfigureAwait(false);
         _cacheFilePath = cacheFilePath;
-        RunOnUiThread(() =>
+        await RunOnUiThreadAsync(() =>
         {
             ApplyCacheToUi(_cache);
             StatusText = _cache.Items.Count > 0 ? CreateReadyStatusText() : TranslationLoadHint;
-        });
+        }).ConfigureAwait(false);
     }
 
     private void ApplyCacheToUi(LossExplorerCache cache)
@@ -559,14 +568,8 @@ public sealed class LossExplorerBindings : BaseViewModel, IDisposable
         RunOnUiThread(() => StatusText = statusText);
     }
 
-    private static void RunOnUiThread(Action action)
+    private void RunOnUiThread(Action action)
     {
-        if (Application.Current?.Dispatcher?.CheckAccess() == true)
-        {
-            action();
-            return;
-        }
-
-        _ = Application.Current?.Dispatcher?.BeginInvoke(action);
+        _ = RunOnUiThreadAsync(action);
     }
 }
