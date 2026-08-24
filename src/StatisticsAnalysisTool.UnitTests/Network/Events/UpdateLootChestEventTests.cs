@@ -1,5 +1,6 @@
 using FluentAssertions;
 using NUnit.Framework;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Events;
 
 namespace StatisticsAnalysisTool.UnitTests.Network.Events;
@@ -23,6 +24,7 @@ public class UpdateLootChestEventTests
         var parameters = new Dictionary<byte, object>
         {
             { 0, 145 },
+            { 1, 7 },
             {
                 3,
                 new byte[]
@@ -37,13 +39,16 @@ public class UpdateLootChestEventTests
                     211, 221, 124, 14, 233, 103, 215, 74, 185, 66, 67, 20, 244, 60, 44, 155
                 }
             },
-            { 10, 3.70968 }
+            { 10, 3.70968 },
+            { 13, 2 }
         };
 
         var updateLootChestEvent = new UpdateLootChestEvent(parameters);
 
         updateLootChestEvent.ObjectId.Should().Be(145);
         updateLootChestEvent.LootFactor.Should().Be(3.70968);
+        updateLootChestEvent.IsOpened.Should().BeTrue();
+        updateLootChestEvent.Rarity.Should().Be(TreasureRarity.Rare);
         updateLootChestEvent.PlayerGuid.Should().ContainSingle().Which.Should().Be(new Guid(firstGuidBytes));
         updateLootChestEvent.PlayerGuid2.Should().ContainSingle().Which.Should().Be(new Guid(secondGuidBytes));
     }
@@ -70,6 +75,7 @@ public class UpdateLootChestEventTests
 
         var updateLootChestEvent = new UpdateLootChestEvent(parameters);
 
+        updateLootChestEvent.IsOpened.Should().BeTrue();
         updateLootChestEvent.PlayerGuid.Should().ContainSingle().Which.Should().Be(new Guid(firstGuidBytes));
         updateLootChestEvent.PlayerGuid2.Should().ContainSingle().Which.Should().Be(new Guid(secondGuidBytes));
     }

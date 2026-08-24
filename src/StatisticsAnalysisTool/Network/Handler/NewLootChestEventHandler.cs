@@ -11,7 +11,7 @@ public class NewLootChestEventHandler(TrackingController trackingController) : E
     {
         var dungeonEventName = GetDungeonEventName(value);
         await trackingController.DungeonController.RegisterDungeonChestAsync(value.ObjectId, dungeonEventName, value.Rarity);
-        trackingController?.TreasureController?.AddTreasure(value.ObjectId, value.UniqueName, value.UniqueNameWithLocation);
+        trackingController?.TreasureController?.AddTreasure(value.ObjectId, value.UniqueName, value.UniqueNameWithLocation, value.Rarity);
         trackingController.LootController.SetIdentifiedBody(value.ObjectId, value.UniqueName);
         trackingController.DungeonController.SetLootSource(value.ObjectId, value.UniqueNameWithLocation, DungeonLootSourceType.Chest);
     }

@@ -39,17 +39,23 @@ public class TreasureController
         _treasures.CollectionChanged -= UpdateLootedChestsDashboardUi;
     }
 
-    public void AddTreasure(int objectId, string uniqueName, string uniqueNameWithLocation)
+    public void AddTreasure(int objectId, string uniqueName, string uniqueNameWithLocation, TreasureRarity rarity)
     {
         if (_temporaryTreasures.All(x => x.ObjectId != objectId))
         {
-            _temporaryTreasures.Add(new TemporaryTreasure() { ObjectId = objectId, UniqueName = uniqueName, UniqueNameWithLocation = uniqueNameWithLocation });
+            _temporaryTreasures.Add(new TemporaryTreasure
+            {
+                ObjectId = objectId,
+                UniqueName = uniqueName,
+                UniqueNameWithLocation = uniqueNameWithLocation,
+                Rarity = rarity
+            });
         }
     }
 
-    public void UpdateTreasure(int objectId, List<Guid> openedBy)
+    public void UpdateTreasure(int objectId, List<Guid> openedBy, bool isOpened, TreasureRarity rarity)
     {
-        if (openedBy is not { Count: > 0 })
+        if (!isOpened || openedBy is not { Count: > 0 })
         {
             return;
         }
@@ -63,7 +69,7 @@ public class TreasureController
         var treasure = new Treasure()
         {
             OpenedBy = openedBy,
-            TreasureRarity = GetRarity(temporaryTreasure.UniqueName),
+            TreasureRarity = ResolveRarity(temporaryTreasure.UniqueName, temporaryTreasure.Rarity, rarity),
             TreasureType = GetTreasureType(temporaryTreasure.UniqueName)
         };
 
@@ -254,8 +260,23 @@ public class TreasureController
         return TreasureRarity.Unknown;
     }
 
+    private static TreasureRarity ResolveRarity(string uniqueName, TreasureRarity registeredRarity, TreasureRarity updatedRarity)
+    {
+        if (updatedRarity != TreasureRarity.Unknown)
+        {
+            return updatedRarity;
+        }
+
+        return registeredRarity != TreasureRarity.Unknown ? registeredRarity : GetRarity(uniqueName);
+    }
+
     private static TreasureType GetTreasureType(string input)
     {
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            return TreasureType.Unknown;
+        }
+
         var inputArray = input.Split("_");
 
         if (inputArray.Any(x => x == "MISTS"))

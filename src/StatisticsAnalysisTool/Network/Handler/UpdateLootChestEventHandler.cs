@@ -10,6 +10,6 @@ public class UpdateLootChestEventHandler(TrackingController trackingController) 
     {
         await trackingController.DungeonController.UpdateDungeonChestAsync(value.ObjectId, value.PlayerGuid, value.IsOpened, value.Rarity);
         trackingController.DungeonController?.UpdateCurrentDungeonLevelFromLootChest(value.ObjectId, value.LootFactor);
-        trackingController?.TreasureController?.UpdateTreasure(value.ObjectId, value.PlayerGuid);
+        trackingController?.TreasureController?.UpdateTreasure(value.ObjectId, value.PlayerGuid, value.IsOpened, value.Rarity);
     }
 }
