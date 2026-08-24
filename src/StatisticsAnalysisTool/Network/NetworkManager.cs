@@ -65,6 +65,7 @@ public class NetworkManager
         builder.AddEventHandler(new UpdateCurrencyEventHandler(trackingController));
         builder.AddEventHandler(new KilledPlayerEventHandler(trackingController));
         builder.AddEventHandler(new DiedEventHandler(trackingController));
+        builder.AddEventHandler(new KnockedDownEventHandler(trackingController));
         builder.AddEventHandler(new NewLootChestEventHandler(trackingController));
         builder.AddEventHandler(new UpdateLootChestEventHandler(trackingController));
         //builder.AddEventHandler(new LootChestOpenedEventHandler(trackingController));
