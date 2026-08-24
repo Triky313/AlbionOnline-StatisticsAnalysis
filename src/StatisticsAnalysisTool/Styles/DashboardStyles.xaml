@@ -643,8 +643,8 @@
                 <TextBlock Text="{Binding SharePercentage, StringFormat='{}{0:N1}%'}" Style="{StaticResource Dashboard.CombatRowText}" />
                 <TextBlock Text=")" Style="{StaticResource Dashboard.CombatRowText}" />
             </StackPanel>
-            <TextBlock Grid.Column="3" Text="{Binding EstimatedLootValue, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dashboard.CombatRowText}" TextAlignment="Right" />
-            <ProgressBar Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Value="{Binding BarPercentage, Mode=OneWay}" Foreground="{StaticResource SolidColorBrush.Accent.Green.2}" Style="{StaticResource Dashboard.ContentRankingBar}" />
+            <TextBlock Grid.Column="3" Margin="0,0,12,0" Text="{Binding EstimatedLootValue, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dashboard.CombatRowText}" TextAlignment="Right" />
+            <ProgressBar Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Value="{Binding BarPercentage, Mode=OneWay}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" Style="{StaticResource Dashboard.ContentRankingBar}" />
         </Grid>
     </DataTemplate>
 
@@ -760,7 +760,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="Dashboard.CombatEventItemTemplate" DataType="{x:Type models:DashboardCombatEventItem}">
-        <Expander Style="{StaticResource Dashboard.CombatEventExpander}">
+        <Expander IsExpanded="{Binding IsExpanded, Mode=TwoWay}" Style="{StaticResource Dashboard.CombatEventExpander}">
             <Expander.Header>
                 <Grid MinHeight="34">
                     <Grid.ColumnDefinitions>

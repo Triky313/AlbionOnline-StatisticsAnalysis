@@ -1,3 +1,5 @@
+using StatisticsAnalysisTool.ViewModels;
+
 namespace StatisticsAnalysisTool.Models;
 
 public sealed class DashboardCombatEventItem(
@@ -7,7 +9,7 @@ public sealed class DashboardCombatEventItem(
     string mapName,
     string opponentName,
     DashboardCombatPlayerItem killer,
-    DashboardCombatPlayerItem victim)
+    DashboardCombatPlayerItem victim) : BaseViewModel
 {
     public string RelativeTime { get; } = relativeTime;
     public string Result { get; } = result;
@@ -17,4 +19,14 @@ public sealed class DashboardCombatEventItem(
     public DashboardCombatPlayerItem Killer { get; } = killer;
     public DashboardCombatPlayerItem Victim { get; } = victim;
     public double EstimatedValue => Victim.EstimatedValue;
+
+    public bool IsExpanded
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
 }
