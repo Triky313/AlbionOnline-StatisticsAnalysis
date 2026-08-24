@@ -60,6 +60,7 @@ public partial class MainWindow
     private void MainWindow_OnClosing(object sender, EventArgs eventArgs)
     {
         _mainWindowViewModel.DisposeItemDetails();
+        _mainWindowViewModel.CraftingBindings.DisposeLossExplorer();
         SettingsController.SetWindowSettings(WindowState, Height, Width, Left, Top);
     }
 

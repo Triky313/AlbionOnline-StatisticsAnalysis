@@ -49214,6 +49214,175 @@
           "seg": "Total Tracked Fights"
         }
       ]
+    },
+    {
+      "tuid": "LOSS_EXPLORER",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Loss Explorer"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loss Explorer"
+        }
+      ]
+    },
+    {
+      "tuid": "EQUIPMENT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Ausrüstung"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Equipment"
+        }
+      ]
+    },
+    {
+      "tuid": "INVENTORY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Inventar"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Inventory"
+        }
+      ]
+    },
+    {
+      "tuid": "LOSS_EXPLORER_LOADING_EVENTS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Todesfälle werden geladen – Seite {0}"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loading deaths – page {0}"
+        }
+      ]
+    },
+    {
+      "tuid": "LOSS_EXPLORER_LOADING_PRICES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Marktwerte werden geladen – Paket {0} von {1}"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loading market values – batch {0} of {1}"
+        }
+      ]
+    },
+    {
+      "tuid": "LOSS_EXPLORER_READY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "{0:N0} von 7 Tagen gespeichert · Tagesdurchschnitt · aktualisiert {1:g}"
+        },
+        {
+          "lang": "en-US",
+          "seg": "{0:N0} of 7 days stored · daily average · updated {1:g}"
+        }
+      ]
+    },
+    {
+      "tuid": "LOSS_EXPLORER_LOAD_HINT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Verlustdaten werden alle 10 Minuten aktualisiert und bis zu 7 Tage gespeichert."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loss data is updated every 10 minutes and stored for up to 7 days."
+        }
+      ]
+    },
+    {
+      "tuid": "LOSS_EXPLORER_LOAD_ERROR",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Die Verlustdaten konnten nicht vollständig geladen werden. Der nächste automatische Abgleich versucht es erneut."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loss data could not be loaded completely. The next automatic refresh will retry."
+        }
+      ]
+    },
+    {
+      "tuid": "LOSS_EXPLORER_SERVER_UNAVAILABLE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Für den Loss Explorer muss ein Albion-Server aktiv sein."
+        },
+        {
+          "lang": "en-US",
+          "seg": "An Albion server must be active to use the Loss Explorer."
+        }
+      ]
+    },
+    {
+      "tuid": "LOSS_EXPLORER_STORED_EVENTS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "{0:N0} Events gespeichert"
+        },
+        {
+          "lang": "en-US",
+          "seg": "{0:N0} events stored"
+        }
+      ]
+    },
+    {
+      "tuid": "LOSS_EXPLORER_VALUE_PER_DAY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "{0:N0} / Tag"
+        },
+        {
+          "lang": "en-US",
+          "seg": "{0:N0} / day"
+        }
+      ]
+    },
+    {
+      "tuid": "LOSS_EXPLORER_UNIT_VALUE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "({0:N0} je Item)"
+        },
+        {
+          "lang": "en-US",
+          "seg": "({0:N0} per item)"
+        }
+      ]
+    },
+    {
+      "tuid": "LOSS_EXPLORER_AMOUNT_PER_DAY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "{0:N1} verlorene Items / Tag"
+        },
+        {
+          "lang": "en-US",
+          "seg": "{0:N1} lost items / day"
+        }
+      ]
     }
   ]
 }

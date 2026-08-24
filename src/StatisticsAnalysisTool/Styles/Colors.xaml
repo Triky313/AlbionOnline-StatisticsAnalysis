@@ -221,6 +221,13 @@
     <Color x:Key="Item.Level.Color.3">#FFb866fe</Color>
     <Color x:Key="Item.Level.Color.4">#FFf3dc59</Color>
 
+    <!-- Item quality colors -->
+    <Color x:Key="Item.Quality.Color.1">#FF7F878F</Color>
+    <Color x:Key="Item.Quality.Color.2">#FFAEB5BC</Color>
+    <Color x:Key="Item.Quality.Color.3">#FFC48752</Color>
+    <Color x:Key="Item.Quality.Color.4">#FFDDE4EA</Color>
+    <Color x:Key="Item.Quality.Color.5">#FFF0C75E</Color>
+
     <!-- Pvp/Pve colors -->
     <Color x:Key="Text.Color.Pvp">#ffe05761</Color>
     <Color x:Key="Text.Color.Pve">#ff57b6e0</Color>
@@ -496,6 +503,12 @@
     <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.2" Color="{StaticResource Item.Level.Color.2}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.3" Color="{StaticResource Item.Level.Color.3}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.4" Color="{StaticResource Item.Level.Color.4}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Item.Quality.Color.1" Color="{StaticResource Item.Quality.Color.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Item.Quality.Color.2" Color="{StaticResource Item.Quality.Color.2}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Item.Quality.Color.3" Color="{StaticResource Item.Quality.Color.3}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Item.Quality.Color.4" Color="{StaticResource Item.Quality.Color.4}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Item.Quality.Color.5" Color="{StaticResource Item.Quality.Color.5}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Text.Color.Pvp" Color="{StaticResource Text.Color.Pvp}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Text.Color.Pve" Color="{StaticResource Text.Color.Pve}"/>

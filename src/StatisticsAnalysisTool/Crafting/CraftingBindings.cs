@@ -69,6 +69,7 @@ public class CraftingBindings : BaseViewModel
     private string _setupFeePercentText = FormatPercentInput(2.5m);
     private int _priceOptionRequestVersion;
     private BlackMarketBindings _blackMarket;
+    private LossExplorerBindings _lossExplorer;
 
     public CraftingBindings()
     {
@@ -107,9 +108,15 @@ public class CraftingBindings : BaseViewModel
 
     public ObservableCollection<CategoryDropdownItem> ItemSubCategories2 { get; private set; } = [];
 
+    public LossExplorerBindings LossExplorer => IsLossExplorerEnabled ? _lossExplorer ??= new LossExplorerBindings() : null;
+
     public BlackMarketBindings BlackMarket => IsBlackMarketEnabled ? _blackMarket ??= new BlackMarketBindings() : null;
 
+    public bool IsLossExplorerEnabled => SettingsController.CurrentSettings.LossExplorer;
+
     public bool IsBlackMarketEnabled => SettingsController.CurrentSettings.Bm;
+
+    public Visibility LossExplorerTabVisibility => IsLossExplorerEnabled.BoolToVisibility();
 
     public Visibility BlackMarketTabVisibility => IsBlackMarketEnabled.BoolToVisibility();
 
@@ -880,6 +887,9 @@ public class CraftingBindings : BaseViewModel
     public async Task LoadAsync()
     {
         var blackMarketLoadTask = IsBlackMarketEnabled ? BlackMarket.LoadAsync() : Task.CompletedTask;
+        var lossExplorerCacheLoadTask = IsLossExplorerEnabled
+            ? LossExplorer.LoadCachedDataAsync()
+            : Task.CompletedTask;
         var craftings = await _controller.LoadAsync();
         SavedCraftings.Clear();
 
@@ -889,7 +899,7 @@ public class CraftingBindings : BaseViewModel
             SavedCraftings.Add(crafting);
         }
 
-        await blackMarketLoadTask;
+        await Task.WhenAll(blackMarketLoadTask, lossExplorerCacheLoadTask);
     }
 
     public async Task SaveInFileAsync()
@@ -905,6 +915,16 @@ public class CraftingBindings : BaseViewModel
         }
 
         await Task.WhenAll(saveTasks);
+    }
+
+    public void RefreshLossExplorerLocalization()
+    {
+        _lossExplorer?.RefreshLocalization();
+    }
+
+    public void DisposeLossExplorer()
+    {
+        _lossExplorer?.Dispose();
     }
 
     public void ResetItemFilters()

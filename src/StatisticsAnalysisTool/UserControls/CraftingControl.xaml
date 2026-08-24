@@ -6,6 +6,7 @@
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
              xmlns:wpf="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
+             xmlns:userControls="clr-namespace:StatisticsAnalysisTool.UserControls"
              xmlns:common="clr-namespace:StatisticsAnalysisTool.Common"
              xmlns:crafting="clr-namespace:StatisticsAnalysisTool.Crafting"
              xmlns:translation="clr-namespace:StatisticsAnalysisTool.Models.TranslationModel"
@@ -980,6 +981,10 @@
             </ListView>
         </Grid>
     </Grid>
+        </TabItem>
+        <TabItem Header="{x:Static crafting:LossExplorerBindings.TranslationLossExplorer}"
+                 Visibility="{Binding CraftingBindings.LossExplorerTabVisibility}">
+            <userControls:LossExplorerControl />
         </TabItem>
         <TabItem Header="{x:Static crafting:CraftingBindings.TranslationBlackMarket}"
                  Visibility="{Binding CraftingBindings.BlackMarketTabVisibility}">
