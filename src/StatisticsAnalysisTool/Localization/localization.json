@@ -49383,6 +49383,19 @@
           "seg": "{0:N0} lost items / day"
         }
       ]
+    },
+    {
+      "tuid": "SERVER_TYPE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Servertyp"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Server Type"
+        }
+      ]
     }
   ]
 }

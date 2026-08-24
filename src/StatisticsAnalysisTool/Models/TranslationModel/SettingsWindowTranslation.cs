@@ -53,6 +53,7 @@ public class SettingsWindowTranslation
     public static string Tool => LocalizationController.Translation("TOOL");
     public static string Tracking => LocalizationController.Translation("TRACKING");
     public static string Server => LocalizationController.Translation("SERVER");
+    public static string ServerType => LocalizationController.Translation("SERVER_TYPE");
     public static string StartupUserDataServer => LocalizationController.Translation("STARTUP_USER_DATA_SERVER");
     public static string StartupUserDataServerDescription => LocalizationController.Translation("STARTUP_USER_DATA_SERVER_DESCRIPTION");
     public static string ItemSearch => LocalizationController.Translation("ITEM_SEARCH");

@@ -154,13 +154,20 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="12" />
                                 <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="12" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="12" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
 
-                            <StackPanel Grid.Column="0" Style="{StaticResource Settings.Field}">
+                                <ColumnDefinition Width="12" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="12" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="12" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Grid.Column="0" Style="{StaticResource Settings.Field}">
                                 <TextBlock Text="{Binding Translation.StartupUserDataServer, FallbackValue=STARTUP__USER_DATA__SERVER}"
                                            ToolTip="{Binding Translation.StartupUserDataServerDescription}"
                                            Style="{StaticResource Settings.FieldLabel}" />
@@ -173,17 +180,25 @@
                                           Style="{StaticResource Settings.ComboBox}" />
                             </StackPanel>
 
-                            <StackPanel Grid.Column="2" Style="{StaticResource Settings.Field}">
+                            <StackPanel Grid.Row="0" Grid.Column="2" Style="{StaticResource Settings.Field}">
+                                <TextBlock Text="{Binding Translation.ServerType, FallbackValue=SERVER__TYPE}" Style="{StaticResource Settings.FieldLabel}" />
+                                <ComboBox ItemsSource="{Binding ServerTypes}" SelectedItem="{Binding ServerTypeSelection}"
+                                          IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" Style="{StaticResource Settings.ComboBox}" />
+                                <TextBlock Text="{Binding Translation.ChangeRequiresAToolRestart, StringFormat='{}({0})', FallbackValue=(CHANGE__REQUIRES__A__TOOL__RESTART)}"
+                                           Style="{StaticResource Settings.WarningText}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Grid.Column="0" Style="{StaticResource Settings.Field}">
                                 <TextBlock Text="{Binding Translation.AlbionDataProjectBaseUrlWest, FallbackValue=ALBION_DATA_PROJECT_BASE_URL_WEST}" Style="{StaticResource Settings.FieldLabel}" />
                                 <TextBox Text="{Binding AlbionDataProjectBaseUrlWest}" TextWrapping="Wrap" Style="{StaticResource Settings.TextBox}" />
                             </StackPanel>
 
-                            <StackPanel Grid.Column="4" Style="{StaticResource Settings.Field}">
+                            <StackPanel Grid.Row="1" Grid.Column="2" Style="{StaticResource Settings.Field}">
                                 <TextBlock Text="{Binding Translation.AlbionDataProjectBaseUrlEast, FallbackValue=ALBION_DATA_PROJECT_BASE_URL_EAST}" Style="{StaticResource Settings.FieldLabel}" />
                                 <TextBox Text="{Binding AlbionDataProjectBaseUrlEast}" TextWrapping="Wrap" Style="{StaticResource Settings.TextBox}" />
                             </StackPanel>
 
-                            <StackPanel Grid.Column="6" Style="{StaticResource Settings.Field}">
+                            <StackPanel Grid.Row="1" Grid.Column="4" Style="{StaticResource Settings.Field}">
                                 <TextBlock Text="{Binding Translation.AlbionDataProjectBaseUrlEurope, FallbackValue=ALBION_DATA_PROJECT_BASE_URL_EUROPE}" Style="{StaticResource Settings.FieldLabel}" />
                                 <TextBox Text="{Binding AlbionDataProjectBaseUrlEurope}" TextWrapping="Wrap" Style="{StaticResource Settings.TextBox}" />
                             </StackPanel>

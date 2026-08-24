@@ -1,6 +1,7 @@
 using Ookii.Dialogs.Wpf;
 using Serilog;
 using StatisticAnalysisTool.Extractor;
+using StatisticAnalysisTool.Extractor.Enums;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Diagnostics;
@@ -46,6 +47,7 @@ public class SettingsWindowViewModel : BaseViewModel
         InitNotificationAreas();
         InitPacketProvider();
         InitStartupUserDataServers();
+        InitServerTypes();
         InitNetworkDevices();
         MainTrackingCharacterName = SettingsController.CurrentSettings.MainTrackingCharacterName;
 
@@ -132,6 +134,7 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.AlbionDataProjectBaseUrlEast = AlbionDataProjectBaseUrlEast;
         SettingsController.CurrentSettings.AlbionDataProjectBaseUrlEurope = AlbionDataProjectBaseUrlEurope;
         SettingsController.CurrentSettings.StartupUserDataServerLocation = GetSelectedStartupUserDataServerLocation();
+        SettingsController.CurrentSettings.ServerType = (ServerType) ServerTypeSelection.Value;
 
         SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive = IsSuggestPreReleaseUpdatesActive;
         SettingsController.CurrentSettings.ExactMatchPlayerNamesLineNumber = PlayerSelectionWithSameNameInDb;
@@ -168,6 +171,7 @@ public class SettingsWindowViewModel : BaseViewModel
         RefreshNotificationFilterNames();
         InitPacketProvider();
         InitStartupUserDataServers();
+        InitServerTypes();
         InitDropDownDownByDays(BackupIntervalByDays);
         BackupIntervalByDaysSelection = BackupIntervalByDays.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.BackupIntervalByDays);
         mainWindowViewModel.RefreshLocalization();
@@ -609,6 +613,19 @@ public class SettingsWindowViewModel : BaseViewModel
             : StartupUserDataServers.First(x => x.Value == (int) ServerLocation.Europe);
     }
 
+    private void InitServerTypes()
+    {
+        ServerTypes.Clear();
+        ServerTypes.Add(new SettingDataInformation { Name = "Live", Value = (int) ServerType.Live });
+        ServerTypes.Add(new SettingDataInformation { Name = "Stage", Value = (int) ServerType.Staging });
+        ServerTypes.Add(new SettingDataInformation { Name = "Playground", Value = (int) ServerType.Playground });
+
+        var selectedServerType = Enum.IsDefined(SettingsController.CurrentSettings.ServerType)
+            ? SettingsController.CurrentSettings.ServerType
+            : ServerType.Live;
+        ServerTypeSelection = ServerTypes.First(x => x.Value == (int) selectedServerType);
+    }
+
     private ServerLocation GetSelectedStartupUserDataServerLocation()
     {
         return StartupUserDataServerSelection.Value switch
@@ -892,6 +909,26 @@ public class SettingsWindowViewModel : BaseViewModel
     }
 
     public ObservableCollection<SettingDataInformation> StartupUserDataServers
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = new();
+
+    public SettingDataInformation ServerTypeSelection
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<SettingDataInformation> ServerTypes
     {
         get;
         set
