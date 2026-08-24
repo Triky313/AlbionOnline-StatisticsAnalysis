@@ -49376,11 +49376,11 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "{0:N1} verlorene Items / Tag"
+          "seg": "{0:N0} verlorene Items / Tag"
         },
         {
           "lang": "en-US",
-          "seg": "{0:N1} lost items / day"
+          "seg": "{0:N0} lost items / day"
         }
       ]
     }

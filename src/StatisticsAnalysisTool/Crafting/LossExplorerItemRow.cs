@@ -67,7 +67,7 @@ public sealed class LossExplorerItemRow
     public string QuantityText => string.Format(
         CultureInfo.CurrentCulture,
         LocalizationController.Translation("LOSS_EXPLORER_AMOUNT_PER_DAY"),
-        Quantity);
+        decimal.Round(Quantity, 0, MidpointRounding.AwayFromZero));
 
     public BitmapImage Icon => _item?.Icon;
 }
