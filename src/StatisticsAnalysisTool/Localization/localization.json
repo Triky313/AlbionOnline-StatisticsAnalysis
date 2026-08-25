@@ -16719,6 +16719,10 @@
         {
           "lang": "en-US",
           "seg": "Duo"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Duo"
         }
       ]
     },
@@ -17693,7 +17697,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Trier par créature"
+          "seg": "Trier par monstre"
         },
         {
           "lang": "ja-JP",
@@ -24647,7 +24651,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Drapeaux de faction"
+          "seg": "Réputation de faction"
         },
         {
           "lang": "ja-JP",
@@ -24696,7 +24700,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Drapeaux de faction par heure"
+          "seg": "Réputation de faction par heure"
         },
         {
           "lang": "ja-JP",
@@ -39112,6 +39116,10 @@
         {
           "lang": "en-US",
           "seg": "Save comparator state"
+        },
+		{
+          "lang": "fr-FR",
+          "seg": "Enregistrer l'état du comparateur"
         }
       ]
     },
@@ -39125,6 +39133,10 @@
         {
           "lang": "en-US",
           "seg": "Load comparator state"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Charger l'état du comparateur"
         }
       ]
     },
@@ -39138,6 +39150,10 @@
         {
           "lang": "en-US",
           "seg": "Name for the comparator state:"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Nom de l'état de référence :"
         }
       ]
     },
@@ -39151,6 +39167,10 @@
         {
           "lang": "en-US",
           "seg": "The currently loaded logs will be removed. Do you want to load the selected state?"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Les journaux actuellement chargés seront supprimés. Souhaitez-vous charger l'état sélectionné ?"
         }
       ]
     },
@@ -39164,6 +39184,10 @@
         {
           "lang": "en-US",
           "seg": "The comparator state could not be saved."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "L'état du comparateur n'a pas pu être enregistré."
         }
       ]
     },
@@ -39177,6 +39201,10 @@
         {
           "lang": "en-US",
           "seg": "The comparator state could not be loaded. The saved files may be corrupted."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Impossible de charger l'état de référence. Les fichiers enregistrés sont peut-être corrompus."
         }
       ]
     },
@@ -39190,6 +39218,10 @@
         {
           "lang": "en-US",
           "seg": "Save"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Enregistrer"
         }
       ]
     },
@@ -39203,6 +39235,10 @@
         {
           "lang": "en-US",
           "seg": "Cancel"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Annuler"
         }
       ]
     },
@@ -39216,6 +39252,10 @@
         {
           "lang": "en-US",
           "seg": "Delete selected comparator state"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Supprimer l'état du comparateur sélectionné"
         }
       ]
     },
@@ -39224,11 +39264,15 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Möchtest du den Comparator-Speicherstand „{SAVE_NAME}“ wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+          "seg": "Möchtest du den Comparator-Speicherstand \"{SAVE_NAME}\" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
         },
         {
           "lang": "en-US",
           "seg": "Do you really want to delete the comparator state \"{SAVE_NAME}\"? This action cannot be undone."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Voulez-vous vraiment supprimer l'état du comparateur \"{SAVE_NAME}\"? Cette action ne peut pas être annulée."
         }
       ]
     },
@@ -39242,6 +39286,10 @@
         {
           "lang": "en-US",
           "seg": "The comparator state could not be deleted."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "L'état de comparaison n'a pas pu être supprimé."
         }
       ]
     },
@@ -39255,6 +39303,10 @@
         {
           "lang": "en-US",
           "seg": "Filters"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Filtres"
         }
       ]
     },
@@ -39268,6 +39320,10 @@
         {
           "lang": "en-US",
           "seg": "Chest log input"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Saisie dans le journal de bord"
         }
       ]
     },
@@ -39281,6 +39337,10 @@
         {
           "lang": "en-US",
           "seg": "Comparison"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Comparaison"
         }
       ]
     },
@@ -39294,6 +39354,10 @@
         {
           "lang": "en-US",
           "seg": "Actions"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Action"
         }
       ]
     },
@@ -39307,6 +39371,10 @@
         {
           "lang": "en-US",
           "seg": "Saved comparator:"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Comparateur enregistré"
         }
       ]
     },
@@ -39849,7 +39917,7 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "1. Klicke in deiner Gildenbank auf „Actions“."
+          "seg": "1. Klicke in deiner Gildenbank auf \"Actions\"."
         },
         {
           "lang": "en-US",
@@ -39857,15 +39925,15 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "1. Cliquez sur « Actions » dans votre banque de guilde."
+          "seg": "1. Cliquez sur \"Actions\" dans votre banque de guilde."
         },
         {
           "lang": "ru-RU",
-          "seg": "1. Нажмите « Actions » в банке вашей гильдии."
+          "seg": "1. Нажмите \"Actions\" в банке вашей гильдии."
         },
         {
           "lang": "zh-CN",
-          "seg": "1. 在公会仓库中点击“Actions”。"
+          "seg": "1. 在公会仓库中点击\"Actions\"。"
         }
       ]
     },
@@ -39874,7 +39942,7 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "2. Klicke auf „Manage“."
+          "seg": "2. Klicke auf \"Manage\"."
         },
         {
           "lang": "en-US",
@@ -39882,15 +39950,15 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "2. Cliquez sur « Manage »."
+          "seg": "2. Cliquez sur \"Manage\"."
         },
         {
           "lang": "ru-RU",
-          "seg": "2. Нажмите « Manage »."
+          "seg": "2. Нажмите \"Manage\"."
         },
         {
           "lang": "zh-CN",
-          "seg": "2. 点击“Manage”。"
+          "seg": "2. 点击\"Manage\"。"
         }
       ]
     },
@@ -39899,7 +39967,7 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "3. Öffne „Chest Log“."
+          "seg": "3. Öffne \"Truhen Protokollierung\"."
         },
         {
           "lang": "en-US",
@@ -39907,15 +39975,15 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "3. Ouvrez « Chest Log »."
+          "seg": "3. Ouvrez \"Chest Log\"."
         },
         {
           "lang": "ru-RU",
-          "seg": "3. Откройте « Chest Log »."
+          "seg": "3. Откройте \"Chest Log\"."
         },
         {
           "lang": "zh-CN",
-          "seg": "3. 打开“Chest Log”。"
+          "seg": "3. 打开\"Chest Log\"。"
         }
       ]
     },
@@ -39924,7 +39992,7 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "4. Klicke auf „Copy to clipboard“."
+          "seg": "4. Klicke auf \"Copy to clipboard\"."
         },
         {
           "lang": "en-US",
@@ -39932,15 +40000,15 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "4. Cliquez sur « Copy to clipboard »."
+          "seg": "4. Cliquez sur \"Copy to clipboard\"."
         },
         {
           "lang": "ru-RU",
-          "seg": "4. Нажмите « Copy to clipboard »."
+          "seg": "4. Нажмите \"Copy to clipboard\"."
         },
         {
           "lang": "zh-CN",
-          "seg": "4. 点击“Copy to clipboard”。"
+          "seg": "4. 点\"Copy to clipboard\"。"
         }
       ]
     },
@@ -39949,7 +40017,7 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Füge den kopierten Truhenlog direkt in das Feld „Chest-Log-Eingabe“ ein und klicke auf „Chest Logs hinzufügen“."
+          "seg": "Füge den kopierten Truhenlog direkt in das Feld \"Chest-Log-Eingabe\" ein und klicke auf \"Chest Logs hinzufügen\"."
         },
         {
           "lang": "en-US",
@@ -39957,7 +40025,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Collez le journal de coffre copié directement dans le champ de saisie du journal de coffre, puis cliquez sur le bouton permettant d'ajouter les journaux."
+          "seg": "Collez le journal de coffre copié directement dans le champ de \"Saisie du journal de coffre\", puis cliquez sur le bouton permettant d'ajouter les journaux."
         },
         {
           "lang": "ru-RU",
@@ -39974,7 +40042,7 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Alternativ kannst du über „Truhen-Dateien laden“ eine oder mehrere .csv-Dateien auswählen. Unterstützt werden Truhenlogs mit tabulatorgetrennten Spalten, wie sie aus der Zwischenablage kopiert werden, sowie kommagetrennte CSV-Dateien. Andere Dateiformate werden nicht unterstützt."
+          "seg": "Alternativ kannst du über \"Truhen-Dateien laden\" eine oder mehrere .csv-Dateien auswählen. Unterstützt werden Truhenlogs mit tabulatorgetrennten Spalten, wie sie aus der Zwischenablage kopiert werden, sowie kommagetrennte CSV-Dateien. Andere Dateiformate werden nicht unterstützt."
         },
         {
           "lang": "en-US",
@@ -39982,7 +40050,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Vous pouvez également sélectionner un ou plusieurs fichiers .csv à l'aide du bouton de chargement des fichiers de coffre. Les journaux de coffre avec des colonnes séparées par des tabulations, tels qu'ils sont copiés depuis le presse-papiers, ainsi que les fichiers CSV séparés par des virgules sont pris en charge. Les autres formats de fichier ne sont pas pris en charge."
+          "seg": "Vous pouvez également sélectionner un ou plusieurs fichiers .csv à l'aide du bouton \"Télécharger les données\". Les journaux de coffre avec des colonnes séparées par des tabulations, tels qu'ils sont copiés depuis le presse-papiers, ainsi que les fichiers CSV séparés par des virgules sont pris en charge. Les autres formats de fichier ne sont pas pris en charge."
         },
         {
           "lang": "ru-RU",
@@ -40024,7 +40092,7 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Loot-Logs werden im Logging-Tab über den grünen CSV-Button exportiert. Im Loot Comparator kannst du über „Loot-Log-Dateien hinzufügen“ eine oder mehrere dieser .csv-Dateien laden. Unterstützt werden semikolongetrennte Loot-Log-CSV-Dateien mit der erwarteten Kopfzeile; JSON und andere Dateiformate werden nicht unterstützt. Klicke anschließend auf „Logs vergleichen“."
+          "seg": "Loot-Logs werden im Logging-Tab über den grünen CSV-Button exportiert. Im Loot Comparator kannst du über \"Loot-Log-Dateien hinzufügen\" eine oder mehrere dieser .csv-Dateien laden. Unterstützt werden semikolongetrennte Loot-Log-CSV-Dateien mit der erwarteten Kopfzeile; JSON und andere Dateiformate werden nicht unterstützt. Klicke anschließend auf \"Logs vergleichen\"."
         },
         {
           "lang": "en-US",
@@ -40882,6 +40950,10 @@
         {
           "lang": "en-US",
           "seg": "Download complete. Installing the update..."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Téléchargement terminé. Installation de la mise à jour en cours..."
         }
       ]
     },
@@ -40895,6 +40967,10 @@
         {
           "lang": "en-US",
           "seg": "Installing..."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Installation en cours..."
         }
       ]
     },
@@ -40908,6 +40984,10 @@
         {
           "lang": "en-US",
           "seg": "The update could not be downloaded. Please check your internet or proxy connection and try again."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "La mise à jour n'a pas pu être téléchargée. Veuillez vérifier votre connexion Internet ou votre proxy, puis réessayez."
         }
       ]
     },
@@ -40921,6 +41001,10 @@
         {
           "lang": "en-US",
           "seg": "The update could not be installed automatically. Please try again or install it manually."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "La mise à jour n'a pas pu être installée automatiquement. Veuillez réessayer ou l'installer manuellement."
         }
       ]
     },
@@ -44064,6 +44148,10 @@
         },
         {
           "lang": "en-US",
+          "seg": "Volume"
+        },
+        {
+          "lang": "fr-FR",
           "seg": "Volume"
         }
       ]
@@ -47234,6 +47322,10 @@
         {
           "lang": "en-US",
           "seg": "Content"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Sommaire"
         }
       ]
     },
@@ -47246,6 +47338,10 @@
         },
         {
           "lang": "en-US",
+          "seg": "Session"
+        },
+        {
+          "lang": "fr-FR",
           "seg": "Session"
         }
       ]
@@ -47260,6 +47356,10 @@
         {
           "lang": "en-US",
           "seg": "All content"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Tout le contenu"
         }
       ]
     },
@@ -47273,6 +47373,10 @@
         {
           "lang": "en-US",
           "seg": "All sessions"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Toutes les Sessions"
         }
       ]
     },
@@ -47286,6 +47390,10 @@
         {
           "lang": "en-US",
           "seg": "Corrupted Dungeon"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Donjon corrompu"
         }
       ]
     },
@@ -47299,6 +47407,10 @@
         {
           "lang": "en-US",
           "seg": "Time range"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Période"
         }
       ]
     },
@@ -47312,6 +47424,10 @@
         {
           "lang": "en-US",
           "seg": "Reset session"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Réinitialiser la session"
         }
       ]
     },
@@ -47325,6 +47441,10 @@
         {
           "lang": "en-US",
           "seg": "Reset session on map change"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Réinitialiser la session lors d'un changement de map"
         }
       ]
     },
@@ -47338,6 +47458,10 @@
         {
           "lang": "en-US",
           "seg": "Session time"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Durée de la Session"
         }
       ]
     },
@@ -47351,6 +47475,10 @@
         {
           "lang": "en-US",
           "seg": "vs previous hour"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "par rapport à l'heure précédente"
         }
       ]
     },
@@ -47364,6 +47492,10 @@
         {
           "lang": "en-US",
           "seg": "vs previous day"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "par rapport au jour précédent"
         }
       ]
     },
@@ -47377,6 +47509,10 @@
         {
           "lang": "en-US",
           "seg": "vs previous minutes"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "par rapport aux minutes précédentes"
         }
       ]
     },
@@ -47390,6 +47526,10 @@
         {
           "lang": "en-US",
           "seg": "vs previous hours"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "par rapport aux heures précédentes"
         }
       ]
     },
@@ -47403,6 +47543,10 @@
         {
           "lang": "en-US",
           "seg": "vs previous days"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "par rapport aux jours précédents"
         }
       ]
     },
@@ -47415,6 +47559,10 @@
         },
         {
           "lang": "en-US",
+          "seg": "Combat"
+        },
+        {
+          "lang": "fr-FR",
           "seg": "Combat"
         }
       ]
@@ -47429,6 +47577,10 @@
         {
           "lang": "en-US",
           "seg": "Economy"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Economie"
         }
       ]
     },
@@ -47442,6 +47594,10 @@
         {
           "lang": "en-US",
           "seg": "Delete Session"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Supprimer la Session"
         }
       ]
     },
@@ -47455,6 +47611,10 @@
         {
           "lang": "en-US",
           "seg": "Do you want to permanently delete the session \"{0}\"?"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Souhaitez-vous supprimer définitivement la session \"{0}\"?"
         }
       ]
     },
@@ -47468,6 +47628,10 @@
         {
           "lang": "en-US",
           "seg": "The session could not be deleted."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Cette session ne peut pas $etre supprimée."
         }
       ]
     },
@@ -47481,6 +47645,10 @@
         {
           "lang": "en-US",
           "seg": "Top Fame Sources"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Principales sources de Fame"
         }
       ]
     },
@@ -47494,6 +47662,10 @@
         {
           "lang": "en-US",
           "seg": "Top Silver Sources"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Principales sources de Silver"
         }
       ]
     },
@@ -47502,11 +47674,15 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "F?r Respec ausgegebenes Silber"
+          "seg": "Für Respec ausgegebenes Silber"
         },
         {
           "lang": "en-US",
           "seg": "Silver spent on Respec"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Silver dépensés en Respec"
         }
       ]
     },
@@ -47520,6 +47696,10 @@
         {
           "lang": "en-US",
           "seg": "Average Respec silver cost per session"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Coût moyen en Silver d'une session de Respec"
         }
       ]
     },
@@ -47533,6 +47713,10 @@
         {
           "lang": "en-US",
           "seg": "Respec points spent"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Points de Respec dépensés"
         }
       ]
     },
@@ -47546,6 +47730,10 @@
         {
           "lang": "en-US",
           "seg": "Average repair cost per session"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Coût moyen des réparations par session"
         }
       ]
     },
@@ -47559,6 +47747,10 @@
         {
           "lang": "en-US",
           "seg": "Highest repair cost"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Coût de réparation le plus élevé"
         }
       ]
     },
@@ -47572,6 +47764,10 @@
         {
           "lang": "en-US",
           "seg": "Recently looted items"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Objets récemment pillés"
         }
       ]
     },
@@ -47585,6 +47781,10 @@
         {
           "lang": "en-US",
           "seg": "Average loot value"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Valeur moyenne du butin"
         }
       ]
     },
@@ -47598,6 +47798,10 @@
         {
           "lang": "en-US",
           "seg": "Top maps and loot areas by loot value"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Meilleures cartes et zones de butin classées par valeur de butin"
         }
       ]
     },
@@ -47611,6 +47815,10 @@
         {
           "lang": "en-US",
           "seg": "Refine quality"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Améliorer la qualité"
         }
       ]
     },
@@ -47624,6 +47832,10 @@
         {
           "lang": "en-US",
           "seg": "Silver spent on refining item quality"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Silver dépensés pour des finitions de qualité"
         }
       ]
     },
@@ -47637,6 +47849,10 @@
         {
           "lang": "en-US",
           "seg": "Upgraded items"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Objets améliorés"
         }
       ]
     },
@@ -47650,6 +47866,10 @@
         {
           "lang": "en-US",
           "seg": "Awaken weapon"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Arme éveillée"
         }
       ]
     },
@@ -47663,6 +47883,10 @@
         {
           "lang": "en-US",
           "seg": "Silver spent on awakened weapons"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Silver dépensés pour les Armes éveillées"
         }
       ]
     },
@@ -47676,6 +47900,10 @@
         {
           "lang": "en-US",
           "seg": "Traits upgraded"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Caractéristiques améliorées"
         }
       ]
     },
@@ -47689,6 +47917,10 @@
         {
           "lang": "en-US",
           "seg": "Upgrade procs"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Effets de renforcement"
         }
       ]
     },
@@ -47702,6 +47934,10 @@
         {
           "lang": "en-US",
           "seg": "Loot distribution by item value"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Répartition du butin en fonction de la valeur des objets"
         }
       ]
     },
@@ -47715,6 +47951,10 @@
         {
           "lang": "en-US",
           "seg": "Loot by tier and enchantment"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Butin par niveau et enchantement"
         }
       ]
     },
@@ -47728,6 +47968,10 @@
         {
           "lang": "en-US",
           "seg": "Value class (silver)"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Catégorie de valeur (Silver)"
         }
       ]
     },
@@ -47741,6 +47985,10 @@
         {
           "lang": "en-US",
           "seg": "Items"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Objets"
         }
       ]
     },
@@ -47754,6 +48002,10 @@
         {
           "lang": "en-US",
           "seg": "Share of total value"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Part de la valeur totale"
         }
       ]
     },
@@ -47762,11 +48014,15 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Tier-Verteilung"
+          "seg": "Tier Verteilung"
         },
         {
           "lang": "en-US",
           "seg": "Tier distribution"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Répartition par niveaux"
         }
       ]
     },
@@ -47780,6 +48036,10 @@
         {
           "lang": "en-US",
           "seg": "Enchantment"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Enchantement"
         }
       ]
     },
@@ -47793,6 +48053,10 @@
         {
           "lang": "en-US",
           "seg": "Map/area"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Carte/Région"
         }
       ]
     },
@@ -47806,6 +48070,10 @@
         {
           "lang": "en-US",
           "seg": "Loot value"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Valeur du butin"
         }
       ]
     },
@@ -47819,6 +48087,10 @@
         {
           "lang": "en-US",
           "seg": "Loot/h"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Butin/h"
         }
       ]
     },
@@ -47832,6 +48104,10 @@
         {
           "lang": "en-US",
           "seg": "Loot/map"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Butin/map"
         }
       ]
     },
@@ -47845,6 +48121,10 @@
         {
           "lang": "en-US",
           "seg": "Visits"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Visites"
         }
       ]
     },
@@ -47858,6 +48138,10 @@
         {
           "lang": "en-US",
           "seg": "Share"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Partager"
         }
       ]
     },
@@ -47871,6 +48155,10 @@
         {
           "lang": "en-US",
           "seg": "Under {0:N0}"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "En dessous de {0:N0}"
         }
       ]
     },
@@ -47883,6 +48171,10 @@
         },
         {
           "lang": "en-US",
+          "seg": "{0:N0} - {1:N0}"
+        },
+        {
+          "lang": "fr-FR",
           "seg": "{0:N0} - {1:N0}"
         }
       ]
@@ -47897,6 +48189,10 @@
         {
           "lang": "en-US",
           "seg": "{0:N0} - {1:N0}"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "{0:N0} - {1:N0}"
         }
       ]
     },
@@ -47910,6 +48206,10 @@
         {
           "lang": "en-US",
           "seg": "Over {0:N0}"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Plus de {0:N0}"
         }
       ]
     },
@@ -47923,6 +48223,10 @@
         {
           "lang": "en-US",
           "seg": "Important Loot"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Butin important"
         }
       ]
     },
@@ -47936,6 +48240,10 @@
         {
           "lang": "en-US",
           "seg": "Monitoring"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Suivi"
         }
       ]
     },
@@ -47949,6 +48257,10 @@
         {
           "lang": "en-US",
           "seg": "Monitor this item and receive a one-time notification when a condition is met."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Suivez cet article et recevez une notification unique lorsqu'une condition sera remplie."
         }
       ]
     },
@@ -47962,6 +48274,10 @@
         {
           "lang": "en-US",
           "seg": "Price monitoring"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Suivi des prix"
         }
       ]
     },
@@ -47975,6 +48291,10 @@
         {
           "lang": "en-US",
           "seg": "Notifies you when a current sell offer reaches or falls below the configured price."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Vous avertit lorsqu'une offre de vente en cours atteint ou passe en dessous du prix défini."
         }
       ]
     },
@@ -47988,6 +48308,10 @@
         {
           "lang": "en-US",
           "seg": "Price limit"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Plafond de prix"
         }
       ]
     },
@@ -48001,6 +48325,10 @@
         {
           "lang": "en-US",
           "seg": "Market availability"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Disponibilité sur le marché"
         }
       ]
     },
@@ -48014,6 +48342,10 @@
         {
           "lang": "en-US",
           "seg": "Notifies you as soon as a current sell offer for this item is reported."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Vous avertit dès qu'une offre de vente en cours concernant cet article est signalée."
         }
       ]
     },
@@ -48027,6 +48359,10 @@
         {
           "lang": "en-US",
           "seg": "Play alert sound"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Lire le son d'alerte"
         }
       ]
     },
@@ -48040,6 +48376,10 @@
         {
           "lang": "en-US",
           "seg": "Enter a valid price limit greater than 0."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Saisissez une limite de prix valide supérieure à 0."
         }
       ]
     },
@@ -48053,6 +48393,10 @@
         {
           "lang": "en-US",
           "seg": "A maximum of 10 items can be monitored at the same time."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Il est possible de surveiller jusqu'à 10 éléments simultanément."
         }
       ]
     },
@@ -48066,6 +48410,10 @@
         {
           "lang": "en-US",
           "seg": "Monitoring could not be activated for this item."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "La surveillance n'a pas pu être activée pour cet élément."
         }
       ]
     },
@@ -48079,6 +48427,10 @@
         {
           "lang": "en-US",
           "seg": "Market offer found"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Offre trouvée sur le marché"
         }
       ]
     },
@@ -48092,6 +48444,10 @@
         {
           "lang": "en-US",
           "seg": "A market offer for"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Une offre du marché pour"
         }
       ]
     },
@@ -48105,6 +48461,10 @@
         {
           "lang": "en-US",
           "seg": "was found."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "a été retrouvé."
         }
       ]
     },
@@ -48118,6 +48478,10 @@
         {
           "lang": "en-US",
           "seg": "Maximum price age"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Âge maximal pour le prix"
         }
       ]
     },
@@ -48131,6 +48495,10 @@
         {
           "lang": "en-US",
           "seg": "Only prices reported within this many minutes can trigger an alert."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Seuls les prix dont la dernière mise à jour remonte à un nombre de minutes au plus égal à cette valeur peuvent déclencher une alerte."
         }
       ]
     },
@@ -48144,6 +48512,10 @@
         {
           "lang": "en-US",
           "seg": "Enter a maximum price age of at least one minute."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Indiquez une durée maximale de validité du prix d'au moins une minute."
         }
       ]
     },
@@ -48157,6 +48529,10 @@
         {
           "lang": "en-US",
           "seg": "Monitor Black Market buy order"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Surveiller les ordres d'achat sur le marché noir"
         }
       ]
     },
@@ -48170,6 +48546,10 @@
         {
           "lang": "en-US",
           "seg": "Notifies you when the highest reported Black Market buy order reaches or exceeds the specified minimum price."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Vous avertit lorsque l'ordre d'achat le plus élevé signalé sur le marché noir atteint ou dépasse le prix minimum spécifié."
         }
       ]
     },
@@ -48183,6 +48563,10 @@
         {
           "lang": "en-US",
           "seg": "Minimum buy order price"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Prix minimum de l'ordre d'achat"
         }
       ]
     },
@@ -48196,6 +48580,10 @@
         {
           "lang": "en-US",
           "seg": "This item cannot be sold on the Black Market."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Cet objet ne peut pas être vendu au marché noir."
         }
       ]
     },
@@ -48209,6 +48597,10 @@
         {
           "lang": "en-US",
           "seg": "Black Market buy order reached"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Ordre d'achat sur le marché noir reçu"
         }
       ]
     },
@@ -48222,6 +48614,10 @@
         {
           "lang": "en-US",
           "seg": "The highest Black Market buy order for"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "L'ordre d'achat le plus élevé sur le marché noir pour"
         }
       ]
     },
@@ -48235,6 +48631,10 @@
         {
           "lang": "en-US",
           "seg": "has reached your minimum price."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "a atteint ton prix minimum."
         }
       ]
     },
@@ -48248,6 +48648,10 @@
         {
           "lang": "en-US",
           "seg": "Search"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Rechercher"
         }
       ]
     },
@@ -48261,6 +48665,10 @@
         {
           "lang": "en-US",
           "seg": "Locations"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Lieux"
         }
       ]
     },
@@ -48274,6 +48682,10 @@
         {
           "lang": "en-US",
           "seg": "Trading Activity by Location"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Activité commerciale par lieu"
         }
       ]
     },
@@ -48287,6 +48699,10 @@
         {
           "lang": "en-US",
           "seg": "Sales"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Ventes"
         }
       ]
     },
@@ -48300,6 +48716,10 @@
         {
           "lang": "en-US",
           "seg": "Purchases"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Achats"
         }
       ]
     },
@@ -48313,6 +48733,10 @@
         {
           "lang": "en-US",
           "seg": "Count"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Nombre"
         }
       ]
     },
@@ -48326,6 +48750,10 @@
         {
           "lang": "en-US",
           "seg": "Margin"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Marge"
         }
       ]
     },
@@ -48339,6 +48767,10 @@
         {
           "lang": "en-US",
           "seg": "Tax paid"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Taxes payées"
         }
       ]
     },
@@ -48352,6 +48784,10 @@
         {
           "lang": "en-US",
           "seg": "Most traded category"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Catégorie la plus vendue"
         }
       ]
     },
@@ -48365,6 +48801,10 @@
         {
           "lang": "en-US",
           "seg": "Reset filters"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Réinitialiser les filtres"
         }
       ]
     },
@@ -48378,6 +48818,10 @@
         {
           "lang": "en-US",
           "seg": "Total sales"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Ventes totales"
         }
       ]
     },
@@ -48391,6 +48835,10 @@
         {
           "lang": "en-US",
           "seg": "Total purchases"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Achats totaux"
         }
       ]
     },
@@ -48404,6 +48852,10 @@
         {
           "lang": "en-US",
           "seg": "Trade volume"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Volume des échanges"
         }
       ]
     },
@@ -48417,6 +48869,10 @@
         {
           "lang": "en-US",
           "seg": "Trade statistics"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Statistiques commerciales"
         }
       ]
     },
@@ -48430,6 +48886,10 @@
         {
           "lang": "en-US",
           "seg": "Compared with the previous period"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Par rapport à la période précédente"
         }
       ]
     },
@@ -48443,6 +48903,10 @@
         {
           "lang": "en-US",
           "seg": "Overview"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Aperçu"
         }
       ]
     },
@@ -48456,6 +48920,10 @@
         {
           "lang": "en-US",
           "seg": "Best resource"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Meilleure ressourcese"
         }
       ]
     },
@@ -48469,6 +48937,10 @@
         {
           "lang": "en-US",
           "seg": "Top map"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Meilleure carte"
         }
       ]
     },
@@ -48482,6 +48954,10 @@
         {
           "lang": "en-US",
           "seg": "Unique resource types"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Types de ressources uniques"
         }
       ]
     },
@@ -48495,6 +48971,10 @@
         {
           "lang": "en-US",
           "seg": "Best gathering map"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Meilleure carte de récolte"
         }
       ]
     },
@@ -48508,6 +48988,10 @@
         {
           "lang": "en-US",
           "seg": "Total resources gathered"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Ressources totales récoltées"
         }
       ]
     },
@@ -48521,6 +49005,10 @@
         {
           "lang": "en-US",
           "seg": "Total gathering processes"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Total des récoltes"
         }
       ]
     },
@@ -48534,6 +49022,10 @@
         {
           "lang": "en-US",
           "seg": "Average resource value"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Valeur moyenne des ressources"
         }
       ]
     },
@@ -48547,6 +49039,10 @@
         {
           "lang": "en-US",
           "seg": "Best single gathering"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Meilleure récolte individuelle"
         }
       ]
     },
@@ -48560,6 +49056,10 @@
         {
           "lang": "en-US",
           "seg": "Times gathered"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Temps total de récolte"
         }
       ]
     },
@@ -48573,6 +49073,10 @@
         {
           "lang": "en-US",
           "seg": "Total amount"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Quantité totale"
         }
       ]
     },
@@ -48586,6 +49090,10 @@
         {
           "lang": "en-US",
           "seg": "Total value"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Valeur totale"
         }
       ]
     },
@@ -48599,6 +49107,10 @@
         {
           "lang": "en-US",
           "seg": "Average value per gather"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Valeur moyenne par récolte"
         }
       ]
     },
@@ -48612,6 +49124,10 @@
         {
           "lang": "en-US",
           "seg": "Gathering time"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Temps de collecte"
         }
       ]
     },
@@ -48625,6 +49141,10 @@
         {
           "lang": "en-US",
           "seg": "Resource value by type"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Valeur des ressources par type"
         }
       ]
     },
@@ -48638,6 +49158,10 @@
         {
           "lang": "en-US",
           "seg": "Gathering activity over time"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Évolution de l'activité de récolte au fil du temps"
         }
       ]
     },
@@ -48651,6 +49175,10 @@
         {
           "lang": "en-US",
           "seg": "Gathering activity by location"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Activité de récolte par lieu"
         }
       ]
     },
@@ -48664,6 +49192,10 @@
         {
           "lang": "en-US",
           "seg": "Resource types gathered"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Types de ressources récoltées"
         }
       ]
     },
@@ -48677,6 +49209,10 @@
         {
           "lang": "en-US",
           "seg": "Top gathered resources"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Ressources les plus récoltées"
         }
       ]
     },
@@ -48690,6 +49226,10 @@
         {
           "lang": "en-US",
           "seg": "Recent gatherings"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Récoltes récentes"
         }
       ]
     },
@@ -48703,6 +49243,10 @@
         {
           "lang": "en-US",
           "seg": "Resource type"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Type de la ressource"
         }
       ]
     },
@@ -48716,6 +49260,10 @@
         {
           "lang": "en-US",
           "seg": "Amount"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Montant"
         }
       ]
     },
@@ -48729,6 +49277,10 @@
         {
           "lang": "en-US",
           "seg": "% of total"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "% du total"
         }
       ]
     },
@@ -48742,6 +49294,10 @@
         {
           "lang": "en-US",
           "seg": "Map"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Carte"
         }
       ]
     },
@@ -48755,6 +49311,10 @@
         {
           "lang": "en-US",
           "seg": "No data"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Pas de données"
         }
       ]
     },
@@ -48768,6 +49328,10 @@
         {
           "lang": "en-US",
           "seg": "Other maps"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Autres cartes"
         }
       ]
     },
@@ -48781,6 +49345,10 @@
         {
           "lang": "en-US",
           "seg": "Run efficiency"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Efficacité de run"
         }
       ]
     },
@@ -48794,6 +49362,10 @@
         {
           "lang": "en-US",
           "seg": "Total runs"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Nombre total de Run"
         }
       ]
     },
@@ -48807,6 +49379,10 @@
         {
           "lang": "en-US",
           "seg": "Total Might"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Puissance totale"
         }
       ]
     },
@@ -48820,6 +49396,10 @@
         {
           "lang": "en-US",
           "seg": "Total Favor"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Faveur totale"
         }
       ]
     },
@@ -48833,6 +49413,10 @@
         {
           "lang": "en-US",
           "seg": "Deaths in dungeons"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Morts en donjons"
         }
       ]
     },
@@ -48846,6 +49430,10 @@
         {
           "lang": "en-US",
           "seg": "Average run time"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Durée moyenne de Run"
         }
       ]
     },
@@ -48859,6 +49447,10 @@
         {
           "lang": "en-US",
           "seg": "Most profitable tier"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Tiers le plus rentable"
         }
       ]
     },
@@ -48872,6 +49464,10 @@
         {
           "lang": "en-US",
           "seg": "Most played tier"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Tiers le plus joué"
         }
       ]
     },
@@ -48885,6 +49481,10 @@
         {
           "lang": "en-US",
           "seg": "Best dungeon map"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Meilleure carte de donjon"
         }
       ]
     },
@@ -48898,6 +49498,10 @@
         {
           "lang": "en-US",
           "seg": "Fastest run"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Run le plus rapide"
         }
       ]
     },
@@ -48910,7 +49514,11 @@
         },
         {
           "lang": "en-US",
-          "seg": "Average chests / run"
+          "seg": "Average chests / Run"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Moyenne de coffre / Run"
         }
       ]
     },
@@ -48924,6 +49532,10 @@
         {
           "lang": "en-US",
           "seg": "Average loot / run"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Moyenne de butins / Run"
         }
       ]
     },
@@ -48937,6 +49549,10 @@
         {
           "lang": "en-US",
           "seg": "Average Fame / run"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Moyenne de Fame / Run"
         }
       ]
     },
@@ -48950,6 +49566,10 @@
         {
           "lang": "en-US",
           "seg": "Average duration"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Durée moyenne"
         }
       ]
     },
@@ -48963,6 +49583,10 @@
         {
           "lang": "en-US",
           "seg": "Party size"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Taille de la partie"
         }
       ]
     },
@@ -48976,6 +49600,10 @@
         {
           "lang": "en-US",
           "seg": "Content runs"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Résumé des Runs"
         }
       ]
     },
@@ -48989,6 +49617,10 @@
         {
           "lang": "en-US",
           "seg": "{0} loot entries"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "{0} objets de butin"
         }
       ]
     },
@@ -49002,6 +49634,10 @@
         {
           "lang": "en-US",
           "seg": "Show collected loot"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Afficher le butin ramasé"
         }
       ]
     },
@@ -49015,6 +49651,10 @@
         {
           "lang": "en-US",
           "seg": "Hide collected loot"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Cacher le butin ramassé"
         }
       ]
     },
@@ -49027,6 +49667,10 @@
         },
         {
           "lang": "en-US",
+          "seg": "Avalon"
+        },
+        {
+          "lang": "fr-FR",
           "seg": "Avalon"
         }
       ]
@@ -49041,6 +49685,10 @@
         {
           "lang": "en-US",
           "seg": "Unknown chest"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Coffre inconnu"
         }
       ]
     },
@@ -49054,6 +49702,10 @@
         {
           "lang": "en-US",
           "seg": "Dungeon Overview"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Aperçu des donjons"
         }
       ]
     },
@@ -49067,6 +49719,10 @@
         {
           "lang": "en-US",
           "seg": "Include player loot"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Prendre en compte le butin des joueurs"
         }
       ]
     },
@@ -49080,6 +49736,10 @@
         {
           "lang": "en-US",
           "seg": "Chest"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Coffre"
         }
       ]
     },
@@ -49093,6 +49753,10 @@
         {
           "lang": "en-US",
           "seg": "Mob"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Monstre"
         }
       ]
     },
@@ -49106,6 +49770,10 @@
         {
           "lang": "en-US",
           "seg": "Player"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Joueur"
         }
       ]
     },
@@ -49119,6 +49787,10 @@
         {
           "lang": "en-US",
           "seg": "Unknown source"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Source inconnue"
         }
       ]
     },
@@ -49132,6 +49804,10 @@
         {
           "lang": "en-US",
           "seg": "Settings and Reset"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Paramètres et Réinitialisation"
         }
       ]
     },
@@ -49145,6 +49821,10 @@
         {
           "lang": "en-US",
           "seg": "Other loot"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Autre butin"
         }
       ]
     },
@@ -49158,6 +49838,10 @@
         {
           "lang": "en-US",
           "seg": "+{0} more chests"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "+{0} autres coffres"
         }
       ]
     },
@@ -49171,6 +49855,10 @@
         {
           "lang": "en-US",
           "seg": "Show fewer"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Afficher moins"
         }
       ]
     },
@@ -49184,6 +49872,10 @@
         {
           "lang": "en-US",
           "seg": "Brecilian standing"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Brecilien - Vue d'ensemble"
         }
       ]
     },
@@ -49197,6 +49889,10 @@
         {
           "lang": "en-US",
           "seg": "Players"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Joueurs"
         }
       ]
     },
@@ -49210,6 +49906,10 @@
         {
           "lang": "en-US",
           "seg": "Normal chest"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Coffre normal"
         }
       ]
     },
@@ -49223,6 +49923,10 @@
         {
           "lang": "en-US",
           "seg": "+{0} more items"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "+{0} autres objets"
         }
       ]
     },
@@ -49236,6 +49940,10 @@
         {
           "lang": "en-US",
           "seg": "Show fewer items"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Monter moins d'objets"
         }
       ]
     },
@@ -49249,6 +49957,10 @@
         {
           "lang": "en-US",
           "seg": "+{0} more kills/deaths"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "+{0} autres de victimes/morts"
         }
       ]
     },
@@ -49262,6 +49974,10 @@
         {
           "lang": "en-US",
           "seg": "Show fewer kills/deaths"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Afficher moins de victimes/morts"
         }
       ]
     },
@@ -49275,6 +49991,10 @@
         {
           "lang": "en-US",
           "seg": "Total Damage – TOP 5"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Dommages totaux – TOP 5"
         }
       ]
     },
@@ -49288,6 +50008,10 @@
         {
           "lang": "en-US",
           "seg": "Effective Healing – TOP 5"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Efficacité des Soins – TOP 5"
         }
       ]
     },
@@ -49301,6 +50025,10 @@
         {
           "lang": "en-US",
           "seg": "Top Mob Kill Contribution – TOP 5"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Meilleures contibutions aux éliminations des monstres – TOP 5"
         }
       ]
     },
@@ -49313,6 +50041,10 @@
         },
         {
           "lang": "en-US",
+          "seg": "Top Healer"
+        },
+        {
+          "lang": "fr-FR",
           "seg": "Top Healer"
         }
       ]
@@ -49327,6 +50059,10 @@
         {
           "lang": "en-US",
           "seg": "Top Damage Taken"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Top Dégâts encaissés"
         }
       ]
     },
@@ -49340,6 +50076,10 @@
         {
           "lang": "en-US",
           "seg": "Damage by Type"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Dégâts par type"
         }
       ]
     },
@@ -49353,6 +50093,10 @@
         {
           "lang": "en-US",
           "seg": "Damage by Ability – Top 10"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Dégâts par capacités - Top 10"
         }
       ]
     },
@@ -49366,6 +50110,10 @@
         {
           "lang": "en-US",
           "seg": "Ability"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Capacités"
         }
       ]
     },
@@ -49379,6 +50127,10 @@
         {
           "lang": "en-US",
           "seg": "Physical Damage"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Dégâts physiques"
         }
       ]
     },
@@ -49392,6 +50144,10 @@
         {
           "lang": "en-US",
           "seg": "Magic Damage"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Dégâts magiques"
         }
       ]
     },
@@ -49405,6 +50161,10 @@
         {
           "lang": "en-US",
           "seg": "True Damage"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Dégâts réels"
         }
       ]
     },
@@ -49418,6 +50178,10 @@
         {
           "lang": "en-US",
           "seg": "Total Tracked Fights"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Nombre total de combats recensés"
         }
       ]
     },
@@ -49431,6 +50195,10 @@
         {
           "lang": "en-US",
           "seg": "Loss Explorer"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Explorateur de pertes"
         }
       ]
     },
@@ -49443,6 +50211,10 @@
         },
         {
           "lang": "en-US",
+          "seg": "Equipment"
+        },
+        {
+          "lang": "fr-FR",
           "seg": "Equipment"
         }
       ]
@@ -49457,6 +50229,10 @@
         {
           "lang": "en-US",
           "seg": "Inventory"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Inventaire"
         }
       ]
     },
@@ -49470,6 +50246,10 @@
         {
           "lang": "en-US",
           "seg": "Loading deaths – page {0}"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Chargement des morts – page {0}"
         }
       ]
     },
@@ -49483,6 +50263,10 @@
         {
           "lang": "en-US",
           "seg": "Loading market values – batch {0} of {1}"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Chargement des valeurs de marché – batch {0} of {1}"
         }
       ]
     },
@@ -49496,6 +50280,10 @@
         {
           "lang": "en-US",
           "seg": "{0:N0} of 7 days stored · daily average · updated {1:g}"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "{0:N0} sur 7 jours · moyenne quotidienne · mise à jour {1:g}"
         }
       ]
     },
@@ -49509,6 +50297,10 @@
         {
           "lang": "en-US",
           "seg": "Loss data is updated every 10 minutes and stored for up to 7 days."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Les données relatives aux pertes sont mises à jour toutes les 10 minutes et conservées pendant 7 jours maximum."
         }
       ]
     },
@@ -49522,6 +50314,10 @@
         {
           "lang": "en-US",
           "seg": "Loss data could not be loaded completely. The next automatic refresh will retry."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Les données relatives aux pertes n'ont pas pu être chargées dans leur intégralité. La prochaine synchronisation automatique effectuera une nouvelle tentative."
         }
       ]
     },
@@ -49535,6 +50331,10 @@
         {
           "lang": "en-US",
           "seg": "An Albion server must be active to use the Loss Explorer."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Pour utiliser l'Explorateur de pertes, un serveur Albion doit être actif."
         }
       ]
     },
@@ -49548,6 +50348,10 @@
         {
           "lang": "en-US",
           "seg": "{0:N0} events stored"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "{0:N0} événements enregistrés"
         }
       ]
     },
@@ -49561,6 +50365,10 @@
         {
           "lang": "en-US",
           "seg": "{0:N0} / day"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "{0:N0} / jour"
         }
       ]
     },
@@ -49574,6 +50382,10 @@
         {
           "lang": "en-US",
           "seg": "({0:N0} per item)"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "{0:N0} par objet"
         }
       ]
     },
@@ -49587,6 +50399,10 @@
         {
           "lang": "en-US",
           "seg": "{0:N0} lost items / day"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "{0:N0} objets perdus / jour"
         }
       ]
     },
@@ -49600,6 +50416,10 @@
         {
           "lang": "en-US",
           "seg": "Server Type"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Type de serveur"
         }
       ]
     }
