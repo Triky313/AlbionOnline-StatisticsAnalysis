@@ -40873,6 +40873,58 @@
       ]
     },
     {
+      "tuid": "UPDATE_INSTALLING_STATUS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Download abgeschlossen. Das Update wird installiert..."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Download complete. Installing the update..."
+        }
+      ]
+    },
+    {
+      "tuid": "UPDATE_INSTALLING_BUTTON",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Wird installiert..."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Installing..."
+        }
+      ]
+    },
+    {
+      "tuid": "UPDATE_DOWNLOAD_FAILED_MESSAGE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Das Update konnte nicht heruntergeladen werden. Bitte pr�fe deine Internet- oder Proxyverbindung und versuche es erneut."
+        },
+        {
+          "lang": "en-US",
+          "seg": "The update could not be downloaded. Please check your internet or proxy connection and try again."
+        }
+      ]
+    },
+    {
+      "tuid": "UPDATE_INSTALL_FAILED_MESSAGE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Das Update konnte nicht automatisch installiert werden. Bitte versuche es erneut oder installiere es manuell."
+        },
+        {
+          "lang": "en-US",
+          "seg": "The update could not be installed automatically. Please try again or install it manually."
+        }
+      ]
+    },
+    {
       "tuid": "UPDATE_CHECK_FAILED_MESSAGE",
       "tuv": [
         {
