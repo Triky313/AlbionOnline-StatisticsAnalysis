@@ -900,16 +900,6 @@ public class MainWindowViewModel : BaseViewModel
         }
     }
 
-    public string MainTrackerTimer
-    {
-        get;
-        set
-        {
-            field = value;
-            OnPropertyChanged();
-        }
-    }
-
     public bool IsDataLoaded
     {
         get;
