@@ -129,13 +129,24 @@ public class TrackingController : ITrackingController
 
         try
         {
+            _mainWindowViewModel.MainStatusBindings.SetGameDataDetected(false);
+
             ClusterController?.RegisterEvents();
             LootController?.RegisterEvents();
             TreasureController?.RegisterEvents();
 
             LiveStatsTracker.Start();
 
-            _networkManager.Start();
+            var startResult = _networkManager.Start();
+            if (!startResult.IsSuccessful)
+            {
+                var userMsg = LocalizationController.Translation("NO_LISTENING_ADAPTERS");
+                Log.Warning("StartTracking failed | provider={Provider} | admin={IsAdmin} | msg={UserMsg}", provider, ApplicationCore.IsAppStartedAsAdministrator(), userMsg);
+                _mainWindowViewModel.SetErrorBar(Visibility.Visible, userMsg);
+                StopTracking();
+                return;
+            }
+
             _mainWindowViewModel.IsTrackingActive = true;
         }
         catch (Exception ex)
@@ -157,6 +168,27 @@ public class TrackingController : ITrackingController
 
             _mainWindowViewModel.IsTrackingActive = false;
         }
+    }
+
+    internal void NotifyGameDataDetected()
+    {
+        if (Application.Current?.Dispatcher?.CheckAccess() == true)
+        {
+            SetGameDataDetectedStatus();
+            return;
+        }
+
+        _ = Application.Current?.Dispatcher?.BeginInvoke(SetGameDataDetectedStatus);
+    }
+
+    private void SetGameDataDetectedStatus()
+    {
+        if (!(_networkManager?.IsAnySocketActive() ?? false))
+        {
+            return;
+        }
+
+        _mainWindowViewModel.MainStatusBindings.SetGameDataDetected(true);
     }
 
     private static string GetTrackingStartErrorMessage(Exception ex)
@@ -263,6 +295,7 @@ public class TrackingController : ITrackingController
 
             if (logoutDuration >= LogoutMaximumWaitDuration || IsLogoutConfirmedByServerSilence(now, logoutStartUtc, logoutDuration))
             {
+                _mainWindowViewModel.MainStatusBindings.SetGameDataDetected(false);
                 _mainWindowViewModel.MainStatusBindings.SetInGame(false);
                 var statisticsSessionEnded = StatisticController.EndSession(now);
                 if (ReferenceEquals(_logoutDetectionCancellationTokenSource, cancellationTokenSource))

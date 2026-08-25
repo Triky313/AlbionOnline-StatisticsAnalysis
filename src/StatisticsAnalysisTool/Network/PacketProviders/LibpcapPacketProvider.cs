@@ -69,13 +69,14 @@ public class LibpcapPacketProvider : PacketProvider
         _networkChangeMonitor = new NetworkChangeMonitor(RequestCaptureRefresh);
     }
 
-    public override void Start()
+    public override PacketProviderStartResult Start()
     {
         if (_thread?.IsAlive == true)
         {
-            return;
+            return PacketProviderStartResult.Success(1);
         }
 
+        ResetGameDataDetectedState();
         ResetAdapterSelection();
         Interlocked.Exchange(ref _captureRefreshRequested, 0);
         _captureRecoveryPending = false;
@@ -91,7 +92,7 @@ public class LibpcapPacketProvider : PacketProvider
         _cts?.Dispose();
         _cts = new CancellationTokenSource();
 
-        PcapDispatcher? dispatcher = CreateDispatcher();
+        var dispatcher = CreateDispatcher();
         int opened;
 
         try
@@ -101,16 +102,18 @@ public class LibpcapPacketProvider : PacketProvider
         catch
         {
             dispatcher.Dispose();
+            _cts.Dispose();
+            _cts = null;
             throw;
         }
 
         if (opened == 0)
         {
             dispatcher.Dispose();
-            dispatcher = null;
-            _captureRecoveryPending = true;
-            _nextCaptureRecoveryUtc = DateTime.UtcNow + CaptureRecoveryBackoff;
-            Log.Warning("Npcap: no device opened; waiting for a usable network adapter");
+            _cts.Dispose();
+            _cts = null;
+            Log.Warning("Npcap: no usable network adapter could be opened");
+            return PacketProviderStartResult.Failed;
         }
 
         lock (_dispatcherLock)
@@ -127,6 +130,7 @@ public class LibpcapPacketProvider : PacketProvider
 
         var filter = GetEffectiveFilter();
         Log.Information("Npcap: capture provider started on {Opened} device(s), filter: {Filter}", opened, string.IsNullOrWhiteSpace(filter) ? "<none>" : filter);
+        return PacketProviderStartResult.Success(opened);
     }
 
     private PcapDispatcher CreateDispatcher()
@@ -529,7 +533,7 @@ public class LibpcapPacketProvider : PacketProvider
             return;
         }
 
-        _albionServerDetectionService.DetectFromSourceIp(sourceIp);
+        var isAlbionGameData = _albionServerDetectionService.TryDetectFromSourceIp(sourceIp);
 
         if (!TrySelectAdapter(pcap))
         {
@@ -539,6 +543,10 @@ public class LibpcapPacketProvider : PacketProvider
         try
         {
             _photonReceiver.ReceivePacket(udp.Payload);
+            if (isAlbionGameData)
+            {
+                ReportGameDataDetected();
+            }
         }
         catch (Exception ex)
         {

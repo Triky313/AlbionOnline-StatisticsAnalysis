@@ -26,6 +26,7 @@ public class JoinResponseHandler(TrackingController trackingController) : Respon
         trackingController.StatisticController.StartSession(value.Username);
         _ = SetApiUserData(value);
 
+        _mainWindowViewModel.MainStatusBindings.SetGameDataDetected(true);
         _mainWindowViewModel.MainStatusBindings.SetInGame(true);
         _mainWindowViewModel.MainStatusBindings.SetCharacter(value.Username);
 

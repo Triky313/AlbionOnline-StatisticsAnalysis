@@ -26,9 +26,9 @@
             <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,4,90,0" MinWidth="170" Height="82">
                 <StackPanel Orientation="Vertical">
                     <TextBlock Text="{Binding Translation.Status, FallbackValue=STATUS}" Style="{StaticResource MainHeaderStatus.Title}" />
-                    <StackPanel Style="{StaticResource MainHeaderStatus.Row}" Tag="{Binding MainStatusBindings.IsInGame}">
+                    <StackPanel Style="{StaticResource MainHeaderStatus.Row}" Tag="{Binding MainStatusBindings.IsGameDataDetected}">
                         <Ellipse Style="{StaticResource MainHeaderStatus.Dot}" />
-                        <TextBlock Text="{Binding MainStatusBindings.InGameStatusText, FallbackValue=LOGGED__OUT}" Style="{StaticResource MainHeaderStatus.Text}" />
+                        <TextBlock Text="{Binding MainStatusBindings.GameDataStatusText, FallbackValue=WAITING__FOR__GAME__DATA}" Style="{StaticResource MainHeaderStatus.Text}" />
                     </StackPanel>
                     <StackPanel Style="{StaticResource MainHeaderStatus.Row}" Tag="{Binding MainStatusBindings.IsServerDetected}">
                         <Ellipse Style="{StaticResource MainHeaderStatus.Dot}" />

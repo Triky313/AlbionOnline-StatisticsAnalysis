@@ -47071,6 +47071,160 @@
       ]
     },
     {
+      "tuid": "STATUS_GAME_DATA_DETECTED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Spieldaten erkannt"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Game data detected"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Datos del juego detectados"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Données de jeu détectées"
+        },
+        {
+          "lang": "hi-HI",
+          "seg": "गेम डेटा का पता चला"
+        },
+        {
+          "lang": "id-ID",
+          "seg": "Data game terdeteksi"
+        },
+        {
+          "lang": "it-IT",
+          "seg": "Dati di gioco rilevati"
+        },
+        {
+          "lang": "ja-JA",
+          "seg": "ゲームデータを検出"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ゲームデータを検出"
+        },
+        {
+          "lang": "ko-KO",
+          "seg": "게임 데이터 감지됨"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "게임 데이터 감지됨"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Wykryto dane gry"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Dados do jogo detectados"
+        },
+        {
+          "lang": "pt-PT",
+          "seg": "Dados do jogo detetados"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Игровые данные обнаружены"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Oyun verileri algılandı"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "已检测到游戏数据"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "已偵測到遊戲資料"
+        }
+      ]
+    },
+    {
+      "tuid": "STATUS_WAITING_FOR_GAME_DATA",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Warte auf Spieldaten"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Waiting for game data"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Esperando datos del juego"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "En attente des données de jeu"
+        },
+        {
+          "lang": "hi-HI",
+          "seg": "गेम डेटा की प्रतीक्षा"
+        },
+        {
+          "lang": "id-ID",
+          "seg": "Menunggu data game"
+        },
+        {
+          "lang": "it-IT",
+          "seg": "In attesa dei dati di gioco"
+        },
+        {
+          "lang": "ja-JA",
+          "seg": "ゲームデータを待機中"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ゲームデータを待機中"
+        },
+        {
+          "lang": "ko-KO",
+          "seg": "게임 데이터 대기 중"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "게임 데이터 대기 중"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Oczekiwanie na dane gry"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Aguardando dados do jogo"
+        },
+        {
+          "lang": "pt-PT",
+          "seg": "A aguardar dados do jogo"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Ожидание игровых данных"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Oyun verileri bekleniyor"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "正在等待游戏数据"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "正在等待遊戲資料"
+        }
+      ]
+    },
+    {
       "tuid": "CONTENT",
       "tuv": [
         {

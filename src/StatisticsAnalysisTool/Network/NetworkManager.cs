@@ -38,6 +38,8 @@ public class NetworkManager
             _packetProvider = new SocketsPacketProvider(photonReceiver, albionServerDetectionService);
             Log.Information("Used packet provider: {PacketProviderKind}", PacketProviderKind.Sockets);
         }
+
+        _packetProvider.GameDataDetected += (_, _) => trackingController.NotifyGameDataDetected();
     }
 
     private static IPhotonReceiver Build(TrackingController trackingController)
@@ -145,22 +147,32 @@ public class NetworkManager
         return builder.Build();
     }
 
-    public void Start()
+    public PacketProviderStartResult Start()
     {
         DebugConsole.WriteInfo(MethodBase.GetCurrentMethod()?.DeclaringType, "Start Capture");
 
-        _packetProvider.Start();
+        var result = _packetProvider.Start();
+        if (!result.IsSuccessful)
+        {
+            Log.Warning("Packet provider could not start because no capture source was opened");
+            return result;
+        }
 
         _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LocalizationController.Translation("START_TRACKING"), LocalizationController.Translation("GAME_TRACKING_IS_STARTED"));
+        return result;
     }
 
     public void Stop()
     {
         DebugConsole.WriteInfo(MethodBase.GetCurrentMethod()?.DeclaringType, "Stop Capture");
 
+        var wasRunning = _packetProvider.IsRunning;
         _packetProvider.Stop();
 
-        _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LocalizationController.Translation("STOP_TRACKING"), LocalizationController.Translation("GAME_TRACKING_IS_STOPPED"));
+        if (wasRunning)
+        {
+            _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LocalizationController.Translation("STOP_TRACKING"), LocalizationController.Translation("GAME_TRACKING_IS_STOPPED"));
+        }
     }
 
     public bool IsAnySocketActive()

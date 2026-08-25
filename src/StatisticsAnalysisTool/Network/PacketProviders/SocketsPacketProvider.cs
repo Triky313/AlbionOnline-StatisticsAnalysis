@@ -49,26 +49,31 @@ public class SocketsPacketProvider : PacketProvider
         _networkChangeMonitor = new NetworkChangeMonitor(RequestSocketRefresh);
     }
 
-    public override void Start()
+    public override PacketProviderStartResult Start()
     {
         lock (_lifecycleLock)
         {
             if (_isStarted)
             {
-                return;
+                var activeCaptureSourceCount = _socketsV4.Count + _socketsV6.Count;
+                return activeCaptureSourceCount > 0
+                    ? PacketProviderStartResult.Success(activeCaptureSourceCount)
+                    : PacketProviderStartResult.Failed;
             }
 
+            ResetGameDataDetectedState();
             _isStarted = true;
             _stopReceiving = false;
         }
 
+        int activeSourceCount;
         try
         {
             _networkChangeMonitor.Start();
 
             lock (_lifecycleLock)
             {
-                OpenSockets();
+                activeSourceCount = OpenSockets();
             }
         }
         catch
@@ -76,6 +81,14 @@ public class SocketsPacketProvider : PacketProvider
             Stop();
             throw;
         }
+
+        if (activeSourceCount == 0)
+        {
+            Stop();
+            return PacketProviderStartResult.Failed;
+        }
+
+        return PacketProviderStartResult.Success(activeSourceCount);
     }
 
     public override void Stop()
@@ -164,7 +177,7 @@ public class SocketsPacketProvider : PacketProvider
         }
     }
 
-    private void OpenSockets()
+    private int OpenSockets()
     {
         var v4 = GetLocalUnicastAddresses(AddressFamily.InterNetwork).ToList();
         var v6 = GetLocalUnicastAddresses(AddressFamily.InterNetworkV6).ToList();
@@ -172,7 +185,7 @@ public class SocketsPacketProvider : PacketProvider
         if (v4.Count == 0 && v6.Count == 0)
         {
             Log.Warning("RawSockets: no local unicast addresses found; waiting for a usable network adapter");
-            return;
+            return 0;
         }
 
         // IPv4-Sockets
@@ -193,7 +206,15 @@ public class SocketsPacketProvider : PacketProvider
             _receiveTasks.Add(Task.Run(() => ReceiveLoopAsync(socket, buffer)));
         }
 
+        var activeSourceCount = _socketsV4.Count + _socketsV6.Count;
+        if (activeSourceCount == 0)
+        {
+            Log.Warning("RawSockets: no usable network adapter could be opened");
+            return 0;
+        }
+
         Log.Information("RawSockets: capture active on {IPv4Count} IPv4 and {IPv6Count} IPv6 address(es)", _socketsV4.Count, _socketsV6.Count);
+        return activeSourceCount;
     }
 
     private void CloseSockets()
@@ -482,11 +503,15 @@ public class SocketsPacketProvider : PacketProvider
             return;
         }
 
-        _albionServerDetectionService.DetectFromSourceIp(sourceIp);
+        var isAlbionGameData = _albionServerDetectionService.TryDetectFromSourceIp(sourceIp);
 
         try
         {
             _photonReceiver.ReceivePacket(payload);
+            if (isAlbionGameData)
+            {
+                ReportGameDataDetected();
+            }
         }
         catch (Exception ex)
         {
