@@ -944,7 +944,8 @@ public abstract class DungeonBaseFragment : BaseViewModel
             VisibleLoot,
             expandedChestIds,
             _otherLootGroup.IsExpanded,
-            Mode == DungeonMode.AbyssalDepths);
+            Mode == DungeonMode.AbyssalDepths,
+            Mode == DungeonMode.StaticDungeon);
         _chestLootGroups = presentation.ChestGroups;
         _otherLootGroup = presentation.OtherLootGroup;
         if (LootGroups.Count() <= AlwaysVisibleLootGroupCount)

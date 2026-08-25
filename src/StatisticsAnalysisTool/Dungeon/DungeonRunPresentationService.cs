@@ -70,7 +70,8 @@ internal static class DungeonRunPresentationService
         IEnumerable<Loot> loot,
         IReadOnlySet<long> expandedChestIds,
         bool isOtherLootExpanded,
-        bool hideClosedChests)
+        bool hideClosedChests,
+        bool requireOpenedChests)
     {
         var visibleLoot = loot.ToList();
         var lootedChestIds = visibleLoot
@@ -79,9 +80,7 @@ internal static class DungeonRunPresentationService
             .ToHashSet();
         var chestEvents = events
             .Where(x => x.Type is EventType.Chest or EventType.BookChest)
-            .Where(x => !hideClosedChests
-                        || x.Status == ChestStatus.Open
-                        || lootedChestIds.Contains(x.Id))
+            .Where(x => IsChestVisible(x, lootedChestIds, hideClosedChests, requireOpenedChests))
             .ToList();
         var chestGroups = chestEvents
             .Select(x => CreateChestLootGroup(x, visibleLoot
@@ -90,13 +89,32 @@ internal static class DungeonRunPresentationService
             .ToList();
         var knownChestIds = chestEvents.Select(x => (long) x.Id).ToHashSet();
 
-        chestGroups.AddRange(visibleLoot
-            .Where(x => x.SourceType == DungeonLootSourceType.Chest && !knownChestIds.Contains(x.SourceObjectId))
-            .GroupBy(x => x.SourceObjectId)
-            .Select(x => CreateChestLootGroup(null, x.ToList(), expandedChestIds)));
+        if (!requireOpenedChests)
+        {
+            chestGroups.AddRange(visibleLoot
+                .Where(x => x.SourceType == DungeonLootSourceType.Chest && !knownChestIds.Contains(x.SourceObjectId))
+                .GroupBy(x => x.SourceObjectId)
+                .Select(x => CreateChestLootGroup(null, x.ToList(), expandedChestIds)));
+        }
 
         var otherLoot = visibleLoot.Where(x => x.SourceType != DungeonLootSourceType.Chest).ToList();
         return (chestGroups, DungeonLootGroup.CreateOtherLoot(otherLoot, isOtherLootExpanded));
+    }
+
+    private static bool IsChestVisible(
+        PointOfInterest chest,
+        IReadOnlySet<long> lootedChestIds,
+        bool hideClosedChests,
+        bool requireOpenedChests)
+    {
+        if (requireOpenedChests)
+        {
+            return chest.Status == ChestStatus.Open;
+        }
+
+        return !hideClosedChests
+               || chest.Status == ChestStatus.Open
+               || lootedChestIds.Contains(chest.Id);
     }
 
     private static DungeonRunMetric CreateMetric(string label, string iconPath, double value, double valuePerHour)
