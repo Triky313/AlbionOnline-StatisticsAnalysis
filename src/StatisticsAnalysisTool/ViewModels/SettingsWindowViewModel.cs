@@ -266,17 +266,32 @@ public class SettingsWindowViewModel : BaseViewModel
             return;
         }
 
+        var configuredDevices = SettingsController.CurrentSettings.NetworkDevices ?? [];
+        var visibleIdentifiers = NetworkDevices
+            .Where(device => !string.IsNullOrWhiteSpace(device.Identifier))
+            .Select(device => device.Identifier)
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
         var networkDevices = NetworkDevices
-            .Where(x => !string.IsNullOrWhiteSpace(x.Identifier))
-            .Select(x => new NetworkDeviceSettingsObject
+            .Where(device => !string.IsNullOrWhiteSpace(device.Identifier))
+            .Select(device => new NetworkDeviceSettingsObject
             {
-                Identifier = x.Identifier,
-                Name = x.Name,
-                IsSelected = x.IsSelected == true
+                Identifier = device.Identifier,
+                Name = device.Name,
+                IsSelected = device.IsSelected == true
             })
             .ToList();
 
-        SettingsController.CurrentSettings.NetworkDevices = networkDevices.All(x => x.IsSelected)
+        networkDevices.AddRange(configuredDevices
+            .Where(device => !string.IsNullOrWhiteSpace(device.Identifier)
+                             && !visibleIdentifiers.Contains(device.Identifier))
+            .Select(device => new NetworkDeviceSettingsObject
+            {
+                Identifier = device.Identifier,
+                Name = device.Name,
+                IsSelected = device.IsSelected
+            }));
+
+        SettingsController.CurrentSettings.NetworkDevices = networkDevices.All(device => device.IsSelected)
             ? []
             : networkDevices;
     }

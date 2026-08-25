@@ -22,6 +22,7 @@ public class LibpcapPacketProvider : PacketProvider
 {
     private readonly IPhotonReceiver _photonReceiver;
     private readonly AlbionServerDetectionService _albionServerDetectionService;
+    private readonly NetworkChangeMonitor _networkChangeMonitor;
     private PcapDispatcher? _dispatcher;
     private CancellationTokenSource? _cts;
     private Thread? _thread;
@@ -33,6 +34,10 @@ public class LibpcapPacketProvider : PacketProvider
     private readonly Dictionary<IPv4FragmentKey, IPv4FragmentBuffer> _ipv4Fragments = new();
     private DateTime _lastValidPacketUtc = DateTime.MinValue;
     private DateTime _lastRecoveryFailureLogUtc = DateTime.MinValue;
+    private DateTime _nextAdapterLeaseCheckUtc = DateTime.MinValue;
+    private DateTime _nextCaptureRecoveryUtc = DateTime.MinValue;
+    private int _captureRefreshRequested;
+    private bool _captureRecoveryPending;
 
     public const string DefaultPacketFilter = "((ip and ((udp and (port 5055 or port 5056 or port 5058)) or (ip[6:2] & 0x3fff != 0))) or (ip6 and (udp and (port 5055 or port 5056 or port 5058))))";
     private const string LegacyDefaultPacketFilter = "(ip or ip6) and (udp and (port 5055 or port 5056 or port 5058))";
@@ -40,8 +45,9 @@ public class LibpcapPacketProvider : PacketProvider
     private const int MaxPendingIPv4FragmentPackages = 256;
     private const int ScoreToLock = 1;
     private static readonly TimeSpan LockIdleTimeout = TimeSpan.FromSeconds(20);
+    private static readonly TimeSpan AdapterLeaseCheckInterval = TimeSpan.FromSeconds(1);
     private static readonly TimeSpan DispatchErrorBackoff = TimeSpan.FromMilliseconds(250);
-    private static readonly TimeSpan CaptureRecoveryBackoff = TimeSpan.FromSeconds(2);
+    private static readonly TimeSpan CaptureRecoveryBackoff = TimeSpan.FromSeconds(5);
     private static readonly TimeSpan RecoveryFailureLogInterval = TimeSpan.FromSeconds(30);
     private static readonly TimeSpan IPv4FragmentTimeout = TimeSpan.FromSeconds(15);
     private static readonly TimeSpan StopThreadJoinTimeout = TimeSpan.FromSeconds(2);
@@ -60,6 +66,7 @@ public class LibpcapPacketProvider : PacketProvider
     {
         _photonReceiver = photonReceiver ?? throw new ArgumentNullException(nameof(photonReceiver));
         _albionServerDetectionService = albionServerDetectionService ?? throw new ArgumentNullException(nameof(albionServerDetectionService));
+        _networkChangeMonitor = new NetworkChangeMonitor(RequestCaptureRefresh);
     }
 
     public override void Start()
@@ -70,6 +77,10 @@ public class LibpcapPacketProvider : PacketProvider
         }
 
         ResetAdapterSelection();
+        Interlocked.Exchange(ref _captureRefreshRequested, 0);
+        _captureRecoveryPending = false;
+        _nextCaptureRecoveryUtc = DateTime.MinValue;
+        _nextAdapterLeaseCheckUtc = DateTime.UtcNow + AdapterLeaseCheckInterval;
 
         lock (_dispatcherLock)
         {
@@ -80,7 +91,7 @@ public class LibpcapPacketProvider : PacketProvider
         _cts?.Dispose();
         _cts = new CancellationTokenSource();
 
-        var dispatcher = CreateDispatcher();
+        PcapDispatcher? dispatcher = CreateDispatcher();
         int opened;
 
         try
@@ -96,8 +107,10 @@ public class LibpcapPacketProvider : PacketProvider
         if (opened == 0)
         {
             dispatcher.Dispose();
-            Log.Warning("Npcap: no device opened (check NetworkDevice index or admin rights)");
-            return;
+            dispatcher = null;
+            _captureRecoveryPending = true;
+            _nextCaptureRecoveryUtc = DateTime.UtcNow + CaptureRecoveryBackoff;
+            Log.Warning("Npcap: no device opened; waiting for a usable network adapter");
         }
 
         lock (_dispatcherLock)
@@ -110,9 +123,10 @@ public class LibpcapPacketProvider : PacketProvider
             IsBackground = true
         };
         _thread.Start();
+        _networkChangeMonitor.Start();
 
         var filter = GetEffectiveFilter();
-        Log.Information("Npcap: capture started on {Opened} device(s), filter: {Filter}", opened, string.IsNullOrWhiteSpace(filter) ? "<none>" : filter);
+        Log.Information("Npcap: capture provider started on {Opened} device(s), filter: {Filter}", opened, string.IsNullOrWhiteSpace(filter) ? "<none>" : filter);
     }
 
     private PcapDispatcher CreateDispatcher()
@@ -517,15 +531,10 @@ public class LibpcapPacketProvider : PacketProvider
 
         _albionServerDetectionService.DetectFromSourceIp(sourceIp);
 
-        SelectAndMaybeLockAdapter(pcap);
-
-        var current = _activePcap;
-        if (current is not null && !ReferenceEquals(current, pcap))
+        if (!TrySelectAdapter(pcap))
         {
             return;
         }
-
-        _lastValidPacketUtc = DateTime.UtcNow;
 
         try
         {
@@ -537,35 +546,54 @@ public class LibpcapPacketProvider : PacketProvider
         }
     }
 
-    private void SelectAndMaybeLockAdapter(Pcap pcap)
+    private void RequestCaptureRefresh()
+    {
+        Interlocked.Exchange(ref _captureRefreshRequested, 1);
+    }
+
+    private bool TrySelectAdapter(Pcap pcap)
     {
         lock (_lockObj)
         {
             if (_activePcap is not null)
             {
-                if (DateTime.UtcNow - _lastValidPacketUtc > LockIdleTimeout)
+                if (!ReferenceEquals(_activePcap, pcap))
                 {
-                    Log.Information("Npcap: releasing locked adapter due to inactivity");
-                    _activePcap = null;
-                    _pcapScores.Clear();
+                    return false;
                 }
-                else
-                {
-                    return;
-                }
+
+                _lastValidPacketUtc = DateTime.UtcNow;
+                return true;
             }
 
             var score = _pcapScores.GetValueOrDefault(pcap, 0);
-
             score++;
             _pcapScores[pcap] = score;
 
-            if (score >= ScoreToLock)
+            if (score < ScoreToLock)
             {
-                _activePcap = pcap;
-                _lastValidPacketUtc = DateTime.UtcNow;
-                Log.Information("Npcap: locked to adapter({device}) after {Score} valid packets", pcap.Name, score);
+                return true;
             }
+
+            _activePcap = pcap;
+            _lastValidPacketUtc = DateTime.UtcNow;
+            Log.Information("Npcap: locked to adapter({Device}) after {Score} valid packets", pcap.Name, score);
+            return true;
+        }
+    }
+
+    private void ReleaseInactiveAdapter(DateTime utcNow)
+    {
+        lock (_lockObj)
+        {
+            if (_activePcap is null || utcNow - _lastValidPacketUtc <= LockIdleTimeout)
+            {
+                return;
+            }
+
+            Log.Information("Npcap: releasing locked adapter due to inactivity");
+            _activePcap = null;
+            _pcapScores.Clear();
         }
     }
 
@@ -589,16 +617,40 @@ public class LibpcapPacketProvider : PacketProvider
 
             while (!IsCaptureCancellationRequested())
             {
+                var utcNow = DateTime.UtcNow;
+                if (utcNow >= _nextAdapterLeaseCheckUtc)
+                {
+                    ReleaseInactiveAdapter(utcNow);
+                    _nextAdapterLeaseCheckUtc = utcNow + AdapterLeaseCheckInterval;
+                }
+
+                if (Interlocked.Exchange(ref _captureRefreshRequested, 0) == 1)
+                {
+                    _captureRecoveryPending = true;
+                    _nextCaptureRecoveryUtc = DateTime.MinValue;
+                }
+
                 PcapDispatcher? dispatcher;
                 lock (_dispatcherLock)
                 {
                     dispatcher = _dispatcher;
                 }
 
+                if (_captureRecoveryPending && utcNow >= _nextCaptureRecoveryUtc)
+                {
+                    if (TryRecoverDispatcher(dispatcher))
+                    {
+                        _captureRecoveryPending = false;
+                        consecutiveDispatchErrors = 0;
+                        continue;
+                    }
+
+                    _nextCaptureRecoveryUtc = utcNow + CaptureRecoveryBackoff;
+                }
+
                 if (dispatcher is null)
                 {
-                    TryRecoverDispatcher(null);
-                    _cts?.Token.WaitHandle.WaitOne(CaptureRecoveryBackoff);
+                    _cts?.Token.WaitHandle.WaitOne(250);
                     continue;
                 }
 
@@ -610,11 +662,25 @@ public class LibpcapPacketProvider : PacketProvider
                 }
                 catch (ObjectDisposedException)
                 {
-                    break;
+                    if (IsCaptureCancellationRequested())
+                    {
+                        break;
+                    }
+
+                    _captureRecoveryPending = true;
+                    _nextCaptureRecoveryUtc = DateTime.MinValue;
+                    continue;
                 }
                 catch (InvalidOperationException)
                 {
-                    break;
+                    if (IsCaptureCancellationRequested())
+                    {
+                        break;
+                    }
+
+                    _captureRecoveryPending = true;
+                    _nextCaptureRecoveryUtc = DateTime.MinValue;
+                    continue;
                 }
                 catch (PcapException ex)
                 {
@@ -623,14 +689,11 @@ public class LibpcapPacketProvider : PacketProvider
 
                     if (consecutiveDispatchErrors >= ConsecutiveDispatchErrorsBeforeRecovery)
                     {
-                        if (TryRecoverDispatcher(dispatcher))
+                        if (!_captureRecoveryPending)
                         {
-                            consecutiveDispatchErrors = 0;
-                            continue;
+                            _captureRecoveryPending = true;
+                            _nextCaptureRecoveryUtc = DateTime.MinValue;
                         }
-
-                        _cts?.Token.WaitHandle.WaitOne(CaptureRecoveryBackoff);
-                        continue;
                     }
 
                     _cts?.Token.WaitHandle.WaitOne(DispatchErrorBackoff);
@@ -780,7 +843,9 @@ public class LibpcapPacketProvider : PacketProvider
     {
         try
         {
+            _networkChangeMonitor.Stop();
             _cts?.Cancel();
+            Interlocked.Exchange(ref _captureRefreshRequested, 0);
 
             lock (_dispatcherLock)
             {
@@ -796,6 +861,8 @@ public class LibpcapPacketProvider : PacketProvider
         finally
         {
             ResetAdapterSelection();
+            _captureRecoveryPending = false;
+            _nextCaptureRecoveryUtc = DateTime.MinValue;
             _cts?.Dispose();
             _cts = null;
             _thread = null;
