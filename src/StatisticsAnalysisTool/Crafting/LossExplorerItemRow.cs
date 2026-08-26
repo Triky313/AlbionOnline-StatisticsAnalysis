@@ -1,13 +1,14 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Globalization;
 using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Crafting;
 
-public sealed class LossExplorerItemRow
+public sealed class LossExplorerItemRow : BaseViewModel
 {
     private readonly Item _item;
 
@@ -69,5 +70,10 @@ public sealed class LossExplorerItemRow
         LocalizationController.Translation("LOSS_EXPLORER_AMOUNT_PER_DAY"),
         decimal.Round(Quantity, 0, MidpointRounding.AwayFromZero));
 
-    public BitmapImage Icon => _item?.Icon;
+    public BitmapImage Icon => ImageController.GetItemImageWithQuality(ItemUniqueName, QualityLevel);
+
+    internal void RefreshIcon()
+    {
+        OnPropertyChanged(nameof(Icon));
+    }
 }

@@ -49,6 +49,7 @@ public sealed class LossExplorerBindings : BaseViewModel, IDisposable
 
     public LossExplorerBindings()
     {
+        ImageController.ItemImageStored += OnItemImageStored;
         LoadFilterOptions();
         StatusText = TranslationLoadHint;
     }
@@ -211,7 +212,34 @@ public sealed class LossExplorerBindings : BaseViewModel, IDisposable
         }
 
         _isDisposed = true;
+        ImageController.ItemImageStored -= OnItemImageStored;
         _monitorCancellationTokenSource?.Cancel();
+    }
+
+    private void OnItemImageStored(object sender, ItemImageStoredEventArgs eventArgs)
+    {
+        if (_isDisposed)
+        {
+            return;
+        }
+
+        _ = RunOnUiThreadAsync(() =>
+        {
+            if (_isDisposed)
+            {
+                return;
+            }
+
+            foreach (var item in _allEquipmentItems
+                         .Concat(_allInventoryItems)
+                         .Concat(_allCraftingItems)
+                         .Distinct()
+                         .Where(x => x.QualityLevel == eventArgs.QualityLevel
+                                     && string.Equals(x.ItemUniqueName, eventArgs.ItemUniqueName, StringComparison.Ordinal)))
+            {
+                item.RefreshIcon();
+            }
+        });
     }
 
     private async Task LoadInternalAsync(CancellationToken cancellationToken, bool showProgress)
