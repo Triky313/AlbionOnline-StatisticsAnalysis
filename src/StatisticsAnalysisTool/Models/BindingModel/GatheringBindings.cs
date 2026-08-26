@@ -945,32 +945,38 @@ public class GatheringBindings : BaseViewModel
 
     public void RefreshSessionFilters(
         IReadOnlyCollection<Gathered> gatheredEntries,
-        Guid activeSessionId,
-        DateTime activeSessionStartedAtUtc)
+        GatheringSession activeSession)
     {
         var selectedSessionId = SelectedGatheringSessionFilter?.SessionId;
         var filters = new List<GatheringSessionFilterOption>
         {
-            new(null, LocalizationController.Translation("ALL_SESSIONS")),
-            new(
-                activeSessionId,
-                CreateSessionFilterName(activeSessionStartedAtUtc, true),
-                activeSessionStartedAtUtc)
+            new(null, LocalizationController.Translation("ALL_SESSIONS"))
         };
 
+        if (activeSession != null)
+        {
+            filters.Add(new GatheringSessionFilterOption(
+                activeSession.Id,
+                CreateSessionFilterName(activeSession.StartedAtUtc, activeSession.CharacterName, true),
+                activeSession.StartedAtUtc));
+        }
+
         filters.AddRange(gatheredEntries
-            .Where(x => x.SessionId != activeSessionId)
+            .Where(x => activeSession == null || x.SessionId != activeSession.Id)
             .GroupBy(x => x.SessionId)
             .Select(group => new
             {
                 SessionId = group.Key,
                 StartedAtUtc = group.Min(x => x.TimestampDateTimeUtc),
-                EndedAtUtc = group.Max(x => x.TimestampDateTimeUtc)
+                EndedAtUtc = group.Max(x => x.TimestampDateTimeUtc),
+                CharacterName = group
+                    .Select(x => x.CharacterName)
+                    .FirstOrDefault(x => !string.IsNullOrWhiteSpace(x)) ?? string.Empty
             })
             .OrderByDescending(x => x.StartedAtUtc)
             .Select(x => new GatheringSessionFilterOption(
                 x.SessionId,
-                CreateSessionFilterName(x.StartedAtUtc, false),
+                CreateSessionFilterName(x.StartedAtUtc, x.CharacterName, false),
                 x.StartedAtUtc,
                 x.EndedAtUtc,
                 true)));
@@ -979,10 +985,11 @@ public class GatheringBindings : BaseViewModel
         SelectedGatheringSessionFilter = filters.FirstOrDefault(x => x.SessionId == selectedSessionId) ?? filters[0];
     }
 
-    private static string CreateSessionFilterName(DateTime startedAtUtc, bool isActive)
+    private static string CreateSessionFilterName(DateTime startedAtUtc, string characterName, bool isActive)
     {
         var activeMarker = isActive ? "* " : string.Empty;
-        return $"{activeMarker}{startedAtUtc.ToLocalTime():g}";
+        var displayCharacterName = string.IsNullOrWhiteSpace(characterName) ? "?" : characterName;
+        return $"{activeMarker}{startedAtUtc.ToLocalTime():g} | {displayCharacterName}";
     }
 
     #endregion

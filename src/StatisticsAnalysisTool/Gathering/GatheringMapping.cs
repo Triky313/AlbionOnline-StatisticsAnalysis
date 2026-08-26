@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Gathering;
 
@@ -9,6 +9,7 @@ public static class GatheringMapping
         return new GatheredDto()
         {
             SessionId = gathered.SessionId,
+            CharacterName = gathered.CharacterName,
             Timestamp = gathered.TimestampUtc,
             UniqueItemName = gathered.UniqueName,
             EstimatedMarketValueInternal = gathered.EstimatedMarketValue.InternalValue,
@@ -29,6 +30,7 @@ public static class GatheringMapping
         return new Gathered()
         {
             SessionId = gathered.SessionId,
+            CharacterName = gathered.CharacterName,
             TimestampUtc = gathered.Timestamp,
             UniqueName = gathered.UniqueItemName,
             EstimatedMarketValue = FixPoint.FromInternalValue(gathered.EstimatedMarketValueInternal),

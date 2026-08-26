@@ -298,6 +298,7 @@ public class TrackingController : ITrackingController
                 _mainWindowViewModel.MainStatusBindings.SetGameDataDetected(false);
                 _mainWindowViewModel.MainStatusBindings.SetInGame(false);
                 var statisticsSessionEnded = StatisticController.EndSession(now);
+                await GatheringController.EndSessionAsync();
                 if (ReferenceEquals(_logoutDetectionCancellationTokenSource, cancellationTokenSource))
                 {
                     _logoutDetectionCancellationTokenSource = null;

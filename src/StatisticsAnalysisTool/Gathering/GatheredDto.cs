@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Cluster;
+using StatisticsAnalysisTool.Cluster;
 using System;
 
 namespace StatisticsAnalysisTool.Gathering;
@@ -7,6 +7,7 @@ public class GatheredDto
 {
     public long Timestamp { get; init; }
     public Guid SessionId { get; init; }
+    public string CharacterName { get; init; } = string.Empty;
     public long ObjectId { get; init; }
     public string UniqueItemName { get; init; }
     public int GainedStandardAmount { get; init; }

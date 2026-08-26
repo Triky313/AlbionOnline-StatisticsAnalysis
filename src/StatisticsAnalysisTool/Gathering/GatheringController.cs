@@ -22,9 +22,58 @@ public class GatheringController(TrackingController trackingController, MainWind
 {
     private const int GatheringRetentionYears = 3;
     private readonly object _sessionSyncRoot = new();
-    private Guid _activeSessionId = Guid.NewGuid();
-    private DateTime _activeSessionStartedAtUtc = DateTime.UtcNow;
+    private GatheringSession _activeSession;
     private int _gatheredCounter;
+
+    public async Task StartSessionAsync(string characterName)
+    {
+        if (string.IsNullOrWhiteSpace(characterName))
+        {
+            Log.Warning("Gathering session was not started because the character name is missing");
+            return;
+        }
+
+        GatheringSession session;
+        lock (_sessionSyncRoot)
+        {
+            if (_activeSession != null
+                && string.Equals(_activeSession.CharacterName, characterName, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            session = new GatheringSession
+            {
+                Id = Guid.NewGuid(),
+                StartedAtUtc = DateTime.UtcNow,
+                CharacterName = characterName
+            };
+            _activeSession = session;
+            _activeFishingEvent = null;
+        }
+
+        await RefreshSessionFiltersAsync();
+        Log.Information("Gathering session started. Character={Character}, SessionId={SessionId}", session.CharacterName, session.Id);
+    }
+
+    public async Task EndSessionAsync()
+    {
+        GatheringSession session;
+        lock (_sessionSyncRoot)
+        {
+            session = _activeSession;
+            _activeSession = null;
+            _activeFishingEvent = null;
+        }
+
+        if (session == null)
+        {
+            return;
+        }
+
+        await RefreshSessionFiltersAsync();
+        Log.Information("Gathering session ended. Character={Character}, SessionId={SessionId}", session.CharacterName, session.Id);
+    }
 
     public async Task AddOrUpdateAsync(HarvestFinishedObject harvestFinishedObject)
     {
@@ -38,9 +87,15 @@ public class GatheringController(TrackingController trackingController, MainWind
             return;
         }
 
-        var activeSessionId = GetActiveSessionId();
+        var activeSession = GetActiveSession();
+        if (activeSession == null)
+        {
+            Log.Debug("Gathering value discarded because no active session exists");
+            return;
+        }
+
         var existingGatheredObject = mainWindowViewModel.GatheringBindings.GatheredCollection
-            .FirstOrDefault(x => x.SessionId == activeSessionId && !x.IsClosed && x.ObjectId == harvestFinishedObject.ObjectId);
+            .FirstOrDefault(x => x.SessionId == activeSession.Id && !x.IsClosed && x.ObjectId == harvestFinishedObject.ObjectId);
         if (existingGatheredObject != null)
         {
             if (existingGatheredObject.EstimatedMarketValue.IntegerValue <= 0)
@@ -58,7 +113,8 @@ public class GatheringController(TrackingController trackingController, MainWind
             var item = ItemController.GetItemByIndex(harvestFinishedObject.ItemId);
             var gathered = new Gathered()
             {
-                SessionId = activeSessionId,
+                SessionId = activeSession.Id,
+                CharacterName = activeSession.CharacterName,
                 TimestampUtc = DateTime.UtcNow.Ticks,
                 UniqueName = item.UniqueName,
                 UserObjectId = harvestFinishedObject.UserObjectId,
@@ -113,9 +169,21 @@ public class GatheringController(TrackingController trackingController, MainWind
         Guid sessionToReset;
         lock (_sessionSyncRoot)
         {
-            sessionToReset = _activeSessionId;
-            _activeSessionId = Guid.NewGuid();
-            _activeSessionStartedAtUtc = DateTime.UtcNow;
+            if (_activeSession == null)
+            {
+                Log.Warning("Gathering session was not reset because no active session exists");
+                return;
+            }
+
+            sessionToReset = _activeSession.Id;
+            var characterName = _activeSession.CharacterName;
+            _activeSession = new GatheringSession
+            {
+                Id = Guid.NewGuid(),
+                StartedAtUtc = DateTime.UtcNow,
+                CharacterName = characterName
+            };
+            _activeFishingEvent = null;
         }
 
         var entriesWereRemoved = false;
@@ -142,7 +210,7 @@ public class GatheringController(TrackingController trackingController, MainWind
     {
         lock (_sessionSyncRoot)
         {
-            if (sessionId == _activeSessionId)
+            if (sessionId == _activeSession?.Id)
             {
                 return false;
             }
@@ -170,19 +238,11 @@ public class GatheringController(TrackingController trackingController, MainWind
         return true;
     }
 
-    private Guid GetActiveSessionId()
+    private GatheringSession GetActiveSession()
     {
         lock (_sessionSyncRoot)
         {
-            return _activeSessionId;
-        }
-    }
-
-    private (Guid SessionId, DateTime StartedAtUtc) GetActiveSession()
-    {
-        lock (_sessionSyncRoot)
-        {
-            return (_activeSessionId, _activeSessionStartedAtUtc);
+            return _activeSession;
         }
     }
 
@@ -193,8 +253,7 @@ public class GatheringController(TrackingController trackingController, MainWind
         {
             mainWindowViewModel.GatheringBindings.RefreshSessionFilters(
                 mainWindowViewModel.GatheringBindings.GatheredCollection.ToList(),
-                activeSession.SessionId,
-                activeSession.StartedAtUtc);
+                activeSession);
         });
     }
 
@@ -281,7 +340,14 @@ public class GatheringController(TrackingController trackingController, MainWind
         }
 
         var trackingEventId = fishingEvent.CatchActionId > 0 ? fishingEvent.CatchActionId : fishingEvent.EventId;
-        var activeSessionId = GetActiveSessionId();
+        var activeSession = GetActiveSession();
+        if (activeSession == null)
+        {
+            _activeFishingEvent = null;
+            Log.Debug("Fishing value discarded because no active gathering session exists");
+            return;
+        }
+
         var itemCount = 0;
         foreach (DiscoveredItem confirmedDiscoveredItem in fishingEvent.ConfirmedFishingItems)
         {
@@ -294,7 +360,8 @@ public class GatheringController(TrackingController trackingController, MainWind
 
             var gathered = new Gathered()
             {
-                SessionId = activeSessionId,
+                SessionId = activeSession.Id,
+                CharacterName = activeSession.CharacterName,
                 TimestampUtc = fishingEvent.CreateAt.Ticks,
                 UniqueName = fishedItem.UniqueName,
                 UserObjectId = -1,

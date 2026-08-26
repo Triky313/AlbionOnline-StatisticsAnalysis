@@ -25,6 +25,7 @@ public class Gathered : BaseViewModel
     private readonly bool _hasBeenFished;
 
     public Guid SessionId { get; init; }
+    public string CharacterName { get; init; } = string.Empty;
     public long TimestampUtc { get; init; }
     public DateTime TimestampDateTimeUtc => new(TimestampUtc, DateTimeKind.Utc);
     public DateTime TimestampDateTimeLocal => TimestampDateTimeUtc.ToLocalTime();
