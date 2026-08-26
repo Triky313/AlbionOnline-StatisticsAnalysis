@@ -582,7 +582,7 @@
         </Image>
     </DataTemplate>
 
-    <DataTemplate x:Key="MapHistory.ClusterModeIcon.Template" DataType="{x:Type cluster:ClusterInfo}">
+    <DataTemplate x:Key="ClusterModeIcon.Template">
         <Image Height="20" Width="20" VerticalAlignment="Center">
             <Image.Style>
                 <Style TargetType="{x:Type Image}">
@@ -712,7 +712,7 @@
                             <StackPanel.InputBindings>
                                 <MouseBinding MouseAction="LeftClick" Command="{Binding ToggleMapHistorySelectionCommand}" />
                             </StackPanel.InputBindings>
-                            <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource MapHistory.ClusterModeIcon.Template}" Width="24" />
+                            <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource ClusterModeIcon.Template}" Width="24" />
                             <Label Width="140" VerticalAlignment="Center" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}">
                                 <Label.Content>
                                     <TextBlock>
@@ -795,6 +795,7 @@
     <DataTemplate x:Key="CurrentMapInfoTemplate" DataType="{x:Type models:CurrentMapInfoBinding}">
         <Grid Margin="0,0,0,1">
             <StackPanel Orientation="Horizontal">
+                <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource ClusterModeIcon.Template}" Width="24" />
                 <Label Content="{Binding Tier}" FontSize="14" FontWeight="Bold" Height="20" Padding="0" Margin="0,0,5,0">
                     <Label.Style>
                         <Style TargetType="{x:Type Label}">
