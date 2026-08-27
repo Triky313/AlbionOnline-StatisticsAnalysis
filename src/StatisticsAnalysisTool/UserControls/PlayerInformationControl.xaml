@@ -461,9 +461,8 @@
                                  IsReadOnly="{Binding PlayerInformationBindings.IsSearchInProgress}"
                                  Style="{StaticResource PlayerInformation.SearchTextBox}"
                                  ToolTip="{Binding PlayerInformationBindings.PlayerModeTranslation.Search, FallbackValue=SEARCH}" />
-                        <Grid Grid.Column="2" Style="{StaticResource LoadingIconGridStyle}" VerticalAlignment="Center">
-                            <fa5:ImageAwesome Visibility="{Binding PlayerInformationBindings.LoadIconVisibility}"
-                                              Style="{StaticResource LoadingIconStyle}" />
+                        <Grid Grid.Column="2" Style="{StaticResource LoadingIconGridStyle}">
+                            <fa5:ImageAwesome Visibility="{Binding PlayerInformationBindings.LoadIconVisibility}" Style="{StaticResource LoadingIconStyle}" />
                         </Grid>
                         <Button Grid.Column="3"
                                 Width="32"

@@ -62,6 +62,7 @@
     <Style x:Key="PlayerInformation.SearchTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource ItemSearchTextBoxStyle}">
         <Setter Property="MinWidth" Value="240" />
         <Setter Property="Height" Value="32" />
+        <Setter Property="Margin" Value="0,0,5,0" />
     </Style>
 
     <Style x:Key="PlayerInformation.ServerComboBox" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource ItemSearch.FilterComboBox}">
