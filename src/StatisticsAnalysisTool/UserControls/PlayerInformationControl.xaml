@@ -457,7 +457,8 @@
                         <TextBox x:Name="PlayerSearchTextBox"
                                  Grid.Column="1"
                                  TextChanged="TextBoxPlayerSearch_OnTextChanged"
-                                 IsEnabled="{Binding PlayerInformationBindings.IsSearchInputEnabled}"
+                                 IsEnabled="{Binding PlayerInformationBindings.IsSearchedPlayerTabSelected}"
+                                 IsReadOnly="{Binding PlayerInformationBindings.IsSearchInProgress}"
                                  Style="{StaticResource PlayerInformation.SearchTextBox}"
                                  ToolTip="{Binding PlayerInformationBindings.PlayerModeTranslation.Search, FallbackValue=SEARCH}" />
                         <Grid Grid.Column="2" Style="{StaticResource LoadingIconGridStyle}" VerticalAlignment="Center">
