@@ -43,4 +43,90 @@
         <Setter Property="FontWeight" Value="Bold" />
     </Style>
 
+    <Style x:Key="PlayerInformation.HeaderTabs" TargetType="{x:Type TabControl}" BasedOn="{StaticResource App.TabControl}">
+        <Setter Property="ItemContainerStyle" Value="{DynamicResource PlayerInformation.HeaderTab}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TabControl}">
+                    <TabPanel IsItemsHost="True" KeyboardNavigation.TabIndex="1" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="PlayerInformation.HeaderTab" TargetType="{x:Type TabItem}" BasedOn="{StaticResource App.TabItem}">
+        <Setter Property="MinWidth" Value="135" />
+        <Setter Property="Padding" Value="18,8" />
+    </Style>
+
+    <Style x:Key="PlayerInformation.SearchTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource ItemSearchTextBoxStyle}">
+        <Setter Property="MinWidth" Value="240" />
+        <Setter Property="Height" Value="32" />
+    </Style>
+
+    <Style x:Key="PlayerInformation.ServerComboBox" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource ItemSearch.FilterComboBox}">
+        <Setter Property="Width" Value="170" />
+        <Setter Property="Height" Value="32" />
+    </Style>
+
+    <Style x:Key="PlayerInformation.Card" TargetType="{x:Type Border}" BasedOn="{StaticResource App.FilterCard}">
+        <Setter Property="Margin" Value="4" />
+        <Setter Property="Padding" Value="14,12" />
+    </Style>
+
+    <Style x:Key="PlayerInformation.HeroCard" TargetType="{x:Type Border}" BasedOn="{StaticResource PlayerInformation.Card}">
+        <Setter Property="Padding" Value="18" />
+    </Style>
+
+    <Style x:Key="PlayerInformation.MetricCard" TargetType="{x:Type Border}" BasedOn="{StaticResource PlayerInformation.Card}">
+        <Setter Property="MinHeight" Value="82" />
+    </Style>
+
+    <Style x:Key="PlayerInformation.SectionTitle" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Margin" Value="0,0,0,0" />
+    </Style>
+
+    <Style x:Key="PlayerInformation.MetricTitle" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.4}" />
+        <Setter Property="FontSize" Value="12" />
+    </Style>
+
+    <Style x:Key="PlayerInformation.MetricValue" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="FontSize" Value="21" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Margin" Value="0,3,0,0" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="PlayerInformation.MetricImage" TargetType="{x:Type Image}">
+        <Setter Property="Width" Value="22" />
+        <Setter Property="Height" Value="22" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Stretch" Value="Uniform" />
+    </Style>
+
+    <Style x:Key="PlayerInformation.DetailLabel" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.4}" />
+        <Setter Property="Margin" Value="0,3" />
+    </Style>
+
+    <Style x:Key="PlayerInformation.DetailValue" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
+        <Setter Property="Margin" Value="8,3,0,3" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    </Style>
+
+    <Style x:Key="PlayerInformation.ApiBadge" TargetType="{x:Type Border}">
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Accent.Blue.Transparent.5}" />
+        <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Accent.Blue.4}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="Padding" Value="9,5" />
+    </Style>
+
 </ResourceDictionary>

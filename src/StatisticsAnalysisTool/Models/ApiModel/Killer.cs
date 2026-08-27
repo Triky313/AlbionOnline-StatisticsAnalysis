@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ApiModel;
@@ -17,9 +17,7 @@ public class Killer
     public string AllianceName { get; set; }
     public string AllianceId { get; set; }
     public string AllianceTag { get; set; }
-    [JsonIgnore]
     public string Avatar { get; set; }
-    [JsonIgnore]
     public string AvatarRing { get; set; }
     public int DeathFame { get; set; }
     public int KillFame { get; set; }

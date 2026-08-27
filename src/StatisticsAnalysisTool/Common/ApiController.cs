@@ -128,12 +128,25 @@ public static class ApiController
         }
     }
 
-    public static async Task<GameInfoSearchResponse> GetGameInfoSearchFromJsonAsync(string username)
+    public static Task<GameInfoSearchResponse> GetGameInfoSearchFromJsonAsync(string username)
+    {
+        return GetGameInfoSearchFromJsonAsync(username, GetCurrentServerLocation());
+    }
+
+    public static async Task<GameInfoSearchResponse> GetGameInfoSearchFromJsonAsync(
+        string username,
+        ServerLocation serverLocation,
+        CancellationToken cancellationToken = default)
     {
         var gameInfoSearchResponse = new GameInfoSearchResponse();
-        var url = $"{GetServerBaseUrlByCurrentServer()}/api/gameinfo/search?q={username}";
+        if (string.IsNullOrWhiteSpace(username))
+        {
+            return gameInfoSearchResponse;
+        }
 
-        using var timeoutCts = CreateTimeout(120);
+        var url = $"{GetServerBaseUrl(serverLocation)}/api/gameinfo/search?q={Uri.EscapeDataString(username)}";
+
+        using var timeoutCts = CreateTimeout(120, cancellationToken);
 
         try
         {
@@ -146,6 +159,10 @@ public static class ApiController
 
             return await DeserializeResponseAsync<GameInfoSearchResponse>(response, timeoutCts.Token)
                    ?? gameInfoSearchResponse;
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            return gameInfoSearchResponse;
         }
         catch (JsonException ex)
         {
@@ -160,12 +177,25 @@ public static class ApiController
         }
     }
 
-    public static async Task<GameInfoPlayersResponse> GetGameInfoPlayersFromJsonAsync(string userid)
+    public static Task<GameInfoPlayersResponse> GetGameInfoPlayersFromJsonAsync(string userid)
+    {
+        return GetGameInfoPlayersFromJsonAsync(userid, GetCurrentServerLocation());
+    }
+
+    public static async Task<GameInfoPlayersResponse> GetGameInfoPlayersFromJsonAsync(
+        string userid,
+        ServerLocation serverLocation,
+        CancellationToken cancellationToken = default)
     {
         var gameInfoPlayerResponse = new GameInfoPlayersResponse();
-        var url = $"{GetServerBaseUrlByCurrentServer()}/api/gameinfo/players/{userid}";
+        if (string.IsNullOrWhiteSpace(userid))
+        {
+            return gameInfoPlayerResponse;
+        }
 
-        using var timeoutCts = CreateTimeout(120);
+        var url = $"{GetServerBaseUrl(serverLocation)}/api/gameinfo/players/{Uri.EscapeDataString(userid)}";
+
+        using var timeoutCts = CreateTimeout(120, cancellationToken);
 
         try
         {
@@ -179,6 +209,10 @@ public static class ApiController
             return await DeserializeResponseAsync<GameInfoPlayersResponse>(response, timeoutCts.Token)
                    ?? gameInfoPlayerResponse;
         }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            return gameInfoPlayerResponse;
+        }
         catch (Exception e)
         {
             DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
@@ -187,26 +221,51 @@ public static class ApiController
         }
     }
 
-    public static async Task<List<GameInfoPlayerKillsDeaths>> GetGameInfoPlayerKillsDeathsFromJsonAsync(string userid, GameInfoPlayersType gameInfoPlayersType)
+    public static Task<List<GameInfoPlayerKillsDeaths>> GetGameInfoPlayerKillsDeathsFromJsonAsync(
+        string userid,
+        GameInfoPlayersType gameInfoPlayersType)
+    {
+        return GetGameInfoPlayerKillsDeathsFromJsonAsync(
+            userid,
+            gameInfoPlayersType,
+            GetCurrentServerLocation());
+    }
+
+    public static async Task<List<GameInfoPlayerKillsDeaths>> GetGameInfoPlayerKillsDeathsFromJsonAsync(
+        string userid,
+        GameInfoPlayersType gameInfoPlayersType,
+        ServerLocation serverLocation,
+        int limit = 0,
+        CancellationToken cancellationToken = default)
     {
         var values = new List<GameInfoPlayerKillsDeaths>();
 
-        if (string.IsNullOrEmpty(userid))
+        if (string.IsNullOrWhiteSpace(userid))
         {
             return values;
         }
 
         var killsDeathsExtensionString = gameInfoPlayersType == GameInfoPlayersType.Kills ? "kills" : "deaths";
-        var url = $"{GetServerBaseUrlByCurrentServer()}/api/gameinfo/players/{userid}/{killsDeathsExtensionString}";
+        var limitQuery = limit > 0 ? $"?limit={Math.Clamp(limit, 1, 50)}" : string.Empty;
+        var url = $"{GetServerBaseUrl(serverLocation)}/api/gameinfo/players/{Uri.EscapeDataString(userid)}/{killsDeathsExtensionString}{limitQuery}";
 
-        using var timeoutCts = CreateTimeout(120);
+        using var timeoutCts = CreateTimeout(120, cancellationToken);
 
         try
         {
             using var response = await ApiClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, timeoutCts.Token);
 
+            if (!response.IsSuccessStatusCode)
+            {
+                return values;
+            }
+
             return await DeserializeResponseAsync<List<GameInfoPlayerKillsDeaths>>(response, timeoutCts.Token)
                    ?? values;
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            return values;
         }
         catch (Exception e)
         {
@@ -371,6 +430,13 @@ public static class ApiController
     private static CancellationTokenSource CreateTimeout(int seconds)
     {
         return new CancellationTokenSource(TimeSpan.FromSeconds(seconds));
+    }
+
+    private static CancellationTokenSource CreateTimeout(int seconds, CancellationToken cancellationToken)
+    {
+        var timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        timeoutCts.CancelAfter(TimeSpan.FromSeconds(seconds));
+        return timeoutCts;
     }
 
     private static async Task<T> DeserializeResponseAsync<T>(
@@ -583,7 +649,12 @@ public static class ApiController
 
     private static string GetServerBaseUrlByCurrentServer()
     {
-        return GetCurrentServerLocation() switch
+        return GetServerBaseUrl(GetCurrentServerLocation());
+    }
+
+    private static string GetServerBaseUrl(ServerLocation serverLocation)
+    {
+        return serverLocation switch
         {
             ServerLocation.America => SettingsController.CurrentSettings.AlbionOnlineApiBaseUrlWest,
             ServerLocation.Asia => SettingsController.CurrentSettings.AlbionOnlineApiBaseUrlEast,
