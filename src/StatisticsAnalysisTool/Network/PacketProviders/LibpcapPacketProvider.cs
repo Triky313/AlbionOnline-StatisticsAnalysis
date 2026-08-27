@@ -32,6 +32,7 @@ public class LibpcapPacketProvider : PacketProvider
     private readonly Lock _ipv4FragmentsLock = new();
     private readonly Dictionary<Pcap, int> _pcapScores = new();
     private readonly Dictionary<IPv4FragmentKey, IPv4FragmentBuffer> _ipv4Fragments = new();
+    private readonly NpcapCaptureDiagnostics _captureDiagnostics = new();
     private DateTime _lastValidPacketUtc = DateTime.MinValue;
     private DateTime _lastRecoveryFailureLogUtc = DateTime.MinValue;
     private DateTime _nextAdapterLeaseCheckUtc = DateTime.MinValue;
@@ -78,6 +79,7 @@ public class LibpcapPacketProvider : PacketProvider
 
         ResetGameDataDetectedState();
         ResetAdapterSelection();
+        _captureDiagnostics.Reset();
         Interlocked.Exchange(ref _captureRefreshRequested, 0);
         _captureRecoveryPending = false;
         _nextCaptureRecoveryUtc = DateTime.MinValue;
@@ -249,11 +251,18 @@ public class LibpcapPacketProvider : PacketProvider
             return;
         }
 
+        if (packet.CapturedLength < packet.DeclaredLength)
+        {
+            _captureDiagnostics.RecordTruncatedFrame(packet.CapturedLength, packet.DeclaredLength);
+            return;
+        }
+
         // L2 (Ethernet)
         var ethReader = new BinaryFormatReader(packet.Data);
         var eth = new L2EthernetFrameShape();
         if (!ethReader.TryReadL2EthernetFrame(ref eth))
         {
+            _captureDiagnostics.RecordMalformedPacket();
             return;
         }
 
@@ -271,7 +280,10 @@ public class LibpcapPacketProvider : PacketProvider
             var ipReader = new BinaryFormatReader(l3);
             var ip4 = new IPv4PacketShape();
             if (!ipReader.TryReadIPv4Packet(ref ip4))
+            {
+                _captureDiagnostics.RecordMalformedPacket();
                 return;
+            }
 
             switch ((ProtocolType) ip4.Protocol)
             {
@@ -290,7 +302,10 @@ public class LibpcapPacketProvider : PacketProvider
         if (etherType == 0x86DD) // IPv6
         {
             if (!TryReadIPv6(l3, out byte nextHeader, out ReadOnlySpan<byte> ip6Payload))
+            {
+                _captureDiagnostics.RecordMalformedPacket();
                 return;
+            }
 
             switch ((ProtocolType) nextHeader)
             {
@@ -311,6 +326,7 @@ public class LibpcapPacketProvider : PacketProvider
     {
         if (!TryReadIPv4Header(bytes, out var header))
         {
+            _captureDiagnostics.RecordMalformedPacket();
             return true;
         }
 
@@ -339,6 +355,7 @@ public class LibpcapPacketProvider : PacketProvider
             || fragmentPayload.Length <= 0
             || fragmentPayload.Length > MaxIPv4PayloadLength - header.FragmentOffset)
         {
+            _captureDiagnostics.RecordMalformedPacket();
             return null;
         }
 
@@ -414,6 +431,8 @@ public class LibpcapPacketProvider : PacketProvider
         {
             _ipv4Fragments.Remove(expiredKey);
         }
+
+        _captureDiagnostics.RecordExpiredIPv4Assemblies(expiredKeys.Count);
     }
 
     private void TrimIPv4FragmentCache()
@@ -433,6 +452,8 @@ public class LibpcapPacketProvider : PacketProvider
         {
             _ipv4Fragments.Remove(key);
         }
+
+        _captureDiagnostics.RecordEvictedIPv4Assemblies(keysToRemove.Count);
     }
 
     private static bool TryReadIPv4Header(ReadOnlySpan<byte> bytes, out IPv4HeaderInfo header)
@@ -523,6 +544,7 @@ public class LibpcapPacketProvider : PacketProvider
         var udp = new UdpPacketShape();
         if (!udpReader.TryReadUdpPacket(ref udp))
         {
+            _captureDiagnostics.RecordMalformedPacket();
             return;
         }
 
@@ -629,6 +651,7 @@ public class LibpcapPacketProvider : PacketProvider
                 if (utcNow >= _nextAdapterLeaseCheckUtc)
                 {
                     ReleaseInactiveAdapter(utcNow);
+                    _captureDiagnostics.FlushIfDue();
                     _nextAdapterLeaseCheckUtc = utcNow + AdapterLeaseCheckInterval;
                 }
 
