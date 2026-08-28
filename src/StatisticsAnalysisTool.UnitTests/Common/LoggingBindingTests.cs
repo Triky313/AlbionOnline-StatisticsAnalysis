@@ -16,6 +16,54 @@ namespace StatisticsAnalysisTool.UnitTests.Common;
 public class LoggingBindingsTests
 {
     [Test]
+    public void UpdateAllStatusFilterSelection_WhenSelected_DeselectsIndividualFilters()
+    {
+        var bindings = new LoggingBindings();
+
+        bindings.UpdateAllStatusFilterSelection(true);
+
+        bindings.IsAllStatusFilterSelected.Should().BeTrue();
+        bindings.IsShowingLost.Should().BeFalse();
+        bindings.IsShowingResolved.Should().BeFalse();
+        bindings.IsShowingDonated.Should().BeFalse();
+        bindings.IsShowingTrash.Should().BeFalse();
+    }
+
+    [Test]
+    public void UpdateAllTierFilterSelection_WhenSelected_DeselectsIndividualFilters()
+    {
+        var bindings = new LoggingBindings();
+
+        bindings.UpdateAllTierFilterSelection(true);
+
+        bindings.IsAllTierFilterSelected.Should().BeTrue();
+        bindings.IsShowingT1ToT3.Should().BeFalse();
+        bindings.IsShowingT4.Should().BeFalse();
+        bindings.IsShowingT5.Should().BeFalse();
+        bindings.IsShowingT6.Should().BeFalse();
+        bindings.IsShowingT7.Should().BeFalse();
+        bindings.IsShowingT8.Should().BeFalse();
+    }
+
+    [Test]
+    public void UpdateAllTypeFilterSelection_WhenSelected_DeselectsIndividualFilters()
+    {
+        var bindings = new LoggingBindings();
+
+        bindings.UpdateAllTypeFilterSelection(true);
+
+        bindings.IsAllTypeFilterSelected.Should().BeTrue();
+        bindings.IsShowingFood.Should().BeFalse();
+        bindings.IsShowingPotion.Should().BeFalse();
+        bindings.IsShowingBag.Should().BeFalse();
+        bindings.IsShowingCape.Should().BeFalse();
+        bindings.IsShowingWeapon.Should().BeFalse();
+        bindings.IsShowingArmor.Should().BeFalse();
+        bindings.IsShowingMount.Should().BeFalse();
+        bindings.IsShowingOthers.Should().BeFalse();
+    }
+
+    [Test]
     public void UpdateAllNotificationFilterSelection_WhenSelected_DeselectsIndividualFilters()
     {
         var bindings = new LoggingBindings();

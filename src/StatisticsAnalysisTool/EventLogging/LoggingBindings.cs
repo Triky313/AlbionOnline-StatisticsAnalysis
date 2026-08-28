@@ -49,6 +49,7 @@ public class LoggingBindings : BaseViewModel
     private bool _isShowingPotion = true;
     private bool _isShowingMount = true;
     private bool _isShowingOthers = true;
+    private bool _isUpdatingLootComparatorGuildFilters;
     private bool _isCompareButtonEnabled = true;
     // Clock-offset detection searches up to five minutes and trusts a single sample only up to ten seconds.
     // Samples within one second form the dominant offset; after normalization, timestamps may differ by one second.
@@ -75,6 +76,7 @@ public class LoggingBindings : BaseViewModel
     public LoggingBindings()
     {
         IsLoggingTrackingActive = SettingsController.CurrentSettings.IsLoggingTrackingActive;
+        IsLootComparatorTrackingActive = SettingsController.CurrentSettings.IsLootComparatorTrackingActive;
         SubscribeLootingPlayers(_lootingPlayers);
     }
 
@@ -1528,10 +1530,16 @@ public class LoggingBindings : BaseViewModel
         }
     }
 
-    public string StatusFilterSummary => BuildFilterSummary(LoggingTranslation.FilterStatus, CountSelectedFilters(IsShowingLost, IsShowingResolved, IsShowingDonated, IsShowingTrash), 4);
-    public string TierFilterSummary => BuildFilterSummary(LoggingTranslation.FilterTier, CountSelectedFilters(IsShowingT1ToT3, IsShowingT4, IsShowingT5, IsShowingT6, IsShowingT7, IsShowingT8), 6);
-    public string TypeFilterSummary => BuildFilterSummary(LoggingTranslation.FilterType, CountSelectedFilters(IsShowingFood, IsShowingPotion, IsShowingBag, IsShowingCape, IsShowingWeapon, IsShowingArmor, IsShowingMount, IsShowingOthers), 8);
-    public string GuildFilterSummary => LootComparatorGuildFilters.Count <= 0
+    public string StatusFilterSummary => IsAllStatusFilterSelected
+        ? $"{LoggingTranslation.FilterStatus}: {LoggingTranslation.FilterAll}"
+        : BuildFilterSummary(LoggingTranslation.FilterStatus, CountSelectedFilters(IsShowingLost, IsShowingResolved, IsShowingDonated, IsShowingTrash), 4);
+    public string TierFilterSummary => IsAllTierFilterSelected
+        ? $"{LoggingTranslation.FilterTier}: {LoggingTranslation.FilterAll}"
+        : BuildFilterSummary(LoggingTranslation.FilterTier, CountSelectedFilters(IsShowingT1ToT3, IsShowingT4, IsShowingT5, IsShowingT6, IsShowingT7, IsShowingT8), 6);
+    public string TypeFilterSummary => IsAllTypeFilterSelected
+        ? $"{LoggingTranslation.FilterType}: {LoggingTranslation.FilterAll}"
+        : BuildFilterSummary(LoggingTranslation.FilterType, CountSelectedFilters(IsShowingFood, IsShowingPotion, IsShowingBag, IsShowingCape, IsShowingWeapon, IsShowingArmor, IsShowingMount, IsShowingOthers), 8);
+    public string GuildFilterSummary => IsAllGuildFilterSelected
         ? $"{LoggingTranslation.Guild}: {LoggingTranslation.FilterAll}"
         : BuildFilterSummary(LoggingTranslation.Guild, LootComparatorGuildFilters.Count(filter => filter.IsSelected), LootComparatorGuildFilters.Count);
     public string NotificationFilterSummary => IsAllNotificationFilterSelected
@@ -1598,8 +1606,100 @@ public class LoggingBindings : BaseViewModel
         return values.Count(value => value);
     }
 
+    public bool IsAllStatusFilterSelected => !(_isShowingLost || _isShowingResolved || _isShowingDonated || _isShowingTrash);
+    public bool IsAllTierFilterSelected => !(_isShowingT1ToT3 || _isShowingT4 || _isShowingT5 || _isShowingT6 || _isShowingT7 || _isShowingT8);
+    public bool IsAllTypeFilterSelected => !(_isShowingFood || _isShowingPotion || _isShowingBag || _isShowingCape
+                                             || _isShowingWeapon || _isShowingArmor || _isShowingMount || _isShowingOthers);
+    public bool IsAllGuildFilterSelected => LootComparatorGuildFilters.Count > 0
+                                            && LootComparatorGuildFilters.All(filter => filter.IsSelected != true);
+
+    public void UpdateAllStatusFilterSelection(bool isSelected)
+    {
+        if (isSelected)
+        {
+            _isShowingLost = false;
+            _isShowingResolved = false;
+            _isShowingDonated = false;
+            _isShowingTrash = false;
+            OnPropertyChanged(nameof(IsShowingLost));
+            OnPropertyChanged(nameof(IsShowingResolved));
+            OnPropertyChanged(nameof(IsShowingDonated));
+            OnPropertyChanged(nameof(IsShowingTrash));
+        }
+
+        NotifyStatusFilterChanged();
+    }
+
+    public void UpdateAllTierFilterSelection(bool isSelected)
+    {
+        if (isSelected)
+        {
+            _isShowingT1ToT3 = false;
+            _isShowingT4 = false;
+            _isShowingT5 = false;
+            _isShowingT6 = false;
+            _isShowingT7 = false;
+            _isShowingT8 = false;
+            OnPropertyChanged(nameof(IsShowingT1ToT3));
+            OnPropertyChanged(nameof(IsShowingT4));
+            OnPropertyChanged(nameof(IsShowingT5));
+            OnPropertyChanged(nameof(IsShowingT6));
+            OnPropertyChanged(nameof(IsShowingT7));
+            OnPropertyChanged(nameof(IsShowingT8));
+        }
+
+        NotifyTierFilterChanged();
+    }
+
+    public void UpdateAllTypeFilterSelection(bool isSelected)
+    {
+        if (isSelected)
+        {
+            _isShowingFood = false;
+            _isShowingPotion = false;
+            _isShowingBag = false;
+            _isShowingCape = false;
+            _isShowingWeapon = false;
+            _isShowingArmor = false;
+            _isShowingMount = false;
+            _isShowingOthers = false;
+            OnPropertyChanged(nameof(IsShowingFood));
+            OnPropertyChanged(nameof(IsShowingPotion));
+            OnPropertyChanged(nameof(IsShowingBag));
+            OnPropertyChanged(nameof(IsShowingCape));
+            OnPropertyChanged(nameof(IsShowingWeapon));
+            OnPropertyChanged(nameof(IsShowingArmor));
+            OnPropertyChanged(nameof(IsShowingMount));
+            OnPropertyChanged(nameof(IsShowingOthers));
+        }
+
+        NotifyTypeFilterChanged();
+    }
+
+    public void UpdateAllGuildFilterSelection(bool isSelected)
+    {
+        if (isSelected)
+        {
+            _isUpdatingLootComparatorGuildFilters = true;
+            try
+            {
+                foreach (var filter in LootComparatorGuildFilters.Where(filter => filter.IsSelected == true))
+                {
+                    filter.IsSelected = false;
+                }
+            }
+            finally
+            {
+                _isUpdatingLootComparatorGuildFilters = false;
+            }
+        }
+
+        NotifyGuildFilterChanged();
+    }
+
     private void RefreshLootComparatorGuildFilters()
     {
+        var wasAllSelected = IsAllGuildFilterSelected;
         var previousSelections = LootComparatorGuildFilters
             .GroupBy(filter => filter.GuildName, StringComparer.OrdinalIgnoreCase)
             .ToDictionary(group => group.Key, group => group.Last().IsSelected, StringComparer.OrdinalIgnoreCase);
@@ -1621,7 +1721,7 @@ public class LoggingBindings : BaseViewModel
         {
             var filter = new LootComparatorGuildFilter(guildName)
             {
-                IsSelected = !previousSelections.TryGetValue(guildName, out var wasSelected) || wasSelected
+                IsSelected = !wasAllSelected && (!previousSelections.TryGetValue(guildName, out var wasSelected) || wasSelected)
             };
 
             filter.PropertyChanged += LootComparatorGuildFilterPropertyChanged;
@@ -1629,12 +1729,18 @@ public class LoggingBindings : BaseViewModel
         }
 
         OnPropertyChanged(nameof(GuildFilterSummary));
+        OnPropertyChanged(nameof(IsAllGuildFilterSelected));
     }
 
     private void LootComparatorGuildFilterPropertyChanged(object sender, PropertyChangedEventArgs args)
     {
         if (args.PropertyName == nameof(LootComparatorGuildFilter.IsSelected))
         {
+            if (_isUpdatingLootComparatorGuildFilters)
+            {
+                return;
+            }
+
             NotifyGuildFilterChanged();
         }
     }
@@ -1643,24 +1749,28 @@ public class LoggingBindings : BaseViewModel
     {
         _ = UpdateFilteredLootedItemsAsync();
         OnPropertyChanged(nameof(StatusFilterSummary));
+        OnPropertyChanged(nameof(IsAllStatusFilterSelected));
     }
 
     private void NotifyTierFilterChanged()
     {
         _ = UpdateFilteredLootedItemsAsync();
         OnPropertyChanged(nameof(TierFilterSummary));
+        OnPropertyChanged(nameof(IsAllTierFilterSelected));
     }
 
     private void NotifyTypeFilterChanged()
     {
         _ = UpdateFilteredLootedItemsAsync();
         OnPropertyChanged(nameof(TypeFilterSummary));
+        OnPropertyChanged(nameof(IsAllTypeFilterSelected));
     }
 
     private void NotifyGuildFilterChanged()
     {
         _ = UpdateFilteredLootedItemsAsync();
         OnPropertyChanged(nameof(GuildFilterSummary));
+        OnPropertyChanged(nameof(IsAllGuildFilterSelected));
     }
 
     private static readonly string[] SupportedFormats =
@@ -1914,6 +2024,17 @@ public class LoggingBindings : BaseViewModel
         }
     } = true;
 
+    public bool IsLootComparatorTrackingActive
+    {
+        get;
+        set
+        {
+            field = value;
+            SettingsController.CurrentSettings.IsLootComparatorTrackingActive = field;
+            OnPropertyChanged();
+        }
+    } = true;
+
     public bool IsTrackingSilver
     {
         get;
@@ -1997,6 +2118,7 @@ public class LoggingBindings : BaseViewModel
             field = value;
             OnPropertyChanged();
             OnPropertyChanged(nameof(GuildFilterSummary));
+            OnPropertyChanged(nameof(IsAllGuildFilterSelected));
         }
     } = new();
 
@@ -2313,7 +2435,7 @@ public class LoggingBindings : BaseViewModel
             .Where(filter => filter.IsSelected)
             .Select(filter => filter.GuildName)
             .ToHashSet(StringComparer.OrdinalIgnoreCase);
-        var isGuildFilterRestricted = guildFilters.Count > 0 && selectedGuilds.Count < guildFilters.Count;
+        var isGuildFilterRestricted = selectedGuilds.Count > 0 && selectedGuilds.Count < guildFilters.Count;
 
         Parallel.ForEach(partitioner, (lootingPlayer, state) =>
         {
@@ -2377,6 +2499,11 @@ public class LoggingBindings : BaseViewModel
 
     private bool IsStatusOkay(LootedItem lootedItem)
     {
+        if (IsAllStatusFilterSelected)
+        {
+            return true;
+        }
+
         if (lootedItem.IsTrash && !_isShowingTrash)
         {
             return false;
@@ -2395,6 +2522,11 @@ public class LoggingBindings : BaseViewModel
 
     private bool IsTierOkay(Item item)
     {
+        if (IsAllTierFilterSelected)
+        {
+            return true;
+        }
+
         if (item is null)
         {
             return _isShowingOthers;
@@ -2435,6 +2567,11 @@ public class LoggingBindings : BaseViewModel
 
     private bool IsTypeOkay(Item item)
     {
+        if (IsAllTypeFilterSelected)
+        {
+            return true;
+        }
+
         var itemInformation = item?.FullItemInformation;
         if (itemInformation == null)
         {

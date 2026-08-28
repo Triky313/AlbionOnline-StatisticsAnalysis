@@ -64,6 +64,11 @@ public class LootController : ILootController
             return;
         }
 
+        if (!_mainWindowViewModel.LoggingBindings.IsLootComparatorTrackingActive)
+        {
+            return;
+        }
+
         if (_mainWindowViewModel.LoggingBindings.IsTrackingPartyLootOnly
             && !_trackingController.EntityController.IsEntityInParty(loot.LootedByName)
             && !_trackingController.EntityController.IsEntityInParty(loot.LootedFromName))
@@ -141,6 +146,11 @@ public class LootController : ILootController
     public async Task AddLootAsync(Loot loot)
     {
         if (loot == null || loot.IsSilver || loot.IsTrash)
+        {
+            return;
+        }
+
+        if (!_mainWindowViewModel.LoggingBindings.IsLoggingTrackingActive)
         {
             return;
         }
@@ -268,6 +278,11 @@ public class LootController : ILootController
 
     public async Task AddKillDeathAsync(string died, string diedPlayerGuild, string killedBy, string killedByGuild, string clusterName)
     {
+        if (!_mainWindowViewModel.LoggingBindings.IsLoggingTrackingActive)
+        {
+            return;
+        }
+
         _lootLoggerObjects.Add(new LootLoggerObject
         {
             Died = died,
@@ -588,29 +603,18 @@ public class LootController : ILootController
                 continue;
             }
 
-            var lootedByPlayer = GetRandomTestLootPlayer(testPlayers);
-            var lootedFromPlayer = GetRandomTestLootPlayer(testPlayers);
-            await AddLootAsync(new Loot()
+            var testLoot = new Loot
             {
-                LootedFromName = lootedFromPlayer.Name,
+                LootedFromName = GetRandomTestLootPlayer(testPlayers).Name,
                 IsTrash = ItemController.IsTrash(randomItem.Index),
                 ItemIndex = randomItem.Index,
-                LootedByName = lootedByPlayer.Name,
+                LootedByName = GetRandomTestLootPlayer(testPlayers).Name,
                 IsSilver = false,
                 Quantity = Random.Next(1, 250)
-            });
+            };
 
-            lootedByPlayer = GetRandomTestLootPlayer(testPlayers);
-            lootedFromPlayer = GetRandomTestLootPlayer(testPlayers);
-            await AddLootedItemAsync(new Loot()
-            {
-                LootedFromName = lootedFromPlayer.Name,
-                IsTrash = ItemController.IsTrash(randomItem.Index),
-                ItemIndex = randomItem.Index,
-                LootedByName = lootedByPlayer.Name,
-                IsSilver = false,
-                Quantity = Random.Next(1, 250)
-            });
+            await AddLootedItemAsync(testLoot);
+            await AddLootAsync(testLoot);
             await Task.Delay(100);
         }
     }

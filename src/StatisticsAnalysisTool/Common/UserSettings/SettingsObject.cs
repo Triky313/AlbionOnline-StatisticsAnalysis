@@ -80,6 +80,7 @@ public class SettingsObject
     public bool IsDungeonPlayerLootVisible { get; set; } = false;
     public bool IsDungeonTrackingActive { get; set; } = true;
     public bool IsLoggingTrackingActive { get; set; } = true;
+    public bool IsLootComparatorTrackingActive { get; set; } = true;
     [JsonPropertyName("ItemWindowMainTabLocationFilters")]
     public List<MainTabLocationFilterSettingsObject> ItemDetailsLocationFilters { get; set; } = new();
     public double GatheringGridSplitterPosition { get; set; } = 125;

@@ -27,6 +27,15 @@ public class SettingsObjectTests
     }
 
     [Test]
+    public void SettingsObject_WithoutLootComparatorTrackingSetting_ShouldKeepLootComparatorTrackingEnabled()
+    {
+        var result = JsonSerializer.Deserialize<SettingsObject>("{}");
+
+        result.Should().NotBeNull();
+        result!.IsLootComparatorTrackingActive.Should().BeTrue();
+    }
+
+    [Test]
     public void SettingsObject_WithNetworkDevices_ShouldSerializeAndDeserialize()
     {
         var settings = new SettingsObject
