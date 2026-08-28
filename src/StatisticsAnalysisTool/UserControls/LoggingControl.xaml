@@ -233,7 +233,7 @@
                                     <WrapPanel>
                                         <ToggleButton Content="{Binding LoggingBindings.Translation.FilterAll, FallbackValue=ALL}"
                                                       IsChecked="{Binding LoggingBindings.IsAllNotificationFilterSelected, Mode=OneWay}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}"
+                                                      Style="{StaticResource App.FilterToggleButton}"
                                                       Click="AllNotificationFilters_Click" />
                                         <ItemsControl ItemsSource="{Binding LoggingBindings.Filters}">
                                             <ItemsControl.ItemsPanel>
@@ -245,7 +245,7 @@
                                                 <DataTemplate DataType="{x:Type eventLogging:LoggingFilterObject}">
                                                     <ToggleButton Content="{Binding Name}"
                                                                   IsChecked="{Binding IsSelected, Mode=TwoWay}"
-                                                                  Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                                                  Style="{StaticResource App.FilterToggleButton}" />
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
@@ -260,19 +260,19 @@
                                     <WrapPanel>
                                         <ToggleButton Content="{Binding Translation.TrackPartyLootOnly, FallbackValue=TRACK__PARTY__LOOT__ONLY}"
                                                       IsChecked="{Binding LoggingBindings.IsTrackingPartyLootOnly, Mode=TwoWay, FallbackValue=true}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                                      Style="{StaticResource App.FilterToggleButton}" />
                                         <ToggleButton Content="{Binding Translation.TrackingSilver, FallbackValue=TRACKING__SILVER}"
                                                       IsChecked="{Binding LoggingBindings.IsTrackingSilver, Mode=TwoWay, FallbackValue=true}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                                      Style="{StaticResource App.FilterToggleButton}" />
                                         <ToggleButton Content="{Binding Translation.TrackingFame, FallbackValue=TRACKING__FAME}"
                                                       IsChecked="{Binding LoggingBindings.IsTrackingFame, Mode=TwoWay, FallbackValue=true}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                                      Style="{StaticResource App.FilterToggleButton}" />
                                         <ToggleButton Content="{Binding Translation.TrackingMobLoot, FallbackValue=TRACKING__MOB__LOOT}"
                                                       IsChecked="{Binding LoggingBindings.IsTrackingMobLoot, Mode=TwoWay, FallbackValue=true}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                                      Style="{StaticResource App.FilterToggleButton}" />
                                         <ToggleButton Content="{Binding Translation.ShowKills, FallbackValue=KILL__TRACKING}"
                                                       IsChecked="{Binding LoggingBindings.IsTrackingKill, Mode=TwoWay, FallbackValue=true}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                                      Style="{StaticResource App.FilterToggleButton}" />
                                     </WrapPanel>
                                 </StackPanel>
                             </Border>
@@ -352,12 +352,10 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <Border Grid.Row="0" Style="{StaticResource App.TopFilterCard}"
-                            IsEnabled="{Binding LoggingBindings.IsAllButtonsEnabled}">
+                    <Border Grid.Row="0" Style="{StaticResource App.TopFilterCard}" IsEnabled="{Binding LoggingBindings.IsAllButtonsEnabled}">
                         <WrapPanel VerticalAlignment="Bottom">
-                            <Grid Height="53" Width="32" Margin="0,0,12,8" VerticalAlignment="Bottom">
-                                <fa5:ImageAwesome Icon="Solid_Filter" Width="18" Height="18"
-                                                  Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                            <Grid Height="45" Width="32" Margin="0,0,0,0" VerticalAlignment="Bottom">
+                                <fa5:ImageAwesome Icon="Solid_Filter" Width="18" Height="18" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                             </Grid>
 
                             <Border Margin="0,0,12,8" Style="{StaticResource App.FilterGroup}">
@@ -405,20 +403,20 @@
                                     <WrapPanel>
                                         <ToggleButton Content="{Binding LoggingBindings.Translation.FilterAll, FallbackValue=ALL}"
                                                       IsChecked="{Binding LoggingBindings.IsAllStatusFilterSelected, Mode=OneWay}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}"
+                                                      Style="{StaticResource App.FilterToggleButton}"
                                                       Click="AllStatusFilters_Click" />
                                         <ToggleButton Content="{Binding LoggingBindings.Translation.Lost, FallbackValue=LOST}"
                                                       IsChecked="{Binding LoggingBindings.IsShowingLost, Mode=TwoWay}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                                      Style="{StaticResource App.FilterToggleButton}" />
                                         <ToggleButton Content="{Binding LoggingBindings.Translation.Resolved, FallbackValue=RESOLVED}"
                                                       IsChecked="{Binding LoggingBindings.IsShowingResolved, Mode=TwoWay}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                                      Style="{StaticResource App.FilterToggleButton}" />
                                         <ToggleButton Content="{Binding LoggingBindings.Translation.Donated, FallbackValue=DONATED}"
                                                       IsChecked="{Binding LoggingBindings.IsShowingDonated, Mode=TwoWay}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                                      Style="{StaticResource App.FilterToggleButton}" />
                                         <ToggleButton Content="{Binding LoggingBindings.Translation.Trash, FallbackValue=TRASH}"
                                                       IsChecked="{Binding LoggingBindings.IsShowingTrash, Mode=TwoWay}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                                      Style="{StaticResource App.FilterToggleButton}" />
                                     </WrapPanel>
                                 </StackPanel>
                             </Border>
@@ -430,26 +428,26 @@
                                     <WrapPanel>
                                         <ToggleButton Content="{Binding LoggingBindings.Translation.FilterAll, FallbackValue=ALL}"
                                                       IsChecked="{Binding LoggingBindings.IsAllTierFilterSelected, Mode=OneWay}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}"
+                                                      Style="{StaticResource App.FilterToggleButton}"
                                                       Click="AllTierFilters_Click" />
                                         <ToggleButton Content="{Binding LoggingBindings.Translation.T1ToT3, FallbackValue=T1-T3}"
                                                       IsChecked="{Binding LoggingBindings.IsShowingT1ToT3, Mode=TwoWay}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                                      Style="{StaticResource App.FilterToggleButton}" />
                                         <ToggleButton Content="{Binding LoggingBindings.Translation.T4, FallbackValue=T4}"
                                                       IsChecked="{Binding LoggingBindings.IsShowingT4, Mode=TwoWay}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                                      Style="{StaticResource App.FilterToggleButton}" />
                                         <ToggleButton Content="{Binding LoggingBindings.Translation.T5, FallbackValue=T5}"
                                                       IsChecked="{Binding LoggingBindings.IsShowingT5, Mode=TwoWay}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                                      Style="{StaticResource App.FilterToggleButton}" />
                                         <ToggleButton Content="{Binding LoggingBindings.Translation.T6, FallbackValue=T6}"
                                                       IsChecked="{Binding LoggingBindings.IsShowingT6, Mode=TwoWay}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                                      Style="{StaticResource App.FilterToggleButton}" />
                                         <ToggleButton Content="{Binding LoggingBindings.Translation.T7, FallbackValue=T7}"
                                                       IsChecked="{Binding LoggingBindings.IsShowingT7, Mode=TwoWay}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                                      Style="{StaticResource App.FilterToggleButton}" />
                                         <ToggleButton Content="{Binding LoggingBindings.Translation.T8, FallbackValue=T8}"
                                                       IsChecked="{Binding LoggingBindings.IsShowingT8, Mode=TwoWay}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                                      Style="{StaticResource App.FilterToggleButton}" />
                                     </WrapPanel>
                                 </StackPanel>
                             </Border>
@@ -461,32 +459,32 @@
                                     <WrapPanel>
                                         <ToggleButton Content="{Binding LoggingBindings.Translation.FilterAll, FallbackValue=ALL}"
                                                       IsChecked="{Binding LoggingBindings.IsAllTypeFilterSelected, Mode=OneWay}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}"
+                                                      Style="{StaticResource App.FilterToggleButton}"
                                                       Click="AllTypeFilters_Click" />
                                         <ToggleButton Content="{Binding LoggingBindings.Translation.Food, FallbackValue=FOOD}"
                                                       IsChecked="{Binding LoggingBindings.IsShowingFood, Mode=TwoWay}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                                      Style="{StaticResource App.FilterToggleButton}" />
                                         <ToggleButton Content="{Binding LoggingBindings.Translation.Potion, FallbackValue=POTION}"
                                                       IsChecked="{Binding LoggingBindings.IsShowingPotion, Mode=TwoWay}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                                      Style="{StaticResource App.FilterToggleButton}" />
                                         <ToggleButton Content="{Binding LoggingBindings.Translation.Bag, FallbackValue=BAG}"
                                                       IsChecked="{Binding LoggingBindings.IsShowingBag, Mode=TwoWay}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                                      Style="{StaticResource App.FilterToggleButton}" />
                                         <ToggleButton Content="{Binding LoggingBindings.Translation.Cape, FallbackValue=CAPE}"
                                                       IsChecked="{Binding LoggingBindings.IsShowingCape, Mode=TwoWay}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                                      Style="{StaticResource App.FilterToggleButton}" />
                                         <ToggleButton Content="{Binding LoggingBindings.Translation.Weapon, FallbackValue=WEAPON}"
                                                       IsChecked="{Binding LoggingBindings.IsShowingWeapon, Mode=TwoWay}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                                      Style="{StaticResource App.FilterToggleButton}" />
                                         <ToggleButton Content="{Binding LoggingBindings.Translation.Armor, FallbackValue=ARMOR}"
                                                       IsChecked="{Binding LoggingBindings.IsShowingArmor, Mode=TwoWay}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                                      Style="{StaticResource App.FilterToggleButton}" />
                                         <ToggleButton Content="{Binding LoggingBindings.Translation.Mount, FallbackValue=MOUNT}"
                                                       IsChecked="{Binding LoggingBindings.IsShowingMount, Mode=TwoWay}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                                      Style="{StaticResource App.FilterToggleButton}" />
                                         <ToggleButton Content="{Binding LoggingBindings.Translation.Others, FallbackValue=OTHERS}"
                                                       IsChecked="{Binding LoggingBindings.IsShowingOthers, Mode=TwoWay}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                                      Style="{StaticResource App.FilterToggleButton}" />
                                     </WrapPanel>
                                 </StackPanel>
                             </Border>
@@ -498,7 +496,7 @@
                                     <WrapPanel>
                                         <ToggleButton Content="{Binding LoggingBindings.Translation.FilterAll, FallbackValue=ALL}"
                                                       IsChecked="{Binding LoggingBindings.IsAllGuildFilterSelected, Mode=OneWay}"
-                                                      Style="{StaticResource Dungeon.FilterToggleButton}"
+                                                      Style="{StaticResource App.FilterToggleButton}"
                                                       Click="AllGuildFilters_Click" />
                                         <ItemsControl ItemsSource="{Binding LoggingBindings.LootComparatorGuildFilters}">
                                             <ItemsControl.ItemsPanel>
@@ -510,7 +508,7 @@
                                                 <DataTemplate DataType="{x:Type eventLogging:LootComparatorGuildFilter}">
                                                     <ToggleButton Content="{Binding Name}"
                                                                   IsChecked="{Binding IsSelected, Mode=TwoWay}"
-                                                                  Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                                                  Style="{StaticResource App.FilterToggleButton}" />
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>

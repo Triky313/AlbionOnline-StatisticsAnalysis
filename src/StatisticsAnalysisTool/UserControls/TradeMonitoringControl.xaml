@@ -52,48 +52,6 @@
             </Setter>
         </Style>
 
-        <Style x:Key="TradeMonitoring.FilterToggleButton" TargetType="{x:Type primitives:ToggleButton}">
-            <Setter Property="Height" Value="{StaticResource App.ControlHeight}" />
-            <Setter Property="MinWidth" Value="44" />
-            <Setter Property="Margin" Value="0,0,6,0" />
-            <Setter Property="Padding" Value="12,4" />
-            <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
-            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Button.Secondary.Normal}" />
-            <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Button.Border.Normal}" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type primitives:ToggleButton}">
-                        <Border x:Name="FilterSurface"
-                                Padding="{TemplateBinding Padding}"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="3">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="FilterSurface" Property="Background" Value="{StaticResource SolidColorBrush.Button.Secondary.MouseOver}" />
-                                <Setter TargetName="FilterSurface" Property="BorderBrush" Value="{StaticResource SolidColorBrush.Button.Border.MouseOver}" />
-                            </Trigger>
-                            <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="FilterSurface" Property="Background" Value="{StaticResource SolidColorBrush.Accent.Blue.5}" />
-                                <Setter TargetName="FilterSurface" Property="BorderBrush" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Button.Text.Disabled}" />
-                                <Setter TargetName="FilterSurface" Property="Background" Value="{StaticResource SolidColorBrush.Button.Secondary.Disabled}" />
-                                <Setter TargetName="FilterSurface" Property="BorderBrush" Value="{StaticResource SolidColorBrush.Button.Border.Disabled}" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
         <Style x:Key="TradeMonitoring.LocationColumnHeaderButton" TargetType="{x:Type Button}">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Cursor" Value="Hand" />
@@ -324,7 +282,7 @@
                                     <DataTemplate DataType="{x:Type trade:TradeTimeRangeFilterOption}">
                                         <primitives:ToggleButton Content="{Binding DisplayName}"
                                                                  IsChecked="{Binding IsSelected, Mode=TwoWay}"
-                                                                 Style="{StaticResource TradeMonitoring.FilterToggleButton}"
+                                                                 Style="{StaticResource App.FilterToggleButton}"
                                                                  Click="TimeRangeFilter_OnClick" />
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
@@ -368,7 +326,7 @@
                                     <DataTemplate DataType="{x:Type trade:TradeNumericFilterOption}">
                                         <primitives:ToggleButton Content="{Binding DisplayName}"
                                                                  IsChecked="{Binding IsSelected, Mode=TwoWay}"
-                                                                 Style="{StaticResource TradeMonitoring.FilterToggleButton}"
+                                                                 Style="{StaticResource App.FilterToggleButton}"
                                                                  Click="TierFilter_OnClick" />
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
@@ -387,7 +345,7 @@
                                     <DataTemplate DataType="{x:Type trade:TradeNumericFilterOption}">
                                         <primitives:ToggleButton Content="{Binding DisplayName}"
                                                                  IsChecked="{Binding IsSelected, Mode=TwoWay}"
-                                                                 Style="{StaticResource TradeMonitoring.FilterToggleButton}"
+                                                                 Style="{StaticResource App.FilterToggleButton}"
                                                                  Click="EnchantmentFilter_OnClick" />
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
@@ -409,7 +367,7 @@
                                 <DataTemplate DataType="{x:Type trade:TradeLocationFilterOption}">
                                     <primitives:ToggleButton Content="{Binding DisplayName}"
                                                              IsChecked="{Binding IsSelected, Mode=TwoWay}"
-                                                             Style="{StaticResource TradeMonitoring.FilterToggleButton}"
+                                                             Style="{StaticResource App.FilterToggleButton}"
                                                              Click="LocationFilter_OnClick" />
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
