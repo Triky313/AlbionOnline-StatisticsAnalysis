@@ -75,6 +75,17 @@ public partial class TradeMonitoringControl
 
     #region Ui events
 
+    private void TradeMonitoringActivationToggle_Click(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        {
+            return;
+        }
+
+        var tradeOptions = mainWindowViewModel.TradeMonitoringBindings.TradeOptionsObject;
+        tradeOptions.IsTradeMonitoringActive = !tradeOptions.IsTradeMonitoringActive;
+    }
+
     private void OpenMailMonitoringPopup_MouseEnter(object sender, MouseEventArgs e)
     {
         var vm = (MainWindowViewModel) DataContext;

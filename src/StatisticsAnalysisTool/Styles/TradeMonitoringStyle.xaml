@@ -575,12 +575,6 @@
                                       Margin="0,0,0,12"
                                       HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
-                                      Content="{Binding TranslationTradeMonitoringActive, FallbackValue=MAIL__MONITORING__ACTIVE}"
-                                      IsChecked="{Binding IsTradeMonitoringActive}" />
-                            <CheckBox MinWidth="240"
-                                      Margin="0,0,0,12"
-                                      HorizontalAlignment="Left"
-                                      HorizontalContentAlignment="Left"
                                       Content="{Binding TranslationCraftingCostsMonitoringActive, FallbackValue=TRACK__CRAFTING__COSTS}"
                                       IsChecked="{Binding IsCraftingCostsMonitoringActive}" />
                             <CheckBox MinWidth="240"

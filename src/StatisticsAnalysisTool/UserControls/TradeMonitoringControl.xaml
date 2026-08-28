@@ -240,6 +240,44 @@
                 </Grid.RowDefinitions>
 
                 <WrapPanel Grid.Row="0" VerticalAlignment="Bottom">
+                    <Border Style="{StaticResource App.FilterGroup}">
+                        <StackPanel>
+                            <TextBlock Text="{Binding Translation.Status, FallbackValue=STATUS}" Style="{StaticResource App.FilterLabel}" />
+                            <Button MinWidth="190" HorizontalAlignment="Stretch" Style="{StaticResource Style.Button.Neutral}"
+                                    ToolTip="{Binding TradeMonitoringBindings.TradeOptionsObject.TranslationTradeMonitoringActive, FallbackValue=TRADE__MONITORING__ACTIVE}"
+                                    Click="TradeMonitoringActivationToggle_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <fa5:ImageAwesome Width="16" Height="16" Margin="0,0,8,0" IsHitTestVisible="False">
+                                        <fa5:ImageAwesome.Style>
+                                            <Style TargetType="{x:Type fa5:ImageAwesome}">
+                                                <Setter Property="Icon" Value="Solid_ToggleOff" />
+                                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding TradeMonitoringBindings.TradeOptionsObject.IsTradeMonitoringActive}" Value="True">
+                                                        <Setter Property="Icon" Value="Solid_ToggleOn" />
+                                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </fa5:ImageAwesome.Style>
+                                    </fa5:ImageAwesome>
+                                    <TextBlock VerticalAlignment="Center">
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Text" Value="{Binding Translation.TrackingIsNotActive, FallbackValue=TRACKING__IS__NOT__ACTIVE}" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding TradeMonitoringBindings.TradeOptionsObject.IsTradeMonitoringActive}" Value="True">
+                                                        <Setter Property="Text" Value="{Binding Translation.TrackingIsActive, FallbackValue=TRACKING__IS__ACTIVE}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+
                     <StackPanel Width="220" Margin="0,0,12,8">
                         <TextBlock Text="{Binding Translation.Search, FallbackValue=SEARCH}" Style="{StaticResource App.FilterLabel}" />
                         <Grid MinHeight="34">
@@ -316,11 +354,9 @@
                     </Grid>
                 </WrapPanel>
 
-                <Border Grid.Row="1" Padding="0,9,0,0"
-                        BorderBrush="{StaticResource SolidColorBrush.Background.4}"
-                        BorderThickness="0,1,0,0">
+                <Border Grid.Row="1" Padding="0,5,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.4}">
                     <WrapPanel>
-                        <StackPanel Margin="0,0,18,0">
+                        <StackPanel Margin="0,0,15,0">
                             <TextBlock Text="{Binding Translation.Tier, FallbackValue=TIER}" Style="{StaticResource App.FilterLabel}" />
                             <ItemsControl ItemsSource="{Binding TradeMonitoringBindings.TierFilters}">
                                 <ItemsControl.ItemsPanel>
@@ -360,13 +396,9 @@
                     </WrapPanel>
                 </Border>
 
-                <Border Grid.Row="2"
-                        Padding="0,9,0,0"
-                        BorderBrush="{StaticResource SolidColorBrush.Background.4}"
-                        BorderThickness="0,1,0,0">
+                <Border Grid.Row="2" Padding="0,5,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.4}">
                     <StackPanel>
-                        <TextBlock Text="{Binding Translation.Locations, FallbackValue=LOCATIONS}"
-                                   Style="{StaticResource App.FilterLabel}" />
+                        <TextBlock Text="{Binding Translation.Locations, FallbackValue=LOCATIONS}" Style="{StaticResource App.FilterLabel}" />
                         <ItemsControl ItemsSource="{Binding TradeMonitoringBindings.LocationFilters}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
