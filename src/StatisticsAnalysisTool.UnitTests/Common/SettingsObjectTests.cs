@@ -9,6 +9,15 @@ namespace StatisticsAnalysisTool.UnitTests.Common;
 public class SettingsObjectTests
 {
     [Test]
+    public void SettingsObject_WithoutDungeonTrackingSetting_ShouldKeepDungeonTrackingEnabled()
+    {
+        var result = JsonSerializer.Deserialize<SettingsObject>("{}");
+
+        result.Should().NotBeNull();
+        result!.IsDungeonTrackingActive.Should().BeTrue();
+    }
+
+    [Test]
     public void SettingsObject_WithNetworkDevices_ShouldSerializeAndDeserialize()
     {
         var settings = new SettingsObject

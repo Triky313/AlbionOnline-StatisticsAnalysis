@@ -78,6 +78,19 @@ public partial class DungeonControl
 
     #region Ui events
 
+    private async void DungeonActivationToggle_Click(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        {
+            return;
+        }
+
+        var isTrackingActive = !mainWindowViewModel.DungeonBindings.IsDungeonTrackingActive;
+
+        var trackingController = ServiceLocator.Resolve<TrackingController>();
+        await trackingController.DungeonController.ApplyTrackingStateAsync(isTrackingActive);
+    }
+
     private void BtnDungeonTrackingReset_Click(object sender, RoutedEventArgs e)
     {
         ResetDungeons();

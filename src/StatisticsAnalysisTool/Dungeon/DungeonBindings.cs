@@ -38,6 +38,7 @@ public class DungeonBindings : BaseViewModel
         Dungeons.CollectionChanged += OnDungeonsCollectionChanged;
         DungeonStatsFilter = new DungeonStatsFilter(this);
         DungeonOptionsObject.PlayerLootVisibilityChanged += OnPlayerLootVisibilityChanged;
+        IsDungeonTrackingActive = SettingsController.CurrentSettings.IsDungeonTrackingActive;
         RefreshLocalization();
     }
 
@@ -87,6 +88,17 @@ public class DungeonBindings : BaseViewModel
             OnPropertyChanged();
         }
     }
+
+    public bool IsDungeonTrackingActive
+    {
+        get;
+        set
+        {
+            field = value;
+            SettingsController.CurrentSettings.IsDungeonTrackingActive = field;
+            OnPropertyChanged();
+        }
+    } = true;
 
     public IReadOnlyList<DashboardChartRangeOption> DungeonStatTimeTypes
     {

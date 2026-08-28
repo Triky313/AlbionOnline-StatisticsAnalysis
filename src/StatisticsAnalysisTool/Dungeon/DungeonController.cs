@@ -1,6 +1,7 @@
 using Serilog;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Dungeon.Models;
 using StatisticsAnalysisTool.Enumerations;
@@ -42,9 +43,32 @@ public sealed class DungeonController(TrackingController trackingController, Mai
     private readonly List<RandomDungeonExitInfo> _discoveredRandomDungeonExits = [];
     private int? _selectedRandomDungeonExitObjectId;
 
+    private static bool IsTrackingActive => SettingsController.CurrentSettings.IsDungeonTrackingActive;
+
+    public async Task ApplyTrackingStateAsync(bool isTrackingActive)
+    {
+        mainWindowViewModel.DungeonBindings.IsDungeonTrackingActive = isTrackingActive;
+
+        if (!isTrackingActive)
+        {
+            await CompleteActiveDungeonsAsync();
+        }
+
+        ResetTrackingContext();
+    }
+
+    private void ResetTrackingContext()
+    {
+        _currentGuid = null;
+        _lastMapGuid = null;
+        _currentItemContainer = null;
+        ResetLocalPlayerDiscoveredLoot();
+        ClearRandomDungeonExits();
+    }
+
     public async Task AddDungeonAsync(MapType mapType, Guid? mapGuid, string sourceClusterIndex, WorldPosition? sourceExitPosition)
     {
-        if (!trackingController.IsTrackingAllowedByMainCharacter())
+        if (!IsTrackingActive || !trackingController.IsTrackingAllowedByMainCharacter())
         {
             return;
         }
@@ -81,6 +105,11 @@ public sealed class DungeonController(TrackingController trackingController, Mai
     {
         await CompleteActiveDungeonsAsync();
 
+        if (!IsTrackingActive)
+        {
+            return;
+        }
+
         var mainMapIndex = GetMainMapIndex(mapType, sourceClusterIndex);
         var newDungeon = CreateNewDungeon(mapType, mainMapIndex, dungeonGuid);
         newDungeon.PartySize = Math.Max(1, mainWindowViewModel.PartyBindings.Party.Count);
@@ -88,6 +117,11 @@ public sealed class DungeonController(TrackingController trackingController, Mai
         ClearRandomDungeonExits();
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
+            if (!IsTrackingActive)
+            {
+                return;
+            }
+
             mainWindowViewModel.DungeonBindings.Dungeons.Insert(0, newDungeon);
         });
     }
@@ -394,7 +428,7 @@ public sealed class DungeonController(TrackingController trackingController, Mai
 
     private DungeonBaseFragment GetDungeon(Guid? guid)
     {
-        return guid == null ? null : mainWindowViewModel.DungeonBindings.Dungeons.FirstOrDefault(x => x.GuidList.Contains((Guid) guid));
+        return !IsTrackingActive || guid == null ? null : mainWindowViewModel.DungeonBindings.Dungeons.FirstOrDefault(x => x.GuidList.Contains((Guid) guid));
     }
 
     public async Task SetDungeonEventInformationAsync(int id, string uniqueName, TreasureRarity rarity = TreasureRarity.Unknown)
@@ -455,6 +489,11 @@ public sealed class DungeonController(TrackingController trackingController, Mai
 
     public void AddValueToDungeon(double value, ValueType valueType, CityFaction cityFaction = CityFaction.Unknown)
     {
+        if (!IsTrackingActive)
+        {
+            return;
+        }
+
         try
         {
             lock (mainWindowViewModel.DungeonBindings.Dungeons)
@@ -501,7 +540,8 @@ public sealed class DungeonController(TrackingController trackingController, Mai
 
     public async Task SetDiedIfInDungeonAsync(DiedObject dieObject)
     {
-        if (_currentGuid is not { } currentGuid
+        if (!IsTrackingActive
+            || _currentGuid is not { } currentGuid
             || trackingController.EntityController.LocalUserData.Username is not { } username)
         {
             return;
@@ -519,6 +559,11 @@ public sealed class DungeonController(TrackingController trackingController, Mai
 
     private void AddCombatEventIfInDungeon(Guid currentGuid, string username, DiedObject dieObject)
     {
+        if (!IsTrackingActive)
+        {
+            return;
+        }
+
         var dungeon = mainWindowViewModel.DungeonBindings.Dungeons.FirstOrDefault(x => x.GuidList.Contains(currentGuid));
 
         if (dungeon is null)
@@ -665,7 +710,7 @@ public sealed class DungeonController(TrackingController trackingController, Mai
 
     public void UpdateCurrentDungeonLevel(int? mobIndex, double hitPointsMax)
     {
-        if (_currentGuid is not { } currentDungeonGuid || mobIndex is null)
+        if (!IsTrackingActive || _currentGuid is not { } currentDungeonGuid || mobIndex is null)
         {
             return;
         }
@@ -691,7 +736,7 @@ public sealed class DungeonController(TrackingController trackingController, Mai
 
     public void UpdateCurrentDungeonLevelFromLootChest(int objectId, double combinedLootFactor)
     {
-        if (_currentGuid is not { } currentDungeonGuid)
+        if (!IsTrackingActive || _currentGuid is not { } currentDungeonGuid)
         {
             return;
         }
@@ -830,7 +875,7 @@ public sealed class DungeonController(TrackingController trackingController, Mai
 
     public async Task AddTierToCurrentDungeonAsync(int? mobIndex)
     {
-        if (_currentGuid is not { } currentGuid)
+        if (!IsTrackingActive || _currentGuid is not { } currentGuid)
         {
             return;
         }
@@ -1082,7 +1127,7 @@ public sealed class DungeonController(TrackingController trackingController, Mai
 
     public async Task UpdateCheckPointAsync(CheckPoint checkPoint)
     {
-        if (_currentGuid is not { } currentGuid)
+        if (!IsTrackingActive || _currentGuid is not { } currentGuid)
         {
             return;
         }
