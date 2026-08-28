@@ -176,69 +176,128 @@
                     </Grid.RowDefinitions>
 
                     <Border Grid.Row="0" Style="{StaticResource App.TopFilterCard}">
-                        <Grid>
-                            <WrapPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,0,285,0">
-                                <TextBox Text="{Binding LoggingSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         Width="240" Height="32" Margin="0,0,6,0" VerticalContentAlignment="Center" />
-
-                                <StackPanel Margin="0,0,6,0">
-                                    <ToggleButton x:Name="NotificationFilterButton" Style="{StaticResource App.FilterDropdownButton}"
-                                                  Height="32"
-                                                  Content="{Binding LoggingBindings.NotificationFilterSummary, FallbackValue='Filter: All'}" />
-                                    <Popup PlacementTarget="{Binding ElementName=NotificationFilterButton}"
-                                           IsOpen="{Binding IsChecked, ElementName=NotificationFilterButton, Mode=TwoWay}"
-                                           Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
-                                        <Border DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
-                                                Style="{StaticResource App.FilterDropdownPopup}">
-                                            <ItemsControl MinWidth="190" ItemsSource="{Binding LoggingBindings.Filters}" ItemTemplate="{StaticResource LoggingFilterObject}" />
-                                        </Border>
-                                    </Popup>
+                        <WrapPanel VerticalAlignment="Bottom">
+                            <Border Margin="0,0,12,8" Style="{StaticResource App.FilterGroup}">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Translation.Logging, FallbackValue=LOGGING}"
+                                               Style="{StaticResource App.FilterLabel}" />
+                                    <Button Width="180" Height="32"
+                                            Style="{StaticResource Style.Button.Neutral}"
+                                            ToolTip="{Binding Translation.Logging}"
+                                            Click="LoggingActivationToggle_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <fa5:ImageAwesome Width="16" Height="16" Margin="0,0,8,0" IsHitTestVisible="False">
+                                                <fa5:ImageAwesome.Style>
+                                                    <Style TargetType="{x:Type fa5:ImageAwesome}">
+                                                        <Setter Property="Icon" Value="Solid_ToggleOff" />
+                                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding LoggingBindings.IsLoggingTrackingActive}" Value="True">
+                                                                <Setter Property="Icon" Value="Solid_ToggleOn" />
+                                                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </fa5:ImageAwesome.Style>
+                                            </fa5:ImageAwesome>
+                                            <TextBlock VerticalAlignment="Center">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="{x:Type TextBlock}">
+                                                        <Setter Property="Text" Value="{Binding Translation.TrackingIsNotActive}" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding LoggingBindings.IsLoggingTrackingActive}" Value="True">
+                                                                <Setter Property="Text" Value="{Binding Translation.TrackingIsActive}" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </Button>
                                 </StackPanel>
+                            </Border>
 
-                                <StackPanel Margin="0,0,6,0" Orientation="Horizontal">
-                                    <ToggleButton x:Name="TrackingSettingsButton" Style="{StaticResource App.FilterDropdownButton}"
-                                                  Height="32"
-                                                  Content="{Binding LoggingBindings.TrackingSummary, FallbackValue='Tracking: All'}" />
-                                    <Popup PlacementTarget="{Binding ElementName=TrackingSettingsButton}"
-                                           IsOpen="{Binding IsChecked, ElementName=TrackingSettingsButton, Mode=TwoWay}"
-                                           Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
-                                        <Border DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
-                                                Style="{StaticResource App.FilterDropdownPopup}">
-                                            <StackPanel MinWidth="180">
-                                                <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingPartyLootOnly, FallbackValue=true}"
-                                                          Content="{Binding Translation.TrackPartyLootOnly, FallbackValue=TRACK__PARTY__LOOT__ONLY}" />
-                                                <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingSilver, FallbackValue=true}"
-                                                          Content="{Binding Translation.TrackingSilver, FallbackValue=TRACKING__SILVER}" />
-                                                <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingFame, FallbackValue=true}"
-                                                          Content="{Binding Translation.TrackingFame, FallbackValue=TRACKING__FAME}" />
-                                                <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingMobLoot, FallbackValue=true}"
-                                                          Content="{Binding Translation.TrackingMobLoot, FallbackValue=TRACKING__MOB__LOOT}" />
-                                                <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingKill, FallbackValue=true}"
-                                                          Content="{Binding Translation.ShowKills, FallbackValue=KILL__TRACKING}" />
-                                            </StackPanel>
-                                        </Border>
-                                    </Popup>
+                            <Border Margin="0,0,12,8" Style="{StaticResource App.FilterGroup}">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Translation.Search, FallbackValue=SEARCH}"
+                                               Style="{StaticResource App.FilterLabel}" />
+                                    <TextBox Text="{Binding LoggingSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             Width="240" Height="32" VerticalContentAlignment="Center" />
+                                </StackPanel>
+                            </Border>
 
-                                    <Grid Height="32" Width="32" Margin="5,0,5,0" VerticalAlignment="Center">
+                            <Border Margin="0,0,12,8" Style="{StaticResource App.FilterGroup}">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding LoggingBindings.Translation.Filter, FallbackValue=FILTER}"
+                                               Style="{StaticResource App.FilterLabel}" />
+                                    <WrapPanel>
+                                        <ToggleButton Content="{Binding LoggingBindings.Translation.FilterAll, FallbackValue=ALL}"
+                                                      IsChecked="{Binding LoggingBindings.IsAllNotificationFilterSelected, Mode=OneWay}"
+                                                      Style="{StaticResource Dungeon.FilterToggleButton}"
+                                                      Click="AllNotificationFilters_Click" />
+                                        <ItemsControl ItemsSource="{Binding LoggingBindings.Filters}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate DataType="{x:Type eventLogging:LoggingFilterObject}">
+                                                    <ToggleButton Content="{Binding Name}"
+                                                                  IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                                                  Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </WrapPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Margin="0,0,12,8" Style="{StaticResource App.FilterGroup}">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding LoggingBindings.Translation.Tracking, FallbackValue=TRACKING}"
+                                               Style="{StaticResource App.FilterLabel}" />
+                                    <WrapPanel>
+                                        <ToggleButton Content="{Binding Translation.TrackPartyLootOnly, FallbackValue=TRACK__PARTY__LOOT__ONLY}"
+                                                      IsChecked="{Binding LoggingBindings.IsTrackingPartyLootOnly, Mode=TwoWay, FallbackValue=true}"
+                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                        <ToggleButton Content="{Binding Translation.TrackingSilver, FallbackValue=TRACKING__SILVER}"
+                                                      IsChecked="{Binding LoggingBindings.IsTrackingSilver, Mode=TwoWay, FallbackValue=true}"
+                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                        <ToggleButton Content="{Binding Translation.TrackingFame, FallbackValue=TRACKING__FAME}"
+                                                      IsChecked="{Binding LoggingBindings.IsTrackingFame, Mode=TwoWay, FallbackValue=true}"
+                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                        <ToggleButton Content="{Binding Translation.TrackingMobLoot, FallbackValue=TRACKING__MOB__LOOT}"
+                                                      IsChecked="{Binding LoggingBindings.IsTrackingMobLoot, Mode=TwoWay, FallbackValue=true}"
+                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                        <ToggleButton Content="{Binding Translation.ShowKills, FallbackValue=KILL__TRACKING}"
+                                                      IsChecked="{Binding LoggingBindings.IsTrackingKill, Mode=TwoWay, FallbackValue=true}"
+                                                      Style="{StaticResource Dungeon.FilterToggleButton}" />
+                                    </WrapPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <StackPanel Margin="0,0,0,8">
+                                <TextBlock Text="{Binding LoggingBindings.Translation.LootComparatorActions, FallbackValue=ACTIONS}"
+                                           Style="{StaticResource App.FilterLabel}" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Grid Height="32" Width="32" Margin="0,0,6,0" VerticalAlignment="Center">
                                         <fa5:ImageAwesome Icon="Solid_FileCsv" ToolTip="{Binding Translation.ExportLootToFile}"
                                                           Width="30" Height="30" Foreground="{StaticResource SolidColorBrush.Accent.Green.4}"
                                                           MouseUp="BtnExportLootToFile_MouseUp" />
                                     </Grid>
-                                    <Grid Height="32" Width="32" Margin="5,0,0,0" VerticalAlignment="Center">
+                                    <Grid Height="32" Width="32" Margin="0,0,6,0" VerticalAlignment="Center">
                                         <fa5:ImageAwesome Icon="Solid_FileCode" ToolTip="{Binding Translation.ExportLootToJsonFile}"
                                                           Width="30" Height="30" Foreground="{StaticResource SolidColorBrush.Accent.Green.4}"
                                                           MouseUp="BtnExportLootToJsonFile_MouseUp" />
                                     </Grid>
+                                    <Button Content="{Binding Translation.ResetTrackingNotifications, FallbackValue=RESET__TRACKING__NOTIFICATIONS}"
+                                            Height="32" MaxWidth="500" MinWidth="210"
+                                            Width="Auto" VerticalAlignment="Center" Style="{StaticResource Style.Button.Danger}"
+                                            Click="BtnTrackingNotificationsReset_Click" />
                                 </StackPanel>
-                            </WrapPanel>
-
-                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
-                                <Button Content="{Binding Translation.ResetTrackingNotifications, FallbackValue=RESET__TRACKING__NOTIFICATIONS}"
-                                        Height="32" MaxWidth="500" MinWidth="210"
-                                        Width="Auto" VerticalAlignment="Center" Style="{StaticResource Style.Button.Danger}"
-                                        Click="BtnTrackingNotificationsReset_Click" />
                             </StackPanel>
-                        </Grid>
+                        </WrapPanel>
                     </Border>
 
                     <TabControl Grid.Row="1" Background="Transparent" BorderThickness="0">

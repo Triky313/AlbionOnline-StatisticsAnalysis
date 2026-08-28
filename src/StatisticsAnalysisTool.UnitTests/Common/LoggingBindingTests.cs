@@ -16,6 +16,29 @@ namespace StatisticsAnalysisTool.UnitTests.Common;
 public class LoggingBindingsTests
 {
     [Test]
+    public void UpdateAllNotificationFilterSelection_WhenSelected_DeselectsIndividualFilters()
+    {
+        var bindings = new LoggingBindings();
+        bindings.Filters.Add(new LoggingFilterObject(LoggingFilterType.Fame)
+        {
+            IsSelected = true,
+            Name = "Fame"
+        });
+        bindings.Filters.Add(new LoggingFilterObject(LoggingFilterType.Silver)
+        {
+            IsSelected = true,
+            Name = "Silver"
+        });
+
+        bindings.IsAllNotificationFilterSelected.Should().BeFalse();
+
+        bindings.UpdateAllNotificationFilterSelection(true);
+
+        bindings.IsAllNotificationFilterSelected.Should().BeTrue();
+        bindings.Filters.Should().OnlyContain(filter => filter.IsSelected == false);
+    }
+
+    [Test]
     public void UpdateItemsStatus_WithValidValue()
     {
         var bindings = new LoggingBindings();

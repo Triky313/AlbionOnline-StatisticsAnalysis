@@ -18,6 +18,15 @@ public class SettingsObjectTests
     }
 
     [Test]
+    public void SettingsObject_WithoutLoggingTrackingSetting_ShouldKeepLoggingTrackingEnabled()
+    {
+        var result = JsonSerializer.Deserialize<SettingsObject>("{}");
+
+        result.Should().NotBeNull();
+        result!.IsLoggingTrackingActive.Should().BeTrue();
+    }
+
+    [Test]
     public void SettingsObject_WithNetworkDevices_ShouldSerializeAndDeserialize()
     {
         var settings = new SettingsObject

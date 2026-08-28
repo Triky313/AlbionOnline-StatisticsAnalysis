@@ -79,6 +79,7 @@ public class SettingsObject
     public double TradeMonitoringMarketTaxSetupRate { get; set; } = 2.5;
     public bool IsDungeonPlayerLootVisible { get; set; } = false;
     public bool IsDungeonTrackingActive { get; set; } = true;
+    public bool IsLoggingTrackingActive { get; set; } = true;
     [JsonPropertyName("ItemWindowMainTabLocationFilters")]
     public List<MainTabLocationFilterSettingsObject> ItemDetailsLocationFilters { get; set; } = new();
     public double GatheringGridSplitterPosition { get; set; } = 125;

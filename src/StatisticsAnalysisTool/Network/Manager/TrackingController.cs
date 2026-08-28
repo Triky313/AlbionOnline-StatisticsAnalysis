@@ -432,6 +432,11 @@ public class TrackingController : ITrackingController
 
     public async Task AddNotificationAsync(TrackingNotification item)
     {
+        if (_mainWindowViewModel?.LoggingBindings?.IsLoggingTrackingActive != true)
+        {
+            return;
+        }
+
         if (string.IsNullOrWhiteSpace(item.ClusterName))
         {
             item.SetClusterName(ClusterController.GetCurrentClusterDisplayName());
@@ -556,8 +561,12 @@ public class TrackingController : ITrackingController
             return false;
         }
 
-        return (_notificationTypesFilters?.Contains(notification.Type) ?? false)
-               && (IsLootFromMobShown || notification.Fragment is OtherGrabbedLootNotificationFragment { IsLootedPlayerMob: false } or not OtherGrabbedLootNotificationFragment);
+        var isAllFilterSelected = _mainWindowViewModel?.LoggingBindings?.IsAllNotificationFilterSelected == true;
+
+        return (isAllFilterSelected || (_notificationTypesFilters?.Contains(notification.Type) ?? false))
+               && (isAllFilterSelected
+                   || IsLootFromMobShown
+                   || notification.Fragment is OtherGrabbedLootNotificationFragment { IsLootedPlayerMob: false } or not OtherGrabbedLootNotificationFragment);
     }
 
     private static bool MatchesNotificationSearch(TrackingNotification notification, string searchText)

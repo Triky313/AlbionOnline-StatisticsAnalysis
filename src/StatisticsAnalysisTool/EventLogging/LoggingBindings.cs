@@ -74,6 +74,7 @@ public class LoggingBindings : BaseViewModel
 
     public LoggingBindings()
     {
+        IsLoggingTrackingActive = SettingsController.CurrentSettings.IsLoggingTrackingActive;
         SubscribeLootingPlayers(_lootingPlayers);
     }
 
@@ -144,6 +145,8 @@ public class LoggingBindings : BaseViewModel
             IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterKill,
             Name = MainWindowTranslation.ShowKills
         });
+
+        OnPropertyChanged(nameof(IsAllNotificationFilterSelected));
     }
 
     private void AddFilter(LoggingFilterObject filter)
@@ -167,7 +170,28 @@ public class LoggingBindings : BaseViewModel
         if (args.PropertyName == nameof(LoggingFilterObject.IsSelected))
         {
             OnPropertyChanged(nameof(NotificationFilterSummary));
+            OnPropertyChanged(nameof(IsAllNotificationFilterSelected));
         }
+    }
+
+    public bool IsAllNotificationFilterSelected => Filters.Count > 0 && Filters.All(filter => filter.IsSelected != true);
+
+    public void UpdateAllNotificationFilterSelection(bool isSelected)
+    {
+        if (isSelected)
+        {
+            foreach (var filter in Filters)
+            {
+                if (filter.IsSelected != true)
+                {
+                    continue;
+                }
+
+                filter.IsSelected = false;
+            }
+        }
+
+        OnPropertyChanged(nameof(IsAllNotificationFilterSelected));
     }
 
     private void SubscribeLootingPlayers(ObservableCollection<LootingPlayer> lootingPlayers)
@@ -1510,7 +1534,9 @@ public class LoggingBindings : BaseViewModel
     public string GuildFilterSummary => LootComparatorGuildFilters.Count <= 0
         ? $"{LoggingTranslation.Guild}: {LoggingTranslation.FilterAll}"
         : BuildFilterSummary(LoggingTranslation.Guild, LootComparatorGuildFilters.Count(filter => filter.IsSelected), LootComparatorGuildFilters.Count);
-    public string NotificationFilterSummary => BuildFilterSummary(LoggingTranslation.Filter, Filters.Count(filter => filter.IsSelected == true), Filters.Count);
+    public string NotificationFilterSummary => IsAllNotificationFilterSelected
+        ? $"{LoggingTranslation.Filter}: {LoggingTranslation.FilterAll}"
+        : BuildFilterSummary(LoggingTranslation.Filter, Filters.Count(filter => filter.IsSelected == true), Filters.Count);
     public string TrackingSummary => BuildFilterSummary(LoggingTranslation.Tracking, CountSelectedFilters(IsTrackingPartyLootOnly, IsTrackingSilver, IsTrackingFame, IsTrackingMobLoot, IsTrackingKill), 5);
     public int ChestLogCount => _chestLogSourceCount;
     public int LootLogCount => _lootLogFileCount;
@@ -1876,6 +1902,17 @@ public class LoggingBindings : BaseViewModel
             OnPropertyChanged();
         }
     } = new();
+
+    public bool IsLoggingTrackingActive
+    {
+        get;
+        set
+        {
+            field = value;
+            SettingsController.CurrentSettings.IsLoggingTrackingActive = field;
+            OnPropertyChanged();
+        }
+    } = true;
 
     public bool IsTrackingSilver
     {
