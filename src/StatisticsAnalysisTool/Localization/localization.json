@@ -4053,6 +4053,19 @@
       ]
     },
     {
+      "tuid": "CRAFTING_COSTS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Herstellungskosten"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Crafting costs"
+        }
+      ]
+    },
+    {
       "tuid": "GATHERING",
       "tuv": [
         {
@@ -30997,6 +31010,55 @@
         {
           "lang": "zh-TW",
           "seg": "開啟交易追蹤"
+        }
+      ]
+    },
+    {
+      "tuid": "CRAFTING_COSTS_MONITORING_ACTIVE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Crafting-Kosten erfassen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Track crafting costs"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Registrar costes de fabricaci\u00f3n"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Enregistrer les co\u00fbts de fabrication"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "\u88fd\u4f5c\u30b3\u30b9\u30c8\u3092\u8a18\u9332"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "\uc81c\uc791 \ube44\uc6a9 \uae30\ub85d"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Rejestruj koszty wytwarzania"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Registrar custos de fabrica\u00e7\u00e3o"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "\u0423\u0447\u0438\u0442\u044b\u0432\u0430\u0442\u044c \u0437\u0430\u0442\u0440\u0430\u0442\u044b \u043d\u0430 \u0438\u0437\u0433\u043e\u0442\u043e\u0432\u043b\u0435\u043d\u0438\u0435"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "\u8bb0\u5f55\u5236\u4f5c\u6210\u672c"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "\u8a18\u9304\u88fd\u4f5c\u6210\u672c"
         }
       ]
     },

@@ -32,7 +32,20 @@ public class ActionOnBuildingStartRequestHandler : RequestPacketHandler<ActionOn
                 value.AwakenedWeaponSilverCosts);
         }
 
-        _trackingController.TradeController.SetUpcomingTrade(value.BuildingObjectId, value.Ticks, value.Costs, value.Quantity, value.ItemIndex);
+        if (value.ActionType == Enumerations.ActionOnBuildingType.BuyAndCrafting)
+        {
+            var isMerchantPurchase = value.ItemIndex > 0
+                                     && value.ItemObjectIds.Count == 0
+                                     && value.ItemQuantities.Count == 0;
+            _trackingController.TradeController.SetUpcomingTrade(
+                value.BuildingObjectId,
+                value.Ticks,
+                value.Costs,
+                value.Quantity,
+                value.ItemIndex,
+                isMerchantPurchase);
+        }
+
         await Task.CompletedTask;
     }
 }

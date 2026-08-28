@@ -266,7 +266,7 @@ public class Trade : BaseViewModel
         TradeType.InstantBuy => LocalizationController.Translation("INSTANT_BUY"),
         TradeType.ManualSell => LocalizationController.Translation("MANUAL_SELL"),
         TradeType.ManualBuy => LocalizationController.Translation("MANUAL_BUY"),
-        TradeType.Crafting => LocalizationController.Translation("CRAFTING"),
+        TradeType.Crafting => LocalizationController.Translation("CRAFTING_COSTS"),
         TradeType.Mail => LocalizationController.Translation("MAIL"),
         TradeType.PlayerTradeIncoming or TradeType.PlayerTradeOutgoing => $"{LocalizationController.Translation("TRADE")} {LocalizationController.Translation("PLAYER")}",
         _ => LocalizationController.Translation("UNKNOWN_TRADE")

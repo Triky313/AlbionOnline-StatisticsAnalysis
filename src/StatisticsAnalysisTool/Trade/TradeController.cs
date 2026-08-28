@@ -234,9 +234,21 @@ public class TradeController
     #region Merchant buy and crafting costs 
 
     private long _buildingObjectId = -1;
-    private Trade _upcomingTrade;
-    private Trade _lastTrade;
-    private readonly HashSet<CraftingBuildingInfo> _craftingBuildingInfos = new();
+    private PendingBuildingTrade _pendingBuildingTrade;
+    private readonly Dictionary<long, CraftingBuildingInfo> _craftingBuildingInfos = new();
+    private static readonly CraftingBuildingName[] CraftingBuildingNames =
+    [
+        CraftingBuildingName.Forge,
+        CraftingBuildingName.HuntersLodge,
+        CraftingBuildingName.MagicItems,
+        CraftingBuildingName.ToolMaker,
+        CraftingBuildingName.Alchemist,
+        CraftingBuildingName.Cook
+    ];
+    private static readonly CraftingBuildingName[] MerchantBuildingNames =
+    [
+        CraftingBuildingName.FarmingMerchant
+    ];
 
     public void RegisterBuilding(long buildingObjectId)
     {
@@ -251,12 +263,17 @@ public class TradeController
         }
 
         _buildingObjectId = -1;
-        _upcomingTrade = null;
+        _pendingBuildingTrade = null;
     }
 
     public void AddCraftingBuildingInfo(CraftingBuildingInfo craftingBuildingInfo)
     {
-        _craftingBuildingInfos.Add(craftingBuildingInfo);
+        if (craftingBuildingInfo?.ObjectId is not { } objectId)
+        {
+            return;
+        }
+
+        _craftingBuildingInfos[objectId] = craftingBuildingInfo;
     }
 
     public void ResetCraftingBuildingInfo()
@@ -264,80 +281,89 @@ public class TradeController
         _craftingBuildingInfos.Clear();
     }
 
-    public void SetUpcomingTrade(long buildingObjectId, long dateTimeTicks, long internalTotalPrice, int quantity, int itemIndex)
+    public void SetUpcomingTrade(long buildingObjectId, long dateTimeTicks, long internalTotalPrice, int quantity, int itemIndex, bool isMerchantPurchase)
     {
         if (_buildingObjectId != buildingObjectId || quantity <= 0 || internalTotalPrice <= 0)
         {
             return;
         }
 
-        var craftingBuildingInfo = _craftingBuildingInfos?.FirstOrDefault(x => x.ObjectId == buildingObjectId);
-        if (craftingBuildingInfo == null)
+        _pendingBuildingTrade = null;
+
+        _craftingBuildingInfos.TryGetValue(buildingObjectId, out var craftingBuildingInfo);
+        if (!TryGetBuildingTradeType(craftingBuildingInfo?.BuildingName, isMerchantPurchase, out var tradeType))
+        {
+            return;
+        }
+
+        if (!SettingsController.CurrentSettings.IsTradeMonitoringActive
+            || (tradeType == TradeType.Crafting && !SettingsController.CurrentSettings.IsCraftingCostsMonitoringActive))
         {
             return;
         }
 
         var unitPrice = internalTotalPrice / quantity;
-
-        if (CraftingBuildingData.DoesCraftingBuildingNameFit(craftingBuildingInfo.BuildingName, new List<CraftingBuildingName>
-            {
-                CraftingBuildingName.Forge, CraftingBuildingName.HuntersLodge,
-                CraftingBuildingName.MagicItems, CraftingBuildingName.ToolMaker,
-                CraftingBuildingName.Alchemist, CraftingBuildingName.Cook
-            }))
+        _pendingBuildingTrade = new PendingBuildingTrade
         {
-            _upcomingTrade = new Trade()
-            {
-                Ticks = dateTimeTicks,
-                Type = TradeType.Crafting,
-                Id = dateTimeTicks,
-                ClusterIndex = ClusterController.CurrentCluster.SourceClusterIndex ?? ClusterController.CurrentCluster.Index,
-                Guid = Guid.NewGuid(),
-                ItemIndex = itemIndex,
-                InstantBuySellContent = new InstantBuySellContent()
-                {
-                    InternalUnitPrice = unitPrice,
-                    Quantity = quantity,
-                    TaxRate = 0
-                }
-            };
+            Ticks = dateTimeTicks,
+            Type = tradeType,
+            Id = dateTimeTicks,
+            ClusterIndex = ClusterController.CurrentCluster.SourceClusterIndex ?? ClusterController.CurrentCluster.Index,
+            Guid = Guid.NewGuid(),
+            ItemIndex = itemIndex,
+            InternalUnitPrice = unitPrice,
+            Quantity = quantity
+        };
+    }
+
+    public void ConfirmUpcomingCraftingTrade(long userObjectId, long buildingObjectId)
+    {
+        if (_pendingBuildingTrade is null
+            || _buildingObjectId != buildingObjectId
+            || _trackingController.EntityController.LocalUserData.UserObjectId != userObjectId)
+        {
+            return;
         }
 
-        if (CraftingBuildingData.DoesCraftingBuildingNameFit(craftingBuildingInfo.BuildingName, new List<CraftingBuildingName>
-            {
-                CraftingBuildingName.FarmingMerchant
-            }))
+        if (!SettingsController.CurrentSettings.IsCraftingCostsMonitoringActive)
         {
-            _upcomingTrade = new Trade()
-            {
-                Ticks = dateTimeTicks,
-                Type = TradeType.InstantBuy,
-                Id = dateTimeTicks,
-                ClusterIndex = ClusterController.CurrentCluster.SourceClusterIndex ?? ClusterController.CurrentCluster.Index,
-                Guid = Guid.NewGuid(),
-                ItemIndex = itemIndex,
-                InstantBuySellContent = new InstantBuySellContent()
-                {
-                    InternalUnitPrice = unitPrice,
-                    Quantity = quantity,
-                    TaxRate = 0
-                }
-            };
+            _pendingBuildingTrade = null;
+            return;
         }
+
+        _pendingBuildingTrade.Type = TradeType.Crafting;
+    }
+
+    private static bool TryGetBuildingTradeType(string buildingName, bool isMerchantPurchase, out TradeType tradeType)
+    {
+        if (CraftingBuildingData.DoesCraftingBuildingNameFit(buildingName, CraftingBuildingNames))
+        {
+            tradeType = TradeType.Crafting;
+            return true;
+        }
+
+        if (isMerchantPurchase || CraftingBuildingData.DoesCraftingBuildingNameFit(buildingName, MerchantBuildingNames))
+        {
+            tradeType = TradeType.InstantBuy;
+            return true;
+        }
+
+        tradeType = default;
+        return false;
     }
 
     public async Task TradeFinishedAsync(long userObjectId, long buildingObjectId)
     {
-        if (_upcomingTrade == _lastTrade
-            || _trackingController.EntityController.LocalUserData.UserObjectId != userObjectId
-            || _upcomingTrade is null
+        if (_trackingController.EntityController.LocalUserData.UserObjectId != userObjectId
+            || _pendingBuildingTrade is null
             || _buildingObjectId != buildingObjectId)
         {
             return;
         }
 
-        await AddTradeToBindingCollectionAsync(_upcomingTrade);
-        _lastTrade = _upcomingTrade;
+        var trade = _pendingBuildingTrade.CreateTrade();
+        _pendingBuildingTrade = null;
+        await AddTradeToBindingCollectionAsync(trade);
     }
 
     #endregion

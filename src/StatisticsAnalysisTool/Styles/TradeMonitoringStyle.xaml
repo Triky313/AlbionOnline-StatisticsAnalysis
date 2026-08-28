@@ -578,6 +578,12 @@
                                       Content="{Binding TranslationTradeMonitoringActive, FallbackValue=MAIL__MONITORING__ACTIVE}"
                                       IsChecked="{Binding IsTradeMonitoringActive}" />
                             <CheckBox MinWidth="240"
+                                      Margin="0,0,0,12"
+                                      HorizontalAlignment="Left"
+                                      HorizontalContentAlignment="Left"
+                                      Content="{Binding TranslationCraftingCostsMonitoringActive, FallbackValue=TRACK__CRAFTING__COSTS}"
+                                      IsChecked="{Binding IsCraftingCostsMonitoringActive}" />
+                            <CheckBox MinWidth="240"
                                       HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
                                       Content="{Binding TranslationIgnoreMailsWithZeroValues, FallbackValue=IGNORE__MAILS__WITH__ZERO__VALUES}"
@@ -1528,7 +1534,7 @@
                     <StackPanel Orientation="Vertical">
                         <DockPanel>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding TypeDescription, IsAsync=True, StringFormat='{}{0}: ', FallbackValue=INSTANT_BUY}" Style="{StaticResource Crafting.Text.Color.Orange}" />
+                                <TextBlock Text="{Binding TypeDescription, IsAsync=True, StringFormat='{}{0}: ', FallbackValue='Crafting costs'}" Style="{StaticResource Crafting.Text.Color.Orange}" />
                                 <TextBlock Text="{Binding InstantBuySellContent.Quantity, IsAsync=True, StringFormat='{}{0}x', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 <TextBlock Style="{StaticResource Trade.Text.Tier}" />
                                 <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
