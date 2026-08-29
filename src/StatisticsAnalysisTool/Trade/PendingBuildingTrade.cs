@@ -8,6 +8,7 @@ internal sealed class PendingBuildingTrade
     public long Id { get; init; }
     public long Ticks { get; init; }
     public TradeType Type { get; set; }
+    public bool IsMerchantPurchaseConfirmed { get; init; }
     public string ClusterIndex { get; init; }
     public Guid Guid { get; init; }
     public int ItemIndex { get; init; }

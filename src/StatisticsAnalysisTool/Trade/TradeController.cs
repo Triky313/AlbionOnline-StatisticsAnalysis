@@ -291,6 +291,10 @@ public class TradeController
         _pendingBuildingTrade = null;
 
         _craftingBuildingInfos.TryGetValue(buildingObjectId, out var craftingBuildingInfo);
+        var isMerchantPurchaseConfirmed = BuildingTradeClassifier.IsMerchantPurchase(itemIndex)
+                                          || CraftingBuildingData.DoesCraftingBuildingNameFit(
+                                              craftingBuildingInfo?.BuildingName,
+                                              MerchantBuildingNames);
         if (!TryGetBuildingTradeType(craftingBuildingInfo?.BuildingName, isMerchantPurchase, out var tradeType))
         {
             return;
@@ -307,6 +311,7 @@ public class TradeController
         {
             Ticks = dateTimeTicks,
             Type = tradeType,
+            IsMerchantPurchaseConfirmed = isMerchantPurchaseConfirmed,
             Id = dateTimeTicks,
             ClusterIndex = ClusterController.CurrentCluster.SourceClusterIndex ?? ClusterController.CurrentCluster.Index,
             Guid = Guid.NewGuid(),
@@ -320,6 +325,7 @@ public class TradeController
     {
         if (_pendingBuildingTrade is null
             || _buildingObjectId != buildingObjectId
+            || _pendingBuildingTrade.IsMerchantPurchaseConfirmed
             || _trackingController.EntityController.LocalUserData.UserObjectId != userObjectId)
         {
             return;
@@ -336,13 +342,19 @@ public class TradeController
 
     private static bool TryGetBuildingTradeType(string buildingName, bool isMerchantPurchase, out TradeType tradeType)
     {
+        if (CraftingBuildingData.DoesCraftingBuildingNameFit(buildingName, MerchantBuildingNames))
+        {
+            tradeType = TradeType.InstantBuy;
+            return true;
+        }
+
         if (CraftingBuildingData.DoesCraftingBuildingNameFit(buildingName, CraftingBuildingNames))
         {
             tradeType = TradeType.Crafting;
             return true;
         }
 
-        if (isMerchantPurchase || CraftingBuildingData.DoesCraftingBuildingNameFit(buildingName, MerchantBuildingNames))
+        if (isMerchantPurchase)
         {
             tradeType = TradeType.InstantBuy;
             return true;
