@@ -12,6 +12,7 @@ public class GameFileDataSpell
     public string NameLocatag { get; init; }
     public string DescriptionLocatag { get; init; }
     public string SpellKind { get; init; }
+    public string UiSprite { get; init; }
     public string UiType { get; init; }
     public string EnergyUsage { get; init; }
     public string CastingTime { get; init; }
@@ -24,4 +25,5 @@ public class GameFileDataSpell
     public bool? IgnoresArmorAgainstMobs { get; init; }
     public EffectType? DamageEffectTypeAgainstPlayers { get; init; }
     public EffectType? DamageEffectTypeAgainstMobs { get; init; }
+    public bool HasIcon => !string.IsNullOrWhiteSpace(UiSprite);
 }

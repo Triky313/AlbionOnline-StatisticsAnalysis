@@ -16,6 +16,7 @@ internal static class ImageController
     private static readonly string ItemImagesDirectory = AppDataPaths.ImageResourcesDirectory;
     private static readonly string SpellImagesDirectory = AppDataPaths.SpellImageResourcesDirectory;
     private static readonly string DefaultItemImagePath = @"pack://application:,,,/" + Assembly.GetExecutingAssembly().GetName().Name + ";component/" + "Resources/Trash.png";
+    private static readonly string DefaultSpellImagePath = @"pack://application:,,,/" + Assembly.GetExecutingAssembly().GetName().Name + ";component/" + "Assets/empty_icon.png";
     private static readonly string GoldImagePath = @"pack://application:,,,/" + Assembly.GetExecutingAssembly().GetName().Name + ";component/" + "Resources/gold.png";
     private static readonly Lock CacheLock = new();
     private static readonly Dictionary<string, WeakReference<BitmapImage>> CachedImages = new(StringComparer.Ordinal);
@@ -114,14 +115,15 @@ internal static class ImageController
         {
             if (string.IsNullOrWhiteSpace(uniqueName))
             {
-                return null;
+                return CreateBitmapImage(DefaultSpellImagePath);
             }
 
-            return GetImage("spell", uniqueName, pixelHeight, pixelWidth, freeze, SpellImagesDirectory, $"https://render.albiononline.com/v1/spell/{uniqueName}");
+            return GetImage("spell", uniqueName, pixelHeight, pixelWidth, freeze, SpellImagesDirectory, $"https://render.albiononline.com/v1/spell/{uniqueName}")
+                   ?? CreateBitmapImage(DefaultSpellImagePath);
         }
         catch
         {
-            return null;
+            return CreateBitmapImage(DefaultSpellImagePath);
         }
     }
 

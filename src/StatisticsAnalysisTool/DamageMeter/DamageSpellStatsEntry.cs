@@ -66,16 +66,21 @@ public sealed class DamageSpellStatsEntry
 
     private BitmapImage GetIcon()
     {
-        return ImageController.GetSpellImage(ResolveUniqueName(), 48, 48, true);
+        return ImageController.GetSpellImage(SpellData.GetIconUniqueName(ResolveUniqueName()), 48, 48, true);
     }
 
     private string ResolveUniqueName()
     {
-        if (!string.IsNullOrWhiteSpace(UniqueName))
+        var sourceUniqueName = !string.IsNullOrWhiteSpace(UniqueName)
+            ? UniqueName
+            : SpellIndex <= 0
+                ? "AUTO_ATTACK"
+                : SpellData.GetUniqueName(SpellIndex);
+        if (SpellIndex <= 0)
         {
-            return UniqueName;
+            return sourceUniqueName;
         }
 
-        return SpellIndex <= 0 ? "AUTO_ATTACK" : SpellData.GetUniqueName(SpellIndex);
+        return SpellPresentationResolver.ResolveUniqueName(SpellIndex, sourceUniqueName);
     }
 }

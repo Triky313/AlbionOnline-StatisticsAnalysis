@@ -26,6 +26,19 @@ public static class SpellData
         return GetSpellByIndex(index)?.UniqueName ?? string.Empty;
     }
 
+    public static string GetIconUniqueName(string uniqueName)
+    {
+        if (string.Equals(uniqueName, "AUTO_ATTACK", StringComparison.Ordinal))
+        {
+            return uniqueName;
+        }
+
+        var spell = GetSpellByUniqueName(uniqueName);
+        return spell.HasIcon
+            ? spell.UniqueName
+            : string.Empty;
+    }
+
     public static bool IsDataLoaded()
     {
         return _spells?.Count > 0;
@@ -102,6 +115,7 @@ public static class SpellData
         {
             _spells = new List<GameFileDataSpell>();
             _spellElementsByUniqueName = new Dictionary<string, XElement>(StringComparer.Ordinal);
+            SpellPresentationResolver.Initialize([], []);
             return false;
         }
 
@@ -170,6 +184,7 @@ public static class SpellData
             }
         }
 
+        SpellPresentationResolver.Initialize(elements, spells);
         return spells;
     }
 
@@ -200,6 +215,7 @@ public static class SpellData
                 NameLocatag = nameLocatag,
                 DescriptionLocatag = descriptionLocatag,
                 SpellKind = element.Name.LocalName,
+                UiSprite = element.Attribute("uisprite")?.Value ?? string.Empty,
                 UiType = element.Attribute("uitype")?.Value ?? string.Empty,
                 EnergyUsage = element.Attribute("energyusage")?.Value ?? string.Empty,
                 CastingTime = element.Attribute("castingtime")?.Value ?? string.Empty,

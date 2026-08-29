@@ -459,10 +459,13 @@ public sealed class CombatEventTracker(TrackingController trackingController)
             statsByContent.Add(contentType, mobDamageStats);
         }
 
+        var presentationSpellIndex = SpellPresentationResolver.ResolveSpellIndex(
+            causingSpellIndex,
+            sourcePlayer?.CharacterEquipment?.ActiveSpells?.Select(spell => spell.Value));
         mobDamageStats.RecordDamage(
             sourcePlayer?.UserGuid,
             sourcePlayer?.Name ?? string.Empty,
-            causingSpellIndex,
+            presentationSpellIndex,
             sourcePlayer?.LastContributionWeaponItemIndex ?? 0,
             value,
             DateTime.UtcNow);

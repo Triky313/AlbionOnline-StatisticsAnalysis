@@ -33,8 +33,9 @@ public class UsedSpellFragment : BaseViewModel
         set
         {
             _uniqueName = value;
-            LocalizationName = UniqueName == "AUTO_ATTACK" ? LocalizationController.Translation("AUTO_ATTACK") : SpellData.GetLocalizationName(_uniqueName);
-            LocalizationDescription = SpellData.GetLocalizationDescription(_uniqueName);
+            var presentationUniqueName = ResolvePresentationUniqueName();
+            LocalizationName = presentationUniqueName == "AUTO_ATTACK" ? LocalizationController.Translation("AUTO_ATTACK") : SpellData.GetLocalizationName(presentationUniqueName);
+            LocalizationDescription = SpellData.GetLocalizationDescription(presentationUniqueName);
             OnPropertyChanged();
         }
     }
@@ -161,5 +162,10 @@ public class UsedSpellFragment : BaseViewModel
         }
     }
 
-    public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => ImageController.GetSpellImage(UniqueName));
+    public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => ImageController.GetSpellImage(SpellData.GetIconUniqueName(ResolvePresentationUniqueName())));
+
+    private string ResolvePresentationUniqueName()
+    {
+        return SpellPresentationResolver.ResolveUniqueName(SpellIndex, UniqueName);
+    }
 }

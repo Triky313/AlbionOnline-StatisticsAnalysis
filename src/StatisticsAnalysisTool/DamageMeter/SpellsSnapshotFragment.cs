@@ -23,9 +23,14 @@ public class SpellsSnapshotFragment : BaseViewModel
     public double DamageInPercent { get; set; }
     public double DamagePercentage { get; set; }
     public HealthChangeType HealthChangeType { get; set; }
-    public string LocalizationName => SpellData.GetLocalizationName(UniqueName);
-    public string LocalizationDescription => SpellData.GetLocalizationDescription(UniqueName);
+    public string LocalizationName => SpellData.GetLocalizationName(ResolvePresentationUniqueName());
+    public string LocalizationDescription => SpellData.GetLocalizationDescription(ResolvePresentationUniqueName());
 
     public Item Item => Application.Current.Dispatcher.Invoke(() => _item ??= ItemController.GetItemByIndex(ItemIndex));
-    public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => ImageController.GetSpellImage(UniqueName));
+    public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => ImageController.GetSpellImage(SpellData.GetIconUniqueName(ResolvePresentationUniqueName())));
+
+    private string ResolvePresentationUniqueName()
+    {
+        return SpellPresentationResolver.ResolveUniqueName(SpellIndex, UniqueName);
+    }
 }

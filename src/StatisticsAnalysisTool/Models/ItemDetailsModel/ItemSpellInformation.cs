@@ -39,7 +39,7 @@ public sealed class ItemSpellInformation
     public IReadOnlyList<ItemSpellStat> Stats { get; }
     public Visibility DescriptionVisibility => DescriptionSegments.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
     public Visibility StatsVisibility => Stats.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
-    public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => ImageController.GetSpellImage(UniqueName));
+    public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => ImageController.GetSpellImage(SpellData.GetIconUniqueName(UniqueName)));
 
     private static IReadOnlyList<ItemSpellType> CreateTypes(GameFileDataSpell spell, string localizedDescription)
     {

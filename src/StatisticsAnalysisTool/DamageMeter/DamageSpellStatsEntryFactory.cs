@@ -10,13 +10,18 @@ internal static class DamageSpellStatsEntryFactory
     public static IReadOnlyList<DamageSpellStatsEntry> Rank(IEnumerable<DamageSpellStatsEntry> entries)
     {
         var orderedEntries = (entries ?? [])
-            .Where(entry => entry.Value > 0)
+            .Select(entry => new
+            {
+                Entry = entry,
+                SpellIndex = SpellPresentationResolver.ResolveSpellIndex(entry.SpellIndex)
+            })
+            .Where(entry => entry.Entry.Value > 0)
             .GroupBy(entry => entry.SpellIndex)
             .Select(group => new DamageSpellStatsEntry
             {
                 SpellIndex = group.Key,
-                UniqueName = ResolveUniqueName(group.Key, group),
-                Value = group.Sum(entry => entry.Value)
+                UniqueName = ResolveUniqueName(group.Key, group.Select(entry => entry.Entry)),
+                Value = group.Sum(entry => entry.Entry.Value)
             })
             .OrderByDescending(entry => entry.Value)
             .ThenBy(entry => entry.SpellIndex)
@@ -44,14 +49,15 @@ internal static class DamageSpellStatsEntryFactory
 
     private static string ResolveUniqueName(int spellIndex, IEnumerable<DamageSpellStatsEntry> entries)
     {
+        var resolvedUniqueName = spellIndex <= 0 ? "AUTO_ATTACK" : SpellData.GetUniqueName(spellIndex);
+        if (!string.IsNullOrWhiteSpace(resolvedUniqueName))
+        {
+            return resolvedUniqueName;
+        }
+
         var uniqueName = entries
             .Select(entry => entry.UniqueName)
             .FirstOrDefault(value => !string.IsNullOrWhiteSpace(value));
-        if (!string.IsNullOrWhiteSpace(uniqueName))
-        {
-            return uniqueName;
-        }
-
-        return spellIndex <= 0 ? "AUTO_ATTACK" : SpellData.GetUniqueName(spellIndex);
+        return uniqueName ?? string.Empty;
     }
 }

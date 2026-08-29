@@ -91,6 +91,9 @@ public class CombatController
         var contentType = GetCurrentContentType();
         var contentStats = causerGameObjectValue.GetOrCreateDamageMeterContentStats(contentType);
         var contentDamageStatsTracker = _damageStatsTrackersByContent.GetOrAdd(contentType, _ => new DamageStatsTracker());
+        var presentationSpellIndex = SpellPresentationResolver.ResolveSpellIndex(
+            causingSpellIndex,
+            causerGameObjectValue.CharacterEquipment?.ActiveSpells?.Select(spell => spell.Value));
 
         if (healthChangeType == HealthChangeType.Damage)
         {
@@ -102,18 +105,18 @@ public class CombatController
 
             RecordLastContributionWeapon(causerGameObjectValue, contentStats);
             causerGameObjectValue.Damage += damageChangeValue;
-            AddOrUpdateSpell(causingSpellIndex, causerGameObjectValue, causerGameObjectValue.Spells, healthChangeType, damageChangeValue);
+            AddOrUpdateSpell(causingSpellIndex, presentationSpellIndex, causerGameObjectValue, causerGameObjectValue.Spells, healthChangeType, damageChangeValue);
             lock (contentStats.SyncRoot)
             {
                 contentStats.Damage += damageChangeValue;
-                AddOrUpdateSpell(causingSpellIndex, causerGameObjectValue, contentStats.Spells, healthChangeType, damageChangeValue);
+                AddOrUpdateSpell(causingSpellIndex, presentationSpellIndex, causerGameObjectValue, contentStats.Spells, healthChangeType, damageChangeValue);
             }
 
             CombatEventTracker.AddHealthContribution(CombatEventValueType.Damage, causerId, affectedId, damageChangeValue, causingSpellIndex, contentType);
             var isMobTarget = affectedGameObject?.Value is not { ObjectType: GameObjectType.Player };
             var damageType = DamageTypeResolver.Resolve(effectType, causingSpellIndex, isMobTarget);
-            _damageStatsTracker.RecordDamage(causerGameObject.Value.Key, causerGameObjectValue.Name, affectedId, damageChangeValue, newHealthValue, isMobTarget, causingSpellIndex, damageType);
-            contentDamageStatsTracker.RecordDamage(causerGameObject.Value.Key, causerGameObjectValue.Name, affectedId, damageChangeValue, newHealthValue, isMobTarget, causingSpellIndex, damageType);
+            _damageStatsTracker.RecordDamage(causerGameObject.Value.Key, causerGameObjectValue.Name, affectedId, damageChangeValue, newHealthValue, isMobTarget, presentationSpellIndex, damageType);
+            contentDamageStatsTracker.RecordDamage(causerGameObject.Value.Key, causerGameObjectValue.Name, affectedId, damageChangeValue, newHealthValue, isMobTarget, presentationSpellIndex, damageType);
         }
 
         if (healthChangeType == HealthChangeType.Heal)
@@ -129,11 +132,11 @@ public class CombatController
             if (!IsMaxHealthReached(affectedId, newHealthValue))
             {
                 causerGameObjectValue.Heal += positiveHealChangeValue;
-                AddOrUpdateSpell(causingSpellIndex, causerGameObjectValue, causerGameObjectValue.Spells, healthChangeType, positiveHealChangeValue);
+                AddOrUpdateSpell(causingSpellIndex, presentationSpellIndex, causerGameObjectValue, causerGameObjectValue.Spells, healthChangeType, positiveHealChangeValue);
                 lock (contentStats.SyncRoot)
                 {
                     contentStats.Heal += positiveHealChangeValue;
-                    AddOrUpdateSpell(causingSpellIndex, causerGameObjectValue, contentStats.Spells, healthChangeType, positiveHealChangeValue);
+                    AddOrUpdateSpell(causingSpellIndex, presentationSpellIndex, causerGameObjectValue, contentStats.Spells, healthChangeType, positiveHealChangeValue);
                 }
 
                 CombatEventTracker.AddHealthContribution(CombatEventValueType.Heal, causerId, affectedId, positiveHealChangeValue, causingSpellIndex, contentType);
@@ -971,7 +974,13 @@ public class CombatController
         }
     }
 
-    private void AddOrUpdateSpell(int causingSpellIndex, PlayerGameObject playerGameObject, ICollection<UsedSpell> spells, HealthChangeType healthChangeType, int healthChangeValue)
+    private void AddOrUpdateSpell(
+        int causingSpellIndex,
+        int presentationSpellIndex,
+        PlayerGameObject playerGameObject,
+        ICollection<UsedSpell> spells,
+        HealthChangeType healthChangeType,
+        int healthChangeValue)
     {
         if (causingSpellIndex <= 0)
         {
@@ -997,7 +1006,7 @@ public class CombatController
         }
 
         var itemIndex = GetSpellItemIndex(causingSpellIndex, playerGameObject);
-        var spell = spells.FirstOrDefault(x => x.SpellIndex == causingSpellIndex && x.HealthChangeType == healthChangeType);
+        var spell = spells.FirstOrDefault(x => x.SpellIndex == presentationSpellIndex && x.HealthChangeType == healthChangeType);
         if (spell is not null)
         {
             spell.HealthChangeType = healthChangeType;
@@ -1011,7 +1020,7 @@ public class CombatController
         }
         else
         {
-            spells.Add(new UsedSpell(causingSpellIndex, itemIndex)
+            spells.Add(new UsedSpell(presentationSpellIndex, itemIndex)
             {
                 ItemIndex = itemIndex,
                 HealthChangeType = healthChangeType,
@@ -1043,6 +1052,11 @@ public class CombatController
     private static bool IsMatchingSpell(int causingSpellIndex, string causingSpellUniqueName, int slotSpellIndex)
     {
         if (slotSpellIndex == causingSpellIndex)
+        {
+            return true;
+        }
+
+        if (SpellPresentationResolver.IsPresentationSpellFor(slotSpellIndex, causingSpellIndex))
         {
             return true;
         }

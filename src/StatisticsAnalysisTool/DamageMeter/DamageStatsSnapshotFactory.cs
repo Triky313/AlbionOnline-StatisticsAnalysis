@@ -203,9 +203,7 @@ public static class DamageStatsSnapshotFactory
             return [];
         }
 
-        return entries.Any(entry => entry.BarPercentage > 0 || entry.SharePercentage > 0)
-            ? entries.OrderBy(entry => entry.Rank).Take(10).ToList()
-            : DamageSpellStatsEntryFactory.Rank(entries);
+        return DamageSpellStatsEntryFactory.Rank(entries);
     }
 
     private static IReadOnlyList<DamageTypeStatsEntry> CreateDamageTypeEntries(
