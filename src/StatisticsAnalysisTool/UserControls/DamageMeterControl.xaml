@@ -62,9 +62,9 @@
                 <TextBlock Grid.Column="0" Text="{Binding Rank, StringFormat='{}{0}.'}" Style="{StaticResource TopStats.EntryRank}" Margin="5,0,0,0" />
                 <Ellipse Grid.Column="1" Width="40" Height="40" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTipService.ShowDuration="60000">
                     <Ellipse.ToolTip>
-                        <ToolTip Style="{StaticResource ItemDetails.Information.SpellToolTip}"
+                        <ToolTip Style="{StaticResource Spell.ToolTip}"
                                  DataContext="{Binding PlacementTarget.DataContext.SpellInformation, RelativeSource={RelativeSource Self}}">
-                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource ItemDetails.Information.SpellToolTipContentTemplate}" />
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource Spell.ToolTipContentTemplate}" />
                         </ToolTip>
                     </Ellipse.ToolTip>
                     <Ellipse.Fill>

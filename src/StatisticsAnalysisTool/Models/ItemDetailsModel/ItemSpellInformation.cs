@@ -21,7 +21,9 @@ public sealed class ItemSpellInformation
     public ItemSpellInformation(string uniqueName)
     {
         UniqueName = uniqueName;
-        Name = SpellData.GetLocalizationName(uniqueName);
+        Name = string.Equals(uniqueName, "AUTO_ATTACK", StringComparison.Ordinal)
+            ? LocalizationController.Translation("AUTO_ATTACK")
+            : SpellData.GetLocalizationName(uniqueName);
 
         var spell = SpellData.GetSpellByUniqueName(uniqueName);
         var localizedDescription = SpellData.GetLocalizationDescription(uniqueName);

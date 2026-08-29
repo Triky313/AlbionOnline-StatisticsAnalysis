@@ -1,7 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:common="clr-namespace:StatisticsAnalysisTool.Common"
-                    xmlns:controls="clr-namespace:StatisticsAnalysisTool.Common.Controls"
                     xmlns:enum="clr-namespace:StatisticsAnalysisTool.Enumerations"
                     xmlns:fa5="http://schemas.fontawesome.com/icons/"
                     xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
@@ -1110,125 +1109,6 @@
         </Border>
     </DataTemplate>
 
-    <SolidColorBrush x:Key="ItemDetails.Information.SpellType.Damage" Color="#FFFF2E2E" />
-    <SolidColorBrush x:Key="ItemDetails.Information.SpellType.Heal" Color="#FF6ACC04" />
-    <SolidColorBrush x:Key="ItemDetails.Information.SpellType.CrowdControl" Color="#FFFFB418" />
-    <SolidColorBrush x:Key="ItemDetails.Information.SpellType.Debuff" Color="#FFC27AF0" />
-    <SolidColorBrush x:Key="ItemDetails.Information.SpellType.Buff" Color="#FF20C7FF" />
-    <SolidColorBrush x:Key="ItemDetails.Information.SpellType.Mobility" Color="#FFFFFFFF" />
-    <SolidColorBrush x:Key="ItemDetails.Information.SpellText" Color="#FFDDCDC3" />
-    <SolidColorBrush x:Key="ItemDetails.Information.SpellType.Other" Color="#FFDDCDC3" />
-
-    <Style x:Key="ItemDetails.Information.SpellToolTip" TargetType="{x:Type ToolTip}">
-        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.2}" />
-        <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.4}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
-        <Setter Property="Padding" Value="16,13" />
-        <Setter Property="MaxWidth" Value="430" />
-        <Setter Property="Opacity" Value="1" />
-        <Setter Property="Placement" Value="Mouse" />
-        <Setter Property="HorizontalOffset" Value="12" />
-        <Setter Property="VerticalOffset" Value="12" />
-        <Setter Property="OverridesDefaultStyle" Value="True" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ToolTip}">
-                    <Border Padding="{TemplateBinding Padding}"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="5"
-                            SnapsToDevicePixels="True">
-                        <ContentPresenter />
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <DataTemplate x:Key="ItemDetails.Information.SpellTypeTemplate" DataType="{x:Type itemDetailsModels:ItemSpellType}">
-        <Border Margin="0,0,5,0"
-                Padding="6,2"
-                Background="{StaticResource SolidColorBrush.Background.4}"
-                CornerRadius="3">
-            <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold">
-                <TextBlock.Style>
-                    <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Key}" Value="heal">
-                                <Setter Property="Foreground" Value="{StaticResource ItemDetails.Information.SpellType.Heal}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Key}" Value="damage">
-                                <Setter Property="Foreground" Value="{StaticResource ItemDetails.Information.SpellType.Damage}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Key}" Value="buff">
-                                <Setter Property="Foreground" Value="{StaticResource ItemDetails.Information.SpellType.Buff}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Key}" Value="debuff">
-                                <Setter Property="Foreground" Value="{StaticResource ItemDetails.Information.SpellType.Debuff}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Key}" Value="crowdcontrol">
-                                <Setter Property="Foreground" Value="{StaticResource ItemDetails.Information.SpellType.CrowdControl}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Key}" Value="movement">
-                                <Setter Property="Foreground" Value="{StaticResource ItemDetails.Information.SpellType.Mobility}" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
-        </Border>
-    </DataTemplate>
-
-    <DataTemplate x:Key="ItemDetails.Information.SpellStatTemplate" DataType="{x:Type itemDetailsModels:ItemSpellStat}">
-        <Grid Margin="0,2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="{Binding Name}" Foreground="{StaticResource SolidColorBrush.Text.3}" />
-            <TextBlock Grid.Column="1" Margin="20,0,0,0" Text="{Binding Value}"
-                       Foreground="{StaticResource SolidColorBrush.Text.1}" FontWeight="SemiBold" />
-        </Grid>
-    </DataTemplate>
-
-    <DataTemplate x:Key="ItemDetails.Information.SpellToolTipContentTemplate" DataType="{x:Type itemDetailsModels:ItemSpellInformation}">
-        <StackPanel Width="300">
-            <TextBlock Text="{Binding Name}" FontSize="20" FontWeight="SemiBold" Foreground="{StaticResource SolidColorBrush.Text.1}" TextWrapping="Wrap" />
-
-            <ItemsControl Margin="0,6,0,0" ItemsSource="{Binding Types}" ItemTemplate="{StaticResource ItemDetails.Information.SpellTypeTemplate}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
-
-            <Border Margin="0,11,0,0"
-                    Padding="0,11,0,0"
-                    BorderBrush="{StaticResource SolidColorBrush.Background.4}"
-                    BorderThickness="0,1,0,0"
-                    Visibility="{Binding DescriptionVisibility, Mode=OneWay}">
-                <controls:SpellDescriptionTextBlock
-                    Segments="{Binding DescriptionSegments, Mode=OneWay}"
-                    Foreground="{StaticResource ItemDetails.Information.SpellText}"
-                    FontSize="12"
-                    LineHeight="18"
-                    TextWrapping="Wrap" />
-            </Border>
-
-            <Border Margin="5,12,5,0"
-                    Padding="5,10,5,0"
-                    BorderBrush="{StaticResource SolidColorBrush.Background.4}"
-                    BorderThickness="0,1,0,0"
-                    Visibility="{Binding StatsVisibility, Mode=OneWay}">
-                <ItemsControl ItemsSource="{Binding Stats}" ItemTemplate="{StaticResource ItemDetails.Information.SpellStatTemplate}" />
-            </Border>
-        </StackPanel>
-    </DataTemplate>
-
     <DataTemplate x:Key="ItemDetails.Information.SpellTemplate" DataType="{x:Type itemDetailsModels:ItemSpellInformation}">
         <Border Width="154"
                 MinHeight="112"
@@ -1240,8 +1120,8 @@
                 CornerRadius="4"
                 ToolTipService.ShowDuration="60000">
             <Border.ToolTip>
-                <ToolTip Style="{StaticResource ItemDetails.Information.SpellToolTip}" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
-                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource ItemDetails.Information.SpellToolTipContentTemplate}" />
+                <ToolTip Style="{StaticResource Spell.ToolTip}" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource Spell.ToolTipContentTemplate}" />
                 </ToolTip>
             </Border.ToolTip>
             <StackPanel>

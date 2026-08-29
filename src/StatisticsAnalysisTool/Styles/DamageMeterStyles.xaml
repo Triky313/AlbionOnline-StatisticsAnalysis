@@ -554,7 +554,13 @@
 
     <!-- Spell bar -->
     <DataTemplate x:Key="SpellBarTemplate" DataType="{x:Type damageMeter:UsedSpellFragment}">
-        <Grid Height="auto" Width="auto" HorizontalAlignment="Stretch">
+        <Grid Height="auto" Width="auto" HorizontalAlignment="Stretch" ToolTipService.ShowDuration="60000">
+            <Grid.ToolTip>
+                <ToolTip Style="{StaticResource Spell.ToolTip}"
+                         DataContext="{Binding PlacementTarget.DataContext.SpellInformation, RelativeSource={RelativeSource Self}}">
+                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource Spell.ToolTipContentTemplate}" />
+                </ToolTip>
+            </Grid.ToolTip>
             <ProgressBar common:ProgressBarSmoother.SmoothValue="{Binding DamageInPercent}" Minimum="0" Maximum="100" MinHeight="40" Height="auto" Margin="3,0,2,1"
                          VerticalAlignment="Top" Background="{StaticResource SolidColorBrush.Transparent}" BorderThickness="0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.Transparent.3}" HorizontalAlignment="Stretch" />
             <StackPanel Orientation="Horizontal">

@@ -1,7 +1,8 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.ItemDetailsModel;
 using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -18,6 +19,8 @@ public class UsedSpellFragment : BaseViewModel
     private string _category;
     private Item _item;
     private int _ticks;
+    private ItemSpellInformation _spellInformation;
+    private string _spellInformationUniqueName;
     private int _itemIndex;
     private double _damageInPercent;
     private double _damagePercentage;
@@ -152,6 +155,8 @@ public class UsedSpellFragment : BaseViewModel
         }
     }
 
+    public ItemSpellInformation SpellInformation => GetSpellInformation();
+    
     public Item Item
     {
         get => _item;
@@ -163,6 +168,18 @@ public class UsedSpellFragment : BaseViewModel
     }
 
     public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => ImageController.GetSpellImage(SpellData.GetIconUniqueName(ResolvePresentationUniqueName())));
+
+    private ItemSpellInformation GetSpellInformation()
+    {
+        var presentationUniqueName = ResolvePresentationUniqueName();
+        if (_spellInformation == null || _spellInformationUniqueName != presentationUniqueName)
+        {
+            _spellInformation = new ItemSpellInformation(presentationUniqueName);
+            _spellInformationUniqueName = presentationUniqueName;
+        }
+
+        return _spellInformation;
+    }
 
     private string ResolvePresentationUniqueName()
     {
