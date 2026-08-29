@@ -16,7 +16,13 @@ namespace StatisticsAnalysisTool.GameFileData;
 
 public static class SpellData
 {
-    private static readonly Regex InlineLocalizationReferenceRegex = new(@"\$(?<reference>\$?[^$]+)\$", RegexOptions.Compiled);
+    private const string LocalizationReferencePathPattern = @"[a-z0-9_]+(?:\[\d+\])?(?:\.[a-z0-9_]+(?:\[\d+\])?)*";
+    private static readonly Regex InlineLocalizationReferenceRegex = new(
+        $@"\$(?<reference>\$?{LocalizationReferencePathPattern})\$",
+        RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    private static readonly Regex IncompleteInlineLocalizationReferenceRegex = new(
+        $@"(?<reference>\$\$?{LocalizationReferencePathPattern})(?=\[/[a-z]+\])",
+        RegexOptions.Compiled | RegexOptions.IgnoreCase);
     private static List<GameFileDataSpell> _spells;
     private static IReadOnlyDictionary<string, XElement> _spellElementsByUniqueName =
         new Dictionary<string, XElement>(StringComparer.Ordinal);
@@ -334,16 +340,17 @@ public static class SpellData
             return localizedDescription;
         }
 
-        return InlineLocalizationReferenceRegex.Replace(localizedDescription, match =>
-        {
-            var resolvedValue = SpellLocalizationReferenceResolver.Resolve(
-                match.Value,
-                spell.UniqueName,
-                _spellElementsByUniqueName);
-            return string.Equals(resolvedValue, "-", StringComparison.Ordinal)
-                ? match.Value
-                : resolvedValue;
-        });
+        var resolvedDescription = InlineLocalizationReferenceRegex.Replace(
+            localizedDescription,
+            match => ResolveInlineLocalizationReference(spell, match));
+        return IncompleteInlineLocalizationReferenceRegex.Replace(
+            resolvedDescription,
+            match => ResolveInlineLocalizationReference(spell, match));
+    }
+
+    private static string ResolveInlineLocalizationReference(GameFileDataSpell spell, Match match)
+    {
+        return SpellLocalizationReferenceResolver.Resolve(match.Value, spell.UniqueName, _spellElementsByUniqueName);
     }
 
     private static string GetFirstExistingLocalizationKey(params string[] localizationKeys)

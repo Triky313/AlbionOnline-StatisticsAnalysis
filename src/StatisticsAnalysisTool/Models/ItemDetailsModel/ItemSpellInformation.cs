@@ -14,8 +14,9 @@ namespace StatisticsAnalysisTool.Models.ItemDetailsModel;
 
 public sealed class ItemSpellInformation
 {
-    private static readonly Regex AlbionFormattingTagRegex = new(@"\[/?[a-z]+\]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    private static readonly Regex AlbionFormattingTagRegex = new(@"\[(?:/?[a-z]+|[0-9a-f]{6}|-)\]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
     private static readonly Regex DescriptionMarkupTagRegex = new(@"\[(?<closing>/)?(?<type>dmg|heal|cc|debuff|buff|mobility|other)\]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    private static readonly Regex DescriptionFormattingTagRegex = new(@"\[(?:(?<closing>/)?(?<tag>dmg|heal|cc|debuff|buff|mobility|other|b|c)|(?<color>[0-9a-f]{6})|(?<reset>-))\]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
     private static readonly Regex UnresolvedPlaceholderRegex = new(@"\{\d+\}", RegexOptions.Compiled);
 
     public ItemSpellInformation(string uniqueName)
@@ -159,37 +160,71 @@ public sealed class ItemSpellInformation
         var normalizedDescription = UnresolvedPlaceholderRegex.Replace(description, "-").Replace("\r\n", "\n", StringComparison.Ordinal);
         var segments = new List<ItemSpellDescriptionSegment>();
         var activeTypes = new Stack<string>();
+        var activeColors = new Stack<string>();
+        var activeColor = string.Empty;
+        var boldDepth = 0;
         var currentPosition = 0;
 
-        foreach (Match match in DescriptionMarkupTagRegex.Matches(normalizedDescription))
+        foreach (Match match in DescriptionFormattingTagRegex.Matches(normalizedDescription))
         {
-            AddDescriptionSegment(segments, normalizedDescription[currentPosition..match.Index], activeTypes.Count > 0 ? activeTypes.Peek() : string.Empty);
+            AddDescriptionSegment(segments, normalizedDescription[currentPosition..match.Index], activeTypes.Count > 0 ? activeTypes.Peek() : string.Empty, boldDepth > 0 || activeTypes.Count > 0, activeColor);
 
-            if (match.Groups["closing"].Success)
+            if (match.Groups["color"].Success)
             {
-                if (activeTypes.Count > 0)
-                {
-                    activeTypes.Pop();
-                }
+                activeColor = match.Groups["color"].Value;
+            }
+            else if (match.Groups["reset"].Success)
+            {
+                activeTypes.Clear();
+                activeColors.Clear();
+                activeColor = string.Empty;
+                boldDepth = 0;
             }
             else
             {
-                activeTypes.Push(NormalizeDescriptionType(match.Groups["type"].Value));
+                var tag = match.Groups["tag"].Value.ToLowerInvariant();
+                var isClosingTag = match.Groups["closing"].Success;
+                if (tag == "b")
+                {
+                    boldDepth = isClosingTag ? Math.Max(0, boldDepth - 1) : boldDepth + 1;
+                }
+                else if (tag == "c")
+                {
+                    if (isClosingTag)
+                    {
+                        activeColor = activeColors.Count > 0 ? activeColors.Pop() : string.Empty;
+                    }
+                    else
+                    {
+                        activeColors.Push(activeColor);
+                    }
+                }
+                else if (isClosingTag)
+                {
+                    if (activeTypes.Count > 0)
+                    {
+                        activeTypes.Pop();
+                    }
+                }
+                else
+                {
+                    activeTypes.Push(NormalizeDescriptionType(tag));
+                }
             }
 
             currentPosition = match.Index + match.Length;
         }
 
-        AddDescriptionSegment(segments, normalizedDescription[currentPosition..], activeTypes.Count > 0 ? activeTypes.Peek() : string.Empty);
+        AddDescriptionSegment(segments, normalizedDescription[currentPosition..], activeTypes.Count > 0 ? activeTypes.Peek() : string.Empty, boldDepth > 0 || activeTypes.Count > 0, activeColor);
         return segments;
     }
 
-    private static void AddDescriptionSegment(ICollection<ItemSpellDescriptionSegment> segments, string text, string typeKey)
+    private static void AddDescriptionSegment(ICollection<ItemSpellDescriptionSegment> segments, string text, string typeKey, bool isBold, string colorHex)
     {
         var plainText = AlbionFormattingTagRegex.Replace(text, string.Empty);
         if (plainText.Length > 0)
         {
-            segments.Add(new ItemSpellDescriptionSegment(plainText, typeKey));
+            segments.Add(new ItemSpellDescriptionSegment(plainText, typeKey, isBold, colorHex));
         }
     }
 

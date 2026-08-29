@@ -31,7 +31,18 @@ internal static class SpellLocalizationReferenceResolver
 
         var path = reference.Trim('$');
         var separatorIndex = path.IndexOf('.', StringComparison.Ordinal);
-        if (separatorIndex <= 0)
+        if (separatorIndex < 0)
+        {
+            if (!spellElementsByUniqueName.TryGetValue(currentSpellUniqueName, out var spellElement))
+            {
+                return MissingValue;
+            }
+
+            var rootAttributeValue = ResolveAttributeValue(spellElement, path);
+            return FormatValue(rootAttributeValue, path, spellElement);
+        }
+
+        if (separatorIndex == 0)
         {
             return MissingValue;
         }
@@ -103,6 +114,12 @@ internal static class SpellLocalizationReferenceResolver
         var directElements = parent.Elements()
             .Where(element => string.Equals(element.Name.LocalName, elementName, StringComparison.OrdinalIgnoreCase))
             .ToArray();
+        var conditionalValueElement = GetIndexedConditionalValueElement(elementName, directElements, elementIndex);
+        if (conditionalValueElement != null)
+        {
+            return conditionalValueElement;
+        }
+
         if (directElements.Length > elementIndex)
         {
             return directElements[elementIndex];
@@ -110,6 +127,22 @@ internal static class SpellLocalizationReferenceResolver
 
         return parent.Descendants()
             .Where(element => string.Equals(element.Name.LocalName, elementName, StringComparison.OrdinalIgnoreCase))
+            .ElementAtOrDefault(elementIndex);
+    }
+
+    private static XElement GetIndexedConditionalValueElement(
+        string elementName,
+        IReadOnlyList<XElement> elements,
+        int elementIndex)
+    {
+        if (!string.Equals(elementName, "ifcharge", StringComparison.OrdinalIgnoreCase)
+            || elements.Count != 1)
+        {
+            return null;
+        }
+
+        return elements[0].Elements()
+            .Where(element => element.Attribute("value") != null)
             .ElementAtOrDefault(elementIndex);
     }
 
@@ -121,6 +154,16 @@ internal static class SpellLocalizationReferenceResolver
         if (!string.IsNullOrWhiteSpace(value))
         {
             return value;
+        }
+
+        if (string.Equals(attributeName, "time", StringComparison.OrdinalIgnoreCase))
+        {
+            return ResolveTime(element);
+        }
+
+        if (string.Equals(attributeName, "duration", StringComparison.OrdinalIgnoreCase))
+        {
+            return ResolveDuration(element);
         }
 
         if (string.Equals(attributeName, "totalduration", StringComparison.OrdinalIgnoreCase))
@@ -144,6 +187,40 @@ internal static class SpellLocalizationReferenceResolver
             .FirstOrDefault(attribute => string.Equals(attribute.Name.LocalName, sourceAttributeName, StringComparison.OrdinalIgnoreCase))?
             .Value;
         return ResolveDynamicValue(sourceValue, dynamicAttributeMatch.Groups["selector"].Value);
+    }
+
+    private static string ResolveTime(XElement element)
+    {
+        if (string.Equals(element.Name.LocalName, "attributechangeovertime", StringComparison.OrdinalIgnoreCase))
+        {
+            return ResolveTotalDuration(element);
+        }
+
+        var duration = element.Attributes()
+            .FirstOrDefault(attribute => string.Equals(attribute.Name.LocalName, "duration", StringComparison.OrdinalIgnoreCase))?
+            .Value;
+        return string.IsNullOrWhiteSpace(duration) ? MissingValue : duration;
+    }
+
+    private static string ResolveDuration(XElement element)
+    {
+        var time = element.Attributes()
+            .FirstOrDefault(attribute => string.Equals(attribute.Name.LocalName, "time", StringComparison.OrdinalIgnoreCase))?
+            .Value;
+        if (!string.IsNullOrWhiteSpace(time))
+        {
+            return time;
+        }
+
+        if (string.Equals(element.Name.LocalName, "knockback", StringComparison.OrdinalIgnoreCase)
+            && TryGetNumber(element, "distance", out var distance)
+            && TryGetNumber(element, "movespeed", out var moveSpeed)
+            && moveSpeed > 0)
+        {
+            return (distance / moveSpeed).ToString("0.##", CultureInfo.InvariantCulture);
+        }
+
+        return MissingValue;
     }
 
     private static string ResolveTotalDuration(XElement element)
@@ -191,13 +268,7 @@ internal static class SpellLocalizationReferenceResolver
             return singleValue.ToString("0.##", CultureInfo.InvariantCulture);
         }
 
-        var values = sourceValue
-            .Split('-', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-            .Select(value => double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out var number)
-                ? number
-                : double.NaN)
-            .Where(number => !double.IsNaN(number))
-            .ToArray();
+        var values = ParseDynamicValues(sourceValue);
         if (values.Length == 0)
         {
             return MissingValue;
@@ -211,6 +282,25 @@ internal static class SpellLocalizationReferenceResolver
             _ => values[0]
         };
         return selectedValue.ToString("0.##", CultureInfo.InvariantCulture);
+    }
+
+    private static double[] ParseDynamicValues(string sourceValue)
+    {
+        var rawValues = sourceValue.Contains(':')
+            ? sourceValue.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                .Select(value =>
+                {
+                    var separatorIndex = value.LastIndexOf(':');
+                    return separatorIndex >= 0 ? value[(separatorIndex + 1)..] : value;
+                })
+            : sourceValue.Split('-', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+        return rawValues
+            .Select(value => double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out var number)
+                ? number
+                : double.NaN)
+            .Where(number => !double.IsNaN(number))
+            .ToArray();
     }
 
     private static bool TryCalculateSequenceDuration(
@@ -250,7 +340,8 @@ internal static class SpellLocalizationReferenceResolver
             return string.IsNullOrWhiteSpace(value) ? MissingValue : value;
         }
 
-        if (attributeName.EndsWith("change", StringComparison.OrdinalIgnoreCase))
+        if (attributeName.EndsWith("change", StringComparison.OrdinalIgnoreCase)
+            || IsHealthReductionValue(attributeName, element))
         {
             number = Math.Abs(number);
         }
@@ -289,6 +380,22 @@ internal static class SpellLocalizationReferenceResolver
         return string.Equals(attributeName, "value", StringComparison.OrdinalIgnoreCase)
                && (element.Name.LocalName.Contains("buff", StringComparison.OrdinalIgnoreCase)
                    || element.Name.LocalName.Contains("debuff", StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static bool IsHealthReductionValue(string attributeName, XElement element)
+    {
+        if (!string.Equals(attributeName, "value", StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+
+        return element.AncestorsAndSelf().Any(ancestor =>
+            (string.Equals(ancestor.Name.LocalName, "directattributechange", StringComparison.OrdinalIgnoreCase)
+             || string.Equals(ancestor.Name.LocalName, "attributechangeovertime", StringComparison.OrdinalIgnoreCase))
+            && string.Equals(
+                ancestor.Attribute("attribute")?.Value,
+                "health",
+                StringComparison.OrdinalIgnoreCase));
     }
 
     private static bool IsDistance(string attributeName)

@@ -9,6 +9,7 @@
     <SolidColorBrush x:Key="Spell.Type.Debuff" Color="#FFC27AF0" />
     <SolidColorBrush x:Key="Spell.Type.Buff" Color="#FF20C7FF" />
     <SolidColorBrush x:Key="Spell.Type.Mobility" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="Spell.Type.Other" Color="#FFDDCDC3" />
     <SolidColorBrush x:Key="Spell.Text" Color="#FFDDCDC3" />
 
     <Style x:Key="Spell.ToolTip" TargetType="{x:Type ToolTip}">
