@@ -1068,6 +1068,11 @@ public class LoggingBindings : BaseViewModel
         return addedItems;
     }
 
+    public bool AddLootLogCombatEvent(LootLogCombatEvent combatEvent)
+    {
+        return combatEvent is not null && AddLootLogCombatEvents([combatEvent]) > 0;
+    }
+
     private int AddLootLogCombatEvents(IEnumerable<LootLogCombatEvent> combatEvents)
     {
         var addedEvents = 0;
@@ -1700,7 +1705,7 @@ public class LoggingBindings : BaseViewModel
     public string NotificationFilterSummary => IsAllNotificationFilterSelected
         ? $"{LoggingTranslation.Filter}: {LoggingTranslation.FilterAll}"
         : BuildFilterSummary(LoggingTranslation.Filter, Filters.Count(filter => filter.IsSelected == true), Filters.Count);
-    public string TrackingSummary => BuildFilterSummary(LoggingTranslation.Tracking, CountSelectedFilters(IsTrackingPartyLootOnly, IsTrackingSilver, IsTrackingFame, IsTrackingMobLoot, IsTrackingKill), 5);
+    public string TrackingSummary => BuildFilterSummary(LoggingTranslation.Tracking, CountSelectedFilters(IsTrackingPartyLootOnly, IsTrackingSilver, IsTrackingFame, IsTrackingMobLoot, IsTrackingPlayerLoot, IsTrackingKill), 6);
     public int ChestLogCount => _chestLogSourceCount;
     public int LootLogCount => _lootLogFileCount;
     public bool HasLootComparatorLogs => VaultLogItems.Count > 0
@@ -2241,6 +2246,19 @@ public class LoggingBindings : BaseViewModel
             OnPropertyChanged(nameof(TrackingSummary));
         }
     }
+
+    public bool IsTrackingPlayerLoot
+    {
+        get;
+        set
+        {
+            field = value;
+
+            SettingsController.CurrentSettings.IsTrackingPlayerLoot = field;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(TrackingSummary));
+        }
+    } = true;
 
     public bool IsTrackingPartyLootOnly
     {

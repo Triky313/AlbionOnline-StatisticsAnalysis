@@ -24060,6 +24060,104 @@
       ]
     },
     {
+      "tuid": "TRACKING_PLAYER_LOOT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Spieler-Loot tracken"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Tracking player loot"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Registrar botín de jugadores"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Suivre le butin des joueurs"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "プレイヤーの戦利品を追跡"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "플레이어 전리품 추적"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Śledzenie łupów graczy"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Rastrear saque de jogadores"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Отслеживать добычу игроков"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "追踪玩家战利品"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "追蹤玩家戰利品"
+        }
+      ]
+    },
+    {
+      "tuid": "TRACKING_KILLS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Kills tracken"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Tracking kills"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Seguimiento de asesinatos"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Traquer les éliminations"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "キルを追跡"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "킬 추적"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Śledzenie zabójstw"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Rastreando abates"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Отслеживать убийства"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "追踪击杀"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "追蹤擊殺"
+        }
+      ]
+    },
+    {
       "tuid": "SHOP_CATEGORY",
       "tuv": [
         {

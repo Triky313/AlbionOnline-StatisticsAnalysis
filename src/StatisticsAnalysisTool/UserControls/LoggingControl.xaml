@@ -262,7 +262,10 @@
                                         <ToggleButton Content="{Binding Translation.TrackingMobLoot, FallbackValue=TRACKING__MOB__LOOT}"
                                                       IsChecked="{Binding LoggingBindings.IsTrackingMobLoot, Mode=TwoWay, FallbackValue=true}"
                                                       Style="{StaticResource App.FilterToggleButton}" />
-                                        <ToggleButton Content="{Binding Translation.ShowKills, FallbackValue=KILL__TRACKING}"
+                                        <ToggleButton Content="{Binding Translation.TrackingPlayerLoot, FallbackValue=TRACKING__PLAYER__LOOT}"
+                                                      IsChecked="{Binding LoggingBindings.IsTrackingPlayerLoot, Mode=TwoWay, FallbackValue=true}"
+                                                      Style="{StaticResource App.FilterToggleButton}" />
+                                        <ToggleButton Content="{Binding Translation.TrackingKills, FallbackValue=TRACKING__KILLS}"
                                                       IsChecked="{Binding LoggingBindings.IsTrackingKill, Mode=TwoWay, FallbackValue=true}"
                                                       Style="{StaticResource App.FilterToggleButton}" />
                                     </WrapPanel>

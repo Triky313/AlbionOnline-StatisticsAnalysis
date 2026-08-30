@@ -123,6 +123,8 @@ public class MainWindowTranslation
     public static string ShowLootFromMobs => LocalizationController.Translation("SHOW_LOOT_FROM_MOBS");
     public static string ShowKills => LocalizationController.Translation("SHOW_KILLS");
     public static string TrackingMobLoot => LocalizationController.Translation("TRACKING_MOB_LOOT");
+    public static string TrackingPlayerLoot => LocalizationController.Translation("TRACKING_PLAYER_LOOT");
+    public static string TrackingKills => LocalizationController.Translation("TRACKING_KILLS");
     public static string TopLooters => LocalizationController.Translation("TOP_LOOTERS");
     public static string ToolTasks => LocalizationController.Translation("TOOL_TASKS");
     public static string Locations => LocalizationController.Translation("LOCATIONS");

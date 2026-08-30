@@ -100,6 +100,7 @@ public class TrackingController : ITrackingController
         _mainWindowViewModel.LoggingBindings.IsTrackingSilver = SettingsController.CurrentSettings.IsTrackingSilver;
         _mainWindowViewModel.LoggingBindings.IsTrackingFame = SettingsController.CurrentSettings.IsTrackingFame;
         _mainWindowViewModel.LoggingBindings.IsTrackingMobLoot = SettingsController.CurrentSettings.IsTrackingMobLoot;
+        _mainWindowViewModel.LoggingBindings.IsTrackingPlayerLoot = SettingsController.CurrentSettings.IsTrackingPlayerLoot;
         _mainWindowViewModel.LoggingBindings.IsTrackingKill = SettingsController.CurrentSettings.IsTrackingKill;
 
         _mainWindowViewModel.LoggingBindings.GameLoggingCollectionView = CollectionViewSource.GetDefaultView(_mainWindowViewModel.LoggingBindings.TrackingNotifications) as ListCollectionView;

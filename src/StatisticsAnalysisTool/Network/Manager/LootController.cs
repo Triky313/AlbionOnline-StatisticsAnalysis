@@ -76,7 +76,7 @@ public class LootController : ILootController
             return;
         }
 
-        if (!_mainWindowViewModel.LoggingBindings.IsTrackingMobLoot && loot.LootedFromName.ToUpper().Equals("MOB"))
+        if (!IsLootSourceTrackingEnabled(loot))
         {
             return;
         }
@@ -162,7 +162,7 @@ public class LootController : ILootController
             return;
         }
 
-        if (!_mainWindowViewModel.LoggingBindings.IsTrackingMobLoot && loot.LootedFromName.ToUpper().Equals("MOB"))
+        if (!IsLootSourceTrackingEnabled(loot))
         {
             return;
         }
@@ -278,23 +278,56 @@ public class LootController : ILootController
 
     public async Task AddKillDeathAsync(string died, string diedPlayerGuild, string killedBy, string killedByGuild, string clusterName)
     {
-        if (!_mainWindowViewModel.LoggingBindings.IsLoggingTrackingActive)
+        var isLoggingTrackingActive = _mainWindowViewModel.LoggingBindings.IsLoggingTrackingActive;
+        var isLootComparatorTrackingActive = _mainWindowViewModel.LoggingBindings.IsLootComparatorTrackingActive;
+        if (!isLoggingTrackingActive && !isLootComparatorTrackingActive)
         {
             return;
         }
 
-        _lootLoggerObjects.Add(new LootLoggerObject
+        var utcTimestamp = DateTime.UtcNow;
+        if (isLoggingTrackingActive)
         {
-            Died = died,
-            DiedPlayerGuild = diedPlayerGuild,
-            KilledBy = killedBy,
-            KilledByGuild = killedByGuild,
-            ClusterName = clusterName
-        });
+            var lootLoggerObject = new LootLoggerObject
+            {
+                Died = died,
+                DiedPlayerGuild = diedPlayerGuild,
+                KilledBy = killedBy,
+                KilledByGuild = killedByGuild,
+                ClusterName = clusterName
+            };
+            utcTimestamp = lootLoggerObject.UtcPickupTime;
+            _lootLoggerObjects.Add(lootLoggerObject);
 
-        _mainWindowViewModel.LoggingBindings.LootLoggerStats.RecordKillDeath(died, killedBy);
+            _mainWindowViewModel.LoggingBindings.LootLoggerStats.RecordKillDeath(died, killedBy);
+            await RemoveLootIfMoreThanLimitAsync(MaxLoot);
+        }
 
-        await RemoveLootIfMoreThanLimitAsync(MaxLoot);
+        if (isLootComparatorTrackingActive)
+        {
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+                _mainWindowViewModel.LoggingBindings.AddLootLogCombatEvent(new LootLogCombatEvent
+                {
+                    UtcTimestamp = utcTimestamp,
+                    DiedName = died,
+                    DiedPlayerGuild = diedPlayerGuild,
+                    KilledByName = killedBy,
+                    KilledByGuild = killedByGuild,
+                    ClusterName = clusterName
+                }));
+        }
+    }
+
+    private bool IsLootSourceTrackingEnabled(Loot loot)
+    {
+        var lootedFromName = loot.LootedFromName ?? string.Empty;
+        var localizedMobName = LocalizationController.Translation("MOB");
+        var isMobLoot = string.Equals(lootedFromName, "MOB", StringComparison.OrdinalIgnoreCase)
+                        || string.Equals(lootedFromName, localizedMobName, StringComparison.OrdinalIgnoreCase);
+
+        return isMobLoot
+            ? _mainWindowViewModel.LoggingBindings.IsTrackingMobLoot
+            : _mainWindowViewModel.LoggingBindings.IsTrackingPlayerLoot;
     }
 
     public string GetLootLoggerObjectsAsCsv()
@@ -616,6 +649,36 @@ public class LootController : ILootController
             await AddLootedItemAsync(testLoot);
             await AddLootAsync(testLoot);
             await Task.Delay(100);
+        }
+
+        await AddTestCombatEventsAsync(testPlayers);
+    }
+
+    private async Task AddTestCombatEventsAsync(IReadOnlyList<TestLootPlayer> testPlayers)
+    {
+        IReadOnlyList<(int DiedPlayerIndex, int KillerPlayerIndex)> combatEvents =
+        [
+            (1, 0),
+            (1, 0),
+            (2, 0),
+            (0, 1),
+            (4, 2),
+            (5, 3),
+            (3, 4),
+            (2, 4),
+            (0, 5)
+        ];
+
+        foreach (var combatEvent in combatEvents)
+        {
+            var diedPlayer = testPlayers[combatEvent.DiedPlayerIndex];
+            var killerPlayer = testPlayers[combatEvent.KillerPlayerIndex];
+            await AddKillDeathAsync(
+                diedPlayer.Name,
+                diedPlayer.Guild,
+                killerPlayer.Name,
+                killerPlayer.Guild,
+                "Debug Cluster");
         }
     }
 

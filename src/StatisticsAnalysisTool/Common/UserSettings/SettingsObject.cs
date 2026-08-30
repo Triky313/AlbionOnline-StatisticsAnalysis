@@ -56,6 +56,7 @@ public class SettingsObject
     public bool IsTrackingSilver { get; set; } = false;
     public bool IsTrackingFame { get; set; } = false;
     public bool IsTrackingMobLoot { get; set; } = false;
+    public bool IsTrackingPlayerLoot { get; set; } = true;
     public bool IsTrackingKill { get; set; } = false;
     public bool IsSuggestPreReleaseUpdatesActive { get; set; } = false;
     public bool IsLootFromMobShown { get; set; } = false;
