@@ -28,6 +28,12 @@ internal static class PlayerCombatResultResolver
             return PlayerCombatResult.None;
         }
 
+        var opponentName = isLocalVictim ? killerPlayerName : diedPlayerName;
+        if (!PlayerCombatParticipantValidator.IsPlayerName(opponentName))
+        {
+            return PlayerCombatResult.None;
+        }
+
         return (isLocalVictim, isLethal) switch
         {
             (true, true) => PlayerCombatResult.Death,
