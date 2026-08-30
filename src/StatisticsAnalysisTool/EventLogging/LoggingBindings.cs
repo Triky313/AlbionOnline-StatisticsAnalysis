@@ -515,7 +515,7 @@ public class LoggingBindings : BaseViewModel
             var itemsToRemove = player.GetLootedItemsSnapshot().Where(item => item.IsItemFromVaultLog).ToList();
             player.RemoveLootedItems(itemsToRemove);
 
-            if (player.LootedItemCount <= 0)
+            if (player.LootedItemCount <= 0 && !player.HasCombatEvents)
             {
                 playerToRemove.Add(player);
             }
@@ -552,6 +552,7 @@ public class LoggingBindings : BaseViewModel
 
     public void ClearLootLogs()
     {
+        LootLogCombatEvents.Clear();
         LootingPlayers.Clear();
         _lootLogFileCount = 0;
         RefreshLootComparatorLogCounts();
@@ -560,6 +561,7 @@ public class LoggingBindings : BaseViewModel
     public void ClearAllLootComparatorLogs()
     {
         VaultLogItems.Clear();
+        LootLogCombatEvents.Clear();
         LootingPlayers.Clear();
         _chestLogSourceCount = 0;
         _lootLogFileCount = 0;
@@ -574,7 +576,11 @@ public class LoggingBindings : BaseViewModel
             throw new InvalidOperationException("At least one chest or loot log must be loaded before creating a loot comparator save.");
         }
 
-        var createdSave = _lootComparatorSaveService.Save(name, VaultLogItems.ToList(), LootingPlayers.ToList());
+        var createdSave = _lootComparatorSaveService.Save(
+            name,
+            VaultLogItems.ToList(),
+            LootingPlayers.ToList(),
+            LootLogCombatEvents.ToList());
         RefreshLootComparatorSaves();
         SelectedLootComparatorSave = LootComparatorSaves.FirstOrDefault(save =>
             string.Equals(save.DirectoryPath, createdSave.DirectoryPath, StringComparison.OrdinalIgnoreCase));
@@ -593,6 +599,7 @@ public class LoggingBindings : BaseViewModel
         {
             List<VaultContainerLogItem> chestLogItems = [];
             List<ImportedLootLogItem> lootLogItems = [];
+            List<LootLogCombatEvent> combatEvents = [];
 
             if (save.ChestLogEntryCount > 0
                 && (!TryReadVaultLogText(File.ReadAllText(save.ChestLogFilePath), out chestLogItems)
@@ -603,8 +610,8 @@ public class LoggingBindings : BaseViewModel
             }
 
             if (save.LootLogEntryCount > 0
-                && (!TryReadLootLogFile(save.LootLogFilePath, out lootLogItems)
-                    || lootLogItems.Count != save.LootLogEntryCount))
+                && (!TryReadLootLogFile(save.LootLogFilePath, out lootLogItems, out combatEvents)
+                    || lootLogItems.Count + combatEvents.Count != save.LootLogEntryCount))
             {
                 SetLootComparatorImportEventLine(LocalizationController.Translation("LOOT_COMPARATOR_SAVE_LOAD_FAILED"));
                 return false;
@@ -614,14 +621,15 @@ public class LoggingBindings : BaseViewModel
 
             var addedChestLogItems = AddVaultLogItems(chestLogItems);
             var addedLootLogItems = AddLootLogItems(lootLogItems);
+            var addedCombatEvents = AddLootLogCombatEvents(combatEvents);
             _chestLogSourceCount = addedChestLogItems > 0 ? 1 : 0;
-            _lootLogFileCount = addedLootLogItems > 0 ? 1 : 0;
+            _lootLogFileCount = addedLootLogItems + addedCombatEvents > 0 ? 1 : 0;
 
             ClearLootComparatorImportEventLine();
             RefreshLootComparatorLogCounts();
             _ = UpdateFilteredLootedItemsAsync();
 
-            Debug.Print($"Loaded loot comparator save '{save.Name}' with {addedChestLogItems} chest entries and {addedLootLogItems} loot entries.");
+            Debug.Print($"Loaded loot comparator save '{save.Name}' with {addedChestLogItems} chest entries, {addedLootLogItems} loot entries and {addedCombatEvents} combat entries.");
             return true;
         }
         catch (Exception ex)
@@ -810,16 +818,18 @@ public class LoggingBindings : BaseViewModel
         {
             try
             {
-                if (!TryReadLootLogFile(filePath, out var lootLogItems))
+                if (!TryReadLootLogFile(filePath, out var lootLogItems, out var combatEvents))
                 {
                     SetLootComparatorImportEventLine("LOOT_COMPARATOR_INVALID_LOOT_LOG_FILE", Path.GetFileName(filePath));
                     continue;
                 }
 
-                var fileAddedItems = AddLootLogItems(lootLogItems);
-                addedItems += fileAddedItems;
+                var fileAddedLootItems = AddLootLogItems(lootLogItems);
+                var fileAddedCombatEvents = AddLootLogCombatEvents(combatEvents);
+                var fileAddedEntries = fileAddedLootItems + fileAddedCombatEvents;
+                addedItems += fileAddedEntries;
 
-                if (fileAddedItems > 0)
+                if (fileAddedEntries > 0)
                 {
                     _lootLogFileCount++;
                 }
@@ -835,9 +845,13 @@ public class LoggingBindings : BaseViewModel
         return addedItems;
     }
 
-    private static bool TryReadLootLogFile(string filePath, out List<ImportedLootLogItem> lootLogItems)
+    private static bool TryReadLootLogFile(
+        string filePath,
+        out List<ImportedLootLogItem> lootLogItems,
+        out List<LootLogCombatEvent> combatEvents)
     {
         lootLogItems = [];
+        combatEvents = [];
         var isHeaderLine = true;
 
         foreach (var line in File.ReadLines(filePath))
@@ -867,6 +881,12 @@ public class LoggingBindings : BaseViewModel
 
             if (IsNonLootEventRow(values))
             {
+                if (!TryParseLootLogCombatEvent(values, out var combatEvent))
+                {
+                    return false;
+                }
+
+                combatEvents.Add(combatEvent);
                 continue;
             }
 
@@ -878,7 +898,7 @@ public class LoggingBindings : BaseViewModel
             lootLogItems.Add(lootLogItem);
         }
 
-        return !isHeaderLine && lootLogItems.Count > 0;
+        return !isHeaderLine && lootLogItems.Count + combatEvents.Count > 0;
     }
 
     private static bool IsLootLogHeader(string[] values)
@@ -896,6 +916,30 @@ public class LoggingBindings : BaseViewModel
                && string.IsNullOrWhiteSpace(values[4])
                && string.IsNullOrWhiteSpace(values[5])
                && string.IsNullOrWhiteSpace(values[6]);
+    }
+
+    private static bool TryParseLootLogCombatEvent(string[] values, out LootLogCombatEvent combatEvent)
+    {
+        combatEvent = null;
+
+        if (values is not { Length: >= 14 }
+            || !TryParseLootLogTimestamp(values[0], out var utcTimestamp)
+            || string.IsNullOrWhiteSpace(values[10])
+            || string.IsNullOrWhiteSpace(values[12]))
+        {
+            return false;
+        }
+
+        combatEvent = new LootLogCombatEvent
+        {
+            UtcTimestamp = utcTimestamp,
+            DiedName = values[10],
+            DiedPlayerGuild = values[11],
+            KilledByName = values[12],
+            KilledByGuild = values[13],
+            ClusterName = values.Length > 15 ? values[15] : string.Empty
+        };
+        return true;
     }
 
     private static bool TryParseLootLogFields(string[] values, out ImportedLootLogItem lootLogItem)
@@ -1022,6 +1066,75 @@ public class LoggingBindings : BaseViewModel
         }
 
         return addedItems;
+    }
+
+    private int AddLootLogCombatEvents(IEnumerable<LootLogCombatEvent> combatEvents)
+    {
+        var addedEvents = 0;
+
+        foreach (var combatEvent in combatEvents)
+        {
+            if (LootLogCombatEvents.Any(existingEvent => IsSameLootLogCombatEvent(existingEvent, combatEvent)))
+            {
+                continue;
+            }
+
+            LootLogCombatEvents.Add(combatEvent);
+            AddOrUpdateCombatPlayer(combatEvent.DiedName, combatEvent.DiedPlayerGuild);
+            AddOrUpdateCombatPlayer(combatEvent.KilledByName, combatEvent.KilledByGuild);
+            addedEvents++;
+        }
+
+        RefreshLootingPlayerCombatCounts();
+        return addedEvents;
+    }
+
+    private static bool IsSameLootLogCombatEvent(LootLogCombatEvent firstEvent, LootLogCombatEvent secondEvent)
+    {
+        return ToUtc(firstEvent.UtcTimestamp) == ToUtc(secondEvent.UtcTimestamp)
+               && string.Equals(firstEvent.DiedName, secondEvent.DiedName, StringComparison.OrdinalIgnoreCase)
+               && string.Equals(firstEvent.DiedPlayerGuild, secondEvent.DiedPlayerGuild, StringComparison.OrdinalIgnoreCase)
+               && string.Equals(firstEvent.KilledByName, secondEvent.KilledByName, StringComparison.OrdinalIgnoreCase)
+               && string.Equals(firstEvent.KilledByGuild, secondEvent.KilledByGuild, StringComparison.OrdinalIgnoreCase)
+               && string.Equals(firstEvent.ClusterName, secondEvent.ClusterName, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private void AddOrUpdateCombatPlayer(string playerName, string playerGuild)
+    {
+        if (string.IsNullOrWhiteSpace(playerName))
+        {
+            return;
+        }
+
+        var lootingPlayer = LootingPlayers.FirstOrDefault(player =>
+            string.Equals(player.PlayerName, playerName, StringComparison.OrdinalIgnoreCase));
+        if (lootingPlayer is null)
+        {
+            LootingPlayers.Add(new LootingPlayer
+            {
+                PlayerName = playerName,
+                PlayerGuild = playerGuild,
+                LootingPlayerVisibility = Visibility.Visible
+            });
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(lootingPlayer.PlayerGuild) && !string.IsNullOrWhiteSpace(playerGuild))
+        {
+            lootingPlayer.PlayerGuild = playerGuild;
+        }
+    }
+
+    private void RefreshLootingPlayerCombatCounts()
+    {
+        foreach (var lootingPlayer in LootingPlayers)
+        {
+            var killCount = LootLogCombatEvents.Count(combatEvent =>
+                string.Equals(combatEvent.KilledByName, lootingPlayer.PlayerName, StringComparison.OrdinalIgnoreCase));
+            var deathCount = LootLogCombatEvents.Count(combatEvent =>
+                string.Equals(combatEvent.DiedName, lootingPlayer.PlayerName, StringComparison.OrdinalIgnoreCase));
+            lootingPlayer.SetCombatCounts(killCount, deathCount);
+        }
     }
 
     private static TimeSpan EstimateLootLogTimeOffset(
@@ -1508,7 +1621,17 @@ public class LoggingBindings : BaseViewModel
         }
 
         RemoveVaultLogItemsForPlayer(lootingPlayer.PlayerName);
+        RemoveLootLogCombatEventsForPlayer(lootingPlayer.PlayerName);
         LootingPlayers.Remove(lootingPlayer);
+        RefreshLootingPlayerCombatCounts();
+
+        foreach (var emptyPlayer in LootingPlayers
+                     .Where(player => player.LootedItemCount <= 0 && !player.HasCombatEvents)
+                     .ToList())
+        {
+            LootingPlayers.Remove(emptyPlayer);
+        }
+
         LootingPlayersCollectionView?.Refresh();
         RefreshLootComparatorLogCounts();
     }
@@ -1527,6 +1650,38 @@ public class LoggingBindings : BaseViewModel
         foreach (var vaultItem in vaultItemsToRemove)
         {
             VaultLogItems.Remove(vaultItem);
+        }
+    }
+
+    private void RemoveLootLogCombatEventsForPlayer(string playerName)
+    {
+        if (string.IsNullOrWhiteSpace(playerName))
+        {
+            return;
+        }
+
+        foreach (var combatEvent in LootLogCombatEvents
+                     .Where(item => item.IsForPlayer(playerName))
+                     .ToList())
+        {
+            LootLogCombatEvents.Remove(combatEvent);
+        }
+    }
+
+    private void CopyLootingPlayerLogs(object value)
+    {
+        if (value is not LootingPlayer { HasLootLogEntries: true } lootingPlayer)
+        {
+            return;
+        }
+
+        try
+        {
+            Clipboard.SetText(_lootComparatorSaveService.CreatePlayerLootLog(lootingPlayer, LootLogCombatEvents));
+        }
+        catch (Exception ex)
+        {
+            Debug.Print($"Error copying player loot logs to clipboard: {ex.Message}");
         }
     }
 
@@ -1549,6 +1704,7 @@ public class LoggingBindings : BaseViewModel
     public int ChestLogCount => _chestLogSourceCount;
     public int LootLogCount => _lootLogFileCount;
     public bool HasLootComparatorLogs => VaultLogItems.Count > 0
+                                         || LootLogCombatEvents.Count > 0
                                          || LootingPlayers.SelectMany(player => player.GetLootedItemsSnapshot()).Any(item => !item.IsItemFromVaultLog);
     public bool CanSaveLootComparator => AppDataPaths.IsUserDataAvailable && HasLootComparatorLogs;
     public bool CanLoadLootComparatorSave => SelectedLootComparatorSave is not null;
@@ -1903,6 +2059,7 @@ public class LoggingBindings : BaseViewModel
             SubscribeLootingPlayers(_lootingPlayers);
             OnPropertyChanged();
             RefreshLootComparatorGuildFilters();
+            RefreshLootingPlayerCombatCounts();
         }
     }
 
@@ -1923,6 +2080,17 @@ public class LoggingBindings : BaseViewModel
         {
             field = value;
             OnPropertyChanged();
+        }
+    } = [];
+
+    public ObservableCollection<LootLogCombatEvent> LootLogCombatEvents
+    {
+        get;
+        set
+        {
+            field = value ?? [];
+            OnPropertyChanged();
+            RefreshLootingPlayerCombatCounts();
         }
     } = [];
 
@@ -2357,6 +2525,8 @@ public class LoggingBindings : BaseViewModel
 
     public ICommand RemoveLootingPlayerCommand => field ??= new CommandHandler(RemoveLootingPlayer, true);
 
+    public ICommand CopyLootingPlayerLogsCommand => field ??= new CommandHandler(CopyLootingPlayerLogs, true);
+
     #endregion
 
     #region Loot comparator filter
@@ -2464,7 +2634,9 @@ public class LoggingBindings : BaseViewModel
                 hasVisibleItems |= visibility == Visibility.Visible;
             }
 
-            lootingPlayer.LootingPlayerVisibility = hasVisibleItems ? Visibility.Visible : Visibility.Collapsed;
+            lootingPlayer.LootingPlayerVisibility = hasVisibleItems || lootingPlayer.HasCombatEvents
+                ? Visibility.Visible
+                : Visibility.Collapsed;
         });
     }
 
@@ -2473,7 +2645,11 @@ public class LoggingBindings : BaseViewModel
         foreach (LootingPlayer lootingPlayer in lootingPlayers)
         {
             var lootedItems = lootingPlayer.GetLootedItemsSnapshot();
-            if (lootedItems.Count > 0 && lootedItems.All(x => x.Visibility != Visibility.Visible))
+            if (lootingPlayer.HasCombatEvents)
+            {
+                lootingPlayer.LootingPlayerVisibility = Visibility.Visible;
+            }
+            else if (lootedItems.Count > 0 && lootedItems.All(x => x.Visibility != Visibility.Visible))
             {
                 lootingPlayer.LootingPlayerVisibility = Visibility.Collapsed;
             }

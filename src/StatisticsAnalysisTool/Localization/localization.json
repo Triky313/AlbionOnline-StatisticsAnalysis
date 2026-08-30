@@ -39466,6 +39466,131 @@
       ]
     },
     {
+      "tuid": "COPY_PLAYER_LOOT_LOGS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Loot-Logs dieses Spielers kopieren"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Copy this player's loot logs"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Copier les journaux de butin de ce joueur"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Скопировать журнал добычи этого игрока"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "复制该玩家的战利品日志"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_STATUS_GRAY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Grau"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Gray"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Gris"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Серые"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "灰色"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_STATUS_GREEN",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Grün"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Green"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Vert"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Зелёные"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "绿色"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_STATUS_BLUE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Blau"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Blue"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Bleu"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Синие"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "蓝色"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_STATUS_RED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Rot"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Red"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Rouge"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Красные"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "红色"
+        }
+      ]
+    },
+    {
       "tuid": "T1_TO_T3",
       "tuv": [
         {

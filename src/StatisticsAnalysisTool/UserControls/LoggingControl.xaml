@@ -11,14 +11,6 @@
              d:DesignHeight="500" d:DesignWidth="1000"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
     <UserControl.Resources>
-        <Style x:Key="Logging.ComparatorCard" TargetType="{x:Type Border}">
-            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.T.2}" />
-            <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.4}" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="CornerRadius" Value="4" />
-            <Setter Property="Padding" Value="12" />
-        </Style>
-
         <Style x:Key="Logging.ComparatorSectionTitle" TargetType="{x:Type TextBlock}">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
             <Setter Property="FontSize" Value="15" />
@@ -493,26 +485,46 @@
                                 <StackPanel>
                                     <TextBlock Text="{Binding LoggingBindings.Translation.Guild, FallbackValue=GUILD}"
                                                Style="{StaticResource App.FilterLabel}" />
-                                    <WrapPanel>
-                                        <ToggleButton Content="{Binding LoggingBindings.Translation.FilterAll, FallbackValue=ALL}"
-                                                      IsChecked="{Binding LoggingBindings.IsAllGuildFilterSelected, Mode=OneWay}"
-                                                      Style="{StaticResource App.FilterToggleButton}"
-                                                      Click="AllGuildFilters_Click" />
-                                        <ItemsControl ItemsSource="{Binding LoggingBindings.LootComparatorGuildFilters}">
-                                            <ItemsControl.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <WrapPanel />
-                                                </ItemsPanelTemplate>
-                                            </ItemsControl.ItemsPanel>
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate DataType="{x:Type eventLogging:LootComparatorGuildFilter}">
-                                                    <ToggleButton Content="{Binding Name}"
-                                                                  IsChecked="{Binding IsSelected, Mode=TwoWay}"
-                                                                  Style="{StaticResource App.FilterToggleButton}" />
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </WrapPanel>
+                                    <ToggleButton x:Name="GuildFilterDropdownToggle"
+                                                  Width="220"
+                                                  Content="{Binding LoggingBindings.GuildFilterSummary}"
+                                                  IsChecked="{Binding IsOpen, ElementName=GuildFilterDropdownPopup, Mode=TwoWay}"
+                                                  Style="{StaticResource App.FilterDropdownButton}" />
+                                    <Popup x:Name="GuildFilterDropdownPopup"
+                                           PlacementTarget="{Binding ElementName=GuildFilterDropdownToggle}"
+                                           Placement="Bottom"
+                                           VerticalOffset="2"
+                                           AllowsTransparency="True"
+                                           PopupAnimation="Slide"
+                                           StaysOpen="False">
+                                        <Border Width="{Binding ActualWidth, ElementName=GuildFilterDropdownToggle}"
+                                                Style="{StaticResource App.FilterDropdownPopup}">
+                                            <StackPanel>
+                                                <ToggleButton Content="{Binding LoggingBindings.Translation.FilterAll, FallbackValue=ALL}"
+                                                              IsChecked="{Binding LoggingBindings.IsAllGuildFilterSelected, Mode=OneWay}"
+                                                              Style="{StaticResource App.FilterToggleButton}"
+                                                              Margin="0,0,0,6"
+                                                              Click="AllGuildFilters_Click" />
+                                                <Separator Margin="0,0,0,6"
+                                                           Background="{StaticResource SolidColorBrush.Background.4}" />
+                                                <ScrollViewer MaxHeight="240"
+                                                              HorizontalScrollBarVisibility="Disabled"
+                                                              VerticalScrollBarVisibility="Auto">
+                                                    <ItemsControl ItemsSource="{Binding LoggingBindings.LootComparatorGuildFilters}">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate DataType="{x:Type eventLogging:LootComparatorGuildFilter}">
+                                                                <ToggleButton Content="{Binding Name}"
+                                                                              IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                                                              Style="{StaticResource App.FilterToggleButton}"
+                                                                              HorizontalAlignment="Stretch"
+                                                                              Margin="0,0,0,4" />
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </ScrollViewer>
+                                            </StackPanel>
+                                        </Border>
+                                    </Popup>
                                 </StackPanel>
                             </Border>
 
@@ -702,7 +714,7 @@
             </TabItem>
         </TabControl>
         <ScrollViewer Visibility="{Binding LoggingBindings.IsLootComparatorInfoPopupVisible, FallbackValue=Collapsed}"
-                      Margin="0,70,0,0"
+                      Margin="0,400,0,0"
                       Background="{StaticResource SolidColorBrush.Background.2}"
                       HorizontalScrollBarVisibility="Disabled"
                       VerticalScrollBarVisibility="Auto"

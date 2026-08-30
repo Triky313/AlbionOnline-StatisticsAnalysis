@@ -724,7 +724,7 @@ public class LoggingBindingsTests
     }
 
     [Test]
-    public void AddLootLogFiles_WithNonLootEventRows_SkipsRowsAndImportsLootItems()
+    public void AddLootLogFiles_WithCombatEventRows_ImportsCombatCountsAndLootItems()
     {
         ItemController.Items = new ObservableCollection<Item>()
         {
@@ -742,11 +742,16 @@ public class LoggingBindingsTests
         {
             File.WriteAllText(filePath, lootLogText);
 
-            bindings.AddLootLogFiles([filePath]).Should().Be(1);
+            bindings.AddLootLogFiles([filePath]).Should().Be(2);
 
-            var player = bindings.LootingPlayers.Should().ContainSingle().Subject;
+            var player = bindings.LootingPlayers.Should().ContainSingle(item => item.PlayerName == "Josmiel16").Subject;
             player.PlayerName.Should().Be("Josmiel16");
             player.LootedItems.Should().ContainSingle(item => item.ItemIndex == 4 && item.Quantity == 8);
+
+            var combatPlayer = bindings.LootingPlayers.Should().ContainSingle(item => item.PlayerName == "Donnaoom").Subject;
+            combatPlayer.KillCount.Should().Be(1);
+            combatPlayer.DeathCount.Should().Be(1);
+            bindings.LootLogCombatEvents.Should().ContainSingle();
         }
         finally
         {
@@ -1438,23 +1443,30 @@ public class LoggingBindingsTests
                 new()
                 {
                     ItemIndex = 1,
-                    Quantity = 2
+                    Quantity = 2,
+                    Status = LootedItemStatus.Lost
                 },
                 new()
                 {
                     ItemIndex = 2,
-                    Quantity = 10
+                    Quantity = 10,
+                    Status = LootedItemStatus.Resolved
                 },
                 new()
                 {
                     ItemIndex = 3,
-                    Quantity = 1
+                    Quantity = 1,
+                    Status = LootedItemStatus.Donated
                 }
             }
         };
 
         lootingPlayer.TotalEstimatedMarketValue.Should().Be(250);
         lootingPlayer.TotalEstimatedMarketValueVisibility.Should().Be(Visibility.Visible);
+        lootingPlayer.GrayItemCount.Should().Be(1);
+        lootingPlayer.GreenItemCount.Should().Be(1);
+        lootingPlayer.BlueItemCount.Should().Be(1);
+        lootingPlayer.RedItemCount.Should().Be(0);
     }
     private static string CreateLootLogText(params string[] rows)
     {
