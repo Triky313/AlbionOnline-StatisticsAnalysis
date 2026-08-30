@@ -23,6 +23,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace StatisticsAnalysisTool.Crafting;
 
@@ -34,6 +35,7 @@ public sealed class BlackMarketBindings : BaseViewModel
     private const int FourWeeksTimeRange = 2;
     private const int SevenDaysWindowDays = 7;
     private const int FourWeeksWindowDays = 28;
+    private const string ItemCountChartColorResourceKey = "SolidColorBrush.Accent.Blue.3";
     private readonly object _historyLock = new();
     private readonly Dictionary<(string ItemUniqueName, int QualityLevel), BlackMarketHistoryEntry> _history = new();
     private readonly Dictionary<(string ItemUniqueName, int QualityLevel), BlackMarketItemRow> _rowsByKey = new();
@@ -708,7 +710,7 @@ public sealed class BlackMarketBindings : BaseViewModel
             {
                 Name = "Items",
                 Values = itemCounts,
-                Fill = new SolidColorPaint(new SKColor(149, 35, 63, 160)),
+                Fill = CreateChartPaint(ItemCountChartColorResourceKey),
                 Stroke = null,
                 ScalesYAt = 0
             },
@@ -942,6 +944,16 @@ public sealed class BlackMarketBindings : BaseViewModel
         return totalItems > 0 ? (long) Math.Round(totalPrice / totalItems) : 0;
     }
 
+    private static SolidColorPaint CreateChartPaint(string resourceKey)
+    {
+        if (Application.Current?.Resources[resourceKey] is SolidColorBrush brush)
+        {
+            return new SolidColorPaint(new SKColor(brush.Color.R, brush.Color.G, brush.Color.B, brush.Color.A));
+        }
+
+        return new SolidColorPaint(SKColors.Transparent);
+    }
+
     private static BlackMarketHistoryEntry CloneAndTrim(BlackMarketHistoryEntry source)
     {
         var clone = new BlackMarketHistoryEntry
@@ -983,8 +995,8 @@ public sealed class BlackMarketBindings : BaseViewModel
 
     private void UpdateMarketStatus()
     {
-        var location = ClusterController.CurrentCluster.SourceClusterIndex?.GetMarketLocationByLocationNameOrId()
-                       ?? ClusterController.CurrentCluster.Index?.GetMarketLocationByLocationNameOrId()
+        var location = ClusterController.CurrentCluster.Index?.GetMarketLocationByLocationNameOrId()
+                       ?? ClusterController.CurrentCluster.SourceClusterIndex?.GetMarketLocationByLocationNameOrId()
                        ?? MarketLocation.Unknown;
 
         MarketStatusText = location == MarketLocation.BlackMarket
