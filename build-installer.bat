@@ -83,7 +83,7 @@ dotnet publish "%PROJECT_FILE%" ^
     -p:Platform=x64 ^
     -p:PublishDir=bin\Release\publish ^
     -p:PublishProtocol=FileSystem ^
-    -p:TargetFramework=net10.0-windows ^
+    -p:TargetFramework=net10.0-windows10.0.19041.0 ^
     -p:RuntimeIdentifier=win-x64 ^
     -p:SelfContained=false ^
     -p:PublishSingleFile=true ^
