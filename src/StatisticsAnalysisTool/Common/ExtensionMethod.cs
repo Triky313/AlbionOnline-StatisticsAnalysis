@@ -365,19 +365,19 @@ public static class ExtensionMethod
     public static double GetDamagePercentage(this List<KeyValuePair<Guid, PlayerGameObject>> playerObjects, double playerDamage)
     {
         var totalDamage = playerObjects.Sum(x => x.Value.Damage);
-        return 100.00 / totalDamage * playerDamage;
+        return totalDamage > 0 ? playerDamage / totalDamage * 100 : 0;
     }
 
     public static double GetHealPercentage(this List<KeyValuePair<Guid, PlayerGameObject>> playerObjects, double playerHeal)
     {
         var totalHeal = playerObjects.Sum(x => x.Value.Heal);
-        return 100.00 / totalHeal * playerHeal;
+        return totalHeal > 0 ? playerHeal / totalHeal * 100 : 0;
     }
 
     public static double GetTakenDamagePercentage(this List<KeyValuePair<Guid, PlayerGameObject>> playerObjects, double playerDamage)
     {
         var totalTakenDamage = playerObjects.Sum(x => x.Value.TakenDamage);
-        return 100.00 / totalTakenDamage * playerDamage;
+        return totalTakenDamage > 0 ? playerDamage / totalTakenDamage * 100 : 0;
     }
 
     #endregion

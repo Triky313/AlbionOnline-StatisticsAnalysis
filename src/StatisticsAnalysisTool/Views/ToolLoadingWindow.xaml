@@ -16,9 +16,10 @@
         Focusable="False">
     <Grid MouseDown="Hotbar_MouseDown">
         <ProgressBar Margin="0,0,0,0" Minimum="0" Maximum="100" Value="{Binding ProgressBarValue}" />
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
             <Image Style="{StaticResource Image.ToolIcon}" />
-            <Label Content="{Binding TranslationLoading}" HorizontalAlignment="Center" />
+            <TextBlock Text="{Binding LoadingText}" MaxWidth="540" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left"
+                       Foreground="{StaticResource SolidColorBrush.Text.1}" />
         </StackPanel>
     </Grid>
 </Window>

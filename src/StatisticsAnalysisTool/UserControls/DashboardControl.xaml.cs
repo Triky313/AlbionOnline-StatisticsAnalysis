@@ -1,10 +1,14 @@
-﻿using FontAwesome5;
+using FontAwesome5;
 using Serilog;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
+using StatisticsAnalysisTool.Localization;
+using StatisticsAnalysisTool.Models;
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -19,9 +23,22 @@ namespace StatisticsAnalysisTool.UserControls;
 /// </summary>
 public partial class DashboardControl
 {
+    public static readonly DependencyProperty ShowOpenWindowButtonProperty = DependencyProperty.Register(
+        nameof(ShowOpenWindowButton),
+        typeof(bool),
+        typeof(DashboardControl),
+        new PropertyMetadata(true));
+
+    public bool ShowOpenWindowButton
+    {
+        get => (bool) GetValue(ShowOpenWindowButtonProperty);
+        set => SetValue(ShowOpenWindowButtonProperty, value);
+    }
+
     public DashboardControl()
     {
         InitializeComponent();
+        SizeChanged += DashboardControl_SizeChanged;
     }
 
     private void OpenDashboardWindow()
@@ -47,11 +64,71 @@ public partial class DashboardControl
         }
     }
 
-    private void BtnTrackingReset_Click(object sender, RoutedEventArgs e)
+    private async void BtnSessionReset_Click(object sender, RoutedEventArgs e)
     {
-        Log.Error("{Message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         var trackingController = ServiceLocator.Resolve<TrackingController>();
-        trackingController?.LiveStatsTracker?.Reset();
+        await trackingController.StatisticController.ResetSessionAsync();
+    }
+
+    private async void DeleteDashboardSession_Click(object sender, RoutedEventArgs e)
+    {
+        e.Handled = true;
+
+        if (sender is not Button
+            {
+                DataContext: DashboardSessionFilterOption
+                {
+                    SessionId: Guid sessionId,
+                    CanDelete: true
+                } sessionFilter
+            } deleteButton)
+        {
+            return;
+        }
+
+        var confirmationMessage = string.Format(
+            CultureInfo.CurrentCulture,
+            LocalizationController.Translation("DELETE_SESSION_CONFIRMATION"),
+            sessionFilter.Name);
+        var confirmationWindow = new DialogWindow(
+            LocalizationController.Translation("DELETE_SESSION"),
+            confirmationMessage);
+
+        if (confirmationWindow.ShowDialog() is not true)
+        {
+            return;
+        }
+
+        deleteButton.IsEnabled = false;
+
+        try
+        {
+            var trackingController = ServiceLocator.Resolve<TrackingController>();
+            var wasDeleted = await trackingController.StatisticController.DeleteSessionAsync(sessionId);
+            if (!wasDeleted)
+            {
+                ShowSessionDeletionFailedMessage();
+            }
+        }
+        catch (Exception exception)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, exception);
+            Log.Error(exception, "Statistics session deletion failed. SessionId={SessionId}", sessionId);
+            ShowSessionDeletionFailedMessage();
+        }
+        finally
+        {
+            deleteButton.IsEnabled = true;
+        }
+    }
+
+    private void ShowSessionDeletionFailedMessage()
+    {
+        var errorWindow = new DialogWindow(
+            LocalizationController.Translation("DELETE_SESSION"),
+            LocalizationController.Translation("DELETE_SESSION_FAILED"),
+            DialogType.Error);
+        _ = errorWindow.ShowDialog();
     }
 
     private void OpenDashboardWindow_MouseUp(object sender, MouseButtonEventArgs e)
@@ -71,6 +148,81 @@ public partial class DashboardControl
         {
             vm.DashboardBindings.KillDeathStatsVisibility = Visibility.Visible;
             vm.DashboardBindings.KillDeathStatsToggleIcon = EFontAwesomeIcon.Solid_Minus;
+        }
+    }
+
+    private void TopKillLocationsToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        var vm = (MainWindowViewModel) DataContext;
+        if (vm.DashboardBindings.TopKillLocationsVisibility == Visibility.Visible)
+        {
+            vm.DashboardBindings.TopKillLocationsVisibility = Visibility.Collapsed;
+            vm.DashboardBindings.TopKillLocationsToggleIcon = EFontAwesomeIcon.Solid_Plus;
+        }
+        else
+        {
+            vm.DashboardBindings.TopKillLocationsVisibility = Visibility.Visible;
+            vm.DashboardBindings.TopKillLocationsToggleIcon = EFontAwesomeIcon.Solid_Minus;
+        }
+    }
+
+    private void TopDeathLocationsToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        var vm = (MainWindowViewModel) DataContext;
+        if (vm.DashboardBindings.TopDeathLocationsVisibility == Visibility.Visible)
+        {
+            vm.DashboardBindings.TopDeathLocationsVisibility = Visibility.Collapsed;
+            vm.DashboardBindings.TopDeathLocationsToggleIcon = EFontAwesomeIcon.Solid_Plus;
+        }
+        else
+        {
+            vm.DashboardBindings.TopDeathLocationsVisibility = Visibility.Visible;
+            vm.DashboardBindings.TopDeathLocationsToggleIcon = EFontAwesomeIcon.Solid_Minus;
+        }
+    }
+
+    private void RecentKillsDeathsToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        var vm = (MainWindowViewModel) DataContext;
+        if (vm.DashboardBindings.RecentKillsDeathsVisibility == Visibility.Visible)
+        {
+            vm.DashboardBindings.RecentKillsDeathsVisibility = Visibility.Collapsed;
+            vm.DashboardBindings.RecentKillsDeathsToggleIcon = EFontAwesomeIcon.Solid_Plus;
+        }
+        else
+        {
+            vm.DashboardBindings.RecentKillsDeathsVisibility = Visibility.Visible;
+            vm.DashboardBindings.RecentKillsDeathsToggleIcon = EFontAwesomeIcon.Solid_Minus;
+        }
+    }
+
+    private void FactionSummaryToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        var vm = (MainWindowViewModel) DataContext;
+        if (vm.DashboardBindings.FactionSummaryVisibility == Visibility.Visible)
+        {
+            vm.DashboardBindings.FactionSummaryVisibility = Visibility.Collapsed;
+            vm.DashboardBindings.FactionSummaryToggleIcon = EFontAwesomeIcon.Solid_Plus;
+        }
+        else
+        {
+            vm.DashboardBindings.FactionSummaryVisibility = Visibility.Visible;
+            vm.DashboardBindings.FactionSummaryToggleIcon = EFontAwesomeIcon.Solid_Minus;
+        }
+    }
+
+    private void ContentRankingToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        var vm = (MainWindowViewModel) DataContext;
+        if (vm.DashboardBindings.ContentRankingVisibility == Visibility.Visible)
+        {
+            vm.DashboardBindings.ContentRankingVisibility = Visibility.Collapsed;
+            vm.DashboardBindings.ContentRankingToggleIcon = EFontAwesomeIcon.Solid_Plus;
+        }
+        else
+        {
+            vm.DashboardBindings.ContentRankingVisibility = Visibility.Visible;
+            vm.DashboardBindings.ContentRankingToggleIcon = EFontAwesomeIcon.Solid_Minus;
         }
     }
 
@@ -119,6 +271,36 @@ public partial class DashboardControl
         }
     }
 
+    private void ItemQualityRerollStatsToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        var vm = (MainWindowViewModel) DataContext;
+        if (vm.DashboardBindings.ItemQualityRerollStatsVisibility == Visibility.Visible)
+        {
+            vm.DashboardBindings.ItemQualityRerollStatsVisibility = Visibility.Collapsed;
+            vm.DashboardBindings.ItemQualityRerollStatsToggleIcon = EFontAwesomeIcon.Solid_Plus;
+        }
+        else
+        {
+            vm.DashboardBindings.ItemQualityRerollStatsVisibility = Visibility.Visible;
+            vm.DashboardBindings.ItemQualityRerollStatsToggleIcon = EFontAwesomeIcon.Solid_Minus;
+        }
+    }
+
+    private void AwakenedWeaponStatsToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        var vm = (MainWindowViewModel) DataContext;
+        if (vm.DashboardBindings.AwakenedWeaponStatsVisibility == Visibility.Visible)
+        {
+            vm.DashboardBindings.AwakenedWeaponStatsVisibility = Visibility.Collapsed;
+            vm.DashboardBindings.AwakenedWeaponStatsToggleIcon = EFontAwesomeIcon.Solid_Plus;
+        }
+        else
+        {
+            vm.DashboardBindings.AwakenedWeaponStatsVisibility = Visibility.Visible;
+            vm.DashboardBindings.AwakenedWeaponStatsToggleIcon = EFontAwesomeIcon.Solid_Minus;
+        }
+    }
+
     private void ActivityChartToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         var vm = (MainWindowViewModel) DataContext;
@@ -131,7 +313,6 @@ public partial class DashboardControl
         {
             vm.DashboardBindings.ActivityChartVisibility = Visibility.Visible;
             vm.DashboardBindings.ActivityChartToggleIcon = EFontAwesomeIcon.Solid_Minus;
-            RefreshDailyChart();
         }
     }
 
@@ -140,14 +321,60 @@ public partial class DashboardControl
         RefreshDailyChart();
     }
 
-    private void DashboardChartSeriesVisibility_Changed(object sender, RoutedEventArgs e)
+    private void DashboardMetadataFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         RefreshDailyChart();
+    }
+
+    private void DashboardChartSeriesVisibility_Changed(object sender, RoutedEventArgs e)
+    {
+        RefreshDashboardChartSeries();
+    }
+
+    private void DashboardControl_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        UpdateMobListHeight();
+    }
+
+    private void DashboardMobList_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        if (e.NewValue is not true)
+        {
+            return;
+        }
+
+        DashboardScrollViewer.ScrollToTop();
+        Dispatcher.BeginInvoke(
+            System.Windows.Threading.DispatcherPriority.Loaded,
+            new Action(UpdateMobListHeight));
+    }
+
+    private void UpdateMobListHeight()
+    {
+        if (DashboardMobList == null || !MobsTab.IsSelected || ActualHeight <= 0)
+        {
+            return;
+        }
+
+        var listTop = DashboardMobList.TranslatePoint(new Point(0, 0), this).Y;
+        var availableHeight = Math.Max(
+            240,
+            ActualHeight - listTop - DashboardScrollViewer.Padding.Bottom);
+        if (Math.Abs(DashboardMobList.Height - availableHeight) > 0.5)
+        {
+            DashboardMobList.Height = availableHeight;
+        }
     }
 
     private static void RefreshDailyChart()
     {
         var trackingController = ServiceLocator.Resolve<TrackingController>();
         trackingController?.StatisticController?.UpdateDailyChart(true);
+    }
+
+    private static void RefreshDashboardChartSeries()
+    {
+        var trackingController = ServiceLocator.Resolve<TrackingController>();
+        trackingController?.StatisticController?.UpdateDashboardChartSeries();
     }
 }

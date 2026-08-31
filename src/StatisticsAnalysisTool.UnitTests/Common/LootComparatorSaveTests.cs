@@ -70,7 +70,8 @@ public class LootComparatorSaveTests
             var bindings = new LoggingBindings
             {
                 VaultLogItems = [CreateChestLogItem()],
-                LootingPlayers = [CreateLootingPlayer("SavedPlayer")]
+                LootingPlayers = [CreateLootingPlayer("SavedPlayer")],
+                LootLogCombatEvents = [CreateCombatEvent()]
             };
 
             bindings.UpdateItemsStatus();
@@ -78,9 +79,13 @@ public class LootComparatorSaveTests
             var save = bindings.SaveLootComparator("Compared logs");
 
             save.ChestLogEntryCount.Should().Be(1);
-            save.LootLogEntryCount.Should().Be(1);
+            save.LootLogEntryCount.Should().Be(2);
             File.ReadAllText(save.ChestLogFilePath).Should().Contain("SavedPlayer").And.Contain("Pine Logs");
-            File.ReadAllText(save.LootLogFilePath).Should().Contain("T4_WOOD").And.Contain("LootedPlayer");
+            File.ReadAllText(save.LootLogFilePath).Should()
+                .Contain("T4_WOOD")
+                .And.Contain("LootedPlayer")
+                .And.Contain("DefeatedPlayer")
+                .And.Contain("SavedPlayer");
         }
         finally
         {
@@ -104,7 +109,8 @@ public class LootComparatorSaveTests
             var sourceBindings = new LoggingBindings
             {
                 VaultLogItems = [CreateChestLogItem()],
-                LootingPlayers = [CreateLootingPlayer("SavedPlayer")]
+                LootingPlayers = [CreateLootingPlayer("SavedPlayer")],
+                LootLogCombatEvents = [CreateCombatEvent()]
             };
             var createdSave = sourceBindings.SaveLootComparator("Guild Chest");
 
@@ -131,7 +137,10 @@ public class LootComparatorSaveTests
             targetBindings.VaultLogItems.Should().ContainSingle(item => item.PlayerName == "SavedPlayer");
             targetBindings.VaultLogItems.Should().NotContain(item => item.PlayerName == "OldChestPlayer");
             targetBindings.LootingPlayers.Should().ContainSingle(player => player.PlayerName == "SavedPlayer");
+            targetBindings.LootingPlayers.Single(player => player.PlayerName == "SavedPlayer").KillCount.Should().Be(1);
+            targetBindings.LootingPlayers.Single(player => player.PlayerName == "DefeatedPlayer").DeathCount.Should().Be(1);
             targetBindings.LootingPlayers.Should().NotContain(player => player.PlayerName == "OldLootPlayer");
+            targetBindings.LootLogCombatEvents.Should().ContainSingle();
             targetBindings.ChestLogCount.Should().Be(1);
             targetBindings.LootLogCount.Should().Be(1);
         }
@@ -275,6 +284,19 @@ public class LootComparatorSaveTests
                     LootedFromGuild = "Looted Guild"
                 }
             ]
+        };
+    }
+
+    private static LootLogCombatEvent CreateCombatEvent()
+    {
+        return new LootLogCombatEvent
+        {
+            UtcTimestamp = new DateTime(2026, 7, 31, 19, 55, 0, DateTimeKind.Utc),
+            DiedName = "DefeatedPlayer",
+            DiedPlayerGuild = "Defeated Guild",
+            KilledByName = "SavedPlayer",
+            KilledByGuild = "Saved Guild",
+            ClusterName = "Test Cluster"
         };
     }
 }

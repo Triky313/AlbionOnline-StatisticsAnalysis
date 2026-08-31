@@ -15,6 +15,11 @@ public class InventoryDeleteItemEventHandler : EventPacketHandler<InventoryDelet
 
     protected override async Task OnActionAsync(InventoryDeleteItemEvent value)
     {
+        if (value.ObjectId.HasValue)
+        {
+            _trackingController.RemoveEquipmentItem(value.ObjectId.Value);
+        }
+
         await Task.CompletedTask;
     }
 }

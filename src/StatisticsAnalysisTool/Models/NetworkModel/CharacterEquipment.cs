@@ -39,6 +39,53 @@ public class CharacterEquipment
     public IEnumerable<Spell> GetPotionSpells() => ActiveSpells.Where(x => x.SlotType == SlotType.Potion).Select(x => new Spell(x.Value)).AsEnumerable();
     public IEnumerable<Spell> GetFoodSpells() => ActiveSpells.Where(x => x.SlotType == SlotType.Food).Select(x => new Spell(x.Value)).AsEnumerable();
 
+    public bool HasEquippedItems()
+    {
+        return GetEquippedItemIndexes().Count > 0;
+    }
+
+    public IReadOnlyList<int> GetEquippedItemIndexes()
+    {
+        return new[]
+            {
+                MainHand,
+                OffHand,
+                Head,
+                Chest,
+                Shoes,
+                Bag,
+                Cape,
+                Mount,
+                Potion,
+                BuffFood
+            }
+            .Where(itemIndex => itemIndex > 0)
+            .ToArray();
+    }
+
+    public CharacterEquipment CreateSnapshot()
+    {
+        return new CharacterEquipment
+        {
+            MainHand = MainHand,
+            OffHand = OffHand,
+            Head = Head,
+            Chest = Chest,
+            Shoes = Shoes,
+            Bag = Bag,
+            Cape = Cape,
+            Mount = Mount,
+            Potion = Potion,
+            BuffFood = BuffFood,
+            ActiveSpells = ActiveSpells?.Select(spell => new SlotSpell
+            {
+                SlotType = spell.SlotType,
+                Value = spell.Value,
+                ItemIndex = spell.ItemIndex
+            }).ToList() ?? []
+        };
+    }
+
     private static Item GetItem(int? itemIndex, SlotType returnOnlyThisItemType)
     {
         var item = ItemController.GetItemByIndex(itemIndex);

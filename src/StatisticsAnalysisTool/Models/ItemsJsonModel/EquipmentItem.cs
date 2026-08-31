@@ -168,6 +168,9 @@ public class EquipmentItem : ItemJsonObject
     [JsonPropertyName("@craftingcategory")]
     public string CraftingCategory { get; set; }
 
+    [JsonPropertyName("craftingspelllist")]
+    public CraftingSpellList CraftingSpellList { get; set; }
+
     [JsonIgnore]
     public CraftingJournalType CraftingJournalType => CraftingJournalService.GetCraftingJournalType(UniqueName, CraftingCategory);
 

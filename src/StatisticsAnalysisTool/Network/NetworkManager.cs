@@ -38,6 +38,8 @@ public class NetworkManager
             _packetProvider = new SocketsPacketProvider(photonReceiver, albionServerDetectionService);
             Log.Information("Used packet provider: {PacketProviderKind}", PacketProviderKind.Sockets);
         }
+
+        _packetProvider.GameDataDetected += (_, _) => trackingController.NotifyGameDataDetected();
     }
 
     private static IPhotonReceiver Build(TrackingController trackingController)
@@ -46,6 +48,7 @@ public class NetworkManager
 
         // Event
         builder.AddEventHandler(new NewEquipmentItemEventHandler(trackingController));
+        builder.AddEventHandler(new NewSiegeBannerItemEventHandler());
         builder.AddEventHandler(new NewSimpleItemEventHandler(trackingController));
         builder.AddEventHandler(new NewFurnitureItemEventHandler(trackingController));
         builder.AddEventHandler(new NewKillTrophyItemHandler(trackingController));
@@ -55,12 +58,17 @@ public class NetworkManager
         builder.AddEventHandler(new InventoryDeleteItemEventHandler(trackingController));
         //builder.AddEventHandler(new InventoryPutItemEventHandler(trackingController));
         builder.AddEventHandler(new TakeSilverEventHandler(trackingController));
+        builder.AddEventHandler(new CraftItemFinishedEventHandler(trackingController));
         builder.AddEventHandler(new ActionOnBuildingFinishedEventHandler(trackingController));
+        builder.AddEventHandler(new RerollItemTraitValueFinishedEventHandler(trackingController));
+        builder.AddEventHandler(new ItemRerollQualityFinishedEventHandler(trackingController));
         builder.AddEventHandler(new UpdateFameEventHandler(trackingController));
         builder.AddEventHandler(new UpdateMoneyEventHandler(trackingController));
         builder.AddEventHandler(new UpdateReSpecPointsEventHandler(trackingController));
         builder.AddEventHandler(new UpdateCurrencyEventHandler(trackingController));
+        builder.AddEventHandler(new KilledPlayerEventHandler(trackingController));
         builder.AddEventHandler(new DiedEventHandler(trackingController));
+        builder.AddEventHandler(new KnockedDownEventHandler(trackingController));
         builder.AddEventHandler(new NewLootChestEventHandler(trackingController));
         builder.AddEventHandler(new UpdateLootChestEventHandler(trackingController));
         //builder.AddEventHandler(new LootChestOpenedEventHandler(trackingController));
@@ -114,6 +122,8 @@ public class NetworkManager
         builder.AddRequestHandler(new FishingFinishRequestHandler(trackingController));
         builder.AddRequestHandler(new FishingCancelRequestHandler(trackingController));
         builder.AddRequestHandler(new LogoutStartRequestHandler(trackingController));
+        builder.AddRequestHandler(new ExitEnterStartRequestHandler(trackingController));
+        builder.AddRequestHandler(new ChangeClusterRequestHandler(trackingController));
         builder.AddRequestHandler(new LogoutCancelRequestHandler(trackingController));
         builder.AddRequestHandler(new GetGuildAccountLogsRequestHandler(trackingController));
 
@@ -132,26 +142,38 @@ public class NetworkManager
         builder.AddResponseHandler(new AuctionBuyLoadoutOfferResponseHandler(trackingController));
         builder.AddResponseHandler(new GetGuildAccountLogsResponseHandler(trackingController));
         builder.AddResponseHandler(new InviteToPlayerTradeResponseHandler(trackingController));
+        builder.AddResponseHandler(new GoldMarketBuyGoldResponseHandler(trackingController));
+        builder.AddResponseHandler(new GoldMarketSellGoldResponseHandler(trackingController));
 
         return builder.Build();
     }
 
-    public void Start()
+    public PacketProviderStartResult Start()
     {
         DebugConsole.WriteInfo(MethodBase.GetCurrentMethod()?.DeclaringType, "Start Capture");
 
-        _packetProvider.Start();
+        var result = _packetProvider.Start();
+        if (!result.IsSuccessful)
+        {
+            Log.Warning("Packet provider could not start because no capture source was opened");
+            return result;
+        }
 
         _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LocalizationController.Translation("START_TRACKING"), LocalizationController.Translation("GAME_TRACKING_IS_STARTED"));
+        return result;
     }
 
     public void Stop()
     {
         DebugConsole.WriteInfo(MethodBase.GetCurrentMethod()?.DeclaringType, "Stop Capture");
 
+        var wasRunning = _packetProvider.IsRunning;
         _packetProvider.Stop();
 
-        _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LocalizationController.Translation("STOP_TRACKING"), LocalizationController.Translation("GAME_TRACKING_IS_STOPPED"));
+        if (wasRunning)
+        {
+            _ = ServiceLocator.Resolve<SatNotificationManager>().ShowTrackingStatusAsync(LocalizationController.Translation("STOP_TRACKING"), LocalizationController.Translation("GAME_TRACKING_IS_STOPPED"));
+        }
     }
 
     public bool IsAnySocketActive()

@@ -8,6 +8,7 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.UserControls;
@@ -23,6 +24,81 @@ public partial class LoggingControl
     }
 
     #region Ui events
+
+    private void LoggingActivationToggle_Click(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        {
+            return;
+        }
+
+        mainWindowViewModel.LoggingBindings.IsLoggingTrackingActive = !mainWindowViewModel.LoggingBindings.IsLoggingTrackingActive;
+    }
+
+    private void LootComparatorActivationToggle_Click(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        {
+            return;
+        }
+
+        mainWindowViewModel.LoggingBindings.IsLootComparatorTrackingActive = !mainWindowViewModel.LoggingBindings.IsLootComparatorTrackingActive;
+    }
+
+    private void AllStatusFilters_Click(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel
+            || sender is not ToggleButton toggleButton)
+        {
+            return;
+        }
+
+        mainWindowViewModel.LoggingBindings.UpdateAllStatusFilterSelection(toggleButton.IsChecked == true);
+    }
+
+    private void AllTierFilters_Click(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel
+            || sender is not ToggleButton toggleButton)
+        {
+            return;
+        }
+
+        mainWindowViewModel.LoggingBindings.UpdateAllTierFilterSelection(toggleButton.IsChecked == true);
+    }
+
+    private void AllTypeFilters_Click(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel
+            || sender is not ToggleButton toggleButton)
+        {
+            return;
+        }
+
+        mainWindowViewModel.LoggingBindings.UpdateAllTypeFilterSelection(toggleButton.IsChecked == true);
+    }
+
+    private void AllGuildFilters_Click(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel
+            || sender is not ToggleButton toggleButton)
+        {
+            return;
+        }
+
+        mainWindowViewModel.LoggingBindings.UpdateAllGuildFilterSelection(toggleButton.IsChecked == true);
+    }
+
+    private void AllNotificationFilters_Click(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel
+            || sender is not ToggleButton toggleButton)
+        {
+            return;
+        }
+
+        mainWindowViewModel.LoggingBindings.UpdateAllNotificationFilterSelection(toggleButton.IsChecked == true);
+    }
 
     private void BtnTrackingNotificationsReset_Click(object sender, RoutedEventArgs e)
     {

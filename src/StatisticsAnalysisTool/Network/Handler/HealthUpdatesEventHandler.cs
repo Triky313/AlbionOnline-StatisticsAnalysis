@@ -12,14 +12,14 @@ public class HealthUpdatesEventHandler(TrackingController trackingController) : 
         foreach (HealthUpdate healthUpdate in value.HealthUpdates)
         {
             var mob = trackingController.CombatController.CombatEventTracker.GetKnownMobOrDefault(healthUpdate.AffectedObjectId);
-            trackingController.OpenWorldController.TrackLocalPlayerMobDamage(healthUpdate.AffectedObjectId, healthUpdate.CauserId, healthUpdate.HealthChange);
+            trackingController.MobKillController.TrackLocalPlayerMobDamage(healthUpdate.AffectedObjectId, healthUpdate.CauserId, healthUpdate.HealthChange);
 
             if (healthUpdate.HealthChange < 0 && !healthUpdate.HasNewHealthValue)
             {
-                await trackingController.OpenWorldController.TryAddMobKillAsync(healthUpdate.AffectedObjectId, mob, healthUpdate.HealthChange, healthUpdate.HasNewHealthValue);
+                trackingController.MobKillController.TryAddMobKill(healthUpdate.AffectedObjectId, mob, healthUpdate.HealthChange, healthUpdate.HasNewHealthValue);
             }
 
-            await trackingController.CombatController.AddDamage(healthUpdate.AffectedObjectId, healthUpdate.CauserId, healthUpdate.HealthChange, healthUpdate.NewHealthValue, healthUpdate.CausingSpellIndex);
+            await trackingController.CombatController.AddDamage(healthUpdate.AffectedObjectId, healthUpdate.CauserId, healthUpdate.HealthChange, healthUpdate.NewHealthValue, healthUpdate.CausingSpellIndex, healthUpdate.EffectType);
             await trackingController.CombatController.AddTakenDamage(healthUpdate.AffectedObjectId, healthUpdate.CauserId, healthUpdate.HealthChange, healthUpdate.NewHealthValue, healthUpdate.CausingSpellIndex);
         }
     }

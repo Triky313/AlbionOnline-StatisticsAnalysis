@@ -12,5 +12,7 @@ public class SpellFragmentDto
     public string Target { get; set; }
     public string Category { get; set; }
     public int Ticks { get; set; }
+    public double DamageInPercent { get; set; }
+    public double DamagePercentage { get; set; }
     public HealthChangeType HealthChangeType { get; set; }
 }

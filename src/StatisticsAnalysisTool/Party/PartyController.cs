@@ -31,7 +31,9 @@ public class PartyController
 
         if (party.Any(x => x.IsDeathAlertActive && x.Username == diedPlayerName))
         {
-            SoundController.PlayAlertSound(SoundController.GetCurrentSoundPath(SettingsController.CurrentSettings.SelectedDeathAlertSound));
+            SoundController.PlayAlertSound(
+                SoundController.GetCurrentSoundPath(SettingsController.CurrentSettings.SelectedDeathAlertSound),
+                SettingsController.CurrentSettings.DeathAlertSoundVolumePercentage);
         }
     }
 

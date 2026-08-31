@@ -6,9 +6,6 @@ namespace StatisticsAnalysisTool.ViewModels;
 
 internal class InfoWindowViewModel : BaseViewModel
 {
-    private bool _showNotAgainChecked;
-    private InfoWindowTranslation _translation;
-
     public InfoWindowViewModel()
     {
         Init();
@@ -23,21 +20,21 @@ internal class InfoWindowViewModel : BaseViewModel
 
     public InfoWindowTranslation Translation
     {
-        get => _translation;
+        get;
         set
         {
-            _translation = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public bool ShowNotAgainChecked
     {
-        get => _showNotAgainChecked;
+        get;
         set
         {
-            _showNotAgainChecked = value;
-            SettingsController.CurrentSettings.IsInfoWindowShownOnStart = !_showNotAgainChecked;
+            field = value;
+            SettingsController.CurrentSettings.IsInfoWindowShownOnStart = !field;
             OnPropertyChanged();
         }
     }

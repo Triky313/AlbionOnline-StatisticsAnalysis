@@ -28,55 +28,70 @@
     </DataTemplate>
 
     <DataTemplate x:Key="ManuallySiphonedEnergy.Template" DataType="{x:Type guild:ManuallySiphonedEnergy}">
-        <Grid>
-            <StackPanel Orientation="Vertical">
-                <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,0,0,0" VerticalAlignment="Top"/>
-                <StackPanel Margin="10,0,0,0">
-                    <Label Content="{Binding TranslationAddOrRemoveManually, FallbackValue=ADD_OR_REMOVE_MANUALLY}" Style="{StaticResource HeaderStyle.Tracking.Title}" 
-                           Margin="2,5,0,0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+        <Border Style="{StaticResource App.TopFilterCard}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-                    <StackPanel Orientation="Horizontal">
-                        <StackPanel Orientation="Vertical" Width="200" Margin="0,0,5,0">
-                            <Label Content="{Binding TranslationCharacterName, FallbackValue=CHARACTER_NAME}" Width="auto" VerticalAlignment="Top" />
-                            <TextBox Text="{Binding CharacterName, UpdateSourceTrigger=PropertyChanged}" Width="auto" Height="24" VerticalContentAlignment="Center" />
-                        </StackPanel>
+                <Border Grid.Column="0" Style="{StaticResource App.FilterGroup}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding TranslationAddOrRemoveManually, FallbackValue=ADD_OR_REMOVE_MANUALLY}"
+                                   Style="{StaticResource App.FilterLabel}" />
 
-                        <StackPanel Orientation="Vertical" Width="120" Margin="5,0">
-                            <Label Content="{Binding TranslationOperator, FallbackValue=OPERATOR}" Width="auto" VerticalAlignment="Top" />
-                            <ComboBox
-                                SelectedValue="{Binding SelectedOperator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                SelectedValuePath="Tag" Width="auto" Height="24" VerticalContentAlignment="Center">
-                                <ComboBoxItem Tag="{x:Static guild:EnergyOperator.Deposit}" Content="{Binding TranslationDeposit, FallbackValue=DEPOSIT}" />
-                                <ComboBoxItem Tag="{x:Static guild:EnergyOperator.Withdraw}" Content="{Binding TranslationWithdraw, FallbackValue=WITHDRAW}" />
-                            </ComboBox>
-                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Width="160" Margin="0,0,10,0">
+                                <TextBlock Text="{Binding TranslationCharacterName, FallbackValue=CHARACTER_NAME}"
+                                           Style="{StaticResource App.FilterLabel}" />
+                                <TextBox Text="{Binding CharacterName, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
 
-                        <StackPanel Orientation="Vertical" Width="80" Margin="5,0">
-                            <Label Content="{Binding TranslationQuantity, FallbackValue=QUANTITY}" Width="auto" VerticalAlignment="Top" />
-                            <TextBox Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}" Height="24" common:TextBoxHelper.OnlyNumeric="Double" />
+                            <StackPanel Width="120" Margin="0,0,10,0">
+                                <TextBlock Text="{Binding TranslationOperator, FallbackValue=OPERATOR}"
+                                           Style="{StaticResource App.FilterLabel}" />
+                                <ComboBox MinWidth="0"
+                                          SelectedValue="{Binding SelectedOperator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          SelectedValuePath="Tag">
+                                    <ComboBoxItem Tag="{x:Static guild:EnergyOperator.Deposit}" Content="{Binding TranslationDeposit, FallbackValue=DEPOSIT}" />
+                                    <ComboBoxItem Tag="{x:Static guild:EnergyOperator.Withdraw}" Content="{Binding TranslationWithdraw, FallbackValue=WITHDRAW}" />
+                                </ComboBox>
+                            </StackPanel>
+
+                            <StackPanel Width="80" Margin="0,0,10,0">
+                                <TextBlock Text="{Binding TranslationQuantity, FallbackValue=QUANTITY}"
+                                           Style="{StaticResource App.FilterLabel}" />
+                                <TextBox Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}"
+                                         common:TextBoxHelper.OnlyNumeric="Double" />
+                            </StackPanel>
+
+                            <Button MinWidth="160"
+                                    Padding="10,0"
+                                    VerticalAlignment="Bottom"
+                                    Content="{Binding TranslationAddEntry, FallbackValue=ADD_MANUAL_ENTRY}"
+                                    Command="{Binding AddManualEntryCommand}" />
                         </StackPanel>
                     </StackPanel>
+                </Border>
 
-                    <Button Content="{Binding TranslationAddEntry, FallbackValue=ADD_MANUAL_ENTRY}" HorizontalAlignment="Left" 
-                            Margin="0,10" Height="24" Width="200" MaxWidth="300" MinWidth="200">
-                        <Button.InputBindings>
-                            <MouseBinding MouseAction="LeftClick" Command="{Binding AddManualEntryCommand}" />
-                        </Button.InputBindings>
-                    </Button>
-                </StackPanel>
-                <StackPanel Margin="10,0,0,0">
-                    <Label Content="{Binding TranslationExportSiphonedEnergyList, FallbackValue=EXPORT_SIPHONED_ENERGY_LIST}" Style="{StaticResource HeaderStyle.Tracking.Title}" 
-                           Margin="2,5,0,0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
-                    <Button Content="{Binding TranslationExportAsCsv, FallbackValue=EXPORT_AS_CSV}" HorizontalAlignment="Left" 
-                            Margin="0,10" Height="24" Width="200" MaxWidth="300" MinWidth="200">
-                        <Button.InputBindings>
-                            <MouseBinding MouseAction="LeftClick" Command="{Binding ExportAsCsvCommand}" />
-                        </Button.InputBindings>
-                    </Button>
-                </StackPanel>
-            </StackPanel>
-        </Grid>
+                    <TextBlock Text="{Binding TranslationExportSiphonedEnergyList, FallbackValue=EXPORT_SIPHONED_ENERGY_LIST}"
+                               Style="{StaticResource App.FilterLabel}" />
+                    <Button Grid.Row="1"
+                            MinWidth="160"
+                            Padding="10,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            Content="{Binding TranslationExportAsCsv, FallbackValue=EXPORT_AS_CSV}"
+                            Command="{Binding ExportAsCsvCommand}" />
+                </Grid>
+            </Grid>
+        </Border>
     </DataTemplate>
 
     <DataTemplate x:Key="SiphonedEnergyItemTemplate" DataType="{x:Type guild:SiphonedEnergyItem}">

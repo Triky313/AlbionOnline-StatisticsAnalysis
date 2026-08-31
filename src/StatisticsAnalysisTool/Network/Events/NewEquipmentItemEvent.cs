@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,8 @@ namespace StatisticsAnalysisTool.Network.Events;
 public class NewEquipmentItemEvent
 {
     public readonly DiscoveredItem Item;
+
+    public long EstimatedBlackMarketValueInternal { get; }
 
     private readonly long? _objectId;
     private readonly int _itemId;
@@ -23,6 +25,12 @@ public class NewEquipmentItemEvent
     {
         try
         {
+            var usesShiftedItemParameters = parameters.TryGetValue(6, out var parameterSix)
+                                            && parameterSix is string;
+            var qualityParameterKey = usesShiftedItemParameters ? (byte) 7 : (byte) 6;
+            var durabilityParameterKey = usesShiftedItemParameters ? (byte) 8 : (byte) 7;
+            var spellsParameterKey = usesShiftedItemParameters ? (byte) 9 : (byte) 8;
+
             if (parameters.TryGetValue(0, out object objectId))
             {
                 _objectId = objectId.ObjectToLong();
@@ -43,35 +51,40 @@ public class NewEquipmentItemEvent
                 _estimatedMarketValue = estimatedMarketValue.ObjectToLong() ?? 0;
             }
 
-            if (parameters.TryGetValue(6, out object qualityLevel))
+            if (parameters.TryGetValue(5, out object estimatedBlackMarketValue))
+            {
+                EstimatedBlackMarketValueInternal = estimatedBlackMarketValue.ObjectToLong() ?? 0;
+            }
+
+            if (parameters.TryGetValue(qualityParameterKey, out object qualityLevel))
             {
                 _qualityLevel = qualityLevel.ObjectToShort();
             }
 
-            if (parameters.TryGetValue(7, out object durabilityValue))
+            if (parameters.TryGetValue(durabilityParameterKey, out object durabilityValue))
             {
                 var durability = durabilityValue.ObjectToLong();
                 _durability = FixPoint.FromInternalValue(durability ?? 0);
             }
 
-            if (parameters.ContainsKey(8))
+            if (parameters.ContainsKey(spellsParameterKey))
             {
-                var valueType = parameters[8].GetType();
+                var valueType = parameters[spellsParameterKey].GetType();
                 if (valueType.IsArray && typeof(byte[]).Name == valueType.Name)
                 {
-                    var spells = ((byte[]) parameters[8]).ToDictionary();
+                    var spells = ((byte[]) parameters[spellsParameterKey]).ToDictionary();
                     foreach (var spell in spells)
                         SpellDictionary.Add(spell.Key, spell.Value.ObjectToInt());
                 }
                 else if (valueType.IsArray && typeof(short[]).Name == valueType.Name)
                 {
-                    var spells = ((short[]) parameters[8]).ToDictionary();
+                    var spells = ((short[]) parameters[spellsParameterKey]).ToDictionary();
                     foreach (var spell in spells)
                         SpellDictionary.Add(spell.Key, spell.Value.ObjectToInt());
                 }
                 else if (valueType.IsArray && typeof(int[]).Name == valueType.Name)
                 {
-                    var spells = ((int[]) parameters[8]).ToDictionary();
+                    var spells = ((int[]) parameters[spellsParameterKey]).ToDictionary();
                     foreach (var spell in spells)
                         SpellDictionary.Add(spell.Key, spell.Value.ObjectToInt());
                 }

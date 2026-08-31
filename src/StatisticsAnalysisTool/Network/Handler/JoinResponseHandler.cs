@@ -20,10 +20,14 @@ public class JoinResponseHandler(TrackingController trackingController) : Respon
     protected override async Task OnActionAsync(JoinResponse value)
     {
         trackingController.CancelLogoutDetection();
+        var hadActiveStatisticsSession = trackingController.StatisticController.HasActiveSession;
 
         SetLocalUserData(value);
+        trackingController.StatisticController.StartSession(value.Username);
+        await trackingController.GatheringController.StartSessionAsync(value.Username);
         _ = SetApiUserData(value);
 
+        _mainWindowViewModel.MainStatusBindings.SetGameDataDetected(true);
         _mainWindowViewModel.MainStatusBindings.SetInGame(true);
         _mainWindowViewModel.MainStatusBindings.SetCharacter(value.Username);
 
@@ -34,8 +38,6 @@ public class JoinResponseHandler(TrackingController trackingController) : Respon
         _mainWindowViewModel.UserTrackingBindings.AllianceName = value.AllianceName;
 
         SetCharacterTrackedVisibility(value.Username);
-
-        _mainWindowViewModel.DungeonBindings.DungeonCloseTimer.Visibility = Visibility.Collapsed;
 
         await AddEntityAsync(new Entity
         {
@@ -49,9 +51,9 @@ public class JoinResponseHandler(TrackingController trackingController) : Respon
             ObjectSubType = GameObjectSubType.LocalPlayer
         });
 
-        trackingController.DungeonController?.AddDungeonAsync(value.MapType, value.MapGuid, value.SourceClusterIndex, value.SourceExitPosition).ConfigureAwait(false);
+        await trackingController.DungeonController.AddDungeonAsync(value.MapType, value.MapGuid, value.SourceClusterIndex, value.SourceExitPosition);
 
-        ResetFameCounterByMapChangeIfActive();
+        await ResetSessionByMapChangeIfActiveAsync(hadActiveStatisticsSession);
         SetTrackingActivityText();
 
         await _mainWindowViewModel?.PlayerInformationBindings?.LoadLocalPlayerDataAsync(value.Username)!;
@@ -108,12 +110,11 @@ public class JoinResponseHandler(TrackingController trackingController) : Respon
         }
     }
 
-    private void ResetFameCounterByMapChangeIfActive()
+    private async Task ResetSessionByMapChangeIfActiveAsync(bool hadActiveStatisticsSession)
     {
-        if (_mainWindowViewModel.IsTrackingResetByMapChangeActive)
+        if (_mainWindowViewModel.IsTrackingResetByMapChangeActive && hadActiveStatisticsSession)
         {
-            var trackingController = ServiceLocator.Resolve<TrackingController>();
-            trackingController?.LiveStatsTracker?.Reset();
+            await trackingController.StatisticController.ResetSessionAsync();
         }
     }
 

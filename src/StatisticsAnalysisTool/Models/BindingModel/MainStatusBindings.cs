@@ -11,13 +11,14 @@ public class MainStatusBindings : BaseViewModel
     private bool _isServerDetected;
     private bool _isCharacterDetected;
     private bool _isLocationDetected;
+    private bool _isGameDataDetected;
     private ServerLocation _serverLocation = ServerLocation.Unknown;
     private string _characterName = string.Empty;
     private string _locationName = string.Empty;
-    private string _inGameStatusText;
     private string _serverStatusText;
     private string _characterStatusText;
     private string _locationStatusText;
+    private string _gameDataStatusText;
 
     public MainStatusBindings()
     {
@@ -64,12 +65,12 @@ public class MainStatusBindings : BaseViewModel
         }
     }
 
-    public string InGameStatusText
+    public bool IsGameDataDetected
     {
-        get => _inGameStatusText;
+        get => _isGameDataDetected;
         private set
         {
-            _inGameStatusText = value;
+            _isGameDataDetected = value;
             OnPropertyChanged();
         }
     }
@@ -104,10 +105,19 @@ public class MainStatusBindings : BaseViewModel
         }
     }
 
+    public string GameDataStatusText
+    {
+        get => _gameDataStatusText;
+        private set
+        {
+            _gameDataStatusText = value;
+            OnPropertyChanged();
+        }
+    }
+
     public void SetInGame(bool isInGame)
     {
         IsInGame = isInGame;
-        InGameStatusText = LocalizationController.Translation(isInGame ? "STATUS_IN_GAME" : "STATUS_LOGGED_OUT");
     }
 
     public void SetServerLocation(ServerLocation serverLocation)
@@ -137,19 +147,28 @@ public class MainStatusBindings : BaseViewModel
             : LocalizationController.Translation("STATUS_LOCATION_UNDETECTED");
     }
 
+    public void SetGameDataDetected(bool isGameDataDetected)
+    {
+        IsGameDataDetected = isGameDataDetected;
+        GameDataStatusText = LocalizationController.Translation(isGameDataDetected
+            ? "STATUS_GAME_DATA_DETECTED"
+            : "STATUS_WAITING_FOR_GAME_DATA");
+    }
+
     public void ResetGameSession()
     {
         SetInGame(false);
         SetCharacter(string.Empty);
         SetLocation(string.Empty);
+        SetGameDataDetected(false);
     }
 
     public void RefreshLocalization()
     {
-        SetInGame(_isInGame);
         SetServerLocation(_serverLocation);
         SetCharacter(_characterName);
         SetLocation(_locationName);
+        SetGameDataDetected(_isGameDataDetected);
     }
 
     private static bool IsKnownServerLocation(ServerLocation serverLocation)

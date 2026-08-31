@@ -7,13 +7,6 @@ namespace StatisticsAnalysisTool.ViewModels;
 
 public class LanguageSelectionWindowViewModel : BaseViewModel
 {
-    private string _title;
-    private string _message;
-    private string _errorMessage;
-    private ObservableCollection<FileInformation> _languages = new();
-    private FileInformation _selectedFileInformation;
-    private bool _isConfirmButtonEnabled = true;
-
     public LanguageSelectionWindowViewModel()
     {
         Title = "Select a language";
@@ -32,60 +25,60 @@ public class LanguageSelectionWindowViewModel : BaseViewModel
 
     public string Title
     {
-        get => _title;
+        get;
         set
         {
-            _title = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public string Message
     {
-        get => _message;
+        get;
         set
         {
-            _message = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public string ErrorMessage
     {
-        get => _errorMessage;
+        get;
         set
         {
-            _errorMessage = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public bool IsConfirmButtonEnabled
     {
-        get => _isConfirmButtonEnabled;
+        get;
         set
         {
-            _isConfirmButtonEnabled = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = true;
 
     public ObservableCollection<FileInformation> Languages
     {
-        get => _languages;
+        get;
         set
         {
-            _languages = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public FileInformation SelectedFileInformation
     {
-        get => _selectedFileInformation;
+        get;
         set
         {
-            _selectedFileInformation = value;
+            field = value;
             OnPropertyChanged();
         }
     }

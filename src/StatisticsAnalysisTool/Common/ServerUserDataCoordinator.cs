@@ -42,18 +42,17 @@ public sealed class ServerUserDataCoordinator
             return;
         }
 
-        await ApplyServerChangeAsync(
-            AppDataPaths.ActiveUserDataServerLocation,
-            _albionServerDetectionService.CurrentServerLocation,
-            true).ConfigureAwait(false);
+        await ApplyServerChangeAsync(AppDataPaths.ActiveUserDataServerLocation, _albionServerDetectionService.CurrentServerLocation, true).ConfigureAwait(false);
     }
 
     private async void AlbionServerDetectionService_ServerChanged(object sender, AlbionServerChangedEventArgs e)
     {
+        var previousServerLocation = AppDataPaths.ActiveUserDataServerLocation;
+        var currentServerLocation = e.CurrentServer.ServerLocation;
         await ApplyServerChangeAsync(
-            AppDataPaths.ActiveUserDataServerLocation,
-            e.CurrentServer.ServerLocation,
-            resetPartyAfterConfirmedServerDetection: IsKnownServerLocation(e.CurrentServer.ServerLocation)).ConfigureAwait(false);
+            previousServerLocation,
+            currentServerLocation,
+            resetPartyAfterConfirmedServerDetection: IsServerSwitch(previousServerLocation, currentServerLocation)).ConfigureAwait(false);
     }
 
     private async Task ApplyServerChangeAsync(
@@ -133,5 +132,10 @@ public sealed class ServerUserDataCoordinator
     private static bool IsKnownServerLocation(ServerLocation serverLocation)
     {
         return serverLocation is ServerLocation.America or ServerLocation.Asia or ServerLocation.Europe;
+    }
+
+    internal static bool IsServerSwitch(ServerLocation previousServerLocation, ServerLocation currentServerLocation)
+    {
+        return IsKnownServerLocation(previousServerLocation) && IsKnownServerLocation(currentServerLocation) && previousServerLocation != currentServerLocation;
     }
 }

@@ -12,6 +12,8 @@ public class NewRandomDungeonExitEvent
 {
     public int ObjectId { get; }
     public WorldPosition? SourceExitPosition { get; }
+    public string UniqueName { get; } = string.Empty;
+    public string DungeonType { get; } = string.Empty;
     public bool IsAlreadyEntered { get; }
     public int Level { get; } = -1;
 
@@ -31,14 +33,24 @@ public class NewRandomDungeonExitEvent
                 SourceExitPosition = ParseWorldPosition(positionObj);
             }
 
+            if (parameters.TryGetValue(3, out object uniqueName))
+            {
+                UniqueName = uniqueName.ToString() ?? string.Empty;
+            }
+
+            if (parameters.TryGetValue(4, out object dungeonType))
+            {
+                DungeonType = dungeonType.ToString() ?? string.Empty;
+            }
+
+            if (parameters.TryGetValue(9, out object level))
+            {
+                Level = level.ObjectToInt();
+            }
+
             if (parameters.TryGetValue(10, out object alreadyEntered))
             {
                 IsAlreadyEntered = alreadyEntered.ObjectToBool();
-            }
-
-            if (parameters.TryGetValue(8, out object level))
-            {
-                Level = level.ObjectToInt();
             }
         }
         catch (Exception e)
@@ -74,6 +86,8 @@ public class NewRandomDungeonExitEvent
             ObjectId = ObjectId,
             SourceExitPosition = SourceExitPosition,
             SourceClusterIndex = sourceClusterIndex,
+            UniqueName = UniqueName,
+            DungeonType = DungeonType,
             Level = Level,
             IsAlreadyEntered = IsAlreadyEntered,
             LastSeenUtc = DateTime.UtcNow

@@ -9,10 +9,13 @@ namespace StatisticsAnalysisTool.Network.Events;
 
 public class TakeSilverEvent
 {
+    private const double PremiumBonusMultiplier = 1.5;
+
     public long? ObjectId;
+    public FixPoint AlliancePenalty;
     public FixPoint ClusterTax;
     public FixPoint GuildTax;
-    public FixPoint Multiplier;
+    public FixPoint Multiplier = FixPoint.One;
     public bool IsPremiumBonus;
     public long? TargetEntityId;
     public long TimeStamp;
@@ -50,16 +53,22 @@ public class TakeSilverEvent
                 YieldPreTax = FixPoint.FromInternalValue(yieldPreTax ?? 0);
             }
 
+            if (parameters.TryGetValue(4, out object clusterTaxObject))
+            {
+                var clusterTax = clusterTaxObject.ObjectToLong();
+                ClusterTax = FixPoint.FromInternalValue(clusterTax ?? 0);
+            }
+
             if (parameters.TryGetValue(5, out object guildTaxObject))
             {
                 var guildTax = guildTaxObject.ObjectToLong();
                 GuildTax = FixPoint.FromInternalValue(guildTax ?? 0);
             }
 
-            if (parameters.TryGetValue(6, out object clusterTaxObject))
+            if (parameters.TryGetValue(6, out object alliancePenaltyObject))
             {
-                var clusterTax = clusterTaxObject.ObjectToLong();
-                ClusterTax = FixPoint.FromInternalValue(clusterTax ?? 0);
+                var alliancePenalty = alliancePenaltyObject.ObjectToLong();
+                AlliancePenalty = FixPoint.FromInternalValue(alliancePenalty ?? 0);
             }
 
             if (parameters.TryGetValue(7, out object isPremiumBonus))
@@ -73,14 +82,47 @@ public class TakeSilverEvent
                 Multiplier = FixPoint.FromInternalValue(multiplier ?? 0);
             }
 
-            YieldAfterTax = YieldPreTax - GuildTax;
-            ClusterYieldPreTax = FixPoint.FromFloatingPointValue(YieldPreTax.DoubleValue - (YieldPreTax.DoubleValue / Multiplier.DoubleValue));
-            PremiumAfterTax = ClusterYieldPreTax - ClusterTax;
-            ClusterYieldAfterTax = FixPoint.FromFloatingPointValue((ClusterYieldPreTax.DoubleValue / Multiplier.DoubleValue) - ClusterTax.DoubleValue);
+            RecalculateDerivedValues();
         }
         catch (Exception e)
         {
             DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
+    }
+
+    public void ApplyTaxes(FixPoint clusterTax, FixPoint guildTax, FixPoint alliancePenalty)
+    {
+        ClusterTax = clusterTax;
+        GuildTax = guildTax;
+        AlliancePenalty = alliancePenalty;
+
+        RecalculateDerivedValues();
+    }
+
+    private void RecalculateDerivedValues()
+    {
+        var totalTaxInternal = ClusterTax.InternalValue + GuildTax.InternalValue + AlliancePenalty.InternalValue;
+        var yieldAfterTaxInternal = Math.Max(0, YieldPreTax.InternalValue - totalTaxInternal);
+        YieldAfterTax = FixPoint.FromInternalValue(yieldAfterTaxInternal);
+
+        if (YieldPreTax.InternalValue <= 0)
+        {
+            ClusterYieldPreTax = default;
+            ClusterYieldAfterTax = default;
+            PremiumAfterTax = default;
+            return;
+        }
+
+        var premiumMultiplier = IsPremiumBonus ? PremiumBonusMultiplier : 1;
+        var clusterMultiplier = Math.Max(1, Multiplier.DoubleValue);
+        var yieldBeforePremium = YieldPreTax.DoubleValue / premiumMultiplier;
+        var baseYield = yieldBeforePremium / clusterMultiplier;
+        var clusterYieldPreTax = Math.Max(0, yieldBeforePremium - baseYield);
+        var premiumYieldPreTax = Math.Max(0, YieldPreTax.DoubleValue - yieldBeforePremium);
+        var yieldAfterTaxFactor = YieldAfterTax.DoubleValue / YieldPreTax.DoubleValue;
+
+        ClusterYieldPreTax = FixPoint.FromFloatingPointValue(clusterYieldPreTax);
+        ClusterYieldAfterTax = FixPoint.FromFloatingPointValue(clusterYieldPreTax * yieldAfterTaxFactor);
+        PremiumAfterTax = FixPoint.FromFloatingPointValue(premiumYieldPreTax * yieldAfterTaxFactor);
     }
 }

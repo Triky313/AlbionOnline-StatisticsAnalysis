@@ -20,7 +20,60 @@ namespace StatisticsAnalysisTool.Gathering;
 
 public class GatheringController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
 {
+    private const int GatheringRetentionYears = 3;
+    private readonly object _sessionSyncRoot = new();
+    private GatheringSession _activeSession;
     private int _gatheredCounter;
+
+    public async Task StartSessionAsync(string characterName)
+    {
+        if (string.IsNullOrWhiteSpace(characterName))
+        {
+            Log.Warning("Gathering session was not started because the character name is missing");
+            return;
+        }
+
+        GatheringSession session;
+        lock (_sessionSyncRoot)
+        {
+            if (_activeSession != null
+                && string.Equals(_activeSession.CharacterName, characterName, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            session = new GatheringSession
+            {
+                Id = Guid.NewGuid(),
+                StartedAtUtc = DateTime.UtcNow,
+                CharacterName = characterName
+            };
+            _activeSession = session;
+            _activeFishingEvent = null;
+        }
+
+        await RefreshSessionFiltersAsync();
+        Log.Information("Gathering session started. Character={Character}, SessionId={SessionId}", session.CharacterName, session.Id);
+    }
+
+    public async Task EndSessionAsync()
+    {
+        GatheringSession session;
+        lock (_sessionSyncRoot)
+        {
+            session = _activeSession;
+            _activeSession = null;
+            _activeFishingEvent = null;
+        }
+
+        if (session == null)
+        {
+            return;
+        }
+
+        await RefreshSessionFiltersAsync();
+        Log.Information("Gathering session ended. Character={Character}, SessionId={SessionId}", session.CharacterName, session.Id);
+    }
 
     public async Task AddOrUpdateAsync(HarvestFinishedObject harvestFinishedObject)
     {
@@ -34,7 +87,15 @@ public class GatheringController(TrackingController trackingController, MainWind
             return;
         }
 
-        var existingGatheredObject = mainWindowViewModel.GatheringBindings.GatheredCollection.FirstOrDefault(x => !x.IsClosed && x.ObjectId == harvestFinishedObject.ObjectId);
+        var activeSession = GetActiveSession();
+        if (activeSession == null)
+        {
+            Log.Debug("Gathering value discarded because no active session exists");
+            return;
+        }
+
+        var existingGatheredObject = mainWindowViewModel.GatheringBindings.GatheredCollection
+            .FirstOrDefault(x => x.SessionId == activeSession.Id && !x.IsClosed && x.ObjectId == harvestFinishedObject.ObjectId);
         if (existingGatheredObject != null)
         {
             if (existingGatheredObject.EstimatedMarketValue.IntegerValue <= 0)
@@ -52,6 +113,8 @@ public class GatheringController(TrackingController trackingController, MainWind
             var item = ItemController.GetItemByIndex(harvestFinishedObject.ItemId);
             var gathered = new Gathered()
             {
+                SessionId = activeSession.Id,
+                CharacterName = activeSession.CharacterName,
                 TimestampUtc = DateTime.UtcNow.Ticks,
                 UniqueName = item.UniqueName,
                 UserObjectId = harvestFinishedObject.UserObjectId,
@@ -66,15 +129,15 @@ public class GatheringController(TrackingController trackingController, MainWind
                 MiningProcesses = 1
             };
 
-            AddGatheredToBindingCollection(gathered);
-            await RemoveEntriesByAutoDeleteDateAsync();
+            await AddGatheredToBindingCollectionAsync(gathered);
+            await RemoveExpiredEntriesAsync();
         }
 
         await SaveInFileAfterExceedingLimit(10);
         mainWindowViewModel.GatheringBindings.UpdateStats();
     }
 
-    public async void AddGatheredToBindingCollection(Gathered gathered)
+    public async Task AddGatheredToBindingCollectionAsync(Gathered gathered)
     {
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
@@ -82,31 +145,115 @@ public class GatheringController(TrackingController trackingController, MainWind
         });
     }
 
-    public async Task RemoveEntriesByAutoDeleteDateAsync()
+    public async Task RemoveExpiredEntriesAsync()
     {
+        var cutoffUtcTicks = DateTime.UtcNow.AddYears(-GatheringRetentionYears).Ticks;
+        var entriesWereRemoved = false;
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
-            switch (SettingsController.CurrentSettings.AutoDeleteGatheringStats)
+            var expiredEntries = mainWindowViewModel.GatheringBindings.GatheredCollection
+                .Where(x => x.TimestampUtc < cutoffUtcTicks)
+                .ToList();
+            entriesWereRemoved = expiredEntries.Count > 0;
+            mainWindowViewModel.GatheringBindings.GatheredCollection.RemoveRange(expiredEntries);
+        });
+
+        if (entriesWereRemoved)
+        {
+            await RefreshSessionFiltersAsync();
+        }
+    }
+
+    public async Task ResetSessionAsync()
+    {
+        Guid sessionToReset;
+        lock (_sessionSyncRoot)
+        {
+            if (_activeSession == null)
             {
-                case AutoDeleteGatheringStats.NeverDelete:
-                    return;
-                case AutoDeleteGatheringStats.DeleteAfter7Days:
-                    var entriesToDelete7Days = mainWindowViewModel?.GatheringBindings?.GatheredCollection.ToList().Where(x => x.TimestampUtc < DateTime.UtcNow.AddDays(-7).Ticks);
-                    mainWindowViewModel?.GatheringBindings?.GatheredCollection.RemoveRange(entriesToDelete7Days);
-                    break;
-                case AutoDeleteGatheringStats.DeleteAfter14Days:
-                    var entriesToDelete14Days = mainWindowViewModel?.GatheringBindings?.GatheredCollection.ToList().Where(x => x.TimestampUtc < DateTime.UtcNow.AddDays(-14).Ticks);
-                    mainWindowViewModel?.GatheringBindings?.GatheredCollection.RemoveRange(entriesToDelete14Days);
-                    break;
-                case AutoDeleteGatheringStats.DeleteAfter30Days:
-                    var entriesToDelete30Days = mainWindowViewModel?.GatheringBindings?.GatheredCollection.ToList().Where(x => x.TimestampUtc < DateTime.UtcNow.AddDays(-30).Ticks);
-                    mainWindowViewModel?.GatheringBindings?.GatheredCollection.RemoveRange(entriesToDelete30Days);
-                    break;
-                case AutoDeleteGatheringStats.DeleteAfter365Days:
-                    var entriesToDelete365Days = mainWindowViewModel?.GatheringBindings?.GatheredCollection.ToList().Where(x => x.TimestampUtc < DateTime.UtcNow.AddDays(-365).Ticks);
-                    mainWindowViewModel?.GatheringBindings?.GatheredCollection.RemoveRange(entriesToDelete365Days);
-                    break;
+                Log.Warning("Gathering session was not reset because no active session exists");
+                return;
             }
+
+            sessionToReset = _activeSession.Id;
+            var characterName = _activeSession.CharacterName;
+            _activeSession = new GatheringSession
+            {
+                Id = Guid.NewGuid(),
+                StartedAtUtc = DateTime.UtcNow,
+                CharacterName = characterName
+            };
+            _activeFishingEvent = null;
+        }
+
+        var entriesWereRemoved = false;
+        await Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            var entriesToRemove = mainWindowViewModel.GatheringBindings.GatheredCollection
+                .Where(x => x.SessionId == sessionToReset)
+                .ToList();
+            entriesWereRemoved = entriesToRemove.Count > 0;
+            mainWindowViewModel.GatheringBindings.GatheredCollection.RemoveRange(entriesToRemove);
+        });
+
+        await RefreshSessionFiltersAsync();
+        if (entriesWereRemoved)
+        {
+            await SaveInFileAsync();
+        }
+
+        mainWindowViewModel.GatheringBindings.UpdateStats();
+        Log.Information("Gathering session reset");
+    }
+
+    public async Task<bool> DeleteSessionAsync(Guid sessionId)
+    {
+        lock (_sessionSyncRoot)
+        {
+            if (sessionId == _activeSession?.Id)
+            {
+                return false;
+            }
+        }
+
+        var entriesWereRemoved = false;
+        await Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            var entriesToRemove = mainWindowViewModel.GatheringBindings.GatheredCollection
+                .Where(x => x.SessionId == sessionId)
+                .ToList();
+            entriesWereRemoved = entriesToRemove.Count > 0;
+            mainWindowViewModel.GatheringBindings.GatheredCollection.RemoveRange(entriesToRemove);
+        });
+
+        if (!entriesWereRemoved)
+        {
+            return false;
+        }
+
+        await SaveInFileAsync();
+        await RefreshSessionFiltersAsync();
+        mainWindowViewModel.GatheringBindings.UpdateStats();
+        Log.Information("Gathering session deleted. SessionId={SessionId}", sessionId);
+        return true;
+    }
+
+    private GatheringSession GetActiveSession()
+    {
+        lock (_sessionSyncRoot)
+        {
+            return _activeSession;
+        }
+    }
+
+    private async Task RefreshSessionFiltersAsync()
+    {
+        var activeSession = GetActiveSession();
+        await Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            mainWindowViewModel.GatheringBindings.RefreshSessionFilters(
+                mainWindowViewModel.GatheringBindings.GatheredCollection.ToList(),
+                activeSession);
         });
     }
 
@@ -193,6 +340,14 @@ public class GatheringController(TrackingController trackingController, MainWind
         }
 
         var trackingEventId = fishingEvent.CatchActionId > 0 ? fishingEvent.CatchActionId : fishingEvent.EventId;
+        var activeSession = GetActiveSession();
+        if (activeSession == null)
+        {
+            _activeFishingEvent = null;
+            Log.Debug("Fishing value discarded because no active gathering session exists");
+            return;
+        }
+
         var itemCount = 0;
         foreach (DiscoveredItem confirmedDiscoveredItem in fishingEvent.ConfirmedFishingItems)
         {
@@ -205,6 +360,8 @@ public class GatheringController(TrackingController trackingController, MainWind
 
             var gathered = new Gathered()
             {
+                SessionId = activeSession.Id,
+                CharacterName = activeSession.CharacterName,
                 TimestampUtc = fishingEvent.CreateAt.Ticks,
                 UniqueName = fishedItem.UniqueName,
                 UserObjectId = -1,
@@ -220,14 +377,14 @@ public class GatheringController(TrackingController trackingController, MainWind
                 HasBeenFished = true
             };
 
-            AddGatheredToBindingCollection(gathered);
+            await AddGatheredToBindingCollectionAsync(gathered);
             itemCount++;
         }
 
         fishingEvent.DiscoveredFishingItems.Clear();
         _activeFishingEvent = null;
 
-        await RemoveEntriesByAutoDeleteDateAsync();
+        await RemoveExpiredEntriesAsync();
         await SaveInFileAfterExceedingLimit(10);
         mainWindowViewModel.GatheringBindings.UpdateStats();
     }
@@ -256,20 +413,30 @@ public class GatheringController(TrackingController trackingController, MainWind
 
     public async Task LoadFromFileAsync()
     {
-        var gatheredDtos = await FileController.LoadAsync<List<GatheredDto>>(AppDataPaths.UserDataFile(Settings.Default.GatheringFileName));
-        var gathered = gatheredDtos.Select(GatheringMapping.Mapping).ToList();
+        var gatheredDtos = await FileController.LoadAsync<List<GatheredDto>>(AppDataPaths.UserDataFile(Settings.Default.GatheringFileName)) ?? [];
+        var cutoffUtcTicks = DateTime.UtcNow.AddYears(-GatheringRetentionYears).Ticks;
+        var retainedGatheredDtos = gatheredDtos.Where(x => x.Timestamp >= cutoffUtcTicks).ToList();
+        var gathered = retainedGatheredDtos.Select(GatheringMapping.Mapping).ToList();
         await SetGatheredToBindings(gathered);
+
+        if (retainedGatheredDtos.Count != gatheredDtos.Count)
+        {
+            await SaveInFileAsync();
+        }
+
+        await RefreshSessionFiltersAsync();
     }
 
-    public async Task SaveInFileAsync(bool safeMoreThan356Days = false)
+    public async Task SaveInFileAsync()
     {
         if (!AppDataPaths.TryEnsureUserDataDirectory())
         {
             return;
         }
 
+        var cutoffUtcTicks = DateTime.UtcNow.AddYears(-GatheringRetentionYears).Ticks;
         var gatheredToSave = mainWindowViewModel.GatheringBindings?.GatheredCollection
-            .Where(x => !safeMoreThan356Days && x.TimestampDateTimeUtc > DateTime.UtcNow.AddDays(-365) || safeMoreThan356Days)
+            .Where(x => x.TimestampUtc >= cutoffUtcTicks)
             .ToList()
             .Select(GatheringMapping.Mapping);
 
@@ -314,9 +481,7 @@ public class GatheringController(TrackingController trackingController, MainWind
             var enumerable = gathered as Gathered[] ?? gathered.ToArray();
             mainWindowViewModel?.GatheringBindings?.GatheredCollection?.Clear();
             mainWindowViewModel?.GatheringBindings?.GatheredCollection?.AddRange(enumerable.AsEnumerable());
-            mainWindowViewModel?.GatheringBindings?.GatheredCollectionView?.Refresh();
         }, DispatcherPriority.Loaded, CancellationToken.None);
-        mainWindowViewModel?.GatheringBindings?.GatheredCollectionView?.Refresh();
     }
 
     #endregion

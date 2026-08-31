@@ -53,7 +53,7 @@ https://npcap.com/ (Normally the latest version should work!)
 
 ## FAQ
 ### Which operating system is supported?
-✅ Windows 10 and later
+✅ Windows 10 (10.0.19041.0) and later
 
 ❌ Windows XP, Vista, 7 and 8 are not supported!
 

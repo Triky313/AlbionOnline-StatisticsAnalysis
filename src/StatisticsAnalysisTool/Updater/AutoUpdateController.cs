@@ -68,6 +68,12 @@ public static class AutoUpdateController
 
     public static Task StartBackgroundUpdateLoopAsync()
     {
+        if (!AutoUpdateSecurity.AreBackgroundUpdatesEnabled)
+        {
+            Log.Information("Background auto updates are disabled for this local installer build.");
+            return Task.CompletedTask;
+        }
+
         lock (SyncRoot)
         {
             if (_isStartupCheckCompleted)
@@ -544,32 +550,115 @@ public static class AutoUpdateController
 
     private static async Task<bool> DownloadAndInstallUpdateAsync(SparkleUpdater sparkleUpdater, AppCastItem updateItem, UpdateWindowViewModel viewModel)
     {
+        viewModel.IsBusy = true;
+        viewModel.IsProgressIndeterminate = true;
+        viewModel.DownloadProgressPercentage = 0;
+        viewModel.StatusText = GetDownloadingStatusText();
+        viewModel.ActionButtonText = GetDownloadingButtonText();
+
+        var previousInteractionMode = sparkleUpdater.UserInteractionMode;
+        sparkleUpdater.UserInteractionMode = UserInteractionMode.DownloadNoInstall;
+
         try
         {
-            viewModel.IsBusy = true;
-            viewModel.StatusText = GetDownloadingStatusText();
-            viewModel.ActionButtonText = GetDownloadingButtonText();
+            string installerPath;
 
-            await sparkleUpdater.InitAndBeginDownload(updateItem);
+            using (var downloadSession = new UpdateDownloadSession(sparkleUpdater, updateItem))
+            {
+                downloadSession.ProgressChanged += progressPercentage => UpdateDownloadProgress(viewModel, progressPercentage);
+
+                try
+                {
+                    installerPath = await downloadSession.DownloadAsync();
+                }
+                catch (Exception e)
+                {
+                    DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                    Log.Warning(e, "Auto update download failed.");
+                    ResetUpdateWindowAfterFailure(viewModel, "UPDATE_DOWNLOAD_FAILED_MESSAGE");
+                    return false;
+                }
+            }
+
+            viewModel.DownloadProgressPercentage = 100;
+            viewModel.IsProgressIndeterminate = true;
+            viewModel.StatusText = LocalizationController.Translation("UPDATE_INSTALLING_STATUS");
+            viewModel.ActionButtonText = LocalizationController.Translation("UPDATE_INSTALLING_BUTTON");
+
+            InstallUpdateFailureReason? installFailureReason = null;
+
+            bool OnInstallUpdateFailed(InstallUpdateFailureReason failureReason, string installPath)
+            {
+                installFailureReason = failureReason;
+                Log.Warning(
+                    "Auto update installation failed. Failure reason: {FailureReason}. Installer path: {InstallerPath}",
+                    failureReason,
+                    installPath);
+                return true;
+            }
+
+            sparkleUpdater.InstallUpdateFailed += OnInstallUpdateFailed;
+
+            try
+            {
+                await sparkleUpdater.InstallUpdate(updateItem, installerPath);
+            }
+            catch (Exception e)
+            {
+                DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(e, "Auto update installer could not be started.");
+                ResetUpdateWindowAfterFailure(viewModel, "UPDATE_INSTALL_FAILED_MESSAGE");
+                return false;
+            }
+            finally
+            {
+                sparkleUpdater.InstallUpdateFailed -= OnInstallUpdateFailed;
+            }
+
+            if (installFailureReason.HasValue)
+            {
+                ResetUpdateWindowAfterFailure(viewModel, "UPDATE_INSTALL_FAILED_MESSAGE");
+                return false;
+            }
+
             return true;
         }
-        catch (HttpRequestException e)
+        finally
         {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Warning(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            viewModel.StatusText = LocalizationController.Translation("UPDATE_CHECK_FAILED_MESSAGE");
+            sparkleUpdater.UserInteractionMode = previousInteractionMode;
         }
-        catch (Exception e)
+    }
+
+    private static void UpdateDownloadProgress(UpdateWindowViewModel viewModel, int progressPercentage)
+    {
+        void ApplyProgress()
         {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            viewModel.StatusText = e.Message;
+            if (!viewModel.IsBusy)
+            {
+                return;
+            }
+
+            viewModel.IsProgressIndeterminate = false;
+            viewModel.DownloadProgressPercentage = progressPercentage;
         }
 
-        ClearAvailableUpdate();
+        var dispatcher = Application.Current?.Dispatcher;
+        if (dispatcher == null || dispatcher.CheckAccess())
+        {
+            ApplyProgress();
+            return;
+        }
+
+        _ = dispatcher.BeginInvoke(ApplyProgress);
+    }
+
+    private static void ResetUpdateWindowAfterFailure(UpdateWindowViewModel viewModel, string statusTranslationKey)
+    {
+        viewModel.StatusText = LocalizationController.Translation(statusTranslationKey);
         viewModel.IsBusy = false;
+        viewModel.IsProgressIndeterminate = false;
+        viewModel.DownloadProgressPercentage = 0;
         viewModel.ActionButtonText = LocalizationController.Translation("UPDATE_NOW");
-        return false;
     }
 
     private static async Task<bool> IsAppCastSignatureTrustedAsync(AutoUpdateConfiguration configuration, ISignatureVerifier signatureVerifier)
@@ -1171,9 +1260,12 @@ public static class AutoUpdateController
             if (failureReason == InstallUpdateFailureReason.InvalidSignature)
             {
                 ClearAvailableUpdate();
-                Log.Warning("Downloaded auto update failed signature verification and will not be installed. Installer path: {InstallerPath}", installPath);
             }
 
+            Log.Warning(
+                "Auto update installation failed. Failure reason: {FailureReason}. Installer path: {InstallerPath}",
+                failureReason,
+                installPath);
             return true;
         };
         sparkleUpdater.InstallerProcessAboutToStart += (_, downloadFilePath) => CanStartDownloadedInstaller(downloadFilePath);
@@ -1339,7 +1431,8 @@ public static class AutoUpdateController
 
         if (string.IsNullOrWhiteSpace(proxyUrl))
         {
-            handler.UseProxy = false;
+            handler.UseProxy = true;
+            handler.DefaultProxyCredentials = CredentialCache.DefaultCredentials;
             return handler;
         }
 

@@ -6,14 +6,23 @@ public class MainWindowTranslation
 {
     public static string Update => LocalizationController.Translation("UPDATE");
     public static string NumberOfValues => LocalizationController.Translation("NUMBER_OF_VALUES");
+    public static string Search => LocalizationController.Translation("SEARCH");
+    public static string TimeRange => LocalizationController.Translation("TIME_RANGE");
+
     public static string Load => LocalizationController.Translation("LOAD");
     public static string Icon => LocalizationController.Translation("ICON");
     public static string Time => LocalizationController.Translation("TIME");
     public static string Aggregation => LocalizationController.Translation("AGGREGATION");
     public static string Auto => LocalizationController.Translation("AUTO");
+    public static string Enchantment => LocalizationController.Translation("ENCHANTMENT");
+
     public static string Hour => LocalizationController.Translation("HOUR");
     public static string Tier => LocalizationController.Translation("TIER");
     public static string Level => LocalizationController.Translation("LEVEL");
+    public static string ShopCategory => LocalizationController.Translation("SHOP_CATEGORY");
+    public static string ShopSubCategory1 => $"{LocalizationController.Translation("SHOP_SUB_CATEGORY")} 1";
+    public static string ShopSubCategory2 => $"{LocalizationController.Translation("SHOP_SUB_CATEGORY")} 2";
+    public static string ShopSubCategory3 => $"{LocalizationController.Translation("SHOP_SUB_CATEGORY")} 3";
     public static string Location => LocalizationController.Translation("LOCATION");
     public static string Display => LocalizationController.Translation("DISPLAY");
     public static string Metric => LocalizationController.Translation("METRIC");
@@ -31,7 +40,6 @@ public class MainWindowTranslation
     public static string Username => LocalizationController.Translation("USERNAME");
     public static string GuildCap => LocalizationController.Translation("GUILD_CAP");
     public static string Alliance => LocalizationController.Translation("ALLIANCE");
-    public static string ResetTrackingCounter => LocalizationController.Translation("RESET_TRACKING_COUNTER");
     public static string MakeSureYouHaveInstalledNpcap => LocalizationController.Translation("MAKE_SURE_YOU_HAVE_INSTALLED_NPCAP");
     public static string MapChangeReset => LocalizationController.Translation("MAP_CHANGE_RESET");
     public static string ResetBeforeCombat => LocalizationController.Translation("RESET_BEFORE_COMBAT");
@@ -53,7 +61,6 @@ public class MainWindowTranslation
     public static string DamageMeter => LocalizationController.Translation("DAMAGE_METER");
     public static string DamageMeterDescription1 => LocalizationController.Translation("DAMAGE_METER_DESCRIPTION_1");
     public static string DamageMeterDescription2 => LocalizationController.Translation("DAMAGE_METER_DESCRIPTION_2");
-    public static string ItemSearchDescription1 => LocalizationController.Translation("ITEM_SEARCH_DESCRIPTION_1");
     public static string ItemSearchDescription2 => LocalizationController.Translation("ITEM_SEARCH_DESCRIPTION_2");
     public static string ItemSearchDescription3 => LocalizationController.Translation("ITEM_SEARCH_DESCRIPTION_3");
     public static string ResetDamageMeter => LocalizationController.Translation("RESET_DAMAGE_METER");
@@ -90,7 +97,6 @@ public class MainWindowTranslation
     public static string Dungeons => LocalizationController.Translation("DUNGEONS");
     public static string PlayerInformation => LocalizationController.Translation("PLAYER_INFORMATION");
     public static string TradeMonitoring => LocalizationController.Translation("TRADE_MONITORING");
-    public static string OpenWorld => LocalizationController.Translation("OPEN_WORLD");
     public static string Party => LocalizationController.Translation("PARTY");
     public static string StorageHistory => LocalizationController.Translation("STORAGE_HISTORY");
     public static string Logging => LocalizationController.Translation("LOGGING");
@@ -117,8 +123,22 @@ public class MainWindowTranslation
     public static string ShowLootFromMobs => LocalizationController.Translation("SHOW_LOOT_FROM_MOBS");
     public static string ShowKills => LocalizationController.Translation("SHOW_KILLS");
     public static string TrackingMobLoot => LocalizationController.Translation("TRACKING_MOB_LOOT");
+    public static string TrackingPlayerLoot => LocalizationController.Translation("TRACKING_PLAYER_LOOT");
+    public static string TrackingKills => LocalizationController.Translation("TRACKING_KILLS");
     public static string TopLooters => LocalizationController.Translation("TOP_LOOTERS");
     public static string ToolTasks => LocalizationController.Translation("TOOL_TASKS");
+    public static string Locations => LocalizationController.Translation("LOCATIONS");
+    public static string TradingActivityByLocation => LocalizationController.Translation("TRADING_ACTIVITY_BY_LOCATION");
+    public static string City => LocalizationController.Translation("CITY");
+    public static string Sales => LocalizationController.Translation("SALES");
+    public static string Purchases => LocalizationController.Translation("PURCHASES");
+    public static string Count => LocalizationController.Translation("COUNT");
+    public static string Value => LocalizationController.Translation("VALUE");
+    public static string Margin => LocalizationController.Translation("MARGIN");
+    public static string TaxPaid => LocalizationController.Translation("TAX_PAID");
+    public static string MostTradedCategory => LocalizationController.Translation("MOST_TRADED_CATEGORY");
+    public static string ResetFilters => LocalizationController.Translation("RESET_FILTERS");
+
     public static string ThisCharacterIsNotTracked => LocalizationController.Translation("THIS_CHARACTER_IS_NOT_TRACKED");
     public static string Today => LocalizationController.Translation("TODAY").ToLower();
     public static string Week => LocalizationController.Translation("WEEK").ToLower();

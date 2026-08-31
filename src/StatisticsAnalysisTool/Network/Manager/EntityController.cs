@@ -20,10 +20,13 @@ namespace StatisticsAnalysisTool.Network.Manager;
 public class EntityController
 {
     private readonly ConcurrentDictionary<Guid, PlayerGameObject> _knownEntities = new();
+    private readonly ConcurrentDictionary<long, Guid> _entityGuidsByObjectId = new();
+    private readonly ConcurrentDictionary<Guid, CharacterEquipment> _lastKnownCharacterEquipment = new();
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly ObservableCollection<EquipmentItemInternal> _newEquipmentItems = [];
     private readonly ObservableCollection<SpellEffect> _spellEffects = [];
     private readonly ConcurrentDictionary<long, CharacterEquipmentData> _tempCharacterEquipmentData = new();
+    private double _lastLocalEntityAlliancePenaltyInPercent;
     private double _lastLocalEntityGuildTaxInPercent;
     private double _lastLocalEntityClusterTaxInPercent;
     private readonly TrackingController _trackingController;
@@ -44,6 +47,7 @@ public class EntityController
 
         if (_knownEntities.TryRemove(entity.UserGuid, out var oldEntity))
         {
+            RemoveObjectIdIndex(oldEntity);
             // Parties are recreated several times in HCE's and therefore the ObjectId may only be set to zero once after a map change.
             // However, this must not happen in AddEntity
             long? newUserObjectId = oldEntity.ObjectId;
@@ -66,10 +70,15 @@ public class EntityController
                 CombatTime = oldEntity.CombatTime,
                 Damage = oldEntity.Damage,
                 Heal = oldEntity.Heal,
+                TakenDamage = oldEntity.TakenDamage,
+                CombatTimes = oldEntity.CombatTimes,
                 Overhealed = oldEntity.Overhealed,
+                LastContributionWeaponItemIndex = oldEntity.LastContributionWeaponItemIndex,
                 IsInParty = oldEntity.IsInParty,
                 Spells = oldEntity.Spells
             };
+
+            gameObject.CopyDamageMeterContentStatsFrom(oldEntity);
         }
         else
         {
@@ -103,7 +112,12 @@ public class EntityController
             _tempCharacterEquipmentData.TryRemove((long) entity.ObjectId, out _);
         }
 
-        _knownEntities.TryAdd(gameObject.UserGuid, gameObject);
+        RememberCharacterEquipment(gameObject.UserGuid, gameObject.CharacterEquipment);
+
+        if (_knownEntities.TryAdd(gameObject.UserGuid, gameObject))
+        {
+            AddObjectIdIndex(gameObject);
+        }
     }
 
     public void RemoveEntitiesByLastUpdate(int withoutAnUpdateForMinutes)
@@ -114,18 +128,30 @@ public class EntityController
                      && !IsEntityInParty(x.Key)
                      && new DateTime(x.Value.LastUpdate).AddMinutes(withoutAnUpdateForMinutes).Ticks < DateTime.UtcNow.Ticks))
         {
-            _knownEntities.TryRemove(entity.Key, out _);
+            if (_knownEntities.TryRemove(entity.Key, out var removedEntity))
+            {
+                RemoveObjectIdIndex(removedEntity);
+            }
         }
 
         foreach (var entity in _knownEntities.Where(x => x.Value.ObjectSubType != GameObjectSubType.LocalPlayer))
         {
+            RemoveObjectIdIndex(entity.Value);
             entity.Value.ObjectId = null;
         }
     }
 
     public KeyValuePair<Guid, PlayerGameObject>? GetEntity(long objectId)
     {
-        return _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
+        if (!_entityGuidsByObjectId.TryGetValue(objectId, out var entityGuid)
+            || !_knownEntities.TryGetValue(entityGuid, out var entity)
+            || entity.ObjectId != objectId)
+        {
+            RemoveObjectIdIndex(objectId, entityGuid);
+            return null;
+        }
+
+        return new KeyValuePair<Guid, PlayerGameObject>(entityGuid, entity);
     }
 
     public KeyValuePair<Guid, PlayerGameObject>? GetEntity(string uniqueName)
@@ -135,7 +161,9 @@ public class EntityController
 
     public KeyValuePair<Guid, PlayerGameObject> GetEntity(Guid guid)
     {
-        return _knownEntities.FirstOrDefault(x => x.Key == guid);
+        return _knownEntities.TryGetValue(guid, out var entity)
+            ? new KeyValuePair<Guid, PlayerGameObject>(guid, entity)
+            : default;
     }
 
     public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntities(bool onlyInParty = false)
@@ -143,16 +171,25 @@ public class EntityController
         return new List<KeyValuePair<Guid, PlayerGameObject>>(onlyInParty ? _knownEntities.ToArray().Where(x => x.Value.IsInParty) : _knownEntities.ToArray());
     }
 
-    public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntitiesWithDamageOrHealAndInParty()
+    public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntitiesWithDamageOrHealAndInParty(DashboardContentType? contentType = null)
     {
-        return new List<KeyValuePair<Guid, PlayerGameObject>>(_knownEntities
+        return _knownEntities
             .ToArray()
-            .Where(x => (x.Value.Damage > 0 || x.Value.Heal > 0 || x.Value.Overhealed > 0) && IsEntityInParty(x.Key)));
+            .Where(x => x.Value.IsInParty)
+            .Select(x => new KeyValuePair<Guid, PlayerGameObject>(
+                x.Key,
+                contentType.HasValue ? x.Value.CreateDamageMeterContentView(contentType.Value) : x.Value))
+            .Where(x => x.Value != null
+                        && (x.Value.Damage > 0
+                            || x.Value.Heal > 0
+                            || x.Value.Overhealed > 0
+                            || x.Value.TakenDamage > 0))
+            .ToList();
     }
 
     public bool ExistEntity(Guid guid)
     {
-        return _knownEntities?.Any(x => x.Key == guid) ?? false;
+        return _knownEntities.ContainsKey(guid);
     }
 
     public void SetItemPower(Guid guid, double itemPower)
@@ -202,6 +239,7 @@ public class EntityController
         {
             if (_knownEntities.TryRemove(staleLocalEntity.Key, out _))
             {
+                RemoveObjectIdIndex(staleLocalEntity.Value);
                 Log.Information("Removed stale local entity after local player changed. RemovedGuid={RemovedGuid}, CurrentGuid={CurrentGuid}, Name={Name}", staleLocalEntity.Key, currentLocalUserGuid, staleLocalEntity.Value.Name);
             }
         }
@@ -317,13 +355,13 @@ public class EntityController
 
     public bool IsEntityInParty(long objectId)
     {
-        var entity = _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
+        var entity = GetEntity(objectId);
         return entity?.Value?.IsInParty ?? false;
     }
 
     public bool IsEntityInParty(Guid guid)
     {
-        return _knownEntities?.FirstOrDefault(x => x.Key == guid).Value?.IsInParty ?? false;
+        return _knownEntities.TryGetValue(guid, out var entity) && entity.IsInParty;
     }
 
     public bool IsAnyEntityInParty(List<Guid> guids)
@@ -346,10 +384,11 @@ public class EntityController
 
     public async Task SetCharacterEquipmentAsync(long objectId, CharacterEquipment equipment)
     {
-        var entity = _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
+        var entity = GetEntity(objectId);
         if (entity?.Value != null)
         {
             entity.Value.Value.CharacterEquipment = equipment;
+            RememberCharacterEquipment(entity.Value.Key, equipment);
 
             if (entity.Value.Value.IsInParty)
             {
@@ -364,6 +403,71 @@ public class EntityController
                 TimeStamp = DateTime.UtcNow
             });
         }
+    }
+
+    public CharacterEquipment GetLastKnownCharacterEquipment(long objectId)
+    {
+        var entity = GetEntity(objectId);
+        return entity.HasValue
+            ? GetLastKnownCharacterEquipment(entity.Value)
+            : null;
+    }
+
+    public CharacterEquipment GetLastKnownCharacterEquipment(string playerName)
+    {
+        if (string.IsNullOrWhiteSpace(playerName))
+        {
+            return null;
+        }
+
+        var entity = _knownEntities
+            .FirstOrDefault(knownEntity => string.Equals(
+                knownEntity.Value.Name,
+                playerName,
+                StringComparison.OrdinalIgnoreCase));
+        return entity.Value != null
+            ? GetLastKnownCharacterEquipment(entity)
+            : null;
+    }
+
+    public CharacterEquipment GetLastLocalCharacterEquipment()
+    {
+        var localEntity = GetLocalEntity();
+        if (localEntity?.Value != null)
+        {
+            return GetLastKnownCharacterEquipment(localEntity.Value);
+        }
+
+        if (!LocalUserData.Guid.HasValue
+            || !_lastKnownCharacterEquipment.TryGetValue(LocalUserData.Guid.Value, out var equipment))
+        {
+            return null;
+        }
+
+        return equipment.CreateSnapshot();
+    }
+
+    private CharacterEquipment GetLastKnownCharacterEquipment(KeyValuePair<Guid, PlayerGameObject> entity)
+    {
+        if (entity.Value.CharacterEquipment?.HasEquippedItems() == true)
+        {
+            RememberCharacterEquipment(entity.Key, entity.Value.CharacterEquipment);
+            return entity.Value.CharacterEquipment.CreateSnapshot();
+        }
+
+        return _lastKnownCharacterEquipment.TryGetValue(entity.Key, out var equipment)
+            ? equipment.CreateSnapshot()
+            : null;
+    }
+
+    private void RememberCharacterEquipment(Guid userGuid, CharacterEquipment equipment)
+    {
+        if (userGuid == Guid.Empty || equipment?.HasEquippedItems() != true)
+        {
+            return;
+        }
+
+        _lastKnownCharacterEquipment[userGuid] = equipment.CreateSnapshot();
     }
 
     public void ResetTempCharacterEquipment()
@@ -457,7 +561,7 @@ public class EntityController
 
     private void SetCharacterMainHand(long objectId, int itemIndex)
     {
-        var entity = _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
+        var entity = GetEntity(objectId);
         var entityValue = entity?.Value;
 
         if (entityValue == null)
@@ -469,6 +573,33 @@ public class EntityController
         {
             MainHand = itemIndex
         };
+    }
+
+    private void AddObjectIdIndex(PlayerGameObject entity)
+    {
+        if (entity?.ObjectId is { } objectId)
+        {
+            _entityGuidsByObjectId[objectId] = entity.UserGuid;
+        }
+    }
+
+    private void RemoveObjectIdIndex(PlayerGameObject entity)
+    {
+        if (entity?.ObjectId is { } objectId)
+        {
+            RemoveObjectIdIndex(objectId, entity.UserGuid);
+        }
+    }
+
+    private void RemoveObjectIdIndex(long objectId, Guid entityGuid)
+    {
+        if (entityGuid == Guid.Empty)
+        {
+            return;
+        }
+
+        var indexedEntity = new KeyValuePair<long, Guid>(objectId, entityGuid);
+        _ = ((ICollection<KeyValuePair<long, Guid>>) _entityGuidsByObjectId).Remove(indexedEntity);
     }
 
     private void RemoveSpellAndEquipmentObjects()
@@ -506,6 +637,14 @@ public class EntityController
 
     #region Damage
 
+    public void ResetDamageMeterContentStats()
+    {
+        foreach (var entity in _knownEntities)
+        {
+            entity.Value.ResetDamageMeterContentStats();
+        }
+    }
+
     public void ResetEntitiesDamageStartTime()
     {
         foreach (var entity in _knownEntities)
@@ -527,6 +666,7 @@ public class EntityController
         foreach (var entity in _knownEntities)
         {
             entity.Value.Damage = 0;
+            entity.Value.LastContributionWeaponItemIndex = 0;
         }
     }
 
@@ -595,19 +735,36 @@ public class EntityController
 
     #region Local Entity
 
-    public FixPoint GetLastLocalEntityClusterTax(FixPoint yieldPreClusterTax) => FixPoint.FromFloatingPointValue(yieldPreClusterTax.DoubleValue / 100 * _lastLocalEntityClusterTaxInPercent);
+    public FixPoint GetLastLocalEntityAlliancePenalty(FixPoint yieldPreTax) => CalculateTax(yieldPreTax, _lastLocalEntityAlliancePenaltyInPercent);
+
+    public void SetLastLocalEntityAlliancePenalty(FixPoint yieldPreTax, FixPoint alliancePenalty)
+    {
+        _lastLocalEntityAlliancePenaltyInPercent = CalculateTaxPercentage(yieldPreTax, alliancePenalty);
+    }
+
+    public FixPoint GetLastLocalEntityClusterTax(FixPoint yieldPreTax) => CalculateTax(yieldPreTax, _lastLocalEntityClusterTaxInPercent);
 
     public void SetLastLocalEntityClusterTax(FixPoint yieldPreTax, FixPoint clusterTax)
     {
-        _lastLocalEntityClusterTaxInPercent = (100 / yieldPreTax.DoubleValue) * clusterTax.DoubleValue;
+        _lastLocalEntityClusterTaxInPercent = CalculateTaxPercentage(yieldPreTax, clusterTax);
     }
 
     public void SetLastLocalEntityGuildTax(FixPoint yieldPreTax, FixPoint guildTax)
     {
-        _lastLocalEntityGuildTaxInPercent = (100 / yieldPreTax.DoubleValue) * guildTax.DoubleValue;
+        _lastLocalEntityGuildTaxInPercent = CalculateTaxPercentage(yieldPreTax, guildTax);
     }
 
-    public FixPoint GetLastLocalEntityGuildTax(FixPoint yieldPreTax) => FixPoint.FromFloatingPointValue(yieldPreTax.DoubleValue / 100 * _lastLocalEntityGuildTaxInPercent);
+    public FixPoint GetLastLocalEntityGuildTax(FixPoint yieldPreTax) => CalculateTax(yieldPreTax, _lastLocalEntityGuildTaxInPercent);
+
+    private static FixPoint CalculateTax(FixPoint yieldPreTax, double taxInPercent)
+    {
+        return FixPoint.FromFloatingPointValue(yieldPreTax.DoubleValue / 100 * taxInPercent);
+    }
+
+    private static double CalculateTaxPercentage(FixPoint yieldPreTax, FixPoint tax)
+    {
+        return yieldPreTax.InternalValue > 0 ? 100 / yieldPreTax.DoubleValue * tax.DoubleValue : 0;
+    }
 
     public bool ExistLocalEntity()
     {

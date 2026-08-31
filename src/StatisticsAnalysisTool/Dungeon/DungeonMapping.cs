@@ -1,6 +1,5 @@
 ﻿using StatisticsAnalysisTool.Dungeon.Models;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Exceptions;
 using System.Linq;
 
 namespace StatisticsAnalysisTool.Dungeon;
@@ -18,9 +17,11 @@ public class DungeonMapping
             Tier = dungeon.Tier,
             Faction = dungeon.Faction,
             EnterDungeonFirstTime = dungeon.EnterDungeonFirstTime,
-            TotalRunTimeInSeconds = dungeon.RunningIntervals.Where(x => x.EndTime != null).ToList().Sum(time => (int) time.TimeSpan.TotalSeconds),
+            TotalRunTimeInSeconds = dungeon.EffectiveRunTimeInSeconds,
+            PartySize = dungeon.PartySize,
             Events = dungeon.Events.Select(Mapping).ToList(),
             Loot = dungeon.Loot.Select(Mapping).ToList(),
+            CombatEvents = dungeon.CombatEvents.Select(Mapping).ToList(),
             Status = DungeonStatus.Done,
             Fame = dungeon.Fame,
             ReSpec = dungeon.ReSpec,
@@ -35,7 +36,7 @@ public class DungeonMapping
             dto.Level = randomDungeon.Level;
             dto.CityFaction = randomDungeon.CityFaction;
             dto.FactionCoins = randomDungeon.FactionCoins;
-            dto.FactionFlags = randomDungeon.FactionFlags;
+            dto.FactionStanding = randomDungeon.FactionStanding;
             dto.Might = randomDungeon.Might;
             dto.Favor = randomDungeon.Favor;
         }
@@ -62,6 +63,7 @@ public class DungeonMapping
             dto.Might = mists.Might;
             dto.Favor = mists.Favor;
             dto.MistsRarity = mists.Rarity;
+            dto.MistsType = mists.PortalType;
             dto.BrecilianStanding = mists.BrecilianStanding;
         }
 
@@ -77,12 +79,19 @@ public class DungeonMapping
             dto.Favor = abyssalDepths.Favor;
         }
 
+        if (dungeon is DragonAreaFragment dragonArea)
+        {
+            dto.Might = dragonArea.Might;
+            dto.Favor = dragonArea.Favor;
+            dto.DragonAreaPortalSize = dragonArea.PortalSize;
+        }
+
         return dto;
     }
 
-    public static DungeonBaseFragment Mapping(DungeonDto dto)
+    public static bool TryMapping(DungeonDto dto, out DungeonBaseFragment dungeon)
     {
-        return dto.Mode switch
+        dungeon = dto?.Mode switch
         {
             DungeonMode.Solo or DungeonMode.Standard or DungeonMode.Avalon => new RandomDungeonFragment(dto),
             DungeonMode.Corrupted => new CorruptedFragment(dto),
@@ -91,8 +100,12 @@ public class DungeonMapping
             DungeonMode.Mists => new MistsFragment(dto),
             DungeonMode.MistsDungeon => new MistsDungeonFragment(dto),
             DungeonMode.AbyssalDepths => new AbyssalDepthsFragment(dto),
-            _ => throw new MappingException("Unknown dungeon mode")
+            DungeonMode.DragonArea => new DragonAreaFragment(dto),
+            DungeonMode.StaticDungeon => new StaticDungeonFragment(dto),
+            _ => null
         };
+
+        return dungeon is not null;
     }
 
     public static PointOfInterest Mapping(DungeonEventDto dto)
@@ -134,7 +147,10 @@ public class DungeonMapping
             UniqueName = dto.UniqueName,
             UtcDiscoveryTime = dto.UtcDiscoveryTime,
             Quantity = dto.Quantity,
-            EstimatedMarketValueInternal = dto.EstimatedMarketValueInternal
+            EstimatedMarketValueInternal = dto.EstimatedMarketValueInternal,
+            SourceObjectId = dto.SourceObjectId,
+            SourceName = dto.SourceName,
+            SourceType = dto.SourceType
         };
     }
 
@@ -145,7 +161,25 @@ public class DungeonMapping
             UniqueName = loot.UniqueName,
             UtcDiscoveryTime = loot.UtcDiscoveryTime,
             Quantity = loot.Quantity,
-            EstimatedMarketValueInternal = loot.EstimatedMarketValueInternal
+            EstimatedMarketValueInternal = loot.EstimatedMarketValueInternal,
+            SourceObjectId = loot.SourceObjectId,
+            SourceName = loot.SourceName,
+            SourceType = loot.SourceType
+        };
+    }
+
+    public static DungeonCombatEvent Mapping(DungeonCombatEventDto dto)
+    {
+        return new DungeonCombatEvent(dto.Status, dto.DiedName, dto.KilledBy);
+    }
+
+    public static DungeonCombatEventDto Mapping(DungeonCombatEvent combatEvent)
+    {
+        return new DungeonCombatEventDto
+        {
+            Status = combatEvent.Status,
+            DiedName = combatEvent.DiedName,
+            KilledBy = combatEvent.KilledBy
         };
     }
 

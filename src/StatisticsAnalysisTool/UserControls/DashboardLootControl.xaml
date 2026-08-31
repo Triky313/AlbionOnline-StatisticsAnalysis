@@ -1,0 +1,331 @@
+<UserControl x:Class="StatisticsAnalysisTool.UserControls.DashboardLootControl"
+             x:Name="LootControlRoot"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
+             xmlns:fa5="http://schemas.fontawesome.com/icons/"
+             xmlns:glob="clr-namespace:System.Globalization;assembly=System.Runtime"
+             mc:Ignorable="d"
+             d:DesignHeight="1200"
+             d:DesignWidth="1050"
+             d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
+    <StackPanel>
+        <Border Style="{StaticResource Dashboard.Section}" Margin="0,0,0,8">
+            <DockPanel LastChildFill="True">
+                <Grid DockPanel.Dock="Top"
+                      Style="{StaticResource Dashboard.SectionHeader}"
+                      MouseLeftButtonDown="LootStatsToggle_OnMouseLeftButtonDown">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/Assets/bag.png" Width="24" Height="24" Margin="12,0,10,0" />
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding DashboardBindings.TranslationImportantLoot, FallbackValue=IMPORTANT_LOOT}"
+                               Style="{StaticResource Dashboard.SectionTitle}" />
+                    <fa5:ImageAwesome Grid.Column="2"
+                                      Icon="{Binding DashboardBindings.LootStatsToggleIcon, FallbackValue=Solid_Minus}"
+                                      Style="{StaticResource Dashboard.SectionToggleIcon}" />
+                </Grid>
+
+                <Border BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                        BorderThickness="0,1,0,0"
+                        Visibility="{Binding DashboardBindings.LootStatsVisibility}">
+                    <Grid Margin="12">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" Style="{StaticResource Dashboard.SummaryCard}" Margin="0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Image Source="/Resources/silver.png"
+                                           Style="{StaticResource Dashboard.SummaryImage}"
+                                           Width="22"
+                                           Height="22" />
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="{Binding DashboardBindings.TranslationTotalLootValue, FallbackValue=TOTAL_LOOT_VALUE}"
+                                                   Style="{StaticResource Dashboard.SummaryTitle}" />
+                                        <ContentControl Content="{Binding DashboardBindings.LootStatistics}"
+                                                        ContentTemplate="{StaticResource Dashboard.LootSummaryMetricTemplate}"
+                                                        HorizontalContentAlignment="Stretch" />
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+                            <Border Grid.Column="2" Style="{StaticResource Dashboard.SummaryCard}" Margin="0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Image Source="/Assets/bag.png"
+                                           Style="{StaticResource Dashboard.SummaryImage}"
+                                           Width="22"
+                                           Height="22" />
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="{Binding DashboardBindings.TranslationAverageLootValue, FallbackValue=AVERAGE_LOOT_VALUE}"
+                                                   Style="{StaticResource Dashboard.SummaryTitle}" />
+                                        <TextBlock Text="{Binding DashboardBindings.LootStatistics.AverageValue, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}"
+                                                   Style="{StaticResource Dashboard.SummaryValue}" />
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </Grid>
+
+                        <Grid Grid.Row="1" Margin="0,8,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" Style="{StaticResource Dashboard.Card}" Padding="12" VerticalAlignment="Stretch">
+                                <DockPanel LastChildFill="True">
+                                    <TextBlock DockPanel.Dock="Top"
+                                               Margin="0,0,0,8"
+                                               Text="{Binding DashboardBindings.TranslationRecentLootItems, FallbackValue=RECENT_LOOT_ITEMS}"
+                                               Style="{StaticResource Dashboard.ContentRankingTitle}" />
+                                    <ItemsControl ItemsSource="{Binding DashboardBindings.LootStatistics.RecentItems}"
+                                                  ItemTemplate="{StaticResource Dashboard.LootItemTemplate}" />
+                                </DockPanel>
+                            </Border>
+
+                            <Border Grid.Column="2" Style="{StaticResource Dashboard.Card}" Padding="12" VerticalAlignment="Stretch">
+                                <DockPanel LastChildFill="True">
+                                    <TextBlock DockPanel.Dock="Top"
+                                               Margin="0,0,0,8"
+                                               Text="{Binding DashboardBindings.TranslationMostValuableLoot, FallbackValue=MOST_VALUABLE_LOOT}"
+                                               Style="{StaticResource Dashboard.ContentRankingTitle}" />
+                                    <ItemsControl ItemsSource="{Binding DashboardBindings.LootStatistics.MostValuableItems}"
+                                                  ItemTemplate="{StaticResource Dashboard.LootItemTemplate}" />
+                                </DockPanel>
+                            </Border>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </DockPanel>
+        </Border>
+
+        <Grid Margin="0,0,0,8"
+              Visibility="{Binding ShowDetails, ElementName=LootControlRoot, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0">
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.Section}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DashboardBindings.LootValueDistributionVisibility}" Value="Collapsed">
+                                <Setter Property="VerticalAlignment" Value="Top" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <DockPanel LastChildFill="True">
+                    <Grid DockPanel.Dock="Top"
+                          Style="{StaticResource Dashboard.SectionHeader}"
+                          MouseLeftButtonDown="LootValueDistributionToggle_OnMouseLeftButtonDown">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Image Source="/Resources/silver.png" Width="24" Height="24" Margin="12,0,10,0" />
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding DashboardBindings.TranslationLootValueDistribution, FallbackValue=LOOT_VALUE_DISTRIBUTION}"
+                                   Style="{StaticResource Dashboard.SectionTitle}" />
+                        <fa5:ImageAwesome Grid.Column="2"
+                                          Icon="{Binding DashboardBindings.LootValueDistributionToggleIcon, FallbackValue=Solid_Minus}"
+                                          Style="{StaticResource Dashboard.SectionToggleIcon}" />
+                    </Grid>
+
+                    <Border
+                            BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                            BorderThickness="0,1,0,0"
+                            Visibility="{Binding DashboardBindings.LootValueDistributionVisibility}">
+                        <Grid Margin="12">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid Margin="0,0,0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="85" />
+                                    <ColumnDefinition Width="135" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding DashboardBindings.TranslationValueClass, FallbackValue=VALUE_CLASS}"
+                                           Style="{StaticResource Dashboard.ContentRankingName}" />
+                                <TextBlock Grid.Column="1"
+                                           Text="{Binding DashboardBindings.TranslationItems, FallbackValue=ITEMS}"
+                                           TextAlignment="Right"
+                                           Style="{StaticResource Dashboard.ContentRankingName}" />
+                                <TextBlock Grid.Column="2"
+                                           Text="{Binding DashboardBindings.TranslationShareOfTotalValue, FallbackValue=SHARE_OF_TOTAL_VALUE}"
+                                           TextAlignment="Right"
+                                           Style="{StaticResource Dashboard.ContentRankingName}" />
+                            </Grid>
+                            <ItemsControl Grid.Row="1"
+                                          ItemsSource="{Binding DashboardBindings.LootStatistics.ValueDistribution}"
+                                          ItemTemplate="{StaticResource Dashboard.LootValueBreakdownItemTemplate}" />
+                        </Grid>
+                    </Border>
+                </DockPanel>
+            </Border>
+
+            <Border Grid.Column="2">
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}" BasedOn="{StaticResource Dashboard.Section}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DashboardBindings.LootTierEnchantmentVisibility}" Value="Collapsed">
+                                <Setter Property="VerticalAlignment" Value="Top" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <DockPanel LastChildFill="True">
+                    <Grid DockPanel.Dock="Top"
+                          Style="{StaticResource Dashboard.SectionHeader}"
+                          MouseLeftButtonDown="LootTierEnchantmentToggle_OnMouseLeftButtonDown">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Image Source="/Assets/bag.png" Width="24" Height="24" Margin="12,0,10,0" />
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding DashboardBindings.TranslationLootByTierAndEnchantment, FallbackValue=LOOT_BY_TIER_AND_ENCHANTMENT}"
+                                   Style="{StaticResource Dashboard.SectionTitle}" />
+                        <fa5:ImageAwesome Grid.Column="2"
+                                          Icon="{Binding DashboardBindings.LootTierEnchantmentToggleIcon, FallbackValue=Solid_Minus}"
+                                          Style="{StaticResource Dashboard.SectionToggleIcon}" />
+                    </Grid>
+
+                    <Border
+                            BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                            BorderThickness="0,1,0,0"
+                            Visibility="{Binding DashboardBindings.LootTierEnchantmentVisibility}">
+                        <Grid Margin="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="16" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <DockPanel Grid.Column="0" LastChildFill="True">
+                                <TextBlock DockPanel.Dock="Top"
+                                           Margin="0,0,0,5"
+                                           Text="{Binding DashboardBindings.TranslationTierDistribution, FallbackValue=TIER_DISTRIBUTION}"
+                                           Style="{StaticResource Dashboard.ContentRankingName}" />
+                                <ItemsControl ItemsSource="{Binding DashboardBindings.LootStatistics.TierDistribution}"
+                                              ItemTemplate="{StaticResource Dashboard.LootShareBreakdownItemTemplate}" />
+                            </DockPanel>
+
+                            <DockPanel Grid.Column="2" LastChildFill="True">
+                                <TextBlock DockPanel.Dock="Top"
+                                           Margin="0,0,0,5"
+                                           Text="{Binding DashboardBindings.TranslationEnchantment, FallbackValue=ENCHANTMENT}"
+                                           Style="{StaticResource Dashboard.ContentRankingName}" />
+                                <ItemsControl ItemsSource="{Binding DashboardBindings.LootStatistics.EnchantmentDistribution}"
+                                              ItemTemplate="{StaticResource Dashboard.LootShareBreakdownItemTemplate}" />
+                            </DockPanel>
+                        </Grid>
+                    </Border>
+                </DockPanel>
+            </Border>
+        </Grid>
+
+        <Border Style="{StaticResource Dashboard.Section}"
+                Visibility="{Binding ShowDetails, ElementName=LootControlRoot, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <DockPanel LastChildFill="True">
+                <Grid DockPanel.Dock="Top"
+                      Style="{StaticResource Dashboard.SectionHeader}"
+                      MouseLeftButtonDown="TopLootAreasToggle_OnMouseLeftButtonDown">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/Assets/map_white_icon.png" Width="24" Height="24" Margin="12,0,10,0" />
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding DashboardBindings.TranslationTopLootAreas, FallbackValue=TOP_LOOT_AREAS}"
+                               Style="{StaticResource Dashboard.SectionTitle}" />
+                    <fa5:ImageAwesome Grid.Column="2"
+                                      Icon="{Binding DashboardBindings.TopLootAreasToggleIcon, FallbackValue=Solid_Minus}"
+                                      Style="{StaticResource Dashboard.SectionToggleIcon}" />
+                </Grid>
+
+                <Border BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                        BorderThickness="0,1,0,0"
+                        Visibility="{Binding DashboardBindings.TopLootAreasVisibility}">
+                    <Grid Margin="12">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid Margin="8,0,8,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="34" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="70" />
+                                <ColumnDefinition Width="70" />
+                                <ColumnDefinition Width="70" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding DashboardBindings.TranslationMapArea, FallbackValue=MAP_AREA}"
+                                       Style="{StaticResource Dashboard.ContentRankingName}" />
+                            <TextBlock Grid.Column="2"
+                                       Text="{Binding DashboardBindings.TranslationLootValue, FallbackValue=LOOT_VALUE}"
+                                       TextAlignment="Right"
+                                       Style="{StaticResource Dashboard.ContentRankingName}" />
+                            <TextBlock Grid.Column="3"
+                                       Text="{Binding DashboardBindings.TranslationLootPerHour, FallbackValue=LOOT_PER_HOUR}"
+                                       TextAlignment="Right"
+                                       Style="{StaticResource Dashboard.ContentRankingName}" />
+                            <TextBlock Grid.Column="4"
+                                       Text="{Binding DashboardBindings.TranslationLootPerMap, FallbackValue=LOOT_PER_MAP}"
+                                       TextAlignment="Right"
+                                       Style="{StaticResource Dashboard.ContentRankingName}" />
+                            <TextBlock Grid.Column="5"
+                                       Text="{Binding DashboardBindings.TranslationItems, FallbackValue=ITEMS}"
+                                       TextAlignment="Right"
+                                       Style="{StaticResource Dashboard.ContentRankingName}" />
+                            <TextBlock Grid.Column="6"
+                                       Text="{Binding DashboardBindings.TranslationVisits, FallbackValue=VISITS}"
+                                       TextAlignment="Right"
+                                       Style="{StaticResource Dashboard.ContentRankingName}" />
+                            <TextBlock Grid.Column="7"
+                                       Text="{Binding DashboardBindings.TranslationShare, FallbackValue=SHARE}"
+                                       TextAlignment="Right"
+                                       Style="{StaticResource Dashboard.ContentRankingName}" />
+                        </Grid>
+                        <ItemsControl Grid.Row="1"
+                                      ItemsSource="{Binding DashboardBindings.LootStatistics.TopAreas}"
+                                      ItemTemplate="{StaticResource Dashboard.LootAreaTemplate}" />
+                    </Grid>
+                </Border>
+            </DockPanel>
+        </Border>
+    </StackPanel>
+</UserControl>

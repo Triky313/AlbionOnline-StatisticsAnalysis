@@ -13,8 +13,12 @@ public class ActionOnBuildingStartRequest
     public readonly long BuildingObjectId;
     public readonly ActionOnBuildingType ActionType;
     public readonly long Costs;
+    public readonly long AwakenedWeaponSilverCosts;
     public readonly int ItemIndex;
     public readonly int Quantity;
+    public readonly IReadOnlyList<long> ItemObjectIds = [];
+    public readonly IReadOnlyList<int> ItemQuantities = [];
+    public readonly IReadOnlyList<ItemQuality> ItemQualities = [];
 
     public ActionOnBuildingStartRequest(Dictionary<byte, object> parameters)
     {
@@ -41,6 +45,21 @@ public class ActionOnBuildingStartRequest
                 Costs = costs.ObjectToLong() ?? 0;
             }
 
+            if (parameters.TryGetValue(17, out object awakenedWeaponSilverCosts))
+            {
+                AwakenedWeaponSilverCosts = awakenedWeaponSilverCosts.ObjectToLong() ?? 0;
+            }
+
+            if (parameters.TryGetValue(5, out object itemObjectIds))
+            {
+                ItemObjectIds = NetworkParameterParser.GetLongValues(itemObjectIds);
+            }
+
+            if (parameters.TryGetValue(6, out object itemQuantities))
+            {
+                ItemQuantities = NetworkParameterParser.GetIntValues(itemQuantities);
+            }
+
             if (parameters.TryGetValue(7, out object itemIndex))
             {
                 ItemIndex = itemIndex.ObjectToInt();
@@ -51,6 +70,16 @@ public class ActionOnBuildingStartRequest
                 Quantity = quantity.ObjectToInt();
             }
 
+            if (parameters.TryGetValue(13, out object qualityLevel))
+            {
+                var itemQualities = new List<ItemQuality>();
+                foreach (var qualityValue in NetworkParameterParser.GetIntValues(qualityLevel))
+                {
+                    itemQualities.Add(ItemController.GetQuality(qualityValue));
+                }
+
+                ItemQualities = itemQualities;
+            }
         }
         catch (Exception e)
         {

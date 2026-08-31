@@ -16,6 +16,77 @@ namespace StatisticsAnalysisTool.UnitTests.Common;
 public class LoggingBindingsTests
 {
     [Test]
+    public void UpdateAllStatusFilterSelection_WhenSelected_DeselectsIndividualFilters()
+    {
+        var bindings = new LoggingBindings();
+
+        bindings.UpdateAllStatusFilterSelection(true);
+
+        bindings.IsAllStatusFilterSelected.Should().BeTrue();
+        bindings.IsShowingLost.Should().BeFalse();
+        bindings.IsShowingResolved.Should().BeFalse();
+        bindings.IsShowingDonated.Should().BeFalse();
+        bindings.IsShowingTrash.Should().BeFalse();
+    }
+
+    [Test]
+    public void UpdateAllTierFilterSelection_WhenSelected_DeselectsIndividualFilters()
+    {
+        var bindings = new LoggingBindings();
+
+        bindings.UpdateAllTierFilterSelection(true);
+
+        bindings.IsAllTierFilterSelected.Should().BeTrue();
+        bindings.IsShowingT1ToT3.Should().BeFalse();
+        bindings.IsShowingT4.Should().BeFalse();
+        bindings.IsShowingT5.Should().BeFalse();
+        bindings.IsShowingT6.Should().BeFalse();
+        bindings.IsShowingT7.Should().BeFalse();
+        bindings.IsShowingT8.Should().BeFalse();
+    }
+
+    [Test]
+    public void UpdateAllTypeFilterSelection_WhenSelected_DeselectsIndividualFilters()
+    {
+        var bindings = new LoggingBindings();
+
+        bindings.UpdateAllTypeFilterSelection(true);
+
+        bindings.IsAllTypeFilterSelected.Should().BeTrue();
+        bindings.IsShowingFood.Should().BeFalse();
+        bindings.IsShowingPotion.Should().BeFalse();
+        bindings.IsShowingBag.Should().BeFalse();
+        bindings.IsShowingCape.Should().BeFalse();
+        bindings.IsShowingWeapon.Should().BeFalse();
+        bindings.IsShowingArmor.Should().BeFalse();
+        bindings.IsShowingMount.Should().BeFalse();
+        bindings.IsShowingOthers.Should().BeFalse();
+    }
+
+    [Test]
+    public void UpdateAllNotificationFilterSelection_WhenSelected_DeselectsIndividualFilters()
+    {
+        var bindings = new LoggingBindings();
+        bindings.Filters.Add(new LoggingFilterObject(LoggingFilterType.Fame)
+        {
+            IsSelected = true,
+            Name = "Fame"
+        });
+        bindings.Filters.Add(new LoggingFilterObject(LoggingFilterType.Silver)
+        {
+            IsSelected = true,
+            Name = "Silver"
+        });
+
+        bindings.IsAllNotificationFilterSelected.Should().BeFalse();
+
+        bindings.UpdateAllNotificationFilterSelection(true);
+
+        bindings.IsAllNotificationFilterSelected.Should().BeTrue();
+        bindings.Filters.Should().OnlyContain(filter => filter.IsSelected == false);
+    }
+
+    [Test]
     public void UpdateItemsStatus_WithValidValue()
     {
         var bindings = new LoggingBindings();
@@ -653,7 +724,7 @@ public class LoggingBindingsTests
     }
 
     [Test]
-    public void AddLootLogFiles_WithNonLootEventRows_SkipsRowsAndImportsLootItems()
+    public void AddLootLogFiles_WithCombatEventRows_ImportsCombatCountsAndLootItems()
     {
         ItemController.Items = new ObservableCollection<Item>()
         {
@@ -671,11 +742,16 @@ public class LoggingBindingsTests
         {
             File.WriteAllText(filePath, lootLogText);
 
-            bindings.AddLootLogFiles([filePath]).Should().Be(1);
+            bindings.AddLootLogFiles([filePath]).Should().Be(2);
 
-            var player = bindings.LootingPlayers.Should().ContainSingle().Subject;
+            var player = bindings.LootingPlayers.Should().ContainSingle(item => item.PlayerName == "Josmiel16").Subject;
             player.PlayerName.Should().Be("Josmiel16");
             player.LootedItems.Should().ContainSingle(item => item.ItemIndex == 4 && item.Quantity == 8);
+
+            var combatPlayer = bindings.LootingPlayers.Should().ContainSingle(item => item.PlayerName == "Donnaoom").Subject;
+            combatPlayer.KillCount.Should().Be(1);
+            combatPlayer.DeathCount.Should().Be(1);
+            bindings.LootLogCombatEvents.Should().ContainSingle();
         }
         finally
         {
@@ -1367,23 +1443,30 @@ public class LoggingBindingsTests
                 new()
                 {
                     ItemIndex = 1,
-                    Quantity = 2
+                    Quantity = 2,
+                    Status = LootedItemStatus.Lost
                 },
                 new()
                 {
                     ItemIndex = 2,
-                    Quantity = 10
+                    Quantity = 10,
+                    Status = LootedItemStatus.Resolved
                 },
                 new()
                 {
                     ItemIndex = 3,
-                    Quantity = 1
+                    Quantity = 1,
+                    Status = LootedItemStatus.Donated
                 }
             }
         };
 
         lootingPlayer.TotalEstimatedMarketValue.Should().Be(250);
         lootingPlayer.TotalEstimatedMarketValueVisibility.Should().Be(Visibility.Visible);
+        lootingPlayer.GrayItemCount.Should().Be(1);
+        lootingPlayer.GreenItemCount.Should().Be(1);
+        lootingPlayer.BlueItemCount.Should().Be(1);
+        lootingPlayer.RedItemCount.Should().Be(0);
     }
     private static string CreateLootLogText(params string[] rows)
     {

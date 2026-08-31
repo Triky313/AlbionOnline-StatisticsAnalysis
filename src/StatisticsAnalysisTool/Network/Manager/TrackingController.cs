@@ -12,9 +12,10 @@ using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Gathering;
 using StatisticsAnalysisTool.Guild;
 using StatisticsAnalysisTool.Localization;
+using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.PacketProviders;
-using StatisticsAnalysisTool.OpenWorld;
 using StatisticsAnalysisTool.Party;
+using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.StorageHistory;
 using StatisticsAnalysisTool.Trade;
 using StatisticsAnalysisTool.Trade.Mails;
@@ -25,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
@@ -59,7 +61,7 @@ public class TrackingController : ITrackingController
     public readonly TradeController TradeController;
     public readonly VaultController VaultController;
     public readonly GatheringController GatheringController;
-    public readonly OpenWorldController OpenWorldController;
+    public readonly MobKillController MobKillController;
     public readonly PartyController PartyController;
     public readonly GuildController GuildController;
     public readonly CraftingController CraftingController;
@@ -80,7 +82,7 @@ public class TrackingController : ITrackingController
         TradeController = new TradeController(this, mainWindowViewModel);
         VaultController = new VaultController(mainWindowViewModel);
         GatheringController = new GatheringController(this, mainWindowViewModel);
-        OpenWorldController = new OpenWorldController(this, mainWindowViewModel);
+        MobKillController = new MobKillController(this);
         PartyController = new PartyController(this, mainWindowViewModel);
         GuildController = new GuildController(this, mainWindowViewModel);
         CraftingController = new CraftingController(this, mainWindowViewModel);
@@ -98,6 +100,7 @@ public class TrackingController : ITrackingController
         _mainWindowViewModel.LoggingBindings.IsTrackingSilver = SettingsController.CurrentSettings.IsTrackingSilver;
         _mainWindowViewModel.LoggingBindings.IsTrackingFame = SettingsController.CurrentSettings.IsTrackingFame;
         _mainWindowViewModel.LoggingBindings.IsTrackingMobLoot = SettingsController.CurrentSettings.IsTrackingMobLoot;
+        _mainWindowViewModel.LoggingBindings.IsTrackingPlayerLoot = SettingsController.CurrentSettings.IsTrackingPlayerLoot;
         _mainWindowViewModel.LoggingBindings.IsTrackingKill = SettingsController.CurrentSettings.IsTrackingKill;
 
         _mainWindowViewModel.LoggingBindings.GameLoggingCollectionView = CollectionViewSource.GetDefaultView(_mainWindowViewModel.LoggingBindings.TrackingNotifications) as ListCollectionView;
@@ -127,16 +130,24 @@ public class TrackingController : ITrackingController
 
         try
         {
+            _mainWindowViewModel.MainStatusBindings.SetGameDataDetected(false);
+
             ClusterController?.RegisterEvents();
             LootController?.RegisterEvents();
             TreasureController?.RegisterEvents();
 
             LiveStatsTracker.Start();
 
-            _mainWindowViewModel.DungeonBindings.DungeonStatsFilter =
-                new DungeonStatsFilter(_mainWindowViewModel.DungeonBindings);
+            var startResult = _networkManager.Start();
+            if (!startResult.IsSuccessful)
+            {
+                var userMsg = LocalizationController.Translation("NO_LISTENING_ADAPTERS");
+                Log.Warning("StartTracking failed | provider={Provider} | admin={IsAdmin} | msg={UserMsg}", provider, ApplicationCore.IsAppStartedAsAdministrator(), userMsg);
+                _mainWindowViewModel.SetErrorBar(Visibility.Visible, userMsg);
+                StopTracking();
+                return;
+            }
 
-            _networkManager.Start();
             _mainWindowViewModel.IsTrackingActive = true;
         }
         catch (Exception ex)
@@ -158,6 +169,27 @@ public class TrackingController : ITrackingController
 
             _mainWindowViewModel.IsTrackingActive = false;
         }
+    }
+
+    internal void NotifyGameDataDetected()
+    {
+        if (Application.Current?.Dispatcher?.CheckAccess() == true)
+        {
+            SetGameDataDetectedStatus();
+            return;
+        }
+
+        _ = Application.Current?.Dispatcher?.BeginInvoke(SetGameDataDetectedStatus);
+    }
+
+    private void SetGameDataDetectedStatus()
+    {
+        if (!(_networkManager?.IsAnySocketActive() ?? false))
+        {
+            return;
+        }
+
+        _mainWindowViewModel.MainStatusBindings.SetGameDataDetected(true);
     }
 
     private static string GetTrackingStartErrorMessage(Exception ex)
@@ -223,6 +255,13 @@ public class TrackingController : ITrackingController
         Debug.Print("Stopped tracking");
     }
 
+    public void PrepareForShutdown()
+    {
+        CancelLogoutDetection();
+        StopTracking();
+        DungeonController.PrepareShutdownSaveSnapshot();
+    }
+
     public void BeginLogoutDetection()
     {
         CancelLogoutDetection();
@@ -250,28 +289,31 @@ public class TrackingController : ITrackingController
     {
         var cancellationToken = cancellationTokenSource.Token;
 
-        try
+        while (!cancellationToken.IsCancellationRequested)
         {
-            while (!cancellationToken.IsCancellationRequested)
-            {
-                var now = DateTime.UtcNow;
-                var logoutDuration = now - logoutStartUtc;
+            var now = DateTime.UtcNow;
+            var logoutDuration = now - logoutStartUtc;
 
-                if (logoutDuration >= LogoutMaximumWaitDuration || IsLogoutConfirmedByServerSilence(now, logoutStartUtc, logoutDuration))
+            if (logoutDuration >= LogoutMaximumWaitDuration || IsLogoutConfirmedByServerSilence(now, logoutStartUtc, logoutDuration))
+            {
+                _mainWindowViewModel.MainStatusBindings.SetGameDataDetected(false);
+                _mainWindowViewModel.MainStatusBindings.SetInGame(false);
+                var statisticsSessionEnded = StatisticController.EndSession(now);
+                await GatheringController.EndSessionAsync();
+                if (ReferenceEquals(_logoutDetectionCancellationTokenSource, cancellationTokenSource))
                 {
-                    _mainWindowViewModel.MainStatusBindings.SetInGame(false);
-                    if (ReferenceEquals(_logoutDetectionCancellationTokenSource, cancellationTokenSource))
-                    {
-                        _logoutDetectionCancellationTokenSource = null;
-                    }
-                    return;
+                    _logoutDetectionCancellationTokenSource = null;
                 }
 
-                await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+                if (statisticsSessionEnded)
+                {
+                    await StatisticController.SaveInFileAsync();
+                }
+
+                return;
             }
-        }
-        catch (OperationCanceledException)
-        {
+
+            await Task.Delay(TimeSpan.FromSeconds(1));
         }
     }
 
@@ -320,8 +362,7 @@ public class TrackingController : ITrackingController
             TreasureController.SaveInFileAsync(),
             StatisticController.SaveInFileAsync(),
             DungeonController.SaveInFileAsync(),
-            GatheringController.SaveInFileAsync(true),
-            OpenWorldController.SaveInFileAsync(),
+            GatheringController.SaveInFileAsync(),
             GuildController.SaveInFileAsync(),
             CombatController.SaveInFileAsync(),
             MarketController.SaveInFileAsync(),
@@ -331,23 +372,57 @@ public class TrackingController : ITrackingController
         );
     }
 
-    public async Task LoadDataAsync()
+    public async Task LoadDataAsync(
+        Action<double, string> reportProgress = null,
+        double progressStart = 0,
+        double progressEnd = 100)
     {
-        await Task.WhenAll(
-            EstimatedMarketValueController.LoadFromFileAsync(),
-            StatisticController.LoadFromFileAsync(),
-            TradeController.LoadFromFileAsync(),
-            TreasureController.LoadFromFileAsync(),
-            DungeonController.LoadDungeonFromFileAsync(),
-            GatheringController.LoadFromFileAsync(),
-            OpenWorldController.LoadFromFileAsync(),
-            VaultController.LoadFromFileAsync(),
-            GuildController.LoadFromFileAsync(),
-            CombatController.LoadFromFileAsync(),
-            MarketController.LoadFromFileAsync(),
-            ClusterController.LoadMapHistoryFromFileAsync(),
-            CraftingController.LoadFromFileAsync()
-        );
+        List<(string Name, Func<Task> TaskFactory)> loadTaskFactories =
+        [
+            (Settings.Default.EstimatedMarketValueFileName, EstimatedMarketValueController.LoadFromFileAsync),
+            ("statistics-*.json", StatisticController.LoadFromFileAsync),
+            (Settings.Default.TradesFileName, TradeController.LoadFromFileAsync),
+            (Settings.Default.TreasureStatsFileName, TreasureController.LoadFromFileAsync),
+            (Settings.Default.DungeonRunsFileName, DungeonController.LoadDungeonFromFileAsync),
+            (Settings.Default.GatheringFileName, GatheringController.LoadFromFileAsync),
+            (Settings.Default.VaultsFileName, VaultController.LoadFromFileAsync),
+            (Settings.Default.GuildFileName, GuildController.LoadFromFileAsync),
+            (Settings.Default.DamageMeterSnapshotsFileName, CombatController.LoadFromFileAsync),
+            (Settings.Default.MarketFileName, MarketController.LoadFromFileAsync),
+            (Settings.Default.MapHistoryFileName, ClusterController.LoadMapHistoryFromFileAsync),
+            ("Craftings.json", CraftingController.LoadFromFileAsync)
+        ];
+
+        var activeTaskNames = loadTaskFactories.Select(x => x.Name).ToList();
+        var completedTaskCount = 0;
+        var syncRoot = new object();
+
+        reportProgress?.Invoke(progressStart, activeTaskNames[0]);
+
+        async Task LoadAndReportAsync(string taskName, Func<Task> taskFactory)
+        {
+            try
+            {
+                await taskFactory();
+            }
+            finally
+            {
+                string currentTaskName;
+                double progress;
+
+                lock (syncRoot)
+                {
+                    activeTaskNames.Remove(taskName);
+                    completedTaskCount++;
+                    currentTaskName = activeTaskNames.FirstOrDefault() ?? taskName;
+                    progress = progressStart + completedTaskCount / (double) loadTaskFactories.Count * (progressEnd - progressStart);
+                }
+
+                reportProgress?.Invoke(progress, currentTaskName);
+            }
+        }
+
+        await Task.WhenAll(loadTaskFactories.Select(x => LoadAndReportAsync(x.Name, x.TaskFactory)));
     }
 
     public bool ExistIndispensableInfos => ClusterController.CurrentCluster != null && EntityController.ExistLocalEntity();
@@ -358,6 +433,11 @@ public class TrackingController : ITrackingController
 
     public async Task AddNotificationAsync(TrackingNotification item)
     {
+        if (_mainWindowViewModel?.LoggingBindings?.IsLoggingTrackingActive != true)
+        {
+            return;
+        }
+
         if (string.IsNullOrWhiteSpace(item.ClusterName))
         {
             item.SetClusterName(ClusterController.GetCurrentClusterDisplayName());
@@ -482,8 +562,12 @@ public class TrackingController : ITrackingController
             return false;
         }
 
-        return (_notificationTypesFilters?.Contains(notification.Type) ?? false)
-               && (IsLootFromMobShown || notification.Fragment is OtherGrabbedLootNotificationFragment { IsLootedPlayerMob: false } or not OtherGrabbedLootNotificationFragment);
+        var isAllFilterSelected = _mainWindowViewModel?.LoggingBindings?.IsAllNotificationFilterSelected == true;
+
+        return (isAllFilterSelected || (_notificationTypesFilters?.Contains(notification.Type) ?? false))
+               && (isAllFilterSelected
+                   || IsLootFromMobShown
+                   || notification.Fragment is OtherGrabbedLootNotificationFragment { IsLootedPlayerMob: false } or not OtherGrabbedLootNotificationFragment);
     }
 
     private static bool MatchesNotificationSearch(TrackingNotification notification, string searchText)
@@ -642,6 +726,346 @@ public class TrackingController : ITrackingController
 
     #endregion
 
+    #region Awakened weapon
+
+    private readonly object _awakenedWeaponSyncRoot = new();
+    private long _upcomingAwakenedWeaponActionTicks;
+    private long _upcomingAwakenedWeaponBuildingObjectId = -1;
+    private long _upcomingAwakenedWeaponCosts;
+    private bool _upcomingAwakenedWeaponTraitUpgrade;
+    private long _upcomingAwakenedWeaponTraitUpgradeUserObjectId = -1;
+    private bool _upcomingAwakenedWeaponTraitUpgradeProc;
+
+    public void SetUpcomingAwakenedWeaponAction(long buildingObjectId, long actionTicks, long costs)
+    {
+        if (buildingObjectId <= 0
+            || actionTicks <= 0
+            || costs <= 0)
+        {
+            return;
+        }
+
+        lock (_awakenedWeaponSyncRoot)
+        {
+            if (_upcomingAwakenedWeaponActionTicks == actionTicks
+                && _upcomingAwakenedWeaponBuildingObjectId == buildingObjectId)
+            {
+                return;
+            }
+
+            _upcomingAwakenedWeaponActionTicks = actionTicks;
+            _upcomingAwakenedWeaponBuildingObjectId = buildingObjectId;
+            _upcomingAwakenedWeaponCosts = costs;
+            _upcomingAwakenedWeaponTraitUpgrade = false;
+            _upcomingAwakenedWeaponTraitUpgradeUserObjectId = -1;
+            _upcomingAwakenedWeaponTraitUpgradeProc = false;
+        }
+    }
+
+    public void RerollItemTraitValueFinished(long userObjectId, long buildingObjectId, bool isProc)
+    {
+        lock (_awakenedWeaponSyncRoot)
+        {
+            if (userObjectId <= 0
+                || _upcomingAwakenedWeaponCosts <= 0
+                || _upcomingAwakenedWeaponBuildingObjectId != buildingObjectId)
+            {
+                return;
+            }
+
+            _upcomingAwakenedWeaponTraitUpgrade = true;
+            _upcomingAwakenedWeaponTraitUpgradeUserObjectId = userObjectId;
+            _upcomingAwakenedWeaponTraitUpgradeProc |= isProc;
+        }
+    }
+
+    public void AwakenedWeaponActionFinished(long userObjectId, long buildingObjectId)
+    {
+        long costs;
+        bool traitUpgraded;
+        bool traitUpgradeProcced;
+
+        lock (_awakenedWeaponSyncRoot)
+        {
+            if (_upcomingAwakenedWeaponCosts <= 0
+                || _upcomingAwakenedWeaponBuildingObjectId != buildingObjectId)
+            {
+                return;
+            }
+
+            costs = _upcomingAwakenedWeaponCosts;
+            traitUpgraded = _upcomingAwakenedWeaponTraitUpgrade
+                            && _upcomingAwakenedWeaponTraitUpgradeUserObjectId == userObjectId;
+            traitUpgradeProcced = traitUpgraded && _upcomingAwakenedWeaponTraitUpgradeProc;
+            ResetUpcomingAwakenedWeaponAction();
+        }
+
+        StatisticController.AddAwakenedWeaponAction(
+            FixPoint.FromInternalValue(costs).DoubleValue,
+            traitUpgraded,
+            traitUpgradeProcced);
+    }
+
+    private void ResetUpcomingAwakenedWeaponAction()
+    {
+        _upcomingAwakenedWeaponActionTicks = 0;
+        _upcomingAwakenedWeaponBuildingObjectId = -1;
+        _upcomingAwakenedWeaponCosts = 0;
+        _upcomingAwakenedWeaponTraitUpgrade = false;
+        _upcomingAwakenedWeaponTraitUpgradeUserObjectId = -1;
+        _upcomingAwakenedWeaponTraitUpgradeProc = false;
+    }
+
+    #endregion
+
+    #region Item quality reroll
+
+    private readonly object _qualityRerollSyncRoot = new();
+    private readonly HashSet<long> _upcomingQualityRerollItemObjectIds = [];
+    private readonly Dictionary<long, (int Quantity, ItemQuality Quality)> _equipmentItemStates = [];
+    private readonly Dictionary<long, QualityRerollItemUpdate> _upcomingQualityRerollItemUpdates = [];
+    private readonly Dictionary<ItemQuality, int> _upcomingQualityRerollSourceItemCounts = [];
+    private long _upcomingQualityRerollCosts;
+    private int _upcomingQualityRerollQuantity;
+
+    public void SetUpcomingQualityReroll(
+        IReadOnlyList<long> itemObjectIds,
+        IReadOnlyList<int> itemQuantities,
+        IReadOnlyList<ItemQuality> itemQualities,
+        long costs)
+    {
+        if (itemObjectIds == null
+            || itemObjectIds.Count == 0
+            || costs <= 0)
+        {
+            return;
+        }
+
+        lock (_qualityRerollSyncRoot)
+        {
+            _upcomingQualityRerollItemObjectIds.Clear();
+            foreach (var itemObjectId in itemObjectIds)
+            {
+                _upcomingQualityRerollItemObjectIds.Add(itemObjectId);
+            }
+
+            _upcomingQualityRerollSourceItemCounts.Clear();
+            long totalQuantity = 0;
+            var itemCount = Math.Min(itemObjectIds.Count, itemQuantities.Count);
+            for (var itemIndex = 0; itemIndex < itemCount; itemIndex++)
+            {
+                var quantity = itemQuantities[itemIndex];
+                if (quantity <= 0)
+                {
+                    continue;
+                }
+
+                totalQuantity += quantity;
+                var itemQuality = itemQualities.Count == 1
+                    ? itemQualities[0]
+                    : itemIndex < itemQualities.Count
+                        ? itemQualities[itemIndex]
+                        : ItemQuality.Unknown;
+                if (itemQuality is >= ItemQuality.Normal and < ItemQuality.Masterpiece)
+                {
+                    var currentQuantity = _upcomingQualityRerollSourceItemCounts.GetValueOrDefault(itemQuality);
+                    _upcomingQualityRerollSourceItemCounts[itemQuality] = (int) Math.Min(
+                        (long) currentQuantity + quantity,
+                        int.MaxValue);
+                }
+            }
+
+            _upcomingQualityRerollCosts = costs;
+            _upcomingQualityRerollQuantity = (int) Math.Min(totalQuantity, int.MaxValue);
+            _upcomingQualityRerollItemUpdates.Clear();
+        }
+    }
+
+    public void TrackEquipmentItem(DiscoveredItem item)
+    {
+        if (item == null
+            || item.ObjectId <= 0
+            || item.Quality == ItemQuality.Unknown)
+        {
+            return;
+        }
+
+        lock (_qualityRerollSyncRoot)
+        {
+            var hasPreviousState = _equipmentItemStates.TryGetValue(item.ObjectId, out var previousState);
+            if (_upcomingQualityRerollCosts > 0)
+            {
+                if (!_upcomingQualityRerollItemUpdates.TryGetValue(item.ObjectId, out var itemUpdate))
+                {
+                    itemUpdate = new QualityRerollItemUpdate(hasPreviousState);
+                    _upcomingQualityRerollItemUpdates[item.ObjectId] = itemUpdate;
+                }
+
+                itemUpdate.AddObservation(
+                    item,
+                    hasPreviousState ? previousState : null);
+            }
+
+            _equipmentItemStates[item.ObjectId] = (item.Quantity, item.Quality);
+        }
+    }
+
+    public void RemoveEquipmentItem(long itemObjectId)
+    {
+        lock (_qualityRerollSyncRoot)
+        {
+            _equipmentItemStates.Remove(itemObjectId);
+        }
+    }
+
+    public void QualityRerollFinished(
+        IReadOnlyCollection<long> resultItemObjectIds,
+        IReadOnlyCollection<long> sourceItemObjectIds)
+    {
+        long costs;
+        IReadOnlyDictionary<ItemQuality, int> improvedItemCounts;
+        IReadOnlyDictionary<ItemQuality, int> sourceItemCounts;
+
+        lock (_qualityRerollSyncRoot)
+        {
+            if (_upcomingQualityRerollCosts <= 0
+                || resultItemObjectIds == null
+                || sourceItemObjectIds == null
+                || (!resultItemObjectIds.Any(_upcomingQualityRerollItemObjectIds.Contains)
+                    && !sourceItemObjectIds.Any(_upcomingQualityRerollItemObjectIds.Contains)))
+            {
+                return;
+            }
+
+            costs = _upcomingQualityRerollCosts;
+            improvedItemCounts = GetImprovedQualityRerollItemCounts(resultItemObjectIds);
+            sourceItemCounts = new Dictionary<ItemQuality, int>(_upcomingQualityRerollSourceItemCounts);
+            ResetUpcomingQualityReroll();
+        }
+
+        StatisticController.AddItemQualityReroll(
+            FixPoint.FromInternalValue(costs).DoubleValue,
+            improvedItemCounts,
+            sourceItemCounts);
+    }
+
+    private IReadOnlyDictionary<ItemQuality, int> GetImprovedQualityRerollItemCounts(
+        IReadOnlyCollection<long> resultItemObjectIds)
+    {
+        var result = new Dictionary<ItemQuality, int>();
+        var remainingQuantity = _upcomingQualityRerollQuantity > 0
+            ? _upcomingQualityRerollQuantity
+            : int.MaxValue;
+
+        foreach (var itemObjectId in resultItemObjectIds.Distinct())
+        {
+            if (remainingQuantity <= 0
+                || !_upcomingQualityRerollItemUpdates.TryGetValue(itemObjectId, out var itemUpdate)
+                || itemUpdate.LatestQuality <= ItemQuality.Normal)
+            {
+                continue;
+            }
+
+            var alreadyCounted = result.GetValueOrDefault(itemUpdate.LatestQuality);
+            var eligibleQuantity = GetEligibleQualityRerollQuantity(itemUpdate.LatestQuality);
+            var improvedQuantity = Math.Min(
+                itemUpdate.GetImprovedQuantity(),
+                Math.Min(remainingQuantity, eligibleQuantity - alreadyCounted));
+            if (improvedQuantity <= 0)
+            {
+                continue;
+            }
+
+            result[itemUpdate.LatestQuality] = alreadyCounted + improvedQuantity;
+            remainingQuantity -= improvedQuantity;
+        }
+
+        return result;
+    }
+
+    private int GetEligibleQualityRerollQuantity(ItemQuality resultQuality)
+    {
+        if (_upcomingQualityRerollSourceItemCounts.Count == 0)
+        {
+            return _upcomingQualityRerollQuantity > 0
+                ? _upcomingQualityRerollQuantity
+                : int.MaxValue;
+        }
+
+        long eligibleQuantity = 0;
+        foreach (var sourceItemCount in _upcomingQualityRerollSourceItemCounts)
+        {
+            if (sourceItemCount.Key >= ItemQuality.Normal
+                && sourceItemCount.Key < resultQuality)
+            {
+                eligibleQuantity += sourceItemCount.Value;
+            }
+        }
+
+        return (int) Math.Min(eligibleQuantity, int.MaxValue);
+    }
+
+    private void ResetUpcomingQualityReroll()
+    {
+        _upcomingQualityRerollItemObjectIds.Clear();
+        _upcomingQualityRerollItemUpdates.Clear();
+        _upcomingQualityRerollSourceItemCounts.Clear();
+        _upcomingQualityRerollCosts = 0;
+        _upcomingQualityRerollQuantity = 0;
+    }
+
+    private sealed class QualityRerollItemUpdate
+    {
+        private readonly bool _hadKnownState;
+        private int _observationCount;
+        private int _addedQuantity;
+        private int _latestQuantity;
+
+        public QualityRerollItemUpdate(bool hadKnownState)
+        {
+            _hadKnownState = hadKnownState;
+        }
+
+        public ItemQuality LatestQuality { get; private set; } = ItemQuality.Unknown;
+
+        public void AddObservation(
+            DiscoveredItem item,
+            (int Quantity, ItemQuality Quality)? previousState)
+        {
+            _observationCount++;
+            _latestQuantity = item.Quantity;
+            LatestQuality = item.Quality;
+
+            if (!previousState.HasValue)
+            {
+                return;
+            }
+
+            var quantityAdded = item.Quality switch
+            {
+                _ when item.Quality > previousState.Value.Quality => item.Quantity,
+                _ when item.Quality == previousState.Value.Quality
+                       && item.Quantity > previousState.Value.Quantity => item.Quantity - previousState.Value.Quantity,
+                _ => 0
+            };
+            _addedQuantity = (int) Math.Min((long) _addedQuantity + quantityAdded, int.MaxValue);
+        }
+
+        public int GetImprovedQuantity()
+        {
+            if (_addedQuantity > 0)
+            {
+                return _addedQuantity;
+            }
+
+            return !_hadKnownState && _observationCount == 1
+                ? Math.Max(0, _latestQuantity)
+                : 0;
+        }
+    }
+
+    #endregion
+
     #region Gear repairing
 
     private long _buildingObjectId = -1;
@@ -681,7 +1105,6 @@ public class TrackingController : ITrackingController
         }
 
         StatisticController?.AddValue(ValueType.RepairCosts, FixPoint.FromInternalValue(_upcomingRepairCosts).DoubleValue);
-        StatisticController?.UpdateRepairCostsUi();
     }
 
     #endregion

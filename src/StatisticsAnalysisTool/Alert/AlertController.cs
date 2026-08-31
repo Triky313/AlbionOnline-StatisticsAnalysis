@@ -1,11 +1,12 @@
 using Serilog;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -14,171 +15,467 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
-using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Alert;
 
 public sealed class AlertController
 {
-    private readonly ObservableCollection<Alert> _alerts = new();
+    private const int MaximumSimultaneousAlerts = 10;
+    private readonly Dictionary<string, Alert> _alerts = new(StringComparer.Ordinal);
     private readonly ICollectionView _itemsView;
-
-    private const int TicksMaxAlertsAtSameTime = 10;
 
     public AlertController(ICollectionView itemsView)
     {
-        _itemsView = itemsView;
-
-        _ = LoadFromFileAsync();
+        _itemsView = itemsView ?? throw new ArgumentNullException(nameof(itemsView));
     }
 
-    private void Add(Item item, int alertModeMinSellPriceIsUndercutPrice)
+    public event EventHandler<AlertStateChangedEventArgs> AlertStateChanged;
+
+    public bool IsPriceAlertActive(string uniqueName)
     {
-        if (IsAlertInCollection(item.UniqueName) || !IsSpaceInAlertsCollection())
+        return GetAlert(uniqueName)?.IsPriceAlertActive == true;
+    }
+
+    public bool IsAvailabilityAlertActive(string uniqueName)
+    {
+        return GetAlert(uniqueName)?.IsAvailabilityAlertActive == true;
+    }
+
+    public bool IsBlackMarketBuyOrderAlertActive(string uniqueName)
+    {
+        return GetAlert(uniqueName)?.IsBlackMarketBuyOrderAlertActive == true;
+    }
+
+    public AlertActivationResult SetPriceAlert(
+        Item item,
+        bool isActive,
+        ulong priceThreshold,
+        uint maximumPriceAgeMinutes,
+        bool playSound)
+    {
+        var trackedItem = GetTrackedItem(item?.UniqueName);
+        if (trackedItem == null)
+        {
+            return AlertActivationResult.ItemNotFound;
+        }
+
+        if (isActive && priceThreshold == 0)
+        {
+            return AlertActivationResult.InvalidPriceThreshold;
+        }
+
+        if (isActive && maximumPriceAgeMinutes == 0)
+        {
+            return AlertActivationResult.InvalidMaximumPriceAge;
+        }
+
+        var alert = GetAlert(trackedItem.UniqueName);
+        var shouldStart = isActive && alert == null;
+        if (shouldStart)
+        {
+            if (!HasCapacity)
+            {
+                return AlertActivationResult.MaximumActiveAlertsReached;
+            }
+
+            alert = new Alert(this, trackedItem);
+            _alerts.Add(trackedItem.UniqueName, alert);
+        }
+
+        if (alert != null)
+        {
+            alert.SetPriceAlert(isActive, priceThreshold, maximumPriceAgeMinutes);
+            alert.SetPlaySound(playSound);
+        }
+
+        trackedItem.AlertModeMinSellPriceIsUndercutPrice = priceThreshold;
+        SetMaximumPriceAge(
+            maximumPriceAgeMinutes,
+            value => trackedItem.PriceAlertMaximumPriceAgeMinutes = value);
+        trackedItem.IsPriceAlertActive = isActive;
+
+        if (shouldStart)
+        {
+            alert.Start();
+        }
+
+        CompleteAlertStateChange(trackedItem, alert);
+        return AlertActivationResult.Success;
+    }
+
+    public AlertActivationResult SetAvailabilityAlert(
+        Item item,
+        bool isActive,
+        uint maximumPriceAgeMinutes,
+        bool playSound)
+    {
+        var trackedItem = GetTrackedItem(item?.UniqueName);
+        if (trackedItem == null)
+        {
+            return AlertActivationResult.ItemNotFound;
+        }
+
+        if (isActive && maximumPriceAgeMinutes == 0)
+        {
+            return AlertActivationResult.InvalidMaximumPriceAge;
+        }
+
+        var alert = GetAlert(trackedItem.UniqueName);
+        var shouldStart = isActive && alert == null;
+        if (shouldStart)
+        {
+            if (!HasCapacity)
+            {
+                return AlertActivationResult.MaximumActiveAlertsReached;
+            }
+
+            alert = new Alert(this, trackedItem);
+            _alerts.Add(trackedItem.UniqueName, alert);
+        }
+
+        if (alert != null)
+        {
+            alert.SetAvailabilityAlert(isActive, maximumPriceAgeMinutes);
+            alert.SetPlaySound(playSound);
+        }
+
+        SetMaximumPriceAge(
+            maximumPriceAgeMinutes,
+            value => trackedItem.AvailabilityAlertMaximumPriceAgeMinutes = value);
+        trackedItem.IsAvailabilityAlertActive = isActive;
+
+        if (shouldStart)
+        {
+            alert.Start();
+        }
+
+        CompleteAlertStateChange(trackedItem, alert);
+        return AlertActivationResult.Success;
+    }
+
+    public AlertActivationResult SetBlackMarketBuyOrderAlert(
+        Item item,
+        bool isActive,
+        ulong minimumBuyOrderPrice,
+        uint maximumPriceAgeMinutes,
+        bool playSound)
+    {
+        var trackedItem = GetTrackedItem(item?.UniqueName);
+        if (trackedItem == null)
+        {
+            return AlertActivationResult.ItemNotFound;
+        }
+
+        if (isActive && !BlackMarketItemEligibility.IsEligible(trackedItem))
+        {
+            return AlertActivationResult.ItemNotBlackMarketEligible;
+        }
+
+        if (isActive && minimumBuyOrderPrice == 0)
+        {
+            return AlertActivationResult.InvalidPriceThreshold;
+        }
+
+        if (isActive && maximumPriceAgeMinutes == 0)
+        {
+            return AlertActivationResult.InvalidMaximumPriceAge;
+        }
+
+        var alert = GetAlert(trackedItem.UniqueName);
+        var shouldStart = isActive && alert == null;
+        if (shouldStart)
+        {
+            if (!HasCapacity)
+            {
+                return AlertActivationResult.MaximumActiveAlertsReached;
+            }
+
+            alert = new Alert(this, trackedItem);
+            _alerts.Add(trackedItem.UniqueName, alert);
+        }
+
+        if (alert != null)
+        {
+            alert.SetBlackMarketBuyOrderAlert(
+                isActive,
+                minimumBuyOrderPrice,
+                maximumPriceAgeMinutes);
+            alert.SetPlaySound(playSound);
+        }
+
+        trackedItem.BlackMarketBuyOrderAlertThreshold = minimumBuyOrderPrice;
+        SetMaximumPriceAge(
+            maximumPriceAgeMinutes,
+            value => trackedItem.BlackMarketAlertMaximumPriceAgeMinutes = value);
+        trackedItem.IsBlackMarketBuyOrderAlertActive = isActive;
+
+        if (shouldStart)
+        {
+            alert.Start();
+        }
+
+        CompleteAlertStateChange(trackedItem, alert);
+        return AlertActivationResult.Success;
+    }
+
+    public void UpdateSoundPreference(Item item, bool playSound)
+    {
+        var trackedItem = GetTrackedItem(item?.UniqueName);
+        if (trackedItem == null)
         {
             return;
         }
 
-        _alerts.CollectionChanged += delegate (object _, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                SaveActiveAlertsToLocalFile();
-            }
-        };
+        trackedItem.IsAlertSoundEnabled = playSound;
 
-        var alertController = this;
-        var alert = new Alert(alertController, item, alertModeMinSellPriceIsUndercutPrice);
-        alert.StartEvent();
-        _alerts.Add(alert);
+        var alert = GetAlert(trackedItem.UniqueName);
+        if (alert == null)
+        {
+            return;
+        }
+
+        alert.SetPlaySound(playSound);
+        SaveActiveAlertsToLocalFile();
+        RaiseAlertStateChanged(trackedItem.UniqueName);
     }
 
-    private void Remove(string uniqueName)
+    public void HandleTriggeredAlert(Alert alert, ItemAlertType alertType, MarketResponse marketResponse)
     {
-        _alerts.CollectionChanged += delegate (object _, NotifyCollectionChangedEventArgs e)
+        var dispatcher = Application.Current?.Dispatcher;
+        if (dispatcher != null && !dispatcher.CheckAccess())
         {
-            if (e.Action == NotifyCollectionChangedAction.Remove)
-            {
-                SaveActiveAlertsToLocalFile();
-            }
-        };
-
-        var alert = GetAlertByUniqueName(uniqueName);
-        if (alert != null)
-        {
-            alert.StopEvent();
-            _alerts.Remove(alert);
+            _ = dispatcher.BeginInvoke(() => HandleTriggeredAlert(alert, alertType, marketResponse));
+            return;
         }
-    }
 
-    public bool ToggleAlert(ref Item item)
-    {
-        try
+        if (alert == null
+            || marketResponse == null
+            || !_alerts.TryGetValue(alert.Item.UniqueName, out var activeAlert)
+            || !ReferenceEquals(activeAlert, alert)
+            || !IsAlertTypeActive(alert, alertType))
         {
-            if (!IsAlertInCollection(item.UniqueName) && !IsSpaceInAlertsCollection())
-            {
-                return false;
-            }
-
-            if (IsAlertInCollection(item.UniqueName))
-            {
-                DeactivateAlert(item.UniqueName);
-                return false;
-            }
-
-            ActivateAlert(item.UniqueName, item.AlertModeMinSellPriceIsUndercutPrice);
-            return true;
+            return;
         }
-        catch (Exception e)
+
+        switch (alertType)
         {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            return false;
+            case ItemAlertType.PriceThreshold:
+                alert.SetPriceAlert(
+                    false,
+                    alert.PriceThreshold,
+                    alert.PriceMaximumAgeMinutes);
+                alert.Item.IsPriceAlertActive = false;
+                break;
+            case ItemAlertType.MarketAvailability:
+                alert.SetAvailabilityAlert(
+                    false,
+                    alert.AvailabilityMaximumAgeMinutes);
+                alert.Item.IsAvailabilityAlertActive = false;
+                break;
+            case ItemAlertType.BlackMarketBuyOrder:
+                alert.SetBlackMarketBuyOrderAlert(
+                    false,
+                    alert.BlackMarketBuyOrderThreshold,
+                    alert.BlackMarketMaximumAgeMinutes);
+                alert.Item.IsBlackMarketBuyOrderAlertActive = false;
+                break;
+            default:
+                return;
         }
-    }
 
-    public void DeactivateAlert(string uniqueName)
-    {
-        try
+        if (alert.PlaySound)
         {
-            var itemCollection = (ObservableCollection<Item>) _itemsView.SourceCollection;
-            var item = itemCollection.FirstOrDefault(i => i.UniqueName == uniqueName);
-
-            if (item == null) return;
-
-            item.IsAlertActive = false;
-            Remove(item.UniqueName);
-
-            Application.Current.MainWindow?.Dispatcher?.Invoke(_itemsView.Refresh);
+            SoundController.PlayAlertSound(
+                SoundController.GetCurrentSoundPath(SettingsController.CurrentSettings.SelectedAlertSound),
+                SettingsController.CurrentSettings.AlertSoundVolumePercentage);
         }
-        catch (Exception e)
-        {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-        }
-    }
 
-    private void ActivateAlert(string uniqueName, int minSellUndercutPrice)
-    {
-        try
-        {
-            var itemCollection = (ObservableCollection<Item>) _itemsView.SourceCollection;
-            var item = itemCollection.FirstOrDefault(i => i.UniqueName == uniqueName);
+        Application.Current?.MainWindow?.FlashWindow(12);
+        var itemAlertWindow = new ItemAlertWindow(new AlertInfos(alert.Item, marketResponse, alertType));
+        itemAlertWindow.Show();
 
-            if (item == null) return;
-
-            item.IsAlertActive = true;
-            item.AlertModeMinSellPriceIsUndercutPrice = minSellUndercutPrice;
-            Add(item, item.AlertModeMinSellPriceIsUndercutPrice);
-
-            Application.Current.MainWindow?.Dispatcher?.Invoke(_itemsView.Refresh);
-        }
-        catch (Exception e)
-        {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-        }
-    }
-
-    private bool IsAlertInCollection(string uniqueName)
-    {
-        return _alerts.Any(alert => alert.Item.UniqueName == uniqueName);
-    }
-
-    private Alert GetAlertByUniqueName(string uniqueName)
-    {
-        return _alerts.FirstOrDefault(alert => alert.Item.UniqueName == uniqueName);
-    }
-
-    public bool IsSpaceInAlertsCollection()
-    {
-        return _alerts.Count < TicksMaxAlertsAtSameTime;
+        CompleteAlertStateChange(alert.Item, alert);
     }
 
     public void StopAllAlerts()
     {
-        foreach (var alert in _alerts.ToArray())
+        foreach (var alert in _alerts.Values.ToArray())
         {
-            alert.StopEvent();
+            alert.SetPriceAlert(
+                false,
+                alert.PriceThreshold,
+                alert.PriceMaximumAgeMinutes);
+            alert.SetAvailabilityAlert(
+                false,
+                alert.AvailabilityMaximumAgeMinutes);
+            alert.SetBlackMarketBuyOrderAlert(
+                false,
+                alert.BlackMarketBuyOrderThreshold,
+                alert.BlackMarketMaximumAgeMinutes);
+            alert.Stop();
+            alert.Item.IsPriceAlertActive = false;
+            alert.Item.IsAvailabilityAlertActive = false;
+            alert.Item.IsBlackMarketBuyOrderAlertActive = false;
+            alert.Item.IsAlertActive = false;
+            RaiseAlertStateChanged(alert.Item.UniqueName);
         }
 
         _alerts.Clear();
     }
 
-    #region Load / Save local file data
-
-    private async Task LoadFromFileAsync()
+    public async Task LoadFromFileAsync()
     {
-        var alertSaveObjectList = await FileController.LoadAsync<List<AlertSaveObject>>(
+        var alertSaveObjects = await FileController.LoadAsync<List<AlertSaveObject>>(
             AppDataPaths.UserDataFile(Settings.Default.ActiveAlertsFileName));
 
-        if (alertSaveObjectList != null)
+        if (alertSaveObjects == null)
         {
-            foreach (var alert in alertSaveObjectList)
-            {
-                ActivateAlert(alert.UniqueName, alert.MinSellUndercutPrice);
-            }
+            return;
         }
+
+        foreach (var savedAlert in alertSaveObjects)
+        {
+            var isPriceAlertActive = savedAlert.IsPriceAlertActive
+                ?? savedAlert.MinSellUndercutPrice > 0;
+            var isBlackMarketAlertActive = savedAlert.IsBlackMarketBuyOrderAlertActive
+                && savedAlert.BlackMarketMinimumBuyOrderPrice > 0;
+
+            if (!isPriceAlertActive
+                && !savedAlert.IsAvailabilityAlertActive
+                && !isBlackMarketAlertActive)
+            {
+                continue;
+            }
+
+            var item = GetTrackedItem(savedAlert.UniqueName);
+            if (item == null || !HasCapacity)
+            {
+                continue;
+            }
+
+            if (isBlackMarketAlertActive && !BlackMarketItemEligibility.IsEligible(item))
+            {
+                isBlackMarketAlertActive = false;
+            }
+
+            if (!isPriceAlertActive
+                && !savedAlert.IsAvailabilityAlertActive
+                && !isBlackMarketAlertActive)
+            {
+                continue;
+            }
+
+            var legacyMaximumPriceAgeMinutes = GetSavedMaximumPriceAge(
+                savedAlert.MaximumPriceAgeMinutes,
+                AlertOptions.DefaultMaximumPriceAgeMinutes);
+            var priceMaximumAgeMinutes = GetSavedMaximumPriceAge(
+                savedAlert.PriceMaximumPriceAgeMinutes,
+                legacyMaximumPriceAgeMinutes);
+            var availabilityMaximumAgeMinutes = GetSavedMaximumPriceAge(
+                savedAlert.AvailabilityMaximumPriceAgeMinutes,
+                legacyMaximumPriceAgeMinutes);
+            var blackMarketMaximumAgeMinutes = GetSavedMaximumPriceAge(
+                savedAlert.BlackMarketMaximumPriceAgeMinutes,
+                AlertOptions.DefaultMaximumPriceAgeMinutes);
+            var playSound = savedAlert.PlaySound ?? true;
+
+            item.AlertModeMinSellPriceIsUndercutPrice = savedAlert.MinSellUndercutPrice;
+            item.PriceAlertMaximumPriceAgeMinutes = priceMaximumAgeMinutes;
+            item.AvailabilityAlertMaximumPriceAgeMinutes = availabilityMaximumAgeMinutes;
+            item.BlackMarketBuyOrderAlertThreshold = savedAlert.BlackMarketMinimumBuyOrderPrice;
+            item.BlackMarketAlertMaximumPriceAgeMinutes = blackMarketMaximumAgeMinutes;
+            item.IsPriceAlertActive = isPriceAlertActive;
+            item.IsAvailabilityAlertActive = savedAlert.IsAvailabilityAlertActive;
+            item.IsBlackMarketBuyOrderAlertActive = isBlackMarketAlertActive;
+            item.IsAlertSoundEnabled = playSound;
+            item.IsAlertActive = true;
+
+            var alert = new Alert(this, item);
+            alert.SetPriceAlert(
+                isPriceAlertActive,
+                savedAlert.MinSellUndercutPrice,
+                priceMaximumAgeMinutes);
+            alert.SetAvailabilityAlert(
+                savedAlert.IsAvailabilityAlertActive,
+                availabilityMaximumAgeMinutes);
+            alert.SetBlackMarketBuyOrderAlert(
+                isBlackMarketAlertActive,
+                savedAlert.BlackMarketMinimumBuyOrderPrice,
+                blackMarketMaximumAgeMinutes);
+            alert.SetPlaySound(playSound);
+            _alerts.Add(item.UniqueName, alert);
+            alert.Start();
+            RaiseAlertStateChanged(item.UniqueName);
+        }
+
+        Application.Current?.Dispatcher?.Invoke(_itemsView.Refresh);
+    }
+
+    private bool HasCapacity => _alerts.Count < MaximumSimultaneousAlerts;
+
+    private Alert GetAlert(string uniqueName)
+    {
+        return !string.IsNullOrWhiteSpace(uniqueName)
+            && _alerts.TryGetValue(uniqueName, out var alert)
+                ? alert
+                : null;
+    }
+
+    private Item GetTrackedItem(string uniqueName)
+    {
+        if (string.IsNullOrWhiteSpace(uniqueName)
+            || _itemsView.SourceCollection is not IEnumerable<Item> items)
+        {
+            return null;
+        }
+
+        return items.FirstOrDefault(item => string.Equals(item.UniqueName, uniqueName, StringComparison.Ordinal));
+    }
+
+    private static bool IsAlertTypeActive(Alert alert, ItemAlertType alertType)
+    {
+        return alertType switch
+        {
+            ItemAlertType.PriceThreshold => alert.IsPriceAlertActive,
+            ItemAlertType.MarketAvailability => alert.IsAvailabilityAlertActive,
+            ItemAlertType.BlackMarketBuyOrder => alert.IsBlackMarketBuyOrderAlertActive,
+            _ => false
+        };
+    }
+
+    private static uint GetSavedMaximumPriceAge(uint? savedValue, uint fallbackValue)
+    {
+        return savedValue is > 0
+            ? savedValue.Value
+            : fallbackValue;
+    }
+
+    private static void SetMaximumPriceAge(uint maximumPriceAgeMinutes, Action<uint> setValue)
+    {
+        if (maximumPriceAgeMinutes > 0)
+        {
+            setValue(maximumPriceAgeMinutes);
+        }
+    }
+
+    private void CompleteAlertStateChange(Item item, Alert alert)
+    {
+        if (alert != null && !alert.HasActiveAlert)
+        {
+            alert.Stop();
+            _alerts.Remove(item.UniqueName);
+            alert = null;
+        }
+
+        item.IsAlertActive = alert?.HasActiveAlert == true;
+        SaveActiveAlertsToLocalFile();
+        RaiseAlertStateChanged(item.UniqueName);
+        Application.Current?.MainWindow?.Dispatcher?.Invoke(_itemsView.Refresh);
+    }
+
+    private void RaiseAlertStateChanged(string uniqueName)
+    {
+        AlertStateChanged?.Invoke(this, new AlertStateChangedEventArgs(uniqueName));
     }
 
     private void SaveActiveAlertsToLocalFile()
@@ -189,19 +486,33 @@ public sealed class AlertController
             return;
         }
 
-        var localFilePath = AppDataPaths.UserDataFile(Settings.Default.ActiveAlertsFileName);
-        var activeItemAlerts = _alerts.Select(alert => new AlertSaveObject
-        { UniqueName = alert.Item.UniqueName, MinSellUndercutPrice = alert.AlertModeMinSellPriceIsUndercutPrice }).ToList();
-        var fileString = JsonSerializer.Serialize(activeItemAlerts);
+        var activeItemAlerts = _alerts.Values.Select(alert => new AlertSaveObject
+        {
+            UniqueName = alert.Item.UniqueName,
+            MinSellUndercutPrice = alert.PriceThreshold,
+            MaximumPriceAgeMinutes = alert.PriceMaximumAgeMinutes,
+            PriceMaximumPriceAgeMinutes = alert.PriceMaximumAgeMinutes,
+            AvailabilityMaximumPriceAgeMinutes = alert.AvailabilityMaximumAgeMinutes,
+            IsPriceAlertActive = alert.IsPriceAlertActive,
+            IsAvailabilityAlertActive = alert.IsAvailabilityAlertActive,
+            BlackMarketMinimumBuyOrderPrice = alert.BlackMarketBuyOrderThreshold,
+            BlackMarketMaximumPriceAgeMinutes = alert.BlackMarketMaximumAgeMinutes,
+            IsBlackMarketBuyOrderAlertActive = alert.IsBlackMarketBuyOrderAlertActive,
+            PlaySound = alert.PlaySound
+        }).ToList();
 
         try
         {
-            File.WriteAllText(localFilePath, fileString, Encoding.UTF8);
+            var fileString = JsonSerializer.Serialize(activeItemAlerts);
+            File.WriteAllText(
+                AppDataPaths.UserDataFile(Settings.Default.ActiveAlertsFileName),
+                fileString,
+                Encoding.UTF8);
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+            Log.Error(ex, "Active item alerts could not be saved");
         }
     }
 
@@ -209,8 +520,24 @@ public sealed class AlertController
     {
         public string UniqueName { get; init; }
 
-        public int MinSellUndercutPrice { get; init; }
-    }
+        public ulong MinSellUndercutPrice { get; init; }
 
-    #endregion
+        public uint? MaximumPriceAgeMinutes { get; init; }
+
+        public uint? PriceMaximumPriceAgeMinutes { get; init; }
+
+        public uint? AvailabilityMaximumPriceAgeMinutes { get; init; }
+
+        public bool? IsPriceAlertActive { get; init; }
+
+        public bool IsAvailabilityAlertActive { get; init; }
+
+        public ulong BlackMarketMinimumBuyOrderPrice { get; init; }
+
+        public uint? BlackMarketMaximumPriceAgeMinutes { get; init; }
+
+        public bool IsBlackMarketBuyOrderAlertActive { get; init; }
+
+        public bool? PlaySound { get; init; }
+    }
 }

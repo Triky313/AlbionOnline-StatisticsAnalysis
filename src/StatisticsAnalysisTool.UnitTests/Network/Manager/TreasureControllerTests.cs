@@ -52,6 +52,8 @@ public class TreasureControllerTests
         var method = typeof(TreasureController).GetMethod("GetTreasureType", BindingFlags.NonPublic | BindingFlags.Static);
         var valuesToTest = new List<Tuple<string, TreasureType>>
         {
+            Tuple.Create((string?)null, TreasureType.Unknown)!,
+            Tuple.Create("", TreasureType.Unknown),
             Tuple.Create("TREASURE", TreasureType.OpenWorld),
             Tuple.Create("STATIC", TreasureType.StaticDungeon),
             Tuple.Create("AVALON", TreasureType.Avalon),
@@ -70,5 +72,20 @@ public class TreasureControllerTests
             var result = (TreasureType) method!.Invoke(null, [valueToTest.Item1])!;
             result.Should().Be(valueToTest.Item2);
         }
+    }
+
+    [TestCase(TreasureRarity.Uncommon, TreasureRarity.Rare, TreasureRarity.Rare)]
+    [TestCase(TreasureRarity.Uncommon, TreasureRarity.Unknown, TreasureRarity.Uncommon)]
+    [TestCase(TreasureRarity.Unknown, TreasureRarity.Unknown, TreasureRarity.Legendary)]
+    public void ResolveRarity_UsesBestAvailableRarity(
+        TreasureRarity registeredRarity,
+        TreasureRarity updatedRarity,
+        TreasureRarity expectedRarity)
+    {
+        var method = typeof(TreasureController).GetMethod("ResolveRarity", BindingFlags.NonPublic | BindingFlags.Static);
+
+        var result = (TreasureRarity) method!.Invoke(null, ["SOME_LEGENDARY", registeredRarity, updatedRarity])!;
+
+        result.Should().Be(expectedRarity);
     }
 }

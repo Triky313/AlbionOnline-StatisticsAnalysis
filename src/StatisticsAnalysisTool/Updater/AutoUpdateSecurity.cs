@@ -2,6 +2,8 @@ namespace StatisticsAnalysisTool.Updater;
 
 internal static class AutoUpdateSecurity
 {
+    public static bool AreBackgroundUpdatesEnabled => AutoUpdateSecurityBuildSettings.AreBackgroundUpdatesEnabled;
+
     public static bool IsSignatureVerificationRequired => AutoUpdateSecurityBuildSettings.IsSignatureVerificationRequired;
 
     public static bool TryGetAuthenticodePublisherThumbprint(out string thumbprint)

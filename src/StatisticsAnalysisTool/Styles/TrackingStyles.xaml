@@ -60,6 +60,23 @@
         </Setter>
     </Style>
 
+    <Style x:Key="LootComparator.PlayerMetricBadge" TargetType="{x:Type Border}">
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Margin" Value="3,0" />
+        <Setter Property="Padding" Value="7,0" />
+        <Setter Property="CornerRadius" Value="3" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.4}" />
+    </Style>
+
+    <Style x:Key="Logging.ComparatorCard" TargetType="{x:Type Border}">
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.T.2}" />
+        <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.4}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="Padding" Value="12" />
+    </Style>
+
     <!-- Chest icons -->
     <Style TargetType="Image" x:Key="Icon.Chest.Standard.Close" >
         <Setter Property="Source" Value="../Resources/chest_close_standard.png"/>
@@ -385,15 +402,15 @@
     <DataTemplate DataType="{x:Type notification:OtherGrabbedLootNotificationFragment}">
         <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding LootedByName, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"/>
-            <TextBlock Text="{Binding LootedByGuild, IsAsync=True, StringFormat='{}({0}) '}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"
-                       ToolTip="{Binding TranslationGuild}">
+            <TextBlock Text="{Binding LootedByAffiliations, IsAsync=True, StringFormat='{}({0}) '}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"
+                       ToolTip="{Binding TranslationAffiliations}">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsLootedByGuildEmpty}" Value="false">
+                            <DataTrigger Binding="{Binding IsLootedByAffiliationsEmpty}" Value="false">
                                 <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding IsLootedByGuildEmpty}" Value="true">
+                            <DataTrigger Binding="{Binding IsLootedByAffiliationsEmpty}" Value="true">
                                 <Setter Property="Visibility" Value="Collapsed" />
                                 <Setter Property="Width" Value="0" />
                             </DataTrigger>
@@ -413,15 +430,15 @@
                 <Image Source="../Resources/silver.png" Height="14" Width="14" Margin="10,-10,5,0" ToolTip="{Binding TranslationAverageEstMarketValue}" />
                 <TextBlock Text="{Binding EstimatedMarketValueDisplayString, IsAsync=True, StringFormat='{}{0}'}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             </StackPanel>
-            <TextBlock Text="{Binding LootedFromGuild, IsAsync=True, StringFormat='{}({0}) '}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
-                       ToolTip="{Binding TranslationGuild}">
+            <TextBlock Text="{Binding LootedFromAffiliations, IsAsync=True, StringFormat='{}({0}) '}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
+                       ToolTip="{Binding TranslationAffiliations}">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsLootedFromGuildEmpty}" Value="false">
+                            <DataTrigger Binding="{Binding IsLootedFromAffiliationsEmpty}" Value="false">
                                 <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding IsLootedFromGuildEmpty}" Value="true">
+                            <DataTrigger Binding="{Binding IsLootedFromAffiliationsEmpty}" Value="true">
                                 <Setter Property="Visibility" Value="Collapsed" />
                                 <Setter Property="Width" Value="0" />
                             </DataTrigger>
@@ -582,6 +599,30 @@
         </Image>
     </DataTemplate>
 
+    <DataTemplate x:Key="ClusterModeIcon.Template">
+        <Image Height="20" Width="20" VerticalAlignment="Center">
+            <Image.Style>
+                <Style TargetType="{x:Type Image}">
+                    <Setter Property="Source" Value="../Assets/map_white_icon.png" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.SafeArea}">
+                            <Setter Property="Source" Value="../Assets/map_blue_icon.png" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.Yellow}">
+                            <Setter Property="Source" Value="../Assets/map_yellow_icon.png" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.Red}">
+                            <Setter Property="Source" Value="../Assets/map_red_icon.png" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.Black}">
+                            <Setter Property="Source" Value="../Assets/map_black_icon.png" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Image.Style>
+        </Image>
+    </DataTemplate>
+
     <!-- ClusterInfo -->
     <DataTemplate x:Key="ClusterInfoTemplate" DataType="{x:Type cluster:ClusterInfo}">
         <Border Margin="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.3}">
@@ -688,6 +729,7 @@
                             <StackPanel.InputBindings>
                                 <MouseBinding MouseAction="LeftClick" Command="{Binding ToggleMapHistorySelectionCommand}" />
                             </StackPanel.InputBindings>
+                            <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource ClusterModeIcon.Template}" Width="24" />
                             <Label Width="140" VerticalAlignment="Center" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}">
                                 <Label.Content>
                                     <TextBlock>
@@ -699,8 +741,8 @@
                                     </TextBlock>
                                 </Label.Content>
                             </Label>
-                            <Label Content="{Binding TierRomanString}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="30" />
-                            <StackPanel Orientation="Horizontal" Width="155">
+                            <Label Content="{Binding TierRomanString}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="35" />
+                            <StackPanel Orientation="Horizontal" Width="149">
                                 <Label Content="{Binding ClusterHistoryString1}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 <Image Height="18" Width="16" ToolTip="{Binding RandomDungeonTierLevelToolTip}">
                                     <Image.Style>
@@ -730,10 +772,10 @@
                                     </Image.Style>
                                 </Image>
                             </StackPanel>
-                            <Label Content="{Binding ClusterHistoryString2}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="155" />
-                            <Label Content="{Binding ClusterHistoryString3}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="155" />
+                            <Label Content="{Binding ClusterHistoryString2}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="149" />
+                            <Label Content="{Binding ClusterHistoryString3}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="149" />
                         </StackPanel>
-                        <TextBox Text="{Binding MapHistoryNote, UpdateSourceTrigger=PropertyChanged}" Width="155" Background="{StaticResource SolidColorBrush.Value.Silver.Transparent}" BorderThickness="0" />
+                        <TextBox Text="{Binding MapHistoryNote, UpdateSourceTrigger=PropertyChanged}" Width="149" Background="{StaticResource SolidColorBrush.Value.Silver.Transparent}" BorderThickness="0" />
                     </StackPanel>
                     <ItemsControl ItemsSource="{Binding MapMarkers, IsAsync=True}" ItemTemplate="{StaticResource MapMarkerIconTemplate}">
                         <ItemsControl.ItemsPanel>
@@ -770,6 +812,7 @@
     <DataTemplate x:Key="CurrentMapInfoTemplate" DataType="{x:Type models:CurrentMapInfoBinding}">
         <Grid Margin="0,0,0,1">
             <StackPanel Orientation="Horizontal">
+                <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource ClusterModeIcon.Template}" Width="24" />
                 <Label Content="{Binding Tier}" FontSize="14" FontWeight="Bold" Height="20" Padding="0" Margin="0,0,5,0">
                     <Label.Style>
                         <Style TargetType="{x:Type Label}">
@@ -868,32 +911,116 @@
     </DataTemplate>
 
     <DataTemplate x:Key="LootingPlayersTemplate" DataType="{x:Type eventLogging:LootingPlayer}">
-        <Grid Width="auto" Visibility="{Binding LootingPlayerVisibility}">
-            <StackPanel Orientation="Vertical" Width="auto" Margin="0,0,0,25">
-                <StackPanel Orientation="Horizontal" Height="22">
-                    <Label Content="{Binding DisplayName, FallbackValue='PLAYER__NAME', Mode='OneWay'}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"
-                           FontSize="16" FontWeight="Bold" Height="22" Padding="0" Margin="0,0,0,0" />
-                    <StackPanel Orientation="Horizontal" Height="18" Margin="8,2,0,0" Visibility="{Binding TotalEstimatedMarketValueVisibility, FallbackValue=Collapsed}">
+        <Border Style="{StaticResource Logging.ComparatorCard}"
+                Margin="0,0,0,10"
+                Visibility="{Binding LootingPlayerVisibility}">
+            <Grid Width="auto">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+            <Grid Margin="0,0,0,6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding DisplayName, FallbackValue='PLAYER__NAME', Mode='OneWay'}"
+                               Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"
+                               FontSize="16" FontWeight="Bold" TextTrimming="CharacterEllipsis"
+                               VerticalAlignment="Center" />
+                    <StackPanel Orientation="Horizontal" Height="18" Margin="8,0,0,0"
+                                Visibility="{Binding TotalEstimatedMarketValueVisibility, FallbackValue=Collapsed}">
                         <Image Source="../Resources/silver.png" Height="14" Width="14" Margin="0,1,4,0"
                                ToolTip="{Binding DataContext.Translation.EstMarketValue, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=Est. market value}" />
                         <TextBlock Text="{Binding TotalEstimatedMarketValueShortString, IsAsync=True, Mode=OneWay}"
                                    Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="13" VerticalAlignment="Center" />
                     </StackPanel>
+                </StackPanel>
+
+                <WrapPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Border Style="{StaticResource LootComparator.PlayerMetricBadge}" BorderBrush="{StaticResource SolidColorBrush.Text.6}">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <fa5:ImageAwesome Icon="Solid_Crosshairs" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="11" Height="11" Margin="0,0,5,0" />
+                            <TextBlock Text="{Binding DataContext.LoggingBindings.Translation.Kills, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=Kills}"
+                                       Foreground="{StaticResource SolidColorBrush.Text.2}" FontSize="11" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding KillCount}" Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                       FontSize="11" FontWeight="Bold" Margin="6,0,0,0" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource LootComparator.PlayerMetricBadge}" BorderBrush="{StaticResource SolidColorBrush.Text.6}">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <fa5:ImageAwesome Icon="Solid_Skull" Foreground="{StaticResource SolidColorBrush.Text.2}" Width="11" Height="11" Margin="0,0,5,0" />
+                            <TextBlock Text="{Binding DataContext.LoggingBindings.Translation.Deaths, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=Deaths}"
+                                       Foreground="{StaticResource SolidColorBrush.Text.2}" FontSize="11" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding DeathCount}" Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                       FontSize="11" FontWeight="Bold" Margin="6,0,0,0" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource LootComparator.PlayerMetricBadge}" BorderBrush="{StaticResource SolidColorBrush.Text.6}">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="◆" Foreground="{StaticResource SolidColorBrush.Text.6}" FontSize="10" Margin="0,0,4,0" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding DataContext.LoggingBindings.Translation.Gray, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=Gray}"
+                                       Foreground="{StaticResource SolidColorBrush.Text.2}" FontSize="11" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding GrayItemCount}" Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                       FontSize="11" FontWeight="Bold" Margin="5,0,0,0" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource LootComparator.PlayerMetricBadge}" BorderBrush="{StaticResource SolidColorBrush.Accent.Green.4}">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="◆" Foreground="{StaticResource SolidColorBrush.Accent.Green.4}" FontSize="10" Margin="0,0,4,0" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding DataContext.LoggingBindings.Translation.Green, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=Green}"
+                                       Foreground="{StaticResource SolidColorBrush.Text.2}" FontSize="11" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding GreenItemCount}" Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                       FontSize="11" FontWeight="Bold" Margin="5,0,0,0" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource LootComparator.PlayerMetricBadge}" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.4}">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="◆" Foreground="{StaticResource SolidColorBrush.Accent.Blue.4}" FontSize="10" Margin="0,0,4,0" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding DataContext.LoggingBindings.Translation.Blue, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=Blue}"
+                                       Foreground="{StaticResource SolidColorBrush.Text.2}" FontSize="11" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding BlueItemCount}" Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                       FontSize="11" FontWeight="Bold" Margin="5,0,0,0" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource LootComparator.PlayerMetricBadge}" BorderBrush="{StaticResource SolidColorBrush.Accent.Red.4}">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="◆" Foreground="{StaticResource SolidColorBrush.Accent.Red.4}" FontSize="10" Margin="0,0,4,0" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding DataContext.LoggingBindings.Translation.Red, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=Red}"
+                                       Foreground="{StaticResource SolidColorBrush.Text.2}" FontSize="11" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding RedItemCount}" Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                       FontSize="11" FontWeight="Bold" Margin="5,0,0,0" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border Width="1" Height="18" Margin="7,3,2,3" Background="{StaticResource SolidColorBrush.Background.4}" />
+                    <Button Style="{StaticResource LootComparator.RemovePlayerButton}"
+                            IsEnabled="{Binding HasLootLogEntries}"
+                            Command="{Binding DataContext.LoggingBindings.CopyLootingPlayerLogsCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                            CommandParameter="{Binding}"
+                            ToolTip="{Binding DataContext.LoggingBindings.Translation.CopyPlayerLootLogs, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=Copy player loot logs}">
+                        <fa5:ImageAwesome Icon="Regular_Copy" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="11" Height="11" />
+                    </Button>
                     <Button Style="{StaticResource LootComparator.RemovePlayerButton}"
                             Command="{Binding DataContext.LoggingBindings.RemoveLootingPlayerCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                             CommandParameter="{Binding}"
                             ToolTip="{Binding DataContext.LoggingBindings.Translation.RemovePlayerFromLootComparator, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, FallbackValue=Remove player}">
                         <fa5:ImageAwesome Icon="Solid_Times" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" Width="10" Height="10" />
                     </Button>
-                </StackPanel>
-                <ItemsControl ItemsSource="{Binding LootedItems, IsAsync=True}" ItemTemplate="{StaticResource LootedItemTemplate}" Cursor="Hand">
+                </WrapPanel>
+            </Grid>
+
+                <ItemsControl Grid.Row="1" ItemsSource="{Binding LootedItems, IsAsync=True}" ItemTemplate="{StaticResource LootedItemTemplate}" Cursor="Hand">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel Orientation="Horizontal" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>
-            </StackPanel>
-        </Grid>
+            </Grid>
+        </Border>
     </DataTemplate>
 </ResourceDictionary>

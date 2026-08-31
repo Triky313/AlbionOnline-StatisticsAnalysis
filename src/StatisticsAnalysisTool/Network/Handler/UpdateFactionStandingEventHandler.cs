@@ -21,14 +21,14 @@ public class UpdateFactionStandingEventHandler : EventPacketHandler<UpdateFactio
 
     protected override async Task OnActionAsync(UpdateFactionStandingEvent value)
     {
-        await _trackingController.AddNotificationAsync(SetFactionFlagPointsNotification(value.CityFaction, value.GainedFactionFlagPoints.DoubleValue, value.BonusPremiumGainedFractionFlagPoints.DoubleValue));
-        _trackingController.DungeonController?.AddValueToDungeon(value.GainedFactionFlagPoints.DoubleValue, ValueType.FactionFame, value.CityFaction);
-        _trackingController.StatisticController?.AddValue(ValueType.FactionFame, value.GainedFactionFlagPoints.DoubleValue);
+        await _trackingController.AddNotificationAsync(SetFactionStandingNotification(value.CityFaction, value.GainedFactionFlagPoints.DoubleValue, value.BonusPremiumGainedFractionFlagPoints.DoubleValue));
+        _trackingController.DungeonController?.AddValueToDungeon(value.GainedFactionFlagPoints.DoubleValue, ValueType.FactionStanding, value.CityFaction);
+        _trackingController.StatisticController?.AddValue(ValueType.FactionStanding, value.GainedFactionFlagPoints.DoubleValue, value.CityFaction);
     }
 
-    private TrackingNotification SetFactionFlagPointsNotification(CityFaction cityFaction, double gainedFractionPoints, double bonusPremiumGainedFractionPoints)
+    private TrackingNotification SetFactionStandingNotification(CityFaction cityFaction, double gainedFractionPoints, double bonusPremiumGainedFractionPoints)
     {
         return new TrackingNotification(DateTime.Now, new FactionFlagPointsNotificationFragment(LocalizationController.Translation("YOU_HAVE"), AttributeStatOperator.Plus, cityFaction, gainedFractionPoints,
-            bonusPremiumGainedFractionPoints, LocalizationController.Translation("FACTION_FLAG_POINTS"), LocalizationController.Translation("GAINED")), LoggingFilterType.Faction);
+            bonusPremiumGainedFractionPoints, LocalizationController.Translation("FACTION_STANDING"), LocalizationController.Translation("GAINED")), LoggingFilterType.Faction);
     }
 }

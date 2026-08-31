@@ -6,9 +6,6 @@ namespace StatisticsAnalysisTool.ViewModels;
 
 public class DashboardWindowViewModel : BaseViewModel
 {
-    private DashboardBindings _dashboardBindings;
-    private ObservableCollection<MainStatObject> _factionPointStats;
-
     public DashboardWindowViewModel(DashboardBindings dashboardBindings, ObservableCollection<MainStatObject> factionPointStats)
     {
         DashboardBindings = dashboardBindings;
@@ -17,20 +14,20 @@ public class DashboardWindowViewModel : BaseViewModel
 
     public DashboardBindings DashboardBindings
     {
-        get => _dashboardBindings;
+        get;
         set
         {
-            _dashboardBindings = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public ObservableCollection<MainStatObject> FactionPointStats
     {
-        get => _factionPointStats;
+        get;
         set
         {
-            _factionPointStats = value;
+            field = value;
             OnPropertyChanged();
         }
     }

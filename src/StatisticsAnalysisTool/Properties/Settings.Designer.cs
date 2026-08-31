@@ -217,21 +217,9 @@ namespace StatisticsAnalysisTool.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Stats.json")]
-        public string StatsFileName {
-            get {
-                return ((string)(this["StatsFileName"]));
-            }
-            set {
-                this["StatsFileName"] = value;
-            }
-        }
-        
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("-90")]
+        [global::System.Configuration.DefaultSettingValueAttribute("-365")]
         public int KeepDashboardStatisticsForDays {
             get {
                 return ((int)(this["KeepDashboardStatisticsForDays"]));
@@ -332,15 +320,6 @@ namespace StatisticsAnalysisTool.Properties {
         public string MobDataFileName {
             get {
                 return ((string)(this["MobDataFileName"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("dungeon_closed.wav")]
-        public string DungeonClosedSoundFileName {
-            get {
-                return ((string)(this["DungeonClosedSoundFileName"]));
             }
         }
         

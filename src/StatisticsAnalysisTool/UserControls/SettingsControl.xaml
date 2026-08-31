@@ -7,279 +7,526 @@
              xmlns:common="clr-namespace:StatisticsAnalysisTool.Common"
              xmlns:validation="clr-namespace:StatisticsAnalysisTool.Common.Validation"
              mc:Ignorable="d"
-             d:DesignHeight="1600" d:DesignWidth="800"
+             d:DesignHeight="1400"
+             d:DesignWidth="1100"
              d:DataContext="{d:DesignInstance Type=viewModels:SettingsWindowViewModel}">
 
     <Grid IsVisibleChanged="ReloadSettings_OnIsVisibleChanged">
-        <Grid Margin="0,0,0,44">
-            <ScrollViewer>
-                <StackPanel>
-                    <DockPanel Margin="0,0,0,0">
-                        <Label Content="{Binding Translation.Generally, FallbackValue='GENERALLY'}" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.Language, FallbackValue=LANGUAGE}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding LanguagesSelection}"
-                                  IsSynchronizedWithCurrentItem="True" SelectedValuePath="FileName" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" Width="200">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock>
-                                        <TextBlock.Text>
-                                            <MultiBinding StringFormat="{}{0} ({1:N2}%)">
-                                                <Binding Path="EnglishName" />
-                                                <Binding Path="PercentageTranslations" />
-                                            </MultiBinding>
-                                        </TextBlock.Text>
-                                    </TextBlock>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                    </DockPanel>
-                    <DockPanel Margin="0,5,5,0">
-                        <Label MinWidth="300"/>
-                        <Button Content="{Binding Translation.CheckForUpdate, FallbackValue=CHECK__FOR__UPDATE}" Height="44" VerticalAlignment="Bottom"
-                                FontSize="24" FontWeight="Bold" Click="CheckForUpdate_Click" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.SuggestPreReleaseUpdates, FallbackValue=SUGGEST__PRE__RELEASE__UPDATES}" MinWidth="300" VerticalAlignment="Top" />
-                        <CheckBox IsChecked="{Binding IsSuggestPreReleaseUpdatesActive}" Height="21" VerticalAlignment="Top" VerticalContentAlignment="Top">
-                            <Label Content="{Binding Translation.AttentionTheseVersionsAreStillBeingTested, FallbackValue=ATTENTION__THESE__VERSION__ARE__STILL__BEING__TESTED}"
-                                   MinWidth="300" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" ContentStringFormat="{}({0})" />
-                        </CheckBox>
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.NavigationTabVisibility, FallbackValue=NAVIGATION__TAB__VISIBILITY}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding TabVisibilities}" ItemTemplate="{StaticResource TabVisibilityFilter}"
-                                  HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.Notifications, FallbackValue=NOTIFICATIONS}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding NotificationFilters}" ItemTemplate="{StaticResource NotificationFilter}"
-                                  HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.MainGameFolderPath, FallbackValue=MAIN_GAME_FOLDER_PATH}" MinWidth="300" VerticalAlignment="Top" />
-                        <TextBox Text="{Binding MainGameFolderPath, Mode=OneWay}"
-                                 TextWrapping="Wrap" VerticalAlignment="Top" Height="26" Margin="0,0,5,0" Cursor="Hand"
-                                 IsReadOnly="True" ToolTip="{Binding MainGameFolderPath}" PreviewMouseLeftButtonDown="MainGameFolderPathTextBox_PreviewMouseLeftButtonDown" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,5,0">
-                        <Label MinWidth="300"/>
-                        <Button Content="{Binding Translation.OpenToolDirectory, FallbackValue=OPEN__TOOL__DIRECTORY}" Height="24" VerticalAlignment="Bottom" Click="OpenToolDirectory_Click" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,5,0">
-                        <Label MinWidth="300"/>
-                        <Button Content="{Binding Translation.OpenUserDataDirectory, FallbackValue=OPEN__USER_DATA__DIRECTORY}" Height="24" VerticalAlignment="Bottom" Click="OpenUserDataDirectory_Click" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,5,0">
-                        <Label MinWidth="300"/>
-                        <Button Content="{Binding Translation.CreateDesktopShortcut, FallbackValue=CREATE__DESKTOP__SHORTCUT}"
-                                Height="24" VerticalAlignment="Bottom" Click="CreateDesktopShortcut_Click" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.AnotherAppToStartPath, FallbackValue=ANOTHER_APP_TO_START_PATH}" MinWidth="300" VerticalAlignment="Top" />
-                        <Grid Background="{StaticResource SolidColorBrush.Background.4}" Margin="0,0,5,0">
-                            <Image Source="{Binding AnotherAppToStartExeIcon}" Width="40" Height="40" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ScrollViewer x:Name="SettingsScrollViewer"
+                      Grid.Row="0" 
+                      Padding="10,10,12,0"
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalContentAlignment="Stretch">
+            <StackPanel MinWidth="900" Width="{Binding ViewportWidth, ElementName=SettingsScrollViewer, Mode=OneWay}">
+                <!-- Generally -->
+                <Border Style="{StaticResource Settings.Card}">
+                    <StackPanel>
+                        <Border Style="{StaticResource Settings.CardHeader}">
+                            <TextBlock Text="{Binding Translation.Generally, FallbackValue=GENERALLY}" Style="{StaticResource Settings.CardTitle}" />
+                        </Border>
+
+                        <Button Content="{Binding Translation.CheckForUpdate, FallbackValue=CHECK__FOR__UPDATE}"
+                                Height="40" Margin="10,10,10,10" HorizontalAlignment="Stretch" FontWeight="SemiBold" Click="CheckForUpdate_Click" />
+
+                        <Grid Margin="14,12,14,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="16" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <StackPanel Style="{StaticResource Settings.Field}">
+                                    <TextBlock Text="{Binding Translation.Language, FallbackValue=LANGUAGE}" Style="{StaticResource Settings.FieldLabel}" />
+                                    <ComboBox ItemsSource="{Binding Languages}"
+                                              SelectedItem="{Binding LanguagesSelection}"
+                                              IsSynchronizedWithCurrentItem="True"
+                                              SelectedValuePath="FileName"
+                                              Style="{StaticResource Settings.ComboBox}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding StringFormat="{}{0} ({1:N2}%)">
+                                                            <Binding Path="EnglishName" />
+                                                            <Binding Path="PercentageTranslations" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <StackPanel Style="{StaticResource Settings.Field}">
+                                    <TextBlock Text="{Binding Translation.NavigationTabVisibility, FallbackValue=NAVIGATION__TAB__VISIBILITY}" Style="{StaticResource Settings.FieldLabel}" />
+                                    <ComboBox ItemsSource="{Binding TabVisibilities}"
+                                              ItemTemplate="{StaticResource TabVisibilityFilter}"
+                                              Style="{StaticResource Settings.ComboBox}" />
+                                </StackPanel>
+
+                                <StackPanel Style="{StaticResource Settings.Field}">
+                                    <TextBlock Text="{Binding Translation.Notifications, FallbackValue=NOTIFICATIONS}" Style="{StaticResource Settings.FieldLabel}" />
+                                    <ComboBox ItemsSource="{Binding NotificationFilters}"
+                                              ItemTemplate="{StaticResource NotificationFilter}"
+                                              Style="{StaticResource Settings.ComboBox}" />
+                                </StackPanel>
+
+                                <StackPanel Style="{StaticResource Settings.Field}">
+                                    <TextBlock Text="{Binding Translation.Proxy, FallbackValue=PROXY}" Style="{StaticResource Settings.FieldLabel}" />
+                                    <TextBox Text="{Binding ProxyUrlWithPort}"
+                                             MaxLength="50"
+                                             TextWrapping="NoWrap"
+                                             Style="{StaticResource Settings.TextBox}" />
+                                </StackPanel>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <StackPanel Style="{StaticResource Settings.Field}">
+                                    <TextBlock Text="{Binding Translation.SuggestPreReleaseUpdates, FallbackValue=SUGGEST__PRE__RELEASE__UPDATES}" Style="{StaticResource Settings.FieldLabel}" />
+                                    <CheckBox IsChecked="{Binding IsSuggestPreReleaseUpdatesActive}" VerticalContentAlignment="Center">
+                                        <TextBlock Text="{Binding Translation.AttentionTheseVersionsAreStillBeingTested, FallbackValue=ATTENTION__THESE__VERSION__ARE__STILL__BEING__TESTED}"
+                                                   Style="{StaticResource Settings.DangerText}" />
+                                    </CheckBox>
+                                </StackPanel>
+
+                                <StackPanel Style="{StaticResource Settings.Field}">
+                                    <TextBlock Text="{Binding Translation.MainGameFolderPath, FallbackValue=MAIN_GAME_FOLDER_PATH}" Style="{StaticResource Settings.FieldLabel}" />
+                                    <TextBox Text="{Binding MainGameFolderPath, Mode=OneWay}"
+                                             TextWrapping="Wrap"
+                                             Cursor="Hand"
+                                             IsReadOnly="True"
+                                             ToolTip="{Binding MainGameFolderPath}"
+                                             Style="{StaticResource Settings.TextBox}"
+                                             PreviewMouseLeftButtonDown="MainGameFolderPathTextBox_PreviewMouseLeftButtonDown" />
+                                </StackPanel>
+
+                                <WrapPanel Margin="0,0,0,10">
+                                    <Button Content="{Binding Translation.OpenToolDirectory, FallbackValue=OPEN__TOOL__DIRECTORY}"
+                                            Margin="0,0,6,6"
+                                            Style="{StaticResource Settings.Button}"
+                                            Click="OpenToolDirectory_Click" />
+                                    <Button Content="{Binding Translation.OpenUserDataDirectory, FallbackValue=OPEN__USER_DATA__DIRECTORY}"
+                                            Margin="0,0,6,6"
+                                            Style="{StaticResource Settings.Button}"
+                                            Click="OpenUserDataDirectory_Click" />
+                                    <Button Content="{Binding Translation.CreateDesktopShortcut, FallbackValue=CREATE__DESKTOP__SHORTCUT}"
+                                            Margin="0,0,6,6"
+                                            Style="{StaticResource Settings.Button}"
+                                            Click="CreateDesktopShortcut_Click" />
+                                </WrapPanel>
+
+                                <StackPanel Style="{StaticResource Settings.Field}">
+                                    <TextBlock Text="{Binding Translation.AnotherAppToStartPath, FallbackValue=ANOTHER_APP_TO_START_PATH}" Style="{StaticResource Settings.FieldLabel}" />
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="30" />
+                                            <ColumnDefinition Width="8" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border Width="40" Background="{StaticResource SolidColorBrush.Background.4}" BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                                                BorderThickness="1" CornerRadius="3">
+                                            <Image Source="{Binding AnotherAppToStartExeIcon}" Width="30" Height="30" />
+                                        </Border>
+                                        <TextBox Grid.Column="2" Text="{Binding AnotherAppToStartPath}" TextWrapping="Wrap" Style="{StaticResource Settings.TextBox}" />
+                                    </Grid>
+                                </StackPanel>
+                            </StackPanel>
                         </Grid>
-                        <TextBox Text="{Binding AnotherAppToStartPath}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.Proxy, FallbackValue=PROXY}" MinWidth="300" VerticalAlignment="Top" />
-                        <TextBox Text="{Binding ProxyUrlWithPort}" Height="26" TextWrapping="NoWrap" MaxLength="50" VerticalAlignment="Top" Margin="0,0,5,0" />
-                    </DockPanel>
+                    </StackPanel>
+                </Border>
 
-                    <!-- Server -->
-                    <DockPanel Margin="0,20,0,0">
-                        <Label Content="{Binding Translation.Server, FallbackValue='SERVER'}" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.StartupUserDataServer, FallbackValue=STARTUP__USER_DATA__SERVER}"
-                               ToolTip="{Binding Translation.StartupUserDataServerDescription}"
-                               MinWidth="300"
-                               VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding StartupUserDataServers}"
-                                  SelectedItem="{Binding StartupUserDataServerSelection}"
-                                  IsSynchronizedWithCurrentItem="True"
-                                  DisplayMemberPath="Name"
-                                  SelectedValuePath="Value"
-                                  ToolTip="{Binding Translation.StartupUserDataServerDescription}"
-                                  HorizontalAlignment="Left"
-                                  VerticalAlignment="Top"
-                                  Width="200"
-                                  Height="26" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.AlbionDataProjectBaseUrlWest, FallbackValue=ALBION_DATA_PROJECT_BASE_URL_WEST}" MinWidth="300" VerticalAlignment="Top" />
-                        <TextBox Text="{Binding AlbionDataProjectBaseUrlWest}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.AlbionDataProjectBaseUrlEast, FallbackValue=ALBION_DATA_PROJECT_BASE_URL_EAST}" MinWidth="300" VerticalAlignment="Top" />
-                        <TextBox Text="{Binding AlbionDataProjectBaseUrlEast}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.AlbionDataProjectBaseUrlEurope, FallbackValue=ALBION_DATA_PROJECT_BASE_URL_EUROPE}" MinWidth="300" VerticalAlignment="Top" />
-                        <TextBox Text="{Binding AlbionDataProjectBaseUrlEurope}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
-                    </DockPanel>
+                <!-- Server -->
+                <Border Style="{StaticResource Settings.Card}">
+                    <StackPanel>
+                        <Border Style="{StaticResource Settings.CardHeader}">
+                            <TextBlock Text="{Binding Translation.Server, FallbackValue=SERVER}" Style="{StaticResource Settings.CardTitle}" />
+                        </Border>
 
-                    <!-- Tracking -->
-                    <DockPanel Margin="0,20,0,0">
-                        <Label Content="{Binding Translation.Tracking, FallbackValue='TRACKING'}" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.PacketProvider, FallbackValue=PACKET_PROVIDER}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding PacketProvider}" SelectedItem="{Binding PacketProviderSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name"
-                                  SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
-                        <Label Content="{Binding Translation.ChangeRequiresAToolRestart, StringFormat='{}({0})', FallbackValue=(CHANGE__REQUIRES__A__TOOL__RESTART)}"
-                               Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" MinWidth="300" VerticalAlignment="Top" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0" Visibility="{Binding PacketFilterVisibility}">
-                        <Label Content="{Binding Translation.PacketFilter, FallbackValue=PACKET__FILTER}" MinWidth="300" VerticalAlignment="Top" />
-                        <StackPanel Orientation="Horizontal">
-                            <TextBox Text="{Binding PacketFilter}" Height="26" MinWidth="350" TextWrapping="NoWrap" VerticalAlignment="Center" Margin="0,0,5,0" />
-                            <Button Content="{Binding Translation.Reset, FallbackValue=RESET}" Height="24" MaxWidth="120" VerticalAlignment="Center" Click="ResetPacketFilter_Click" />
-                        </StackPanel>
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0" Visibility="{Binding NetworkDevicesVisibility}">
-                        <Label Content="{Binding Translation.NetworkAdapters, FallbackValue=NETWORK__ADAPTERS}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding NetworkDevices}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="420" Height="26">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <CheckBox IsChecked="{Binding IsSelected}" Width="20" VerticalAlignment="Top" />
-                                        <TextBlock Text="{Binding Name}" Width="360" TextWrapping="Wrap" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                    </DockPanel>
-                    <DockPanel Margin="0,0,5,0">
-                        <Label MinWidth="300"/>
-                        <Button Content="{Binding Translation.RestartNetworkTracking, FallbackValue=RESTART__NETWORK__TRACKING}" Height="24" VerticalAlignment="Bottom" Click="RestartNetworkTracking_Click" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.CharacterNameToTrack, FallbackValue=CHARACTER_NAME_TO_TRACK}" MinWidth="300" VerticalAlignment="Top" />
-                        <TextBox Text="{Binding MainTrackingCharacterName}" Height="26" TextWrapping="NoWrap" MaxLength="50" VerticalAlignment="Top" Margin="0,0,5,0" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.PlayerSelectionWithSameNameInDb, FallbackValue=PLAYER_SELECTION_WITH_SAME_NAME_IN_DB}" MinWidth="300" VerticalAlignment="Top" />
-                        <StackPanel Orientation="Horizontal">
-                            <TextBox Text="{Binding PlayerSelectionWithSameNameInDb}" Height="26" MinWidth="100" TextWrapping="NoWrap" VerticalAlignment="Center"
-                                     Margin="0,0,5,0" MaxLength="2" common:TextBoxHelper.OnlyNumeric="Double" />
-                            <Button Content="{Binding Translation.Reset, FallbackValue=RESET}" Height="24" MaxWidth="100" VerticalAlignment="Center"
-                                    Click="ResetPlayerSelectionWithSameNameInDb_Click" />
-                        </StackPanel>
-                    </DockPanel>
+                        <Grid Margin="14,12,14,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="12" />
+                                <ColumnDefinition Width="*" />
 
-                    <!-- Item window -->
-                    <DockPanel Margin="0,20,0,0">
-                        <Label Content="{Binding Translation.ItemWindow, FallbackValue='ITEM__WINDOW'}" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.RefreshRate, FallbackValue=REFRESH__RATE}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding RefreshRates}" SelectedItem="{Binding RefreshRatesSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name"
-                                  SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.OpenItemWindowInNewWindow, FallbackValue=OPEN__ITEM__WINDOW__IN__NEW__WINDOW}" MinWidth="300" VerticalAlignment="Top" />
-                        <CheckBox IsChecked="{Binding IsOpenItemWindowInNewWindowChecked}" Height="21" VerticalContentAlignment="Center" />
-                    </DockPanel>
-                    <!--<DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.ShowInfoWindowOnStart, FallbackValue=SHOW__INFO__WINDOW__ON__START}" MinWidth="300" VerticalAlignment="Top" />
-                        <CheckBox IsChecked="{Binding ShowInfoWindowOnStartChecked}" Height="21" VerticalContentAlignment="Center"  />
-                    </DockPanel>-->
+                                <ColumnDefinition Width="12" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="12" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="12" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Grid.Column="0" Style="{StaticResource Settings.Field}">
+                                <TextBlock Text="{Binding Translation.StartupUserDataServer, FallbackValue=STARTUP__USER_DATA__SERVER}"
+                                           ToolTip="{Binding Translation.StartupUserDataServerDescription}"
+                                           Style="{StaticResource Settings.FieldLabel}" />
+                                <ComboBox ItemsSource="{Binding StartupUserDataServers}"
+                                          SelectedItem="{Binding StartupUserDataServerSelection}"
+                                          IsSynchronizedWithCurrentItem="True"
+                                          DisplayMemberPath="Name"
+                                          SelectedValuePath="Value"
+                                          ToolTip="{Binding Translation.StartupUserDataServerDescription}"
+                                          Style="{StaticResource Settings.ComboBox}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="0" Grid.Column="2" Style="{StaticResource Settings.Field}">
+                                <TextBlock Text="{Binding Translation.ServerType, FallbackValue=SERVER__TYPE}" Style="{StaticResource Settings.FieldLabel}" />
+                                <ComboBox ItemsSource="{Binding ServerTypes}" SelectedItem="{Binding ServerTypeSelection}"
+                                          IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" Style="{StaticResource Settings.ComboBox}" />
+                                <TextBlock Text="{Binding Translation.ChangeRequiresAToolRestart, StringFormat='{}({0})', FallbackValue=(CHANGE__REQUIRES__A__TOOL__RESTART)}"
+                                           Style="{StaticResource Settings.WarningText}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Grid.Column="0" Style="{StaticResource Settings.Field}">
+                                <TextBlock Text="{Binding Translation.AlbionDataProjectBaseUrlWest, FallbackValue=ALBION_DATA_PROJECT_BASE_URL_WEST}" Style="{StaticResource Settings.FieldLabel}" />
+                                <TextBox Text="{Binding AlbionDataProjectBaseUrlWest}" TextWrapping="Wrap" Style="{StaticResource Settings.TextBox}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Grid.Column="2" Style="{StaticResource Settings.Field}">
+                                <TextBlock Text="{Binding Translation.AlbionDataProjectBaseUrlEast, FallbackValue=ALBION_DATA_PROJECT_BASE_URL_EAST}" Style="{StaticResource Settings.FieldLabel}" />
+                                <TextBox Text="{Binding AlbionDataProjectBaseUrlEast}" TextWrapping="Wrap" Style="{StaticResource Settings.TextBox}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Grid.Column="4" Style="{StaticResource Settings.Field}">
+                                <TextBlock Text="{Binding Translation.AlbionDataProjectBaseUrlEurope, FallbackValue=ALBION_DATA_PROJECT_BASE_URL_EUROPE}" Style="{StaticResource Settings.FieldLabel}" />
+                                <TextBox Text="{Binding AlbionDataProjectBaseUrlEurope}" TextWrapping="Wrap" Style="{StaticResource Settings.TextBox}" />
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Tracking -->
+                <Border Style="{StaticResource Settings.Card}">
+                    <StackPanel>
+                        <Border Style="{StaticResource Settings.CardHeader}">
+                            <TextBlock Text="{Binding Translation.Tracking, FallbackValue=TRACKING}" Style="{StaticResource Settings.CardTitle}" />
+                        </Border>
+
+                        <Grid Margin="14,12,14,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="16" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Grid.Column="0" Style="{StaticResource Settings.Field}">
+                                <TextBlock Text="{Binding Translation.PacketProvider, FallbackValue=PACKET_PROVIDER}" Style="{StaticResource Settings.FieldLabel}" />
+                                <ComboBox ItemsSource="{Binding PacketProvider}"
+                                          SelectedItem="{Binding PacketProviderSelection}"
+                                          IsSynchronizedWithCurrentItem="True"
+                                          DisplayMemberPath="Name"
+                                          SelectedValuePath="Value"
+                                          Style="{StaticResource Settings.ComboBox}" />
+                                <TextBlock Text="{Binding Translation.ChangeRequiresAToolRestart, StringFormat='{}({0})', FallbackValue=(CHANGE__REQUIRES__A__TOOL__RESTART)}"
+                                           Style="{StaticResource Settings.WarningText}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0"
+                                        Visibility="{Binding PacketFilterVisibility}"
+                                        Style="{StaticResource Settings.Field}">
+                                <TextBlock Text="{Binding Translation.PacketFilter, FallbackValue=PACKET__FILTER}" Style="{StaticResource Settings.FieldLabel}" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Text="{Binding PacketFilter}" TextWrapping="NoWrap" Style="{StaticResource Settings.TextBox}" />
+                                    <Button Grid.Column="2"
+                                            Content="{Binding Translation.Reset, FallbackValue=RESET}"
+                                            Style="{StaticResource Settings.Button}"
+                                            Click="ResetPacketFilter_Click" />
+                                </Grid>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="2" Grid.ColumnSpan="3" Grid.Column="0"
+                                        Visibility="{Binding NetworkDevicesVisibility}"
+                                        Style="{StaticResource Settings.Field}">
+                                <TextBlock Text="{Binding Translation.NetworkAdapters, FallbackValue=NETWORK__ADAPTERS}" Style="{StaticResource Settings.FieldLabel}" />
+                                <ComboBox ItemsSource="{Binding NetworkDevices}" Style="{StaticResource Settings.ComboBox}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid MinWidth="400">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="24" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <CheckBox IsChecked="{Binding IsSelected}" VerticalAlignment="Center" />
+                                                <TextBlock Grid.Column="1" Text="{Binding Name}" TextWrapping="Wrap" VerticalAlignment="Center" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <Button Content="{Binding Translation.RestartNetworkTracking, FallbackValue=RESTART__NETWORK__TRACKING}"
+                                        Margin="0,8,0,0"
+                                        HorizontalAlignment="Left"
+                                        Style="{StaticResource Settings.Button}"
+                                        Click="RestartNetworkTracking_Click" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="3" Grid.Column="0" Style="{StaticResource Settings.Field}">
+                                <TextBlock Text="{Binding Translation.CharacterNameToTrack, FallbackValue=CHARACTER_NAME_TO_TRACK}" Style="{StaticResource Settings.FieldLabel}" />
+                                <TextBox Text="{Binding MainTrackingCharacterName}"
+                                         MaxLength="50"
+                                         TextWrapping="NoWrap"
+                                         Style="{StaticResource Settings.TextBox}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="3" Grid.Column="2" Style="{StaticResource Settings.Field}">
+                                <TextBlock Text="{Binding Translation.PlayerSelectionWithSameNameInDb, FallbackValue=PLAYER_SELECTION_WITH_SAME_NAME_IN_DB}" Style="{StaticResource Settings.FieldLabel}" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Text="{Binding PlayerSelectionWithSameNameInDb}"
+                                             MaxLength="2"
+                                             TextWrapping="NoWrap"
+                                             common:TextBoxHelper.OnlyNumeric="Double"
+                                             Style="{StaticResource Settings.TextBox}" />
+                                    <Button Grid.Column="2"
+                                            Content="{Binding Translation.Reset, FallbackValue=RESET}"
+                                            Style="{StaticResource Settings.Button}"
+                                            Click="ResetPlayerSelectionWithSameNameInDb_Click" />
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="8" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="8" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
                     <!-- Item search -->
-                    <DockPanel Margin="0,20,0,0">
-                        <Label Content="{Binding Translation.ItemSearch, FallbackValue='ITEM__SEARCH'}" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.AlarmSoundUsed, FallbackValue=ALERT__SOUND__USED}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding AlertSounds}" SelectedItem="{Binding AlertSoundSelection}" IsSynchronizedWithCurrentItem="True"
-                                  DisplayMemberPath="FileName" SelectedValuePath="FilePath" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
-                    </DockPanel>
-
-                    <!-- Item search -->
-                    <DockPanel Margin="0,20,0,0">
-                        <Label Content="{Binding Translation.Party, FallbackValue='PARTY'}" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.DeathAlarmSoundUsed, FallbackValue=DEATH_ALERT__SOUND__USED}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding DeathAlertSounds}" SelectedItem="{Binding DeathAlertSoundSelection}" IsSynchronizedWithCurrentItem="True"
-                                  DisplayMemberPath="FileName" SelectedValuePath="FilePath" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
-                    </DockPanel>
-
-                    <!-- Backup -->
-                    <DockPanel Margin="0,20,0,0">
-                        <Label Content="{Binding Translation.Backup, FallbackValue='BACKUP'}" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.BackupInterval, FallbackValue=BACKUP__INTERVAL}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding BackupIntervalByDays}" SelectedItem="{Binding BackupIntervalByDaysSelection}"
-                                  IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.MaximumNumberOfBackups, FallbackValue=MAXIMUM__NUMBER__OF__BACKUPS}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding MaximumNumberOfBackups}" SelectedItem="{Binding MaximumNumberOfBackupsSelection}"
-                                  IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.BackupStorageDirectoryPath, FallbackValue=BACKUP__STORAGE__DIRECTORY__PATH}" MinWidth="300" VerticalAlignment="Top" />
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                            <TextBox Height="40" Width="400" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0">
-                                <TextBox.Text>
-                                    <Binding Path="BackupStorageDirectoryPath" UpdateSourceTrigger="PropertyChanged" ValidatesOnExceptions="True" NotifyOnValidationError="True">
-                                        <Binding.ValidationRules>
-                                            <validation:PathValidationRule />
-                                        </Binding.ValidationRules>
-                                    </Binding>
-                                </TextBox.Text>
-                                <TextBox.ToolTip>
-                                    <MultiBinding Converter="{StaticResource ValidationErrorConverter}">
-                                        <Binding Path="(Validation.Errors)" RelativeSource="{RelativeSource Self}" />
-                                    </MultiBinding>
-                                </TextBox.ToolTip>
-                            </TextBox>
-                            <Button Content="{Binding Translation.Reset, FallbackValue=RESET}" Height="24" MaxWidth="100" VerticalAlignment="Center" Click="ResetBackupStorageDirPath_Click" />
+                    <Border Grid.Column="0" Style="{StaticResource Settings.Card}">
+                        <StackPanel>
+                            <Border Style="{StaticResource Settings.CardHeader}">
+                                <TextBlock Text="{Binding Translation.ItemSearch, FallbackValue=ITEM__SEARCH}" Style="{StaticResource Settings.CardTitle}" />
+                            </Border>
+                            <StackPanel Margin="14,12,14,4">
+                                <!--
+                                <StackPanel Style="{StaticResource Settings.Field}">
+                                    <TextBlock Text="{Binding Translation.ShowInfoWindowOnStart, FallbackValue=SHOW__INFO__WINDOW__ON__START}" Style="{StaticResource Settings.FieldLabel}" />
+                                    <CheckBox IsChecked="{Binding ShowInfoWindowOnStartChecked}" VerticalContentAlignment="Center" />
+                                </StackPanel>
+                                -->
+                                <StackPanel Style="{StaticResource Settings.Field}">
+                                    <TextBlock Text="{Binding Translation.AlarmSoundUsed, FallbackValue=ALERT__SOUND__USED}" Style="{StaticResource Settings.FieldLabel}" />
+                                    <ComboBox ItemsSource="{Binding AlertSounds}"
+                                              SelectedItem="{Binding AlertSoundSelection}"
+                                              IsSynchronizedWithCurrentItem="True"
+                                              DisplayMemberPath="DisplayName"
+                                              SelectedValuePath="Identifier"
+                                              Style="{StaticResource Settings.ComboBox}" />
+                                </StackPanel>
+                                <StackPanel Style="{StaticResource Settings.Field}">
+                                    <TextBlock Text="{Binding Translation.Volume, FallbackValue=VOLUME}" Style="{StaticResource Settings.FieldLabel}" />
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="48" />
+                                        </Grid.ColumnDefinitions>
+                                        <Slider Value="{Binding AlertSoundVolumePercentage}"
+                                                Minimum="0"
+                                                Maximum="100"
+                                                TickFrequency="1"
+                                                IsSnapToTickEnabled="True"
+                                                VerticalAlignment="Center" />
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding AlertSoundVolumePercentage, StringFormat={}{0:N0}%}"
+                                                   Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                                   VerticalAlignment="Center"
+                                                   TextAlignment="Right" />
+                                    </Grid>
+                                </StackPanel>
+                            </StackPanel>
                         </StackPanel>
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label MinWidth="300" VerticalAlignment="Top" />
-                        <Button Content="{Binding Translation.BackupNow, FallbackValue=BACKUP__NOW}" MinWidth="120" IsEnabled="{Binding IsBackupNowButtonEnabled}"
-                                Margin="0,0,5,2" Height="24" MaxWidth="120" HorizontalAlignment="Left" VerticalAlignment="Center" Click="BackupNow_Click" />
-                    </DockPanel>
+                    </Border>
+
+                    <!-- Party -->
+                    <Border Grid.Column="2" Style="{StaticResource Settings.Card}">
+                        <StackPanel>
+                            <Border Style="{StaticResource Settings.CardHeader}">
+                                <TextBlock Text="{Binding Translation.Party, FallbackValue=PARTY}" Style="{StaticResource Settings.CardTitle}" />
+                            </Border>
+                            <StackPanel Margin="14,12,14,4">
+                                <StackPanel Style="{StaticResource Settings.Field}">
+                                    <TextBlock Text="{Binding Translation.DeathAlarmSoundUsed, FallbackValue=DEATH_ALERT__SOUND__USED}" Style="{StaticResource Settings.FieldLabel}" />
+                                    <ComboBox ItemsSource="{Binding DeathAlertSounds}"
+                                              SelectedItem="{Binding DeathAlertSoundSelection}"
+                                              IsSynchronizedWithCurrentItem="True"
+                                              DisplayMemberPath="DisplayName"
+                                              SelectedValuePath="Identifier"
+                                              Style="{StaticResource Settings.ComboBox}" />
+                                </StackPanel>
+                                <StackPanel Style="{StaticResource Settings.Field}">
+                                    <TextBlock Text="{Binding Translation.Volume, FallbackValue=VOLUME}" Style="{StaticResource Settings.FieldLabel}" />
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="48" />
+                                        </Grid.ColumnDefinitions>
+                                        <Slider Value="{Binding DeathAlertSoundVolumePercentage}"
+                                                Minimum="0"
+                                                Maximum="100"
+                                                TickFrequency="1"
+                                                IsSnapToTickEnabled="True"
+                                                VerticalAlignment="Center" />
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding DeathAlertSoundVolumePercentage, StringFormat={}{0:N0}%}"
+                                                   Foreground="{StaticResource SolidColorBrush.Text.1}"
+                                                   VerticalAlignment="Center"
+                                                   TextAlignment="Right" />
+                                    </Grid>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
 
                     <!-- Debug -->
-                    <DockPanel Margin="0,20,0,0">
-                        <Label Content="{Binding Translation.Debug, FallbackValue='DEBUG'}" FontSize="14" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,5,0">
-                        <Label MinWidth="300"/>
-                        <Button Content="{Binding Translation.OpenDebugConsole, FallbackValue=OPEN__DEBUG__CONSOLE}" Height="24"
-                                VerticalAlignment="Bottom" Click="OpenDebugConsole_Click" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,5,0">
-                        <Label MinWidth="300"/>
-                        <Button Content="{Binding Translation.CloseDebugConsole, FallbackValue=CLOSE__DEBUG__CONSOLE}" Height="24"
-                                VerticalAlignment="Bottom" Click="CloseDebugConsole_Click" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.DebugConsoleParameters, FallbackValue=DEBUG__CONSOLE__PARAMETERS}" MinWidth="300" VerticalAlignment="Top" />
-                        <TextBox Text="{Binding DebugConsoleFilter}" Height="26" TextWrapping="NoWrap" VerticalAlignment="Top" Margin="0,0,5,0" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.OpenDebugConsoleWhenStartingTheTool, FallbackValue=OPEN__DEBUG__CONSOLE__WHEN__STARTING__THE__TOOL}" MinWidth="300" VerticalAlignment="Top" />
-                        <CheckBox IsChecked="{Binding IsOpenDebugConsoleWhenStartingTheToolChecked}" Height="21" VerticalContentAlignment="Center" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,5,0">
-                        <Label MinWidth="300"/>
-                        <Button Content="{Binding Translation.OpenEventValidation, FallbackValue=OPEN__EVENT__VALIDATION}" Height="24"
-                                VerticalAlignment="Bottom" Click="OpenEventValidation_Click" />
-                    </DockPanel>
-                </StackPanel>
-            </ScrollViewer>
-        </Grid>
-        <Grid Height="44" VerticalAlignment="Bottom">
-            <Button Content="{Binding Translation.Save, FallbackValue=SAVE}" HorizontalAlignment="Left" Margin="5,10,0,10" Width="110" Click="BtnSave_Click" />
-        </Grid>
+                    <Border Grid.Column="4" Style="{StaticResource Settings.Card}">
+                        <StackPanel>
+                            <Border Style="{StaticResource Settings.CardHeader}">
+                                <TextBlock Text="{Binding Translation.Debug, FallbackValue=DEBUG}" Style="{StaticResource Settings.CardTitle}" />
+                            </Border>
+                            <StackPanel Margin="14,12,14,4">
+                                <StackPanel Style="{StaticResource Settings.Field}">
+                                    <TextBlock Text="{Binding Translation.DebugConsoleParameters, FallbackValue=DEBUG__CONSOLE__PARAMETERS}" Style="{StaticResource Settings.FieldLabel}" />
+                                    <TextBox Text="{Binding DebugConsoleFilter}" TextWrapping="NoWrap" Style="{StaticResource Settings.TextBox}" />
+                                </StackPanel>
+                                <StackPanel Style="{StaticResource Settings.Field}">
+                                    <TextBlock Text="{Binding Translation.OpenDebugConsoleWhenStartingTheTool, FallbackValue=OPEN__DEBUG__CONSOLE__WHEN__STARTING__THE__TOOL}" Style="{StaticResource Settings.FieldLabel}" />
+                                    <CheckBox IsChecked="{Binding IsOpenDebugConsoleWhenStartingTheToolChecked}" VerticalContentAlignment="Center" />
+                                </StackPanel>
+                                <WrapPanel>
+                                    <Button Content="{Binding Translation.OpenDebugConsole, FallbackValue=OPEN__DEBUG__CONSOLE}"
+                                            Margin="0,0,6,6"
+                                            Style="{StaticResource Settings.Button}"
+                                            Click="OpenDebugConsole_Click" />
+                                    <Button Content="{Binding Translation.CloseDebugConsole, FallbackValue=CLOSE__DEBUG__CONSOLE}"
+                                            Margin="0,0,6,6"
+                                            Style="{StaticResource Settings.Button}"
+                                            Click="CloseDebugConsole_Click" />
+                                    <Button Content="{Binding Translation.OpenEventValidation, FallbackValue=OPEN__EVENT__VALIDATION}"
+                                            Margin="0,0,6,6"
+                                            Style="{StaticResource Settings.Button}"
+                                            Click="OpenEventValidation_Click" />
+                                </WrapPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <!-- Backup -->
+                <Border Style="{StaticResource Settings.Card}">
+                    <StackPanel>
+                        <Border Style="{StaticResource Settings.CardHeader}">
+                            <TextBlock Text="{Binding Translation.Backup, FallbackValue=BACKUP}" Style="{StaticResource Settings.CardTitle}" />
+                        </Border>
+
+                        <Grid Margin="14,12,14,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="12" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Grid.Column="0" Style="{StaticResource Settings.Field}">
+                                <TextBlock Text="{Binding Translation.BackupInterval, FallbackValue=BACKUP__INTERVAL}" Style="{StaticResource Settings.FieldLabel}" />
+                                <ComboBox ItemsSource="{Binding BackupIntervalByDays}"
+                                          SelectedItem="{Binding BackupIntervalByDaysSelection}"
+                                          IsSynchronizedWithCurrentItem="True"
+                                          DisplayMemberPath="Name"
+                                          SelectedValuePath="Value"
+                                          Style="{StaticResource Settings.ComboBox}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="0" Grid.Column="2" Style="{StaticResource Settings.Field}">
+                                <TextBlock Text="{Binding Translation.MaximumNumberOfBackups, FallbackValue=MAXIMUM__NUMBER__OF__BACKUPS}" Style="{StaticResource Settings.FieldLabel}" />
+                                <ComboBox ItemsSource="{Binding MaximumNumberOfBackups}"
+                                          SelectedItem="{Binding MaximumNumberOfBackupsSelection}"
+                                          IsSynchronizedWithCurrentItem="True"
+                                          DisplayMemberPath="Name"
+                                          SelectedValuePath="Value"
+                                          Style="{StaticResource Settings.ComboBox}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0" Style="{StaticResource Settings.Field}">
+                                <TextBlock Text="{Binding Translation.BackupStorageDirectoryPath, FallbackValue=BACKUP__STORAGE__DIRECTORY__PATH}" Style="{StaticResource Settings.FieldLabel}" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox TextWrapping="Wrap" Style="{StaticResource Settings.TextBox}">
+                                        <TextBox.Text>
+                                            <Binding Path="BackupStorageDirectoryPath"
+                                                     UpdateSourceTrigger="PropertyChanged"
+                                                     ValidatesOnExceptions="True"
+                                                     NotifyOnValidationError="True">
+                                                <Binding.ValidationRules>
+                                                    <validation:PathValidationRule />
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                        <TextBox.ToolTip>
+                                            <MultiBinding Converter="{StaticResource ValidationErrorConverter}">
+                                                <Binding Path="(Validation.Errors)" RelativeSource="{RelativeSource Self}" />
+                                            </MultiBinding>
+                                        </TextBox.ToolTip>
+                                    </TextBox>
+                                    <Button Grid.Column="2"
+                                            Content="{Binding Translation.Reset, FallbackValue=RESET}"
+                                            Style="{StaticResource Settings.Button}"
+                                            Click="ResetBackupStorageDirPath_Click" />
+                                </Grid>
+                            </StackPanel>
+
+                            <Button Grid.Row="2" Grid.ColumnSpan="3" Grid.Column="0"
+                                    Content="{Binding Translation.BackupNow, FallbackValue=BACKUP__NOW}"
+                                    IsEnabled="{Binding IsBackupNowButtonEnabled}"
+                                    HorizontalAlignment="Left"
+                                    Style="{StaticResource Settings.Button}"
+                                    Click="BackupNow_Click" />
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Border Grid.Row="1" Style="{StaticResource Settings.Footer}">
+            <Button Content="{Binding Translation.Save, FallbackValue=SAVE}" Style="{StaticResource Style.Button.Orange}" 
+                    Width="120" HorizontalAlignment="Left" FontWeight="SemiBold" Click="BtnSave_Click" />
+        </Border>
     </Grid>
 </UserControl>

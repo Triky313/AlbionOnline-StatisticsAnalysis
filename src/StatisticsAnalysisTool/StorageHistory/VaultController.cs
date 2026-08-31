@@ -31,8 +31,8 @@ public class VaultController
         _mainWindowViewModel = mainWindowViewModel;
         _vaultBindings = _mainWindowViewModel.VaultBindings;
 
-        OnVaultsChange += UpdateSearchListUiAsync;
-        OnVaultsRemove += UpdateSearchListUiAsync;
+        OnVaultsChange += UpdateSearchListUi;
+        OnVaultsRemove += UpdateSearchListUi;
     }
 
     public event Action OnVaultsChange;
@@ -305,14 +305,12 @@ public class VaultController
         }
     }
 
-    private async void UpdateSearchListUiAsync()
+    private void UpdateSearchListUi()
     {
-        var vaultSearchItem = new List<VaultSearchItem>();
+        var vaultSearchItems = new List<VaultSearchItem>();
 
-        await foreach (var vault in _vaultBindings.Vaults.ToList().ToAsyncEnumerable())
+        foreach (var vault in _vaultBindings.Vaults?.ToList() ?? [])
         {
-            var tempItems = new List<VaultSearchItem>();
-
             foreach (var vaultContainer in vault.VaultContainer)
             {
                 foreach (var item in vaultContainer.Items)
@@ -322,7 +320,7 @@ public class VaultController
                         continue;
                     }
 
-                    var searchItem = new VaultSearchItem()
+                    vaultSearchItems.Add(new VaultSearchItem()
                     {
                         Item = item.Item,
                         Location = vault.Location,
@@ -330,20 +328,16 @@ public class VaultController
                         MapType = vault.MapType,
                         Quantity = item.Quantity,
                         VaultContainerName = vaultContainer.Name
-                    };
-
-                    tempItems.Add(searchItem);
+                    });
                 }
             }
-
-            vaultSearchItem.AddRange(tempItems);
         }
 
         Application.Current.Dispatcher.Invoke(() =>
         {
             _vaultBindings.VaultSearchList.Clear();
-            _vaultBindings.VaultSearchList.AddRange(vaultSearchItem);
-            _mainWindowViewModel?.VaultBindings?.VaultSearchCollectionView?.Refresh();
+            _vaultBindings.VaultSearchList.AddRange(vaultSearchItems);
+            _vaultBindings.VaultSearchCollectionView?.Refresh();
         });
     }
 
@@ -418,6 +412,7 @@ public class VaultController
     {
         var vaultDtos = await FileController.LoadAsync<List<VaultDto>>(AppDataPaths.UserDataFile(Settings.Default.VaultsFileName));
         _vaultBindings.Vaults = new ObservableCollection<Vault>(vaultDtos.Select(StorageHistoryMapping.Mapping));
+        UpdateSearchListUi();
     }
 
     public async Task SaveInFileAsync()

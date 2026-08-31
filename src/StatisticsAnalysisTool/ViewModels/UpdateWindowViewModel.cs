@@ -82,6 +82,37 @@ public sealed class UpdateWindowViewModel(
         }
     }
 
+    public double DownloadProgressPercentage
+    {
+        get;
+        set
+        {
+            var normalizedValue = Math.Clamp(value, 0d, 100d);
+            if (Math.Abs(field - normalizedValue) < double.Epsilon)
+            {
+                return;
+            }
+
+            field = normalizedValue;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsProgressIndeterminate
+    {
+        get;
+        set
+        {
+            if (field == value)
+            {
+                return;
+            }
+
+            field = value;
+            OnPropertyChanged();
+        }
+    } = true;
+
     public bool IsStatusVisible => !string.IsNullOrWhiteSpace(StatusText);
 
     public bool AreButtonsEnabled => !IsBusy;

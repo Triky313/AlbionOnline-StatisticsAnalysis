@@ -4,6 +4,8 @@ using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.GameFileData.Models;
 using System.Reflection;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.UnitTests.GameFileData;
 
@@ -66,15 +68,15 @@ public class MobsDataTests
     {
         var result = MobsData.GetRandomDungeonMobTierByIndex(16);
 
-        result.Should().Be(5);
+        result.Should().Be(6);
     }
 
     [Test]
-    public void GetRandomDungeonMobTierByIndex_WithUserUndeadDungeonMob_ReturnsDungeonTierFour()
+    public void GetRandomDungeonMobTierByIndex_WithUserUndeadDungeonMob_ReturnsDungeonTierFive()
     {
         var result = MobsData.GetRandomDungeonMobTierByIndex(17);
 
-        result.Should().Be(4);
+        result.Should().Be(5);
     }
 
     [Test]
@@ -112,7 +114,7 @@ public class MobsDataTests
     [Test]
     public void GetRandomDungeonMobLevelByIndex_WithLevelTwoBonus_ReturnsLevelTwo()
     {
-        var levelTwoHitPoints = 1328 * 136 / 116d;
+        var levelTwoHitPoints = 1328 * 1.36;
 
         var result = MobsData.GetRandomDungeonMobLevelByIndex(16, levelTwoHitPoints);
 
@@ -122,7 +124,7 @@ public class MobsDataTests
     [Test]
     public void GetRandomDungeonMobLevelByIndex_WithUserLevelFourUndeadMob_ReturnsLevelFour()
     {
-        var result = MobsData.GetRandomDungeonMobLevelByIndex(17, 1494);
+        var result = MobsData.GetRandomDungeonMobLevelByIndex(17, 923 * 1.84);
 
         result.Should().Be(4);
     }
@@ -137,6 +139,97 @@ public class MobsDataTests
         var result = MobsData.GetMobLevelByIndex(16, 1328 * hitPointsPercent / 100d);
 
         result.Should().Be(expectedLevel);
+    }
+
+    [Test]
+    public void MobJsonObject_WithExtendedAttributes_PreservesAllAvailableAttributes()
+    {
+        const string json = """
+                            {
+                              "@uniquename": "T6_MOB_DYNAMIC_HIDE_FOREST_GIANTSTAG",
+                              "@tier": "6",
+                              "@npchostility": "hostile",
+                              "@abilitypower": "133",
+                              "@fame": "138",
+                              "@roamingradius": "10",
+                              "@roamingidletimemin": "3",
+                              "@roamingidletimemax": "10",
+                              "@aggroradius": "0",
+                              "@pursuitradius": "30",
+                              "@damageaggrofactor": "1",
+                              "@healingaggrofactor": "1",
+                              "@shieldaggrofactor": "0.5",
+                              "@alertradius": "5",
+                              "@faction": "GIANTSTAG",
+                              "@attackcollisionradius": "0.9",
+                              "@attacktype": "melee",
+                              "@attackrange": "2",
+                              "@attackdamage": "287",
+                              "@hitpointsmax": "1401",
+                              "@hitpointsregeneration": "0",
+                              "@energymax": "338",
+                              "@energyregeneration": "10",
+                              "@movespeed": "0.78",
+                              "@attackmovespeed": "7.5",
+                              "@meleeattackdamagetime": "0.52",
+                              "@attackspeed": "0.3",
+                              "@physicalarmor": "146",
+                              "@magicresistance": "146",
+                              "@crowdcontrolresistance": "64",
+                              "@respawntimesecondsmin": "450",
+                              "@respawntimesecondsmax": "1350",
+                              "@namelocatag": "@MOB_T6_MOB_HIDE_FOREST_GIANTSTAG",
+                              "@avatar": "GIANTSTAGMOOSE1",
+                              "@maxcharges": "5",
+                              "@timeperchargeseconds": "900",
+                              "@dangerstate": "normal",
+                              "@aggrodelayafterspawn": "5",
+                              "@category": "hidemob",
+                              "@chargesperchargeup": "1",
+                              "@energyrewardspell": "ENERGYREWARD",
+                              "@energyreward": "10",
+                              "@mobvalue": "0",
+                              "@ignoredifficultybonus": "true",
+                              "@chargeupchance": "0.2554"
+                            }
+                            """;
+        var options = new JsonSerializerOptions
+        {
+            NumberHandling = JsonNumberHandling.AllowReadingFromString
+        };
+
+        var mob = JsonSerializer.Deserialize<MobJsonObject>(json, options);
+        var serializedJson = JsonSerializer.Serialize(mob);
+
+        mob.Should().NotBeNull();
+        mob!.Fame.Should().Be(138);
+        mob.AlertRadius.Should().Be(5);
+
+        using var sourceDocument = JsonDocument.Parse(json);
+        using var serializedDocument = JsonDocument.Parse(serializedJson);
+        foreach (var sourceProperty in sourceDocument.RootElement.EnumerateObject())
+        {
+            serializedDocument.RootElement.TryGetProperty(sourceProperty.Name, out _)
+                .Should().BeTrue($"the available attribute {sourceProperty.Name} must be preserved");
+        }
+    }
+
+    [Test]
+    public void MobJsonObject_WithoutOptionalAttributes_DoesNotAddEmptyAttributes()
+    {
+        var mob = new MobJsonObject
+        {
+            UniqueName = "T6_MOB_TEST",
+            Tier = 6,
+            HitPointsMax = 1401
+        };
+
+        var serializedJson = JsonSerializer.Serialize(mob);
+
+        using var document = JsonDocument.Parse(serializedJson);
+        document.RootElement.TryGetProperty("@fame", out _).Should().BeFalse();
+        document.RootElement.TryGetProperty("@attackdamage", out _).Should().BeFalse();
+        document.RootElement.TryGetProperty("@chargeupchance", out _).Should().BeFalse();
     }
 
     private static void SetMobs(IEnumerable<MobJsonObject> mobs)

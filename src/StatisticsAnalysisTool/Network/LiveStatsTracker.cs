@@ -1,5 +1,4 @@
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -90,7 +89,6 @@ public class LiveStatsTracker
     private readonly SlidingWindow _respecCostWin = new();
     private readonly SlidingWindow _factionPointsWin = new();
 
-    private DateTime _sessionStartUtc;
     private double _totalGainedFameInSession;
     private double _totalGainedReSpecInSession;
     private double _totalGainedSilverInSession;
@@ -105,8 +103,6 @@ public class LiveStatsTracker
     {
         _trackingController = trackingController;
         _mainWindowViewModel = mainWindowViewModel;
-        _sessionStartUtc = DateTime.UtcNow;
-
         _dispatcherTimer.Interval = TimeSpan.FromSeconds(2);
         _dispatcherTimer.Tick += UpdateUi;
     }
@@ -180,8 +176,6 @@ public class LiveStatsTracker
 
     public void Reset()
     {
-        _sessionStartUtc = DateTime.UtcNow;
-
         _fameWin.Clear();
         _respecWin.Clear();
         _silverWin.Clear();
@@ -249,8 +243,6 @@ public class LiveStatsTracker
             factionPointStat.Value = _totalGainedFactionPointsInSession;
         }
 
-        // Session-Timer
-        var duration = now - _sessionStartUtc;
-        _mainWindowViewModel.MainTrackerTimer = duration.ToTimerString();
+        _trackingController.StatisticController.UpdateDashboardSessionTime(now);
     }
 }

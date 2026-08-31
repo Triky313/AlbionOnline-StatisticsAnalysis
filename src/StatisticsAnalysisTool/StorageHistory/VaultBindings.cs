@@ -23,7 +23,7 @@ public class VaultBindings : BaseViewModel
     private GridLength _gridSplitterPosition = GridLength.Auto;
     private ListCollectionView _vaultCollectionView;
     private List<VaultSearchItem> _vaultSearchList = new();
-    private string _searchText;
+    private string _searchText = string.Empty;
     private bool _isAveragePricesDisplayedOnItem;
     private double _totalContainerValue;
     private double _totalWeight;
@@ -196,14 +196,13 @@ public class VaultBindings : BaseViewModel
         get => _searchText;
         set
         {
-            _searchText = value;
+            _searchText = value ?? string.Empty;
 
             if (_searchText.Length >= 2)
             {
                 VaultSearchCollectionView.Filter = Filter;
             }
-
-            if (_searchText.Length <= 0)
+            else
             {
                 VaultSearchCollectionView.Filter = null;
             }

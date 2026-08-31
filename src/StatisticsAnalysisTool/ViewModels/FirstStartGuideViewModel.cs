@@ -25,12 +25,6 @@ public class FirstStartGuideViewModel : BaseViewModel
     private const int DonationStepIndex = 5;
     private const int TotalStepCount = 6;
 
-    private FirstStartGuideLanguageOption _selectedLanguageOption;
-    private FirstStartGuideServerOption _selectedStartupUserDataServerOption;
-    private string _mainGameFolderPath;
-    private string _errorMessage;
-    private int _currentStepIndex;
-    private PacketProviderKind? _selectedPacketProvider;
     private bool _isMainGameFolderValid;
 
     public FirstStartGuideViewModel()
@@ -98,10 +92,10 @@ public class FirstStartGuideViewModel : BaseViewModel
 
     public int CurrentStepIndex
     {
-        get => _currentStepIndex;
+        get;
         private set
         {
-            _currentStepIndex = value;
+            field = value;
             RefreshLocalizedContent();
             RefreshStepState();
         }
@@ -109,15 +103,15 @@ public class FirstStartGuideViewModel : BaseViewModel
 
     public FirstStartGuideLanguageOption SelectedLanguageOption
     {
-        get => _selectedLanguageOption;
+        get;
         set
         {
-            if (_selectedLanguageOption == value)
+            if (field == value)
             {
                 return;
             }
 
-            _selectedLanguageOption = value;
+            field = value;
             RefreshLanguageSelectionState();
             OnPropertyChanged();
         }
@@ -125,15 +119,15 @@ public class FirstStartGuideViewModel : BaseViewModel
 
     public FirstStartGuideServerOption SelectedStartupUserDataServerOption
     {
-        get => _selectedStartupUserDataServerOption;
+        get;
         set
         {
-            if (_selectedStartupUserDataServerOption == value)
+            if (field == value)
             {
                 return;
             }
 
-            _selectedStartupUserDataServerOption = value;
+            field = value;
             RefreshStartupUserDataServerSelectionState();
             OnPropertyChanged();
             OnPropertyChanged(nameof(IsNextEnabled));
@@ -142,10 +136,10 @@ public class FirstStartGuideViewModel : BaseViewModel
 
     public string MainGameFolderPath
     {
-        get => _mainGameFolderPath;
+        get;
         set
         {
-            _mainGameFolderPath = value;
+            field = value;
             _isMainGameFolderValid = IsValidMainGameFolder(value);
             OnPropertyChanged();
             OnPropertyChanged(nameof(IsNextEnabled));
@@ -154,10 +148,10 @@ public class FirstStartGuideViewModel : BaseViewModel
 
     public PacketProviderKind? SelectedPacketProvider
     {
-        get => _selectedPacketProvider;
+        get;
         set
         {
-            _selectedPacketProvider = value;
+            field = value;
             OnPropertyChanged();
             OnPropertyChanged(nameof(IsNpcapSelected));
             OnPropertyChanged(nameof(IsSocketsSelected));
@@ -193,10 +187,10 @@ public class FirstStartGuideViewModel : BaseViewModel
 
     public string ErrorMessage
     {
-        get => _errorMessage;
+        get;
         set
         {
-            _errorMessage = value;
+            field = value;
             OnPropertyChanged();
             OnPropertyChanged(nameof(ErrorVisibility));
         }
@@ -377,7 +371,6 @@ public class FirstStartGuideViewModel : BaseViewModel
         SettingsController.CurrentSettings.IsDungeonsNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.Dungeons);
         SettingsController.CurrentSettings.IsDamageMeterNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.DamageMeter);
         SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.TradeMonitoring);
-        SettingsController.CurrentSettings.IsOpenWorldNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.OpenWorld);
         SettingsController.CurrentSettings.IsGatheringNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.Gathering);
         SettingsController.CurrentSettings.IsCraftingNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.Crafting);
         SettingsController.CurrentSettings.IsPartyNaviTabActive = IsNavigationTabVisible(NavigationTabFilterType.Party);
@@ -537,7 +530,6 @@ public class FirstStartGuideViewModel : BaseViewModel
         NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.Dungeons, SettingsController.CurrentSettings.IsDungeonsNaviTabActive));
         NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.DamageMeter, SettingsController.CurrentSettings.IsDamageMeterNaviTabActive));
         NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.TradeMonitoring, SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive));
-        NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.OpenWorld, SettingsController.CurrentSettings.IsOpenWorldNaviTabActive));
         NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.Gathering, SettingsController.CurrentSettings.IsGatheringNaviTabActive));
         NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.Crafting, SettingsController.CurrentSettings.IsCraftingNaviTabActive));
         NavigationTabOptions.Add(CreateNavigationTabOption(NavigationTabFilterType.Party, SettingsController.CurrentSettings.IsPartyNaviTabActive));
@@ -579,7 +571,6 @@ public class FirstStartGuideViewModel : BaseViewModel
             NavigationTabFilterType.Dungeons => MainWindowTranslation.Dungeons,
             NavigationTabFilterType.DamageMeter => MainWindowTranslation.DamageMeter,
             NavigationTabFilterType.TradeMonitoring => MainWindowTranslation.TradeMonitoring,
-            NavigationTabFilterType.OpenWorld => MainWindowTranslation.OpenWorld,
             NavigationTabFilterType.Gathering => MainWindowTranslation.Gathering,
             NavigationTabFilterType.Crafting => MainWindowTranslation.Crafting,
             NavigationTabFilterType.Party => MainWindowTranslation.Party,

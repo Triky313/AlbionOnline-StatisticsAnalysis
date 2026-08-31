@@ -39,55 +39,45 @@ public class GuildController
 
     public void AddSiphonedEnergyEntries(List<string> usernames, List<FixPoint> quantities, List<long> timestamps, bool isManualEntry = false)
     {
-        if (_mainWindowViewModel.TrackingActivityBindings.TrackingActivityType != TrackingIconType.On)
+        if (usernames.Count != quantities.Count || usernames.Count != timestamps.Count)
         {
             return;
         }
 
-        // Siphoned Energy tab is 2
-        if ((_currentTabId == 2 && (usernames.Count == quantities.Count && usernames.Count == timestamps.Count)) || isManualEntry)
+        if (!isManualEntry
+            && (_mainWindowViewModel.TrackingActivityBindings.TrackingActivityType != TrackingIconType.On || _currentTabId != 2))
         {
-            var tempList = new List<SiphonedEnergyItem>();
-
-            for (int i = 0; i < quantities.Count; i++)
-            {
-                string username = usernames[i];
-                FixPoint quantity = quantities[i];
-                DateTime timestamp = new DateTime(timestamps[i]);
-
-                var siphonedEnergyEntry = new SiphonedEnergyItem()
-                {
-                    GuildName = _trackingController.EntityController.LocalUserData.GuildName,
-                    CharacterName = username,
-                    Quantity = quantity,
-                    Timestamp = timestamp
-                };
-
-                if (!_mainWindowViewModel.GuildBindings.SiphonedEnergyList.Any(x =>
-                        x.CharacterName == siphonedEnergyEntry.CharacterName
-                        && x.Quantity.InternalValue == siphonedEnergyEntry.Quantity.InternalValue
-                        && x.Timestamp == siphonedEnergyEntry.Timestamp))
-                {
-                    tempList.Add(siphonedEnergyEntry);
-                }
-            }
-
-            foreach (var item in tempList)
-            {
-                Application.Current.Dispatcher.InvokeAsync(() =>
-                {
-                    _mainWindowViewModel.GuildBindings.SiphonedEnergyList.Add(item);
-                    UpdateSiphonedEnergyOverview();
-                });
-            }
-
-            Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                _mainWindowViewModel.GuildBindings.SiphonedEnergyLastUpdate = DateTime.UtcNow;
-                _mainWindowViewModel.GuildBindings.SiphonedEnergyLastUpdateVisibility
-                    = _mainWindowViewModel.GuildBindings?.SiphonedEnergyLastUpdate.Ticks <= 1 ? Visibility.Hidden : Visibility.Visible;
-            });
+            return;
         }
+
+        var newEntries = new List<SiphonedEnergyItem>();
+
+        for (int i = 0; i < quantities.Count; i++)
+        {
+            var siphonedEnergyEntry = new SiphonedEnergyItem()
+            {
+                GuildName = _trackingController.EntityController.LocalUserData.GuildName,
+                CharacterName = usernames[i],
+                Quantity = quantities[i],
+                Timestamp = new DateTime(timestamps[i])
+            };
+
+            if (!_mainWindowViewModel.GuildBindings.SiphonedEnergyList.Any(x =>
+                    x.CharacterName == siphonedEnergyEntry.CharacterName
+                    && x.Quantity.InternalValue == siphonedEnergyEntry.Quantity.InternalValue
+                    && x.Timestamp == siphonedEnergyEntry.Timestamp))
+            {
+                newEntries.Add(siphonedEnergyEntry);
+            }
+        }
+
+        RunOnUiThread(() =>
+        {
+            _mainWindowViewModel.GuildBindings.SiphonedEnergyList.AddRange(newEntries);
+            UpdateSiphonedEnergyOverview();
+            _mainWindowViewModel.GuildBindings.SiphonedEnergyLastUpdate = DateTime.UtcNow;
+            _mainWindowViewModel.GuildBindings.SiphonedEnergyLastUpdateVisibility = Visibility.Visible;
+        });
     }
 
     public void UpdateSiphonedEnergyOverview()
@@ -106,11 +96,23 @@ public class GuildController
             .OrderByDescending(x => x.Quantity.IntegerValue)
             .ToList();
 
-        Application.Current.Dispatcher.InvokeAsync(() =>
+        RunOnUiThread(() =>
         {
             _mainWindowViewModel.GuildBindings.SiphonedEnergyOverviewList = new ObservableRangeCollection<SiphonedEnergyItem>(grouped);
             _mainWindowViewModel.GuildBindings.TotalSiphonedEnergyQuantity = grouped.Sum(x => x.Quantity.IntegerValue);
         });
+    }
+
+    private static void RunOnUiThread(Action action)
+    {
+        var dispatcher = Application.Current?.Dispatcher;
+        if (dispatcher is null || dispatcher.CheckAccess())
+        {
+            action();
+            return;
+        }
+
+        dispatcher.InvokeAsync(action);
     }
 
     public async Task RemoveTradesByIdsAsync(IEnumerable<int> hashCodes)

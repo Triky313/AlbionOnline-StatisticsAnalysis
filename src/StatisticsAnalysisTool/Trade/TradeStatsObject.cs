@@ -2,9 +2,9 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
+using StatisticsAnalysisTool.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace StatisticsAnalysisTool.Trade;
 
@@ -45,69 +45,58 @@ public class TradeStatsObject : BaseViewModel
 
     public void SetTradeStats(IEnumerable<Trade> trades)
     {
-        SetTradeStats(trades.ToList());
+        var currentStatistics = CalculateTradeStatistics(trades, DateTime.UtcNow);
+        ApplyTradeStatistics(currentStatistics);
+        UpdateSummaryMetrics(TradePeriodTotals.Empty);
     }
 
-    public void SetTradeStats(List<Trade> trades)
+    public void SetTradeStats(List<Trade> trades, List<Trade> previousPeriodTrades)
     {
         var currentUtc = DateTime.UtcNow;
+        var currentStatistics = CalculateTradeStatistics(trades, currentUtc);
+        var previousTotals = CalculateTradeTotals(previousPeriodTrades);
 
-        SoldToday = GetStatByType(trades, currentUtc, TradeStatType.SoldToday);
-        SoldThisWeek = GetStatByType(trades, currentUtc, TradeStatType.SoldThisWeek);
-        SoldLastWeek = GetStatByType(trades, currentUtc, TradeStatType.SoldLastWeek);
-        SoldMonth = GetStatByType(trades, currentUtc, TradeStatType.SoldMonth);
-        SoldLastMonth = GetStatByType(trades, currentUtc, TradeStatType.SoldLastMonth);
-        SoldYear = GetStatByType(trades, currentUtc, TradeStatType.SoldYear);
+        ApplyTradeStatistics(currentStatistics);
+        UpdateSummaryMetrics(previousTotals);
+    }
 
-        BoughtToday = GetStatByType(trades, currentUtc, TradeStatType.BoughtToday);
-        BoughtThisWeek = GetStatByType(trades, currentUtc, TradeStatType.BoughtThisWeek);
-        BoughtLastWeek = GetStatByType(trades, currentUtc, TradeStatType.BoughtLastWeek);
-        BoughtMonth = GetStatByType(trades, currentUtc, TradeStatType.BoughtMonth);
-        BoughtLastMonth = GetStatByType(trades, currentUtc, TradeStatType.BoughtLastMonth);
-        BoughtYear = GetStatByType(trades, currentUtc, TradeStatType.BoughtYear);
+    private void ApplyTradeStatistics(TradeStatisticsResult statistics)
+    {
+        SoldToday = statistics.Today.Sold;
+        SoldThisWeek = statistics.ThisWeek.Sold;
+        SoldLastWeek = statistics.LastWeek.Sold;
+        SoldMonth = statistics.Month.Sold;
+        SoldLastMonth = statistics.LastMonth.Sold;
+        SoldYear = statistics.Year.Sold;
+        SoldTotal = statistics.Total.Sold;
 
-        TaxesToday = GetStatByType(trades, currentUtc, TradeStatType.TaxesToday);
-        TaxesThisWeek = GetStatByType(trades, currentUtc, TradeStatType.TaxesThisWeek);
-        TaxesLastWeek = GetStatByType(trades, currentUtc, TradeStatType.TaxesLastWeek);
-        TaxesMonth = GetStatByType(trades, currentUtc, TradeStatType.TaxesMonth);
-        TaxesLastMonth = GetStatByType(trades, currentUtc, TradeStatType.TaxesLastMonth);
-        TaxesYear = GetStatByType(trades, currentUtc, TradeStatType.TaxesYear);
+        BoughtToday = statistics.Today.Bought;
+        BoughtThisWeek = statistics.ThisWeek.Bought;
+        BoughtLastWeek = statistics.LastWeek.Bought;
+        BoughtMonth = statistics.Month.Bought;
+        BoughtLastMonth = statistics.LastMonth.Bought;
+        BoughtYear = statistics.Year.Bought;
+        BoughtTotal = statistics.Total.Bought;
 
-        SoldTotal = GetStatByType(trades, currentUtc, TradeStatType.SoldTotal);
-        BoughtTotal = GetStatByType(trades, currentUtc, TradeStatType.BoughtTotal);
-        TaxesTotal = GetStatByType(trades, currentUtc, TradeStatType.TaxesTotal);
+        TaxesToday = statistics.Today.Taxes;
+        TaxesThisWeek = statistics.ThisWeek.Taxes;
+        TaxesLastWeek = statistics.LastWeek.Taxes;
+        TaxesMonth = statistics.Month.Taxes;
+        TaxesLastMonth = statistics.LastMonth.Taxes;
+        TaxesYear = statistics.Year.Taxes;
+        TaxesTotal = statistics.Total.Taxes;
 
-        SalesToday = SoldToday - (BoughtToday + TaxesToday);
-        SalesThisWeek = SoldThisWeek - (BoughtThisWeek + TaxesThisWeek);
-        SalesLastWeek = SoldLastWeek - (BoughtLastWeek + TaxesLastWeek);
-        SalesMonth = SoldMonth - (BoughtMonth + TaxesMonth);
-        SalesLastMonth = SoldLastMonth - (BoughtLastMonth + TaxesLastMonth);
-        SalesYear = SoldYear - (BoughtYear + TaxesYear);
-        SalesTotal = SoldTotal - (BoughtTotal + TaxesTotal);
+        SalesToday = SoldToday - BoughtToday - TaxesToday;
+        SalesThisWeek = SoldThisWeek - BoughtThisWeek - TaxesThisWeek;
+        SalesLastWeek = SoldLastWeek - BoughtLastWeek - TaxesLastWeek;
+        SalesMonth = SoldMonth - BoughtMonth - TaxesMonth;
+        SalesLastMonth = SoldLastMonth - BoughtLastMonth - TaxesLastMonth;
+        SalesYear = SoldYear - BoughtYear - TaxesYear;
+        SalesTotal = SoldTotal - BoughtTotal - TaxesTotal;
 
-        MostExpensiveSaleItem = trades
-            .Where(x => x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired || x.Type == TradeType.InstantSell)
-            .MaxBy(x =>
-            {
-                return x.Type switch
-                {
-                    TradeType.Mail => x.MailContent.TotalPrice.IntegerValue,
-                    TradeType.InstantSell => x.InstantBuySellContent.TotalPrice.IntegerValue,
-                    _ => 0
-                };
-            });
-
-        MostExpensivePurchasedItem = trades
-            .Where(x => x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired || x.Type == TradeType.InstantBuy)
-            .MaxBy(x =>
-            {
-                return x.Type switch
-                {
-                    TradeType.Mail => x.MailContent.TotalPrice.IntegerValue,
-                    TradeType.InstantBuy => x.InstantBuySellContent.TotalPrice.IntegerValue,
-                    _ => 0
-                };
-            });
+        MostExpensiveSaleItem = statistics.MostExpensiveSaleItem;
+        MostExpensivePurchasedItem = statistics.MostExpensivePurchasedItem;
+        PeriodStatistics = BuildPeriodStatistics();
     }
 
     public void RefreshLocalization()
@@ -126,124 +115,242 @@ public class TradeStatsObject : BaseViewModel
         OnPropertyChanged(nameof(TranslationMostExpensiveSale));
         OnPropertyChanged(nameof(TranslationMostExpensivePurchase));
         OnPropertyChanged(nameof(TranslationSilver));
+        OnPropertyChanged(nameof(TranslationTotalSales));
+        OnPropertyChanged(nameof(TranslationTotalPurchases));
+        OnPropertyChanged(nameof(TranslationTradeVolume));
+        OnPropertyChanged(nameof(TranslationProfit));
+        OnPropertyChanged(nameof(TranslationTradeStatistics));
+        OnPropertyChanged(nameof(TranslationPreviousPeriod));
+        PeriodStatistics = BuildPeriodStatistics();
     }
 
-    private static long GetStatByType(IEnumerable<Trade> trades, DateTime datetime, TradeStatType type)
+    private void UpdateSummaryMetrics(TradePeriodTotals previousTotals)
     {
-        return trades.Where(trade =>
-            {
-                switch (type)
-                {
-                    case TradeStatType.SoldToday when trade.Timestamp.Date != DateTime.UtcNow.Date:
-                    case TradeStatType.BoughtToday when trade.Timestamp.Date != DateTime.UtcNow.Date:
-                    case TradeStatType.TaxesToday when trade.Timestamp.Date != DateTime.UtcNow.Date:
-                    case TradeStatType.SoldThisWeek when !trade.Timestamp.Date.IsDateInWeekOfYear(datetime):
-                    case TradeStatType.BoughtThisWeek when !trade.Timestamp.Date.IsDateInWeekOfYear(datetime):
-                    case TradeStatType.TaxesThisWeek when !trade.Timestamp.Date.IsDateInWeekOfYear(datetime):
-                    case TradeStatType.SoldLastWeek when !trade.Timestamp.Date.IsDateInWeekOfYear(datetime.AddDays(-7)):
-                    case TradeStatType.BoughtLastWeek when !trade.Timestamp.Date.IsDateInWeekOfYear(datetime.AddDays(-7)):
-                    case TradeStatType.TaxesLastWeek when !trade.Timestamp.Date.IsDateInWeekOfYear(datetime.AddDays(-7)):
-                    case TradeStatType.SoldMonth when trade.Timestamp.Year != datetime.Year || trade.Timestamp.Month != datetime.Month:
-                    case TradeStatType.BoughtMonth when trade.Timestamp.Year != datetime.Year || trade.Timestamp.Month != datetime.Month:
-                    case TradeStatType.TaxesMonth when trade.Timestamp.Year != datetime.Year || trade.Timestamp.Month != datetime.Month:
-                    case TradeStatType.SoldLastMonth when !trade.Timestamp.Date.IsDateInSameMonth(datetime.AddMonths(-1)):
-                    case TradeStatType.BoughtLastMonth when !trade.Timestamp.Date.IsDateInSameMonth(datetime.AddMonths(-1)):
-                    case TradeStatType.TaxesLastMonth when !trade.Timestamp.Date.IsDateInSameMonth(datetime.AddMonths(-1)):
-                    case TradeStatType.SoldYear when trade.Timestamp.Year != datetime.Year:
-                    case TradeStatType.BoughtYear when trade.Timestamp.Year != datetime.Year:
-                    case TradeStatType.TaxesYear when trade.Timestamp.Year != datetime.Year:
-                        return false;
-                }
+        var previousVolume = previousTotals.Sold + previousTotals.Bought;
+        var previousProfit = previousTotals.Sold - previousTotals.Bought - previousTotals.Taxes;
 
-                switch (type)
-                {
-                    case TradeStatType.SoldToday or TradeStatType.SoldThisWeek or TradeStatType.SoldLastWeek or TradeStatType.SoldMonth or TradeStatType.SoldLastMonth or TradeStatType.SoldYear
-                        or TradeStatType.SoldTotal:
-                        switch (trade.Type)
-                        {
-                            case TradeType.Mail when trade.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired:
-                            case TradeType.InstantSell:
-                            case TradeType.ManualSell:
-                            case TradeType.PlayerTradeIncoming:
-                                return true;
-                        }
-                        break;
-                    case TradeStatType.BoughtToday or TradeStatType.BoughtThisWeek or TradeStatType.BoughtLastWeek or TradeStatType.BoughtMonth or TradeStatType.BoughtLastMonth or TradeStatType.BoughtYear
-                        or TradeStatType.BoughtTotal:
-                        switch (trade.Type)
-                        {
-                            case TradeType.Mail when trade.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired:
-                            case TradeType.InstantBuy:
-                            case TradeType.ManualBuy:
-                            case TradeType.Crafting:
-                            case TradeType.PlayerTradeOutgoing:
-                                return true;
-                        }
-                        break;
-                    case TradeStatType.TaxesToday or TradeStatType.TaxesThisWeek or TradeStatType.TaxesLastWeek or TradeStatType.TaxesMonth or TradeStatType.TaxesLastMonth or TradeStatType.TaxesYear
-                        or TradeStatType.TaxesTotal:
-                        switch (trade.Type)
-                        {
-                            case TradeType.Mail when trade.MailType
-                                is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired
-                                or MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired:
-                            case TradeType.InstantSell:
-                                return true;
-                        }
-                        break;
-                }
-
-                return false;
-            })
-            .Sum(trade =>
-            {
-                return type switch
-                {
-                    TradeStatType.SoldToday or TradeStatType.SoldThisWeek or TradeStatType.SoldLastWeek or TradeStatType.SoldMonth or TradeStatType.SoldLastMonth or TradeStatType.SoldYear => trade.Type switch
-                    {
-                        TradeType.Mail => trade.MailContent.TotalPrice.IntegerValue,
-                        TradeType.InstantSell => trade.InstantBuySellContent.TotalPrice.IntegerValue,
-                        TradeType.ManualSell => trade.InstantBuySellContent.TotalPrice.IntegerValue,
-                        TradeType.PlayerTradeIncoming => trade.PlayerTradeContent.IsSilver ? trade.PlayerTradeContent.Silver.IntegerValue : 0,
-                        _ => 0
-                    },
-                    TradeStatType.BoughtToday or TradeStatType.BoughtThisWeek or TradeStatType.BoughtLastWeek or TradeStatType.BoughtMonth or TradeStatType.BoughtLastMonth or TradeStatType.BoughtYear => trade.Type switch
-                    {
-                        TradeType.Mail => trade.MailContent.TotalPrice.IntegerValue,
-                        TradeType.InstantBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
-                        TradeType.ManualBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
-                        TradeType.Crafting => trade.InstantBuySellContent.TotalPrice.IntegerValue,
-                        TradeType.PlayerTradeOutgoing => trade.PlayerTradeContent.IsSilver ? trade.PlayerTradeContent.Silver.IntegerValue : 0,
-                        _ => 0
-                    },
-                    TradeStatType.TaxesToday or TradeStatType.TaxesThisWeek or TradeStatType.TaxesLastWeek or TradeStatType.TaxesMonth or TradeStatType.TaxesLastMonth or TradeStatType.TaxesYear
-                        or TradeStatType.TaxesTotal => trade.Type switch
-                        {
-                            TradeType.Mail => trade.MailContent.TaxSetupPrice.IntegerValue + trade.MailContent.TaxPrice.IntegerValue,
-                            TradeType.InstantSell => trade.InstantBuySellContent.TaxPrice.IntegerValue,
-                            _ => 0
-                        },
-                    TradeStatType.SoldTotal => trade.Type switch
-                    {
-                        TradeType.Mail => trade.MailContent.TotalPrice.IntegerValue,
-                        TradeType.InstantSell => trade.InstantBuySellContent.TotalPrice.IntegerValue,
-                        TradeType.ManualSell => trade.InstantBuySellContent.TotalPrice.IntegerValue,
-                        TradeType.PlayerTradeIncoming => trade.PlayerTradeContent.IsSilver ? trade.PlayerTradeContent.Silver.IntegerValue : 0,
-                        _ => 0
-                    },
-                    TradeStatType.BoughtTotal => trade.Type switch
-                    {
-                        TradeType.Mail => trade.MailContent.TotalPrice.IntegerValue,
-                        TradeType.InstantBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
-                        TradeType.ManualBuy => trade.InstantBuySellContent.TotalPrice.IntegerValue,
-                        TradeType.Crafting => trade.InstantBuySellContent.TotalPrice.IntegerValue,
-                        TradeType.PlayerTradeOutgoing => trade.PlayerTradeContent.IsSilver ? trade.PlayerTradeContent.Silver.IntegerValue : 0,
-                        _ => 0
-                    },
-                    _ => 0
-                };
-            });
+        TotalSalesSummary.Update(SoldTotal, SoldTotal, previousTotals.Sold);
+        TotalPurchasesSummary.Update(BoughtTotal, BoughtTotal, previousTotals.Bought);
+        TradeVolumeSummary.Update(SoldTotal + BoughtTotal, SoldTotal + BoughtTotal, previousVolume);
+        ProfitSummary.Update(SalesTotal, SalesTotal, previousProfit);
     }
+
+    private IReadOnlyList<TradePeriodStatisticsEntry> BuildPeriodStatistics()
+    {
+        return
+        [
+            new(TranslationToday, SoldToday, BoughtToday, TaxesToday, SalesToday),
+            new(TranslationThisWeek, SoldThisWeek, BoughtThisWeek, TaxesThisWeek, SalesThisWeek),
+            new(TranslationLastWeek, SoldLastWeek, BoughtLastWeek, TaxesLastWeek, SalesLastWeek),
+            new(TranslationMonth, SoldMonth, BoughtMonth, TaxesMonth, SalesMonth),
+            new(TranslationLastMonth, SoldLastMonth, BoughtLastMonth, TaxesLastMonth, SalesLastMonth),
+            new(TranslationYear, SoldYear, BoughtYear, TaxesYear, SalesYear),
+            new(TranslationTotal, SoldTotal, BoughtTotal, TaxesTotal, SalesTotal, true)
+        ];
+    }
+
+    private static TradeStatisticsResult CalculateTradeStatistics(IEnumerable<Trade> trades, DateTime currentUtc)
+    {
+        var today = TradePeriodTotals.Empty;
+        var thisWeek = TradePeriodTotals.Empty;
+        var lastWeek = TradePeriodTotals.Empty;
+        var month = TradePeriodTotals.Empty;
+        var lastMonth = TradePeriodTotals.Empty;
+        var year = TradePeriodTotals.Empty;
+        var total = TradePeriodTotals.Empty;
+        Trade mostExpensiveSaleItem = null;
+        Trade mostExpensivePurchasedItem = null;
+        long mostExpensiveSaleValue = 0;
+        long mostExpensivePurchaseValue = 0;
+        var currentDate = currentUtc.Date;
+        var lastWeekDate = currentUtc.AddDays(-7);
+        var lastMonthDate = currentUtc.AddMonths(-1);
+
+        foreach (var trade in trades)
+        {
+            if (trade == null)
+            {
+                continue;
+            }
+
+            var values = GetTradeStatisticsValues(trade);
+            var tradeDate = trade.Timestamp.Date;
+            total = total.Add(values);
+
+            if (tradeDate == currentDate)
+            {
+                today = today.Add(values);
+            }
+
+            if (tradeDate.IsDateInWeekOfYear(currentUtc))
+            {
+                thisWeek = thisWeek.Add(values);
+            }
+
+            if (tradeDate.IsDateInWeekOfYear(lastWeekDate))
+            {
+                lastWeek = lastWeek.Add(values);
+            }
+
+            if (tradeDate.Year == currentUtc.Year && tradeDate.Month == currentUtc.Month)
+            {
+                month = month.Add(values);
+            }
+
+            if (tradeDate.IsDateInSameMonth(lastMonthDate))
+            {
+                lastMonth = lastMonth.Add(values);
+            }
+
+            if (tradeDate.Year == currentUtc.Year)
+            {
+                year = year.Add(values);
+            }
+
+            if (TryGetSaleValue(trade, out var saleValue)
+                && (mostExpensiveSaleItem == null || saleValue > mostExpensiveSaleValue))
+            {
+                mostExpensiveSaleItem = trade;
+                mostExpensiveSaleValue = saleValue;
+            }
+
+            if (TryGetPurchaseValue(trade, out var purchaseValue)
+                && (mostExpensivePurchasedItem == null || purchaseValue > mostExpensivePurchaseValue))
+            {
+                mostExpensivePurchasedItem = trade;
+                mostExpensivePurchaseValue = purchaseValue;
+            }
+        }
+
+        return new TradeStatisticsResult(
+            today,
+            thisWeek,
+            lastWeek,
+            month,
+            lastMonth,
+            year,
+            total,
+            mostExpensiveSaleItem,
+            mostExpensivePurchasedItem);
+    }
+
+    private static TradePeriodTotals CalculateTradeTotals(IEnumerable<Trade> trades)
+    {
+        var totals = TradePeriodTotals.Empty;
+        foreach (var trade in trades)
+        {
+            if (trade != null)
+            {
+                totals = totals.Add(GetTradeStatisticsValues(trade));
+            }
+        }
+
+        return totals;
+    }
+
+    private static TradeStatisticsValues GetTradeStatisticsValues(Trade trade)
+    {
+        return trade.Type switch
+        {
+            TradeType.Mail => GetMailTradeStatisticsValues(trade),
+            TradeType.InstantSell => new TradeStatisticsValues(
+                trade.InstantBuySellContent.TotalPrice.IntegerValue,
+                0,
+                trade.InstantBuySellContent.TaxPrice.IntegerValue),
+            TradeType.ManualSell => new TradeStatisticsValues(
+                trade.InstantBuySellContent.TotalPrice.IntegerValue,
+                0,
+                0),
+            TradeType.PlayerTradeIncoming => new TradeStatisticsValues(
+                trade.PlayerTradeContent.IsSilver ? trade.PlayerTradeContent.Silver.IntegerValue : 0,
+                0,
+                0),
+            TradeType.InstantBuy or TradeType.ManualBuy or TradeType.Crafting => new TradeStatisticsValues(
+                0,
+                trade.InstantBuySellContent.TotalPrice.IntegerValue,
+                0),
+            TradeType.PlayerTradeOutgoing => new TradeStatisticsValues(
+                0,
+                trade.PlayerTradeContent.IsSilver ? trade.PlayerTradeContent.Silver.IntegerValue : 0,
+                0),
+            _ => TradeStatisticsValues.Empty
+        };
+    }
+
+    private static TradeStatisticsValues GetMailTradeStatisticsValues(Trade trade)
+    {
+        var taxes = trade.MailContent.TaxSetupPrice.IntegerValue + trade.MailContent.TaxPrice.IntegerValue;
+        return trade.MailType switch
+        {
+            MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired => new TradeStatisticsValues(
+                trade.MailContent.TotalPrice.IntegerValue,
+                0,
+                taxes),
+            MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired => new TradeStatisticsValues(
+                0,
+                trade.MailContent.TotalPrice.IntegerValue,
+                taxes),
+            _ => TradeStatisticsValues.Empty
+        };
+    }
+
+    private static bool TryGetSaleValue(Trade trade, out long value)
+    {
+        switch (trade.Type)
+        {
+            case TradeType.Mail when trade.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired:
+                value = trade.MailContent.TotalPrice.IntegerValue;
+                return true;
+            case TradeType.InstantSell:
+                value = trade.InstantBuySellContent.TotalPrice.IntegerValue;
+                return true;
+            default:
+                value = 0;
+                return false;
+        }
+    }
+
+    private static bool TryGetPurchaseValue(Trade trade, out long value)
+    {
+        switch (trade.Type)
+        {
+            case TradeType.Mail when trade.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired:
+                value = trade.MailContent.TotalPrice.IntegerValue;
+                return true;
+            case TradeType.InstantBuy:
+                value = trade.InstantBuySellContent.TotalPrice.IntegerValue;
+                return true;
+            default:
+                value = 0;
+                return false;
+        }
+    }
+
+    private readonly record struct TradeStatisticsValues(long Sold, long Bought, long Taxes)
+    {
+        public static TradeStatisticsValues Empty => new(0, 0, 0);
+    }
+
+    private readonly record struct TradePeriodTotals(long Sold, long Bought, long Taxes)
+    {
+        public static TradePeriodTotals Empty => new(0, 0, 0);
+
+        public TradePeriodTotals Add(TradeStatisticsValues values)
+        {
+            return new TradePeriodTotals(Sold + values.Sold, Bought + values.Bought, Taxes + values.Taxes);
+        }
+    }
+
+    private readonly record struct TradeStatisticsResult(
+        TradePeriodTotals Today,
+        TradePeriodTotals ThisWeek,
+        TradePeriodTotals LastWeek,
+        TradePeriodTotals Month,
+        TradePeriodTotals LastMonth,
+        TradePeriodTotals Year,
+        TradePeriodTotals Total,
+        Trade MostExpensiveSaleItem,
+        Trade MostExpensivePurchasedItem);
 
     #endregion
 
@@ -547,6 +654,21 @@ public class TradeStatsObject : BaseViewModel
         }
     }
 
+    public DashboardSummaryMetric TotalSalesSummary { get; } = new();
+    public DashboardSummaryMetric TotalPurchasesSummary { get; } = new();
+    public DashboardSummaryMetric TradeVolumeSummary { get; } = new();
+    public DashboardSummaryMetric ProfitSummary { get; } = new();
+
+    public IReadOnlyList<TradePeriodStatisticsEntry> PeriodStatistics
+    {
+        get;
+        private set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = [];
+
     public string TranslationSold => LocalizationController.Translation("SOLD");
     public string TranslationToday => LocalizationController.Translation("TODAY");
     public string TranslationThisWeek => LocalizationController.Translation("THIS_WEEK");
@@ -562,4 +684,10 @@ public class TradeStatsObject : BaseViewModel
     public string TranslationMostExpensivePurchase => LocalizationController.Translation("MOST_EXPENSIVE_PURCHASE");
 
     public string TranslationSilver => LocalizationController.Translation("SILVER");
+    public string TranslationTotalSales => LocalizationController.Translation("TOTAL_SALES");
+    public string TranslationTotalPurchases => LocalizationController.Translation("TOTAL_PURCHASES");
+    public string TranslationTradeVolume => LocalizationController.Translation("TRADE_VOLUME");
+    public string TranslationProfit => LocalizationController.Translation("PROFIT");
+    public string TranslationTradeStatistics => LocalizationController.Translation("TRADE_STATISTICS");
+    public string TranslationPreviousPeriod => LocalizationController.Translation("VS_PREVIOUS_PERIOD");
 }

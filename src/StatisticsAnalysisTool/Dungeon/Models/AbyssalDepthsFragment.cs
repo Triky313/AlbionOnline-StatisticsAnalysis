@@ -18,6 +18,7 @@ public class AbyssalDepthsFragment : DungeonBaseFragment
 
     public AbyssalDepthsFragment(Guid guid, MapType mapType, DungeonMode mode, string mainMapIndex) : base(guid, mapType, mode, mainMapIndex)
     {
+        NumberOfFloors = 1;
         GuidList.CollectionChanged += UpdateNumberOfFloors;
     }
 

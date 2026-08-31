@@ -56,6 +56,7 @@ public class DamageMeterFragment : BaseViewModel
         TakenDamage = damageMeterFragment.TakenDamage;
         TakenDamageInPercent = damageMeterFragment.TakenDamageInPercent;
         TakenDamagePercentage = damageMeterFragment.TakenDamagePercentage;
+        CombatTime = damageMeterFragment.CombatTime;
     }
 
     public DamageMeterFragment()

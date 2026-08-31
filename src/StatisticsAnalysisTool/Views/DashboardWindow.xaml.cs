@@ -1,14 +1,12 @@
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.Views;
 
 /// <summary>
-/// Interaction logic for DamageMeterWindow.xaml
+/// Interaction logic for DashboardWindow.xaml
 /// </summary>
 public partial class DashboardWindow
 {
@@ -42,21 +40,5 @@ public partial class DashboardWindow
     private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         _windowChromeController.ToggleMaximizeOnDoubleClick(e);
-    }
-
-    private void DashboardChartRange_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        RefreshDailyChart();
-    }
-
-    private void DashboardChartSeriesVisibility_Changed(object sender, RoutedEventArgs e)
-    {
-        RefreshDailyChart();
-    }
-
-    private static void RefreshDailyChart()
-    {
-        var trackingController = ServiceLocator.Resolve<TrackingController>();
-        trackingController?.StatisticController?.UpdateDailyChart(true);
     }
 }

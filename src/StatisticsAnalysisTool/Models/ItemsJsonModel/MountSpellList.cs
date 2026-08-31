@@ -4,6 +4,7 @@ namespace StatisticsAnalysisTool.Models.ItemsJsonModel;
 
 public class MountSpellList
 {
+    [JsonConverter(typeof(Common.Converters.SingleOrArrayConverter<MountSpell>))]
     [JsonPropertyName("mountspell")]
-    public object MountSpell { get; set; }
+    public System.Collections.Generic.List<MountSpell> MountSpells { get; set; }
 }

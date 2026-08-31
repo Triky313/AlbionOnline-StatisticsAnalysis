@@ -9,7 +9,7 @@ using StatisticsAnalysisTool.Trade.Market;
 using StatisticsAnalysisTool.Trade.PlayerTrades;
 using StatisticsAnalysisTool.ViewModels;
 using System;
-using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Trade;
 
@@ -40,6 +40,10 @@ public class Trade : BaseViewModel
     } = false;
 
     public Item Item => ItemController.GetItemByIndex(ItemIndex) ?? ItemController.GetItemByUniqueName(MailContent?.UniqueItemName) ?? ItemController.GetItemByUniqueName(AuctionEntry?.ItemTypeId);
+    public bool IsGoldMarketTrade => string.Equals(AuctionEntry?.ItemTypeId, GoldMarketTrade.ItemTypeId, StringComparison.Ordinal);
+    public string DisplayItemName => IsGoldMarketTrade ? LocalizationController.Translation("GOLD") : Item?.LocalizedName ?? string.Empty;
+    public string DisplayItemTier => IsGoldMarketTrade ? string.Empty : Item?.TierLevelString ?? string.Empty;
+    public BitmapImage DisplayItemIcon => IsGoldMarketTrade ? ImageController.GetGoldImage() : Item?.Icon;
 
     #region Mail
 
@@ -262,7 +266,7 @@ public class Trade : BaseViewModel
         TradeType.InstantBuy => LocalizationController.Translation("INSTANT_BUY"),
         TradeType.ManualSell => LocalizationController.Translation("MANUAL_SELL"),
         TradeType.ManualBuy => LocalizationController.Translation("MANUAL_BUY"),
-        TradeType.Crafting => LocalizationController.Translation("CRAFTING"),
+        TradeType.Crafting => LocalizationController.Translation("CRAFTING_COSTS"),
         TradeType.Mail => LocalizationController.Translation("MAIL"),
         TradeType.PlayerTradeIncoming or TradeType.PlayerTradeOutgoing => $"{LocalizationController.Translation("TRADE")} {LocalizationController.Translation("PLAYER")}",
         _ => LocalizationController.Translation("UNKNOWN_TRADE")
@@ -296,16 +300,4 @@ public class Trade : BaseViewModel
     public static string TranslationTotalIncomeWithoutTaxDeductions => LocalizationController.Translation("TOTAL_INCOME_WITHOUT_TAX_DEDUCTIONS");
     public static string TranslationTotalCostWithoutAddedTaxes => LocalizationController.Translation("TOTAL_COST_WITHOUT_ADDED_TAXES");
 
-    #region Commands
-
-    public void OpenItemWindow(object value)
-    {
-        MainWindowViewModel.OpenItemWindow(Item);
-    }
-
-    private ICommand _openItemWindowCommand;
-
-    public ICommand OpenItemWindowCommand => _openItemWindowCommand ??= new CommandHandler(OpenItemWindow, true);
-
-    #endregion
 }

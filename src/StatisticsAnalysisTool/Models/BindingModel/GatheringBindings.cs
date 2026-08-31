@@ -18,21 +18,50 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Data;
+using System.Windows.Media;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
 public class GatheringBindings : BaseViewModel
 {
-    private GatheringStatsTimeType _gatheringStatsTimeTypeSelection;
+    private const int StatsUpdateDebounceMilliseconds = 75;
+    private static readonly GatheringResourceType[] ResourceTypes =
+    [
+        GatheringResourceType.Wood,
+        GatheringResourceType.Fiber,
+        GatheringResourceType.Fishing,
+        GatheringResourceType.Ore,
+        GatheringResourceType.Hide,
+        GatheringResourceType.Rock
+    ];
+    private readonly SemaphoreSlim _statsUpdateSemaphore = new(1, 1);
+    private readonly object _pendingStatsSyncRoot = new();
+    private readonly GatheringStatisticsCache _statisticsCache = new();
+    private readonly HashSet<Gathered> _trackedGatheredEntries = new(ReferenceEqualityComparer.Instance);
+    private readonly HashSet<Gathered> _pendingChangedEntries = new(ReferenceEqualityComparer.Instance);
+    private readonly HashSet<Gathered> _pendingRemovedEntries = new(ReferenceEqualityComparer.Instance);
+    private GatheringTimeRangeOption _selectedGatheringTimeRange;
+    private GatheringSessionFilterOption _selectedGatheringSessionFilter;
+    private bool _statisticsCacheInvalidated = true;
+    private bool _overviewUpdateRequested = true;
+    private bool _resourceChartUpdateRequested;
+    private int _selectedGatheringTabIndex;
+    private bool _isGatheringViewVisible;
+    private int _statsUpdateVersion;
 
     public GatheringBindings()
     {
-        _gatheringStatsTimeTypeSelection = GatheringStatsTimeType.Today;
+        GatheringTimeRanges = new ObservableCollection<GatheringTimeRangeOption>(GatheringTimeRangeOption.CreateDefault());
+        _selectedGatheringTimeRange = GatheringTimeRanges.First(x => x is { BucketCount: 24, Unit: GatheringTimeRangeUnit.Hour });
+        GatheringSessionFilters =
+        [
+            new GatheringSessionFilterOption(null, LocalizationController.Translation("ALL_SESSIONS"))
+        ];
+        _selectedGatheringSessionFilter = GatheringSessionFilters[0];
         IsGatheringActive = SettingsController.CurrentSettings.IsGatheringActive;
-        AutoDeleteStatsByDateSelection = SettingsController.CurrentSettings.AutoDeleteGatheringStats;
 
         foreach (var resourceChartSeriesFilter in GatheringStats.ResourceChartSeriesFilters)
         {
@@ -41,160 +70,211 @@ public class GatheringBindings : BaseViewModel
 
         GatheringStats.PropertyChanged += GatheringStats_PropertyChanged;
 
-        GatheredCollectionView = CollectionViewSource.GetDefaultView(GatheredCollection) as ListCollectionView;
-
-        if (GatheredCollectionView != null)
-        {
-            GatheredCollectionView.IsLiveSorting = true;
-            GatheredCollectionView.IsLiveFiltering = true;
-            GatheredCollectionView.CustomSort = new GatheredComparer();
-        }
-
-        GatheredCollection.CollectionChanged += UpdateStatsAsync;
+        GatheredCollection.CollectionChanged += GatheredCollection_CollectionChanged;
     }
 
     public void UpdateStats()
     {
-        UpdateStatsAsync(null, null);
+        var updateVersion = Interlocked.Increment(ref _statsUpdateVersion);
+        _ = UpdateStatsAsync(updateVersion);
     }
 
-    public async void UpdateStatsAsync(object sender, NotifyCollectionChangedEventArgs e)
+    private void GatheredCollection_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (e.Action == NotifyCollectionChangedAction.Reset)
+        {
+            SynchronizeTrackedGatheredEntries();
+            InvalidateStatisticsCache();
+        }
+        else
+        {
+            TrackAddedEntries(e.NewItems?.OfType<Gathered>() ?? []);
+            TrackRemovedEntries(e.OldItems?.OfType<Gathered>() ?? []);
+        }
+
+        UpdateStats();
+    }
+
+    private void TrackAddedEntries(IEnumerable<Gathered> gatheredEntries)
+    {
+        lock (_pendingStatsSyncRoot)
+        {
+            foreach (var gathered in gatheredEntries)
+            {
+                if (_trackedGatheredEntries.Add(gathered))
+                {
+                    gathered.PropertyChanged += Gathered_PropertyChanged;
+                }
+
+                _pendingRemovedEntries.Remove(gathered);
+                _pendingChangedEntries.Add(gathered);
+            }
+        }
+    }
+
+    private void TrackRemovedEntries(IEnumerable<Gathered> gatheredEntries)
+    {
+        lock (_pendingStatsSyncRoot)
+        {
+            foreach (var gathered in gatheredEntries)
+            {
+                if (_trackedGatheredEntries.Remove(gathered))
+                {
+                    gathered.PropertyChanged -= Gathered_PropertyChanged;
+                }
+
+                _pendingChangedEntries.Remove(gathered);
+                _pendingRemovedEntries.Add(gathered);
+            }
+        }
+    }
+
+    private void SynchronizeTrackedGatheredEntries()
+    {
+        lock (_pendingStatsSyncRoot)
+        {
+            foreach (var gathered in _trackedGatheredEntries)
+            {
+                gathered.PropertyChanged -= Gathered_PropertyChanged;
+            }
+
+            _trackedGatheredEntries.Clear();
+            _pendingChangedEntries.Clear();
+            _pendingRemovedEntries.Clear();
+
+            foreach (var gathered in GatheredCollection)
+            {
+                _trackedGatheredEntries.Add(gathered);
+                gathered.PropertyChanged += Gathered_PropertyChanged;
+            }
+        }
+    }
+
+    private void Gathered_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (sender is not Gathered gathered || !IsStatisticsProperty(e.PropertyName))
+        {
+            return;
+        }
+
+        lock (_pendingStatsSyncRoot)
+        {
+            _pendingChangedEntries.Add(gathered);
+        }
+
+        UpdateStats();
+    }
+
+    private static bool IsStatisticsProperty(string propertyName)
+    {
+        return propertyName is nameof(Gathered.GainedStandardAmount)
+            or nameof(Gathered.GainedBonusAmount)
+            or nameof(Gathered.GainedPremiumBonusAmount)
+            or nameof(Gathered.GainedFame)
+            or nameof(Gathered.MiningProcesses)
+            or nameof(Gathered.EstimatedMarketValue);
+    }
+
+    private void InvalidateStatisticsCache()
+    {
+        lock (_pendingStatsSyncRoot)
+        {
+            _statisticsCacheInvalidated = true;
+        }
+    }
+
+    private async Task UpdateStatsAsync(int updateVersion)
+    {
+        await Task.Delay(StatsUpdateDebounceMilliseconds).ConfigureAwait(false);
+        if (updateVersion != Volatile.Read(ref _statsUpdateVersion))
+        {
+            return;
+        }
+
+        await _statsUpdateSemaphore.WaitAsync().ConfigureAwait(false);
+        try
+        {
+            if (updateVersion != Volatile.Read(ref _statsUpdateVersion))
+            {
+                return;
+            }
+
+            await UpdateStatsCoreAsync().ConfigureAwait(false);
+        }
+        finally
+        {
+            _statsUpdateSemaphore.Release();
+        }
+    }
+
+    private async Task UpdateStatsCoreAsync()
     {
         try
         {
-            var gatherCollection = GatheredCollection.ToList();
-            var filteredGatherCollection = GetGatheredEntriesByTimeFilter(gatherCollection, GatheringStatsTimeTypeSelection);
+            var pendingUpdate = TakePendingStatsUpdate();
+            var context = await Application.Current.Dispatcher.InvokeAsync(CreateStatsUpdateContext);
+            var requiresRebuild = pendingUpdate.CacheInvalidated
+                                  || !_statisticsCache.MatchesFilter(
+                                      context.SessionId,
+                                      context.TimeRange.BucketCount,
+                                      context.TimeRange.Unit);
+            var affectedResourceTypes = new HashSet<GatheringResourceType>();
 
-            var hideEntries = FilterGatheredEntries(filteredGatherCollection, GatheringResourceType.Hide);
-            var oreEntries = FilterGatheredEntries(filteredGatherCollection, GatheringResourceType.Ore);
-            var fiberEntries = FilterGatheredEntries(filteredGatherCollection, GatheringResourceType.Fiber);
-            var woodEntries = FilterGatheredEntries(filteredGatherCollection, GatheringResourceType.Wood);
-            var rockEntries = FilterGatheredEntries(filteredGatherCollection, GatheringResourceType.Rock);
-            var fishEntries = FilterGatheredEntries(filteredGatherCollection, GatheringResourceType.Fishing);
-
-            // Hide
-            var hide = await GroupAndSumAsync(hideEntries);
-            await Application.Current.Dispatcher.InvokeAsync(() =>
+            if (requiresRebuild)
             {
-                UpdateObservableRangeCollection(GatheringStats.GatheredHide, hide);
-                GatheringStats.GainedSilverByHide = hide.Sum(x => x.TotalMarketValue.IntegerValue);
-                GatheringStats.GainedSilverPerHourByHide = CalculateSilverPerHour(hideEntries);
-            });
-
-            // Ore
-            var ore = await GroupAndSumAsync(oreEntries);
-            await Application.Current.Dispatcher.InvokeAsync(() =>
+                var gatheredEntries = await Application.Current.Dispatcher.InvokeAsync(() => GatheredCollection.ToList());
+                _statisticsCache.Rebuild(
+                    gatheredEntries,
+                    context.SessionId,
+                    context.TimeRange.Start,
+                    context.TimeRange.End,
+                    context.TimeRange.BucketCount,
+                    context.TimeRange.Unit);
+                affectedResourceTypes.UnionWith(ResourceTypes);
+            }
+            else
             {
-                UpdateObservableRangeCollection(GatheringStats.GatheredOre, ore);
-                GatheringStats.GainedSilverByOre = ore.Sum(x => x.TotalMarketValue.IntegerValue);
-                GatheringStats.GainedSilverPerHourByOre = CalculateSilverPerHour(oreEntries);
-            });
-
-            // Fiber
-            var fiber = await GroupAndSumAsync(fiberEntries);
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                UpdateObservableRangeCollection(GatheringStats.GatheredFiber, fiber);
-                GatheringStats.GainedSilverByFiber = fiber.Sum(x => x.TotalMarketValue.IntegerValue);
-                GatheringStats.GainedSilverPerHourByFiber = CalculateSilverPerHour(fiberEntries);
-            });
-
-            // Wood
-            var wood = await GroupAndSumAsync(woodEntries);
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                UpdateObservableRangeCollection(GatheringStats.GatheredWood, wood);
-                GatheringStats.GainedSilverByWood = wood.Sum(x => x.TotalMarketValue.IntegerValue);
-                GatheringStats.GainedSilverPerHourByWood = CalculateSilverPerHour(woodEntries);
-            });
-
-            // Rock
-            var rock = await GroupAndSumAsync(rockEntries);
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                UpdateObservableRangeCollection(GatheringStats.GatheredRock, rock);
-                GatheringStats.GainedSilverByRock = rock.Sum(x => x.TotalMarketValue.IntegerValue);
-                GatheringStats.GainedSilverPerHourByRock = CalculateSilverPerHour(rockEntries);
-            });
-
-            // Fish
-            var fish = await GroupAndSumAsync(fishEntries, true);
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                UpdateObservableRangeCollection(GatheringStats.GatheredFish, fish);
-                GatheringStats.GainedSilverByFish = fish.Sum(x => x.TotalMarketValue.IntegerValue);
-                GatheringStats.GainedSilverPerHourByFish = CalculateSilverPerHour(fishEntries);
-            });
-
-            // Most gathered resource
-            if (filteredGatherCollection.Any(x => x?.GainedTotalAmount != null))
-            {
-                var mostGatheredResource = filteredGatherCollection
-                    .GroupBy(x => x.UniqueName)
-                    .Select(g => new Gathered
-                    {
-                        UniqueName = g.Key,
-                        GainedStandardAmount = g.Sum(x => x?.GainedStandardAmount ?? 0),
-                        GainedBonusAmount = g.Sum(x => x?.GainedBonusAmount ?? 0),
-                        GainedPremiumBonusAmount = g.Sum(x => x?.GainedPremiumBonusAmount ?? 0),
-                        GainedTotalAmount = g.Sum(x => x?.GainedTotalAmount ?? 0),
-                        MiningProcesses = g.Sum(x => x?.MiningProcesses ?? 0)
-                    })
-                    .MaxBy(x => x.GainedTotalAmount);
-
-                await Application.Current.Dispatcher.InvokeAsync(() =>
+                foreach (var gathered in pendingUpdate.RemovedEntries)
                 {
-                    GatheringStats.MostGatheredResource = mostGatheredResource;
-                });
+                    affectedResourceTypes.UnionWith(_statisticsCache.Remove(gathered));
+                }
+
+                foreach (var gathered in pendingUpdate.ChangedEntries)
+                {
+                    affectedResourceTypes.UnionWith(_statisticsCache.Update(gathered));
+                }
+
+                affectedResourceTypes.UnionWith(_statisticsCache.AdvanceTimeRange(
+                    context.TimeRange.Start,
+                    context.TimeRange.End));
             }
 
-            // Most gathered cluster
-            var mostGatheredCluster = filteredGatherCollection
-                .GroupBy(x => x.ClusterIndex)
-                .Select(g => new Gathered
-                {
-                    ClusterIndex = g.Key,
-                    GainedStandardAmount = g.Sum(x => x.GainedStandardAmount),
-                    GainedBonusAmount = g.Sum(x => x.GainedBonusAmount),
-                    GainedPremiumBonusAmount = g.Sum(x => x.GainedPremiumBonusAmount),
-                    GainedTotalAmount = g.Sum(x => x.GainedTotalAmount),
-                    MiningProcesses = g.Sum(x => x.MiningProcesses)
-                }).MaxBy(x => x.MiningProcesses);
-
-            await Application.Current.Dispatcher.InvokeAsync(() =>
+            var statisticsChanged = requiresRebuild || affectedResourceTypes.Count > 0;
+            if (statisticsChanged)
             {
-                GatheringStats.MostGatheredCluster = mostGatheredCluster;
-            });
+                await ApplyCoreStatisticsAsync(affectedResourceTypes).ConfigureAwait(false);
+            }
 
-            // Most total resources
-            var totalResources = filteredGatherCollection
-                .Sum(x => x.GainedTotalAmount);
-
-            await Application.Current.Dispatcher.InvokeAsync(() =>
+            if (!context.IsOverviewVisible
+                && (statisticsChanged
+                    || pendingUpdate.OverviewUpdateRequested
+                    || pendingUpdate.ResourceChartUpdateRequested))
             {
-                GatheringStats.TotalResources = totalResources;
-            });
+                MarkOverviewDirty();
+            }
 
-            // Most total mining processes
-            var totalMiningProcesses = filteredGatherCollection
-                .Sum(x => x.MiningProcesses);
-
-            await Application.Current.Dispatcher.InvokeAsync(() =>
+            if (context.IsOverviewVisible && (statisticsChanged || pendingUpdate.OverviewUpdateRequested))
             {
-                GatheringStats.TotalMiningProcesses = totalMiningProcesses;
-            });
+                await UpdateGatheringOverviewAsync().ConfigureAwait(false);
+            }
 
-            // Total gained silver
-            var totalGainedSilver = filteredGatherCollection
-                .Sum(x => x.TotalMarketValue.IntegerValue);
-
-            await Application.Current.Dispatcher.InvokeAsync(() =>
+            if (context.IsOverviewVisible
+                && (pendingUpdate.ResourceChartUpdateRequested
+                    || pendingUpdate.OverviewUpdateRequested
+                    || ShouldUpdateResourceChart(affectedResourceTypes)))
             {
-                GatheringStats.TotalGainedSilverString = totalGainedSilver;
-                GatheringStats.TotalGainedSilverPerHour = CalculateSilverPerHour(filteredGatherCollection);
-            });
-
-            UpdateResourceChart(filteredGatherCollection);
+                UpdateResourceChart();
+            }
         }
         catch (Exception ex)
         {
@@ -203,72 +283,313 @@ public class GatheringBindings : BaseViewModel
         }
     }
 
-    private static List<Gathered> GetGatheredEntriesByTimeFilter(IEnumerable<Gathered> gatheredData, GatheringStatsTimeType gatheringStatsTimeType)
+    private PendingStatsUpdate TakePendingStatsUpdate()
     {
-        if (gatheringStatsTimeType == GatheringStatsTimeType.Total)
+        lock (_pendingStatsSyncRoot)
         {
-            return gatheredData.ToList();
+            var update = new PendingStatsUpdate(
+                _pendingChangedEntries.ToList(),
+                _pendingRemovedEntries.ToList(),
+                _statisticsCacheInvalidated,
+                _overviewUpdateRequested,
+                _resourceChartUpdateRequested);
+            _pendingChangedEntries.Clear();
+            _pendingRemovedEntries.Clear();
+            _statisticsCacheInvalidated = false;
+            _overviewUpdateRequested = false;
+            _resourceChartUpdateRequested = false;
+            return update;
         }
-
-        var timeRange = GetTimeRange(gatheringStatsTimeType);
-        return gatheredData
-            .Where(x => timeRange.Contains(x.TimestampDateTimeUtc))
-            .ToList();
     }
 
-    private static List<Gathered> FilterGatheredEntries(IEnumerable<Gathered> gatheredData, GatheringResourceType resourceType)
+    private void MarkOverviewDirty()
     {
-        return gatheredData
-            .Where(x => GetGatheringResourceType(x) == resourceType)
-            .ToList();
-    }
-
-    private static async Task<List<Gathered>> GroupAndSumAsync(IEnumerable<Gathered> gatheredData, bool hasBeenFished = false)
-    {
-        try
+        lock (_pendingStatsSyncRoot)
         {
-            return await Task.Run(() =>
+            _overviewUpdateRequested = true;
+        }
+    }
+
+    private StatsUpdateContext CreateStatsUpdateContext()
+    {
+        return new StatsUpdateContext(
+            GetTimeRange(SelectedGatheringTimeRange),
+            SelectedGatheringSessionFilter?.SessionId,
+            _isGatheringViewVisible && SelectedGatheringTabIndex == 0);
+    }
+
+    private async Task ApplyCoreStatisticsAsync(IReadOnlySet<GatheringResourceType> affectedResourceTypes)
+    {
+        var resourceUpdates = affectedResourceTypes
+            .Where(ResourceTypes.Contains)
+            .Select(resourceType => new ResourceStatsUpdate(
+                resourceType,
+                _statisticsCache.CreateGroupedResources(resourceType),
+                _statisticsCache.GetResourceValue(resourceType),
+                _statisticsCache.GetResourceValuePerHour(resourceType)))
+            .ToList();
+        var mostGatheredResource = _statisticsCache.CreateMostGatheredResource();
+        var mostGatheredCluster = _statisticsCache.CreateMostGatheredCluster();
+
+        await Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            foreach (var resourceUpdate in resourceUpdates)
             {
-                var groupedData = gatheredData.GroupBy(x => x.UniqueName)
-                    .Select(g => new Gathered()
-                    {
-                        UniqueName = g.Key,
-                        EstimatedMarketValue = FixPoint.FromInternalValue(g.FirstOrDefault()?.EstimatedMarketValue.InternalValue ?? 0),
-                        GainedStandardAmount = g.Sum(x => x.GainedStandardAmount),
-                        GainedBonusAmount = g.Sum(x => x.GainedBonusAmount),
-                        GainedPremiumBonusAmount = g.Sum(x => x.GainedPremiumBonusAmount),
-                        GainedTotalAmount = g.Sum(x => x.GainedTotalAmount),
-                        GainedFame = g.Sum(x => x.GainedFame),
-                        MiningProcesses = g.Sum(x => x.MiningProcesses),
-                        HasBeenFished = hasBeenFished
-                    }).ToList();
+                ApplyResourceStats(resourceUpdate);
+            }
 
-                return groupedData;
-            }) ?? new List<Gathered>();
-        }
-        catch (Exception e)
+            GatheringStats.MostGatheredResource = mostGatheredResource;
+            GatheringStats.MostGatheredCluster = mostGatheredCluster;
+            GatheringStats.TotalResources = _statisticsCache.TotalResources;
+            GatheringStats.TotalMiningProcesses = _statisticsCache.TotalGatheringProcesses;
+            GatheringStats.TotalGainedSilverString = _statisticsCache.TotalValue;
+            GatheringStats.TotalGainedSilverPerHour = _statisticsCache.TotalValuePerHour;
+        });
+    }
+
+    private void ApplyResourceStats(ResourceStatsUpdate update)
+    {
+        switch (update.ResourceType)
         {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            return new List<Gathered>();
+            case GatheringResourceType.Hide:
+                UpdateObservableRangeCollection(GatheringStats.GatheredHide, update.Resources);
+                GatheringStats.GainedSilverByHide = update.TotalValue;
+                GatheringStats.GainedSilverPerHourByHide = update.ValuePerHour;
+                break;
+            case GatheringResourceType.Ore:
+                UpdateObservableRangeCollection(GatheringStats.GatheredOre, update.Resources);
+                GatheringStats.GainedSilverByOre = update.TotalValue;
+                GatheringStats.GainedSilverPerHourByOre = update.ValuePerHour;
+                break;
+            case GatheringResourceType.Fiber:
+                UpdateObservableRangeCollection(GatheringStats.GatheredFiber, update.Resources);
+                GatheringStats.GainedSilverByFiber = update.TotalValue;
+                GatheringStats.GainedSilverPerHourByFiber = update.ValuePerHour;
+                break;
+            case GatheringResourceType.Wood:
+                UpdateObservableRangeCollection(GatheringStats.GatheredWood, update.Resources);
+                GatheringStats.GainedSilverByWood = update.TotalValue;
+                GatheringStats.GainedSilverPerHourByWood = update.ValuePerHour;
+                break;
+            case GatheringResourceType.Rock:
+                UpdateObservableRangeCollection(GatheringStats.GatheredRock, update.Resources);
+                GatheringStats.GainedSilverByRock = update.TotalValue;
+                GatheringStats.GainedSilverPerHourByRock = update.ValuePerHour;
+                break;
+            case GatheringResourceType.Fishing:
+                UpdateObservableRangeCollection(GatheringStats.GatheredFish, update.Resources);
+                GatheringStats.GainedSilverByFish = update.TotalValue;
+                GatheringStats.GainedSilverPerHourByFish = update.ValuePerHour;
+                break;
         }
     }
 
-    private static double CalculateSilverPerHour(IEnumerable<Gathered> gatheredData)
+    private async Task UpdateGatheringOverviewAsync()
     {
-        var gatheredEntries = gatheredData
-            .OrderBy(x => x.TimestampDateTimeUtc)
+        var totalValue = _statisticsCache.TotalValue;
+        var totalAmount = _statisticsCache.TotalResources;
+        var resourceSummaries = _statisticsCache.CreateResourceSummaries();
+        var topGatheredResources = resourceSummaries
+            .OrderByDescending(x => x.TotalAmount)
+            .ThenByDescending(x => x.TotalValue)
+            .Take(5)
+            .Select((summary, index) => CreateRankedResourceSummary(summary, index + 1))
             .ToList();
+        var mostGatheredResource = resourceSummaries
+            .OrderByDescending(x => x.TotalAmount)
+            .ThenByDescending(x => x.TotalValue)
+            .FirstOrDefault();
+        var bestResource = resourceSummaries
+            .OrderByDescending(x => x.TotalValue)
+            .ThenByDescending(x => x.TotalAmount)
+            .FirstOrDefault();
+        var mapSummaries = _statisticsCache.CreateMapSummaries();
+        var bestMap = mapSummaries.FirstOrDefault();
+        var resourceTypeSummaries = CreateResourceTypeSummaries(
+            _statisticsCache.CreateResourceTypeTotals(),
+            totalValue);
+        var locationSummaries = CreateLocationSummaries(mapSummaries);
+        var recentGatherings = _statisticsCache.GetRecentGatherings(5);
+        var resourceValueByTypeSeries = CreatePieSeries(resourceTypeSummaries
+            .Where(x => x.Value > 0)
+            .Select(x => (x.Name, (double) x.Value, x.Brush)));
+        var activityByLocationSeries = CreatePieSeries(locationSummaries
+            .Where(x => x.TotalValue > 0)
+            .Select(x => (x.Name, (double) x.TotalValue, x.Brush)));
 
-        if (gatheredEntries.Count == 0)
+        await Application.Current.Dispatcher.InvokeAsync(() =>
         {
-            return 0;
+            GatheringStats.UniqueResourceTypes = resourceSummaries.Count;
+            GatheringStats.AverageResourceValue = totalAmount > 0 ? (double) totalValue / totalAmount : 0;
+            GatheringStats.BestSingleGatheringValue = _statisticsCache.BestSingleGatheringValue;
+            GatheringStats.GatheringDurationSeconds = _statisticsCache.GatheringDurationSeconds;
+            GatheringStats.BestResource = bestResource;
+            GatheringStats.MostGatheredResourceDetails = mostGatheredResource;
+            GatheringStats.BestGatheringMap = bestMap;
+            GatheringStats.ResourceTypeSummaries.ReplaceRange(resourceTypeSummaries);
+            GatheringStats.LocationSummaries.ReplaceRange(locationSummaries);
+            GatheringStats.TopGatheredResources.ReplaceRange(topGatheredResources);
+            GatheringStats.RecentGatherings.ReplaceRange(recentGatherings);
+            GatheringStats.ResourceValueByTypeSeries = resourceValueByTypeSeries;
+            GatheringStats.GatheringActivityByLocationSeries = activityByLocationSeries;
+        });
+    }
+
+    private bool ShouldUpdateResourceChart(IReadOnlySet<GatheringResourceType> affectedResourceTypes)
+    {
+        return GatheringStats.ResourceChartSeriesFilters
+            .Any(x => x.IsSelected && affectedResourceTypes.Contains(x.ResourceType));
+    }
+
+    private readonly record struct PendingStatsUpdate(
+        IReadOnlyList<Gathered> ChangedEntries,
+        IReadOnlyList<Gathered> RemovedEntries,
+        bool CacheInvalidated,
+        bool OverviewUpdateRequested,
+        bool ResourceChartUpdateRequested);
+
+    private readonly record struct StatsUpdateContext(
+        GatheringTimeRange TimeRange,
+        Guid? SessionId,
+        bool IsOverviewVisible);
+
+    private readonly record struct ResourceStatsUpdate(
+        GatheringResourceType ResourceType,
+        IReadOnlyList<Gathered> Resources,
+        long TotalValue,
+        double ValuePerHour);
+
+    private static GatheringResourceSummary CreateRankedResourceSummary(GatheringResourceSummary summary, int rank)
+    {
+        return new GatheringResourceSummary
+        {
+            Rank = rank,
+            UniqueName = summary.UniqueName,
+            Item = summary.Item,
+            TimesGathered = summary.TimesGathered,
+            TotalAmount = summary.TotalAmount,
+            TotalValue = summary.TotalValue,
+            AverageValuePerGather = summary.AverageValuePerGather,
+            GatheringDurationSeconds = summary.GatheringDurationSeconds,
+            TopLocation = summary.TopLocation
+        };
+    }
+
+    private static List<GatheringResourceTypeSummary> CreateResourceTypeSummaries(
+        IReadOnlyCollection<GatheringStatisticsCache.ResourceTypeTotals> resourceTypeTotals,
+        long totalValue)
+    {
+        var totalsByResourceType = resourceTypeTotals.ToDictionary(x => x.ResourceType);
+
+        return ResourceTypes
+            .Where(totalsByResourceType.ContainsKey)
+            .Select(resourceType =>
+            {
+                var totals = totalsByResourceType[resourceType];
+                return new GatheringResourceTypeSummary
+                {
+                    ResourceType = resourceType,
+                    Name = GetResourceTypeName(resourceType),
+                    Amount = totals.TotalAmount,
+                    Value = totals.TotalValue,
+                    SharePercentage = totalValue > 0 ? (double) totals.TotalValue / totalValue * 100 : 0,
+                    Brush = GatheringChartSeriesFilter.GetBrush(resourceType)
+                };
+            })
+            .OrderByDescending(x => x.Value)
+            .ToList();
+    }
+
+    private static string GetResourceTypeName(GatheringResourceType resourceType)
+    {
+        return LocalizationController.Translation(resourceType.ToString().ToUpperInvariant());
+    }
+
+    private static List<GatheringMapSummary> CreateLocationSummaries(IReadOnlyList<GatheringMapSummary> mapSummaries)
+    {
+        var result = mapSummaries
+            .Take(5)
+            .Select((summary, index) => CopyMapSummary(summary, GetLocationBrush(index)))
+            .ToList();
+        var remainingMaps = mapSummaries.Skip(5).ToList();
+
+        if (remainingMaps.Count > 0)
+        {
+            result.Add(new GatheringMapSummary
+            {
+                Name = LocalizationController.Translation("OTHER_MAPS"),
+                TimesGathered = remainingMaps.Sum(x => x.TimesGathered),
+                TotalValue = remainingMaps.Sum(x => x.TotalValue),
+                ResourceTypeCount = remainingMaps.Sum(x => x.ResourceTypeCount),
+                GatheringDurationSeconds = remainingMaps.Sum(x => x.GatheringDurationSeconds),
+                Brush = GetLocationBrush(5)
+            });
         }
 
-        var totalSilver = gatheredEntries.Sum(x => x.TotalMarketValue.IntegerValue);
-        var durationInSeconds = Math.Max(3600d, (gatheredEntries[^1].TimestampDateTimeUtc - gatheredEntries[0].TimestampDateTimeUtc).TotalSeconds);
+        return result;
+    }
 
-        return ((double) totalSilver).GetValuePerHour(durationInSeconds);
+    private static GatheringMapSummary CopyMapSummary(GatheringMapSummary summary, Brush brush)
+    {
+        return new GatheringMapSummary
+        {
+            Name = summary.Name,
+            ClusterIndex = summary.ClusterIndex,
+            TimesGathered = summary.TimesGathered,
+            TotalValue = summary.TotalValue,
+            ResourceTypeCount = summary.ResourceTypeCount,
+            GatheringDurationSeconds = summary.GatheringDurationSeconds,
+            ClusterType = summary.ClusterType,
+            MostGatheredResource = summary.MostGatheredResource,
+            Brush = brush
+        };
+    }
+
+    private static ObservableCollection<ISeries> CreatePieSeries(IEnumerable<(string Name, double Value, Brush Brush)> values)
+    {
+        return new ObservableCollection<ISeries>(values.Select(value => new PieSeries<double>
+        {
+            Name = value.Name,
+            Values = [value.Value],
+            InnerRadius = 45,
+            Fill = ToSolidColorPaint(value.Brush),
+            Stroke = null,
+            ToolTipLabelFormatter = chartPoint => chartPoint.Coordinate.PrimaryValue.ToChartTooltipNumberString()
+        }));
+    }
+
+    private static Brush GetLocationBrush(int index)
+    {
+        var palette = new[]
+        {
+            GatheringResourceType.Wood,
+            GatheringResourceType.Fiber,
+            GatheringResourceType.Fishing,
+            GatheringResourceType.Ore,
+            GatheringResourceType.Hide,
+            GatheringResourceType.Rock
+        };
+
+        return GatheringChartSeriesFilter.GetBrush(palette[index % palette.Length]);
+    }
+
+    private static SolidColorPaint CreateChartTextPaint()
+    {
+        var textBrush = Application.Current?.TryFindResource("SolidColorBrush.Text.1") as SolidColorBrush;
+        var color = textBrush?.Color ?? Colors.White;
+
+        return new SolidColorPaint(new SKColor(color.R, color.G, color.B, color.A));
+    }
+
+    private static SolidColorPaint ToSolidColorPaint(Brush brush)
+    {
+        if (brush is not SolidColorBrush solidColorBrush)
+        {
+            return new SolidColorPaint { Color = SKColors.Transparent };
+        }
+
+        var color = solidColorBrush.Color;
+        return new SolidColorPaint { Color = new SKColor(color.R, color.G, color.B, color.A) };
     }
 
     private static void UpdateObservableRangeCollection(ICollection<Gathered> target, IEnumerable<Gathered> source)
@@ -302,28 +623,6 @@ public class GatheringBindings : BaseViewModel
         }
     }
 
-    public static bool IsTimestampOkayByGatheringStatsTimeType(DateTime dateTime, GatheringStatsTimeType gatheringStatsTimeType)
-    {
-        if (gatheringStatsTimeType == GatheringStatsTimeType.Total)
-        {
-            return true;
-        }
-
-        return GetTimeRange(gatheringStatsTimeType).Contains(dateTime);
-    }
-
-    public async Task RemoveResourcesByIdsAsync(IEnumerable<Guid> guids)
-    {
-        await Application.Current.Dispatcher.InvokeAsync(() =>
-        {
-            foreach (var gathered in GatheredCollection?.ToList().Where(x => guids.Contains(x.Guid)) ?? new List<Gathered>())
-            {
-                GatheredCollection?.Remove(gathered);
-            }
-
-            UpdateStats();
-        });
-    }
 
     private void ResourceChartSeriesFilter_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
@@ -332,18 +631,27 @@ public class GatheringBindings : BaseViewModel
             return;
         }
 
-        UpdateResourceChart();
+        RequestResourceChartUpdate();
+    }
+
+    private void RequestResourceChartUpdate()
+    {
+        lock (_pendingStatsSyncRoot)
+        {
+            _resourceChartUpdateRequested = true;
+        }
+
+        UpdateStats();
     }
 
     private void UpdateResourceChart()
     {
-        var filteredGatherCollection = GetGatheredEntriesByTimeFilter(GatheredCollection.ToList(), GatheringStatsTimeTypeSelection);
-        UpdateResourceChart(filteredGatherCollection);
-    }
+        if (!_statisticsCache.IsInitialized)
+        {
+            return;
+        }
 
-    private void UpdateResourceChart(IEnumerable<Gathered> gatheredData)
-    {
-        var chartBuckets = CreateChartBuckets(GatheringStatsTimeTypeSelection);
+        var chartBuckets = CreateChartBuckets(SelectedGatheringTimeRange);
         var xAxes = new[]
         {
             new Axis
@@ -368,24 +676,17 @@ public class GatheringBindings : BaseViewModel
         }
 
         var seriesCollection = new ObservableCollection<ISeries>();
-
         foreach (var selectedSeriesFilter in selectedSeriesFilters)
         {
-            var valuesLookup = gatheredData
-                .Where(x => GetGatheringResourceType(x) == selectedSeriesFilter.ResourceType)
-                .GroupBy(x => AlignTimestampToBucketStart(x.TimestampDateTimeUtc, GatheringStatsTimeTypeSelection))
-                .ToDictionary(x => x.Key, x => GetChartMetricValue(x, GatheringStats.SelectedResourceChartValueType));
+            var points = new ObservableCollection<ObservablePoint>(
+                chartBuckets.Select((chartBucket, index) => new ObservablePoint(
+                    index,
+                    _statisticsCache.GetChartValue(
+                        selectedSeriesFilter.ResourceType,
+                        chartBucket.Start,
+                        GatheringStats.SelectedResourceChartValueType))));
 
-            var points = new ObservableCollection<ObservablePoint>();
-
-            for (var i = 0; i < chartBuckets.Count; i++)
-            {
-                var chartBucket = chartBuckets[i];
-                var value = valuesLookup.GetValueOrDefault(chartBucket.Start);
-                points.Add(new ObservablePoint(i, value));
-            }
-
-            var lineSeries = new LineSeries<ObservablePoint>
+            seriesCollection.Add(new LineSeries<ObservablePoint>
             {
                 Name = selectedSeriesFilter.Name,
                 Values = points,
@@ -395,9 +696,7 @@ public class GatheringBindings : BaseViewModel
                 GeometryFill = GetResourceTypeBrush(selectedSeriesFilter.ResourceType, false),
                 GeometrySize = 5,
                 YToolTipLabelFormatter = chartPoint => chartPoint.Coordinate.PrimaryValue.ToChartTooltipNumberString()
-            };
-
-            seriesCollection.Add(lineSeries);
+            });
         }
 
         Application.Current.Dispatcher.Invoke(() =>
@@ -407,9 +706,9 @@ public class GatheringBindings : BaseViewModel
         });
     }
 
-    private static List<ChartBucket> CreateChartBuckets(GatheringStatsTimeType gatheringStatsTimeType)
+    private static List<ChartBucket> CreateChartBuckets(GatheringTimeRangeOption selectedTimeRange)
     {
-        var timeRange = GetTimeRange(gatheringStatsTimeType);
+        var timeRange = GetTimeRange(selectedTimeRange);
         if (timeRange.BucketCount <= 0)
         {
             return [];
@@ -418,95 +717,57 @@ public class GatheringBindings : BaseViewModel
         var buckets = new List<ChartBucket>(timeRange.BucketCount);
         for (var i = 0; i < timeRange.BucketCount; i++)
         {
-            var start = timeRange.Start.AddTicks(timeRange.BucketSize.Ticks * i);
-            buckets.Add(new ChartBucket(start, GetBucketLabel(start, i, timeRange.BucketCount, gatheringStatsTimeType)));
+            var start = AddBuckets(timeRange.Start, i, timeRange.Unit);
+            buckets.Add(new ChartBucket(start, GetBucketLabel(start, timeRange.Unit)));
         }
 
         return buckets;
     }
 
-    private static string GetBucketLabel(DateTime start, int index, int totalBucketCount, GatheringStatsTimeType gatheringStatsTimeType)
+    private static string GetBucketLabel(DateTime start, GatheringTimeRangeUnit unit)
     {
-        return gatheringStatsTimeType switch
+        return unit switch
         {
-            GatheringStatsTimeType.Hour => index % 10 == 0 || index == totalBucketCount - 1 ? start.ToString("HH:mm", CultureInfo.CurrentCulture) : string.Empty,
-            GatheringStatsTimeType.Today => index % 2 == 0 || index == totalBucketCount - 1 ? start.ToString("HH:mm", CultureInfo.CurrentCulture) : string.Empty,
-            GatheringStatsTimeType.ThisWeek or GatheringStatsTimeType.LastWeek => start.ToString("ddd", CultureInfo.CurrentCulture),
-            GatheringStatsTimeType.Month => index % 5 == 0 || index == totalBucketCount - 1 ? start.ToString("dd.MM", CultureInfo.CurrentCulture) : string.Empty,
-            GatheringStatsTimeType.Year => start.Day == 1 || index == 0 || index == totalBucketCount - 1 ? start.ToString("MMM yy", CultureInfo.CurrentCulture) : string.Empty,
-            _ => start.ToString("g", CultureInfo.CurrentCulture)
+            GatheringTimeRangeUnit.Minute => start.ToString("HH:mm", CultureInfo.CurrentCulture),
+            GatheringTimeRangeUnit.Hour => start.ToString("dd.MM HH:mm", CultureInfo.CurrentCulture),
+            GatheringTimeRangeUnit.Day => start.ToString("d", CultureInfo.CurrentCulture),
+            _ => start.ToString("d", CultureInfo.CurrentCulture)
         };
     }
 
-    private static DateTime AlignTimestampToBucketStart(DateTime timestamp, GatheringStatsTimeType gatheringStatsTimeType)
+    private static DateTime AlignTimestampToBucketStart(DateTime timestamp, GatheringTimeRangeUnit unit)
     {
-        return gatheringStatsTimeType switch
+        return unit switch
         {
-            GatheringStatsTimeType.Hour => new DateTime(timestamp.Year, timestamp.Month, timestamp.Day, timestamp.Hour, timestamp.Minute, 0),
-            GatheringStatsTimeType.Today => new DateTime(timestamp.Year, timestamp.Month, timestamp.Day, timestamp.Hour, 0, 0),
-            GatheringStatsTimeType.ThisWeek => timestamp.Date,
-            GatheringStatsTimeType.LastWeek => timestamp.Date,
-            GatheringStatsTimeType.Month => timestamp.Date,
-            GatheringStatsTimeType.Year => timestamp.Date,
+            GatheringTimeRangeUnit.Minute => new DateTime(timestamp.Year, timestamp.Month, timestamp.Day, timestamp.Hour, timestamp.Minute, 0),
+            GatheringTimeRangeUnit.Hour => new DateTime(timestamp.Year, timestamp.Month, timestamp.Day, timestamp.Hour, 0, 0),
+            GatheringTimeRangeUnit.Day => timestamp.Date,
             _ => timestamp.Date
         };
     }
 
-    private static GatheringResourceType GetGatheringResourceType(Gathered gathered)
+    private static GatheringTimeRange GetTimeRange(GatheringTimeRangeOption selectedTimeRange)
     {
-        if (gathered == null)
+        if (selectedTimeRange == null || selectedTimeRange.BucketCount <= 0)
         {
-            return GatheringResourceType.Unknown;
+            return GatheringTimeRange.Empty;
         }
 
-        if (gathered.HasBeenFished)
-        {
-            return GatheringResourceType.Fishing;
-        }
-
-        return gathered.Item?.FullItemInformation?.ShopSubCategory2?.ToLowerInvariant() switch
-        {
-            "wood" => GatheringResourceType.Wood,
-            "fiber" => GatheringResourceType.Fiber,
-            "hide" => GatheringResourceType.Hide,
-            "ore" => GatheringResourceType.Ore,
-            "rock" => GatheringResourceType.Rock,
-            _ => GatheringResourceType.Unknown
-        };
+        var currentBucketStart = AlignTimestampToBucketStart(DateTime.Now, selectedTimeRange.Unit);
+        var start = AddBuckets(currentBucketStart, -(selectedTimeRange.BucketCount - 1), selectedTimeRange.Unit);
+        var end = AddBuckets(currentBucketStart, 1, selectedTimeRange.Unit);
+        return new GatheringTimeRange(start, end, selectedTimeRange.BucketCount, selectedTimeRange.Unit);
     }
 
-    private static double GetChartMetricValue(IEnumerable<Gathered> gatheredEntries, GatheringChartValueType chartValueType)
+    private static DateTime AddBuckets(DateTime bucketStart, int bucketCount, GatheringTimeRangeUnit unit)
     {
-        return chartValueType switch
+        return unit switch
         {
-            GatheringChartValueType.ResourceSilverValue => gatheredEntries.Sum(x => (double) x.TotalMarketValue.IntegerValue),
-            _ => gatheredEntries.Sum(x => (double) x.GainedTotalAmount)
+            GatheringTimeRangeUnit.Minute => bucketStart.AddMinutes(bucketCount),
+            GatheringTimeRangeUnit.Hour => bucketStart.AddHours(bucketCount),
+            GatheringTimeRangeUnit.Day => bucketStart.AddDays(bucketCount),
+            _ => bucketStart.AddDays(bucketCount)
         };
-    }
-
-    private static GatheringTimeRange GetTimeRange(GatheringStatsTimeType gatheringStatsTimeType)
-    {
-        var currentUtc = DateTime.UtcNow;
-        var currentDay = currentUtc.Date;
-        var currentMinute = new DateTime(currentUtc.Year, currentUtc.Month, currentUtc.Day, currentUtc.Hour, currentUtc.Minute, 0);
-        var startOfThisWeek = GetStartOfIsoWeek(currentDay);
-
-        return gatheringStatsTimeType switch
-        {
-            GatheringStatsTimeType.Hour => new GatheringTimeRange(currentMinute.AddHours(-1), currentMinute.AddMinutes(1), 61, TimeSpan.FromMinutes(1)),
-            GatheringStatsTimeType.Today => new GatheringTimeRange(currentDay, currentDay.AddDays(1), 24, TimeSpan.FromHours(1)),
-            GatheringStatsTimeType.ThisWeek => new GatheringTimeRange(startOfThisWeek, startOfThisWeek.AddDays(7), 7, TimeSpan.FromDays(1)),
-            GatheringStatsTimeType.LastWeek => new GatheringTimeRange(startOfThisWeek.AddDays(-7), startOfThisWeek, 7, TimeSpan.FromDays(1)),
-            GatheringStatsTimeType.Month => new GatheringTimeRange(currentDay.AddDays(-29), currentDay.AddDays(1), 30, TimeSpan.FromDays(1)),
-            GatheringStatsTimeType.Year => new GatheringTimeRange(currentDay.AddDays(-364), currentDay.AddDays(1), 365, TimeSpan.FromDays(1)),
-            _ => GatheringTimeRange.Empty
-        };
-    }
-
-    private static DateTime GetStartOfIsoWeek(DateTime dateTime)
-    {
-        var diff = (7 + (dateTime.DayOfWeek - DayOfWeek.Monday)) % 7;
-        return dateTime.AddDays(-diff).Date;
     }
 
     private static SolidColorPaint GetResourceTypeBrush(GatheringResourceType resourceType, bool transparent)
@@ -536,32 +797,17 @@ public class GatheringBindings : BaseViewModel
             return;
         }
 
-        UpdateResourceChart();
+        RequestResourceChartUpdate();
     }
 
     private readonly record struct ChartBucket(DateTime Start, string Label);
 
-    private readonly record struct GatheringTimeRange(DateTime Start, DateTime End, int BucketCount, TimeSpan BucketSize)
+    private readonly record struct GatheringTimeRange(DateTime Start, DateTime End, int BucketCount, GatheringTimeRangeUnit Unit)
     {
-        public static GatheringTimeRange Empty => new(DateTime.MinValue, DateTime.MinValue, 0, TimeSpan.Zero);
-
-        public bool Contains(DateTime timestamp)
-        {
-            return timestamp >= Start && timestamp < End;
-        }
+        public static GatheringTimeRange Empty => new(DateTime.MinValue, DateTime.MinValue, 0, GatheringTimeRangeUnit.Day);
     }
 
     #region Bindings
-
-    public ListCollectionView GatheredCollectionView
-    {
-        get;
-        init
-        {
-            field = value;
-            OnPropertyChanged();
-        }
-    }
 
     public ObservableRangeCollection<Gathered> GatheredCollection
     {
@@ -594,6 +840,8 @@ public class GatheringBindings : BaseViewModel
         }
     } = new();
 
+    public SolidColorPaint ChartLegendTextPaint { get; } = CreateChartTextPaint();
+
     public bool IsGatheringActive
     {
         get;
@@ -605,7 +853,7 @@ public class GatheringBindings : BaseViewModel
         }
     } = true;
 
-    public Dictionary<GatheringFilterType, string> GatheringFilter
+    public ObservableCollection<GatheringTimeRangeOption> GatheringTimeRanges
     {
         get;
         set
@@ -613,124 +861,150 @@ public class GatheringBindings : BaseViewModel
             field = value;
             OnPropertyChanged();
         }
-    } = new()
-    {
-        {GatheringFilterType.Generally, LocalizationController.Translation("GENERALLY")},
-        {GatheringFilterType.Wood, LocalizationController.Translation("WOOD")},
-        {GatheringFilterType.Fiber, LocalizationController.Translation("FIBER")},
-        {GatheringFilterType.Hide, LocalizationController.Translation("HIDE")},
-        {GatheringFilterType.Ore, LocalizationController.Translation("ORE")},
-        {GatheringFilterType.Rock, LocalizationController.Translation("ROCK")},
-        {GatheringFilterType.Fishing, LocalizationController.Translation("FISHING")}
-    };
+    } = [];
 
-    public GatheringFilterType SelectedGatheringFilter
+    public GatheringTimeRangeOption SelectedGatheringTimeRange
     {
-        get;
+        get => _selectedGatheringTimeRange;
         set
         {
-            if (field == value)
+            if (ReferenceEquals(_selectedGatheringTimeRange, value))
             {
                 return;
             }
 
-            field = value;
-            GatheringStats.GatheringFilterType = value;
-            OnPropertyChanged();
-        }
-    } = GatheringFilterType.Generally;
-
-    public List<GatheringStatsFilterStruct> GatheringStatsTimeTypes { get; } = new()
-    {
-        new GatheringStatsFilterStruct
-        {
-            Name = LocalizationController.Translation("HOUR"),
-            GatheringStatsTimeType = GatheringStatsTimeType.Hour
-        },
-        new GatheringStatsFilterStruct
-        {
-            Name = LocalizationController.Translation("TODAY"),
-            GatheringStatsTimeType = GatheringStatsTimeType.Today
-        },
-        new GatheringStatsFilterStruct
-        {
-            Name = LocalizationController.Translation("THIS_WEEK"),
-            GatheringStatsTimeType = GatheringStatsTimeType.ThisWeek
-        },
-        new GatheringStatsFilterStruct
-        {
-            Name = LocalizationController.Translation("LAST_WEEK"),
-            GatheringStatsTimeType = GatheringStatsTimeType.LastWeek
-        },
-        new GatheringStatsFilterStruct
-        {
-            Name = LocalizationController.Translation("LAST_30_DAYS"),
-            GatheringStatsTimeType = GatheringStatsTimeType.Month
-        },
-        new GatheringStatsFilterStruct
-        {
-            Name = LocalizationController.Translation("LAST_365_DAYS"),
-            GatheringStatsTimeType = GatheringStatsTimeType.Year
-        }
-    };
-
-    public GatheringStatsTimeType GatheringStatsTimeTypeSelection
-    {
-        get => _gatheringStatsTimeTypeSelection;
-        set
-        {
-            if (_gatheringStatsTimeTypeSelection == value)
-            {
-                return;
-            }
-
-            _gatheringStatsTimeTypeSelection = value;
+            _selectedGatheringTimeRange = value;
+            InvalidateStatisticsCache();
             UpdateStats();
             OnPropertyChanged();
         }
     }
 
-    public List<AutoDeleteGatheringStatsFilterStruct> AutoDeleteStatsByDate { get; } = new()
-    {
-        new AutoDeleteGatheringStatsFilterStruct
-        {
-            Name = LocalizationController.Translation("NEVER_DELETE"),
-            AutoDeleteGatheringStats = AutoDeleteGatheringStats.NeverDelete
-        },
-        new AutoDeleteGatheringStatsFilterStruct
-        {
-            Name = LocalizationController.Translation("DELETE_AFTER_7_DAYS"),
-            AutoDeleteGatheringStats = AutoDeleteGatheringStats.DeleteAfter7Days
-        },
-        new AutoDeleteGatheringStatsFilterStruct
-        {
-            Name = LocalizationController.Translation("DELETE_AFTER_14_DAYS"),
-            AutoDeleteGatheringStats = AutoDeleteGatheringStats.DeleteAfter14Days
-        },
-        new AutoDeleteGatheringStatsFilterStruct
-        {
-            Name = LocalizationController.Translation("DELETE_AFTER_30_DAYS"),
-            AutoDeleteGatheringStats = AutoDeleteGatheringStats.DeleteAfter30Days
-        },
-        new AutoDeleteGatheringStatsFilterStruct
-        {
-            Name = LocalizationController.Translation("DELETE_AFTER_365_DAYS"),
-            AutoDeleteGatheringStats = AutoDeleteGatheringStats.DeleteAfter365Days
-        }
-    };
-
-    public AutoDeleteGatheringStats AutoDeleteStatsByDateSelection
+    public ObservableCollection<GatheringSessionFilterOption> GatheringSessionFilters
     {
         get;
         set
         {
             field = value;
-            SettingsController.CurrentSettings.AutoDeleteGatheringStats = field;
             OnPropertyChanged();
         }
+    } = [];
+
+    public GatheringSessionFilterOption SelectedGatheringSessionFilter
+    {
+        get => _selectedGatheringSessionFilter;
+        set
+        {
+            if (ReferenceEquals(_selectedGatheringSessionFilter, value))
+            {
+                return;
+            }
+
+            _selectedGatheringSessionFilter = value;
+            InvalidateStatisticsCache();
+            UpdateStats();
+            OnPropertyChanged();
+        }
+    }
+
+    public int SelectedGatheringTabIndex
+    {
+        get => _selectedGatheringTabIndex;
+        set
+        {
+            if (_selectedGatheringTabIndex == value)
+            {
+                return;
+            }
+
+            _selectedGatheringTabIndex = value;
+            if (value == 0)
+            {
+                MarkOverviewDirty();
+                UpdateStats();
+            }
+
+            OnPropertyChanged();
+        }
+    }
+
+    public void SetViewVisibility(bool isVisible)
+    {
+        if (_isGatheringViewVisible == isVisible)
+        {
+            return;
+        }
+
+        _isGatheringViewVisible = isVisible;
+        if (isVisible)
+        {
+            MarkOverviewDirty();
+            UpdateStats();
+        }
+    }
+
+    public void RefreshSessionFilters(
+        IReadOnlyCollection<Gathered> gatheredEntries,
+        GatheringSession activeSession)
+    {
+        var selectedSessionId = SelectedGatheringSessionFilter?.SessionId;
+        var filters = new List<GatheringSessionFilterOption>
+        {
+            new(null, LocalizationController.Translation("ALL_SESSIONS"))
+        };
+
+        if (activeSession != null)
+        {
+            filters.Add(new GatheringSessionFilterOption(
+                activeSession.Id,
+                CreateSessionFilterName(activeSession.StartedAtUtc, activeSession.CharacterName, true),
+                activeSession.StartedAtUtc));
+        }
+
+        filters.AddRange(gatheredEntries
+            .Where(x => activeSession == null || x.SessionId != activeSession.Id)
+            .GroupBy(x => x.SessionId)
+            .Select(group => new
+            {
+                SessionId = group.Key,
+                StartedAtUtc = group.Min(x => x.TimestampDateTimeUtc),
+                EndedAtUtc = group.Max(x => x.TimestampDateTimeUtc),
+                CharacterName = group
+                    .Select(x => x.CharacterName)
+                    .FirstOrDefault(x => !string.IsNullOrWhiteSpace(x)) ?? string.Empty
+            })
+            .OrderByDescending(x => x.StartedAtUtc)
+            .Select(x => new GatheringSessionFilterOption(
+                x.SessionId,
+                CreateSessionFilterName(x.StartedAtUtc, x.CharacterName, false),
+                x.StartedAtUtc,
+                x.EndedAtUtc,
+                true)));
+
+        GatheringSessionFilters = new ObservableCollection<GatheringSessionFilterOption>(filters);
+        SelectedGatheringSessionFilter = filters.FirstOrDefault(x => x.SessionId == selectedSessionId) ?? filters[0];
+    }
+
+    private static string CreateSessionFilterName(DateTime startedAtUtc, string characterName, bool isActive)
+    {
+        var activeMarker = isActive ? "* " : string.Empty;
+        var displayCharacterName = string.IsNullOrWhiteSpace(characterName) ? "?" : characterName;
+        return $"{activeMarker}{startedAtUtc.ToLocalTime():g} | {displayCharacterName}";
     }
 
     #endregion
 
     public static string TranslationGatheringActive => LocalizationController.Translation("GATHERING_ACTIVE");
+    public static string TranslationGathering => LocalizationController.Translation("GATHERING");
+    public static string TranslationTimeRange => LocalizationController.Translation("TIME_RANGE");
+    public static string TranslationSession => LocalizationController.Translation("SESSION");
+    public static string TranslationResetSession => LocalizationController.Translation("RESET_SESSION");
+    public static string TranslationDeleteSession => LocalizationController.Translation("DELETE_SESSION");
+    public static string TranslationGenerally => LocalizationController.Translation("GENERALLY");
+    public static string TranslationWood => LocalizationController.Translation("WOOD");
+    public static string TranslationFiber => LocalizationController.Translation("FIBER");
+    public static string TranslationHide => LocalizationController.Translation("HIDE");
+    public static string TranslationOre => LocalizationController.Translation("ORE");
+    public static string TranslationRock => LocalizationController.Translation("ROCK");
+    public static string TranslationFishing => LocalizationController.Translation("FISHING");
 }
