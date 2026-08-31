@@ -6,4 +6,7 @@ public class CraftSpell
 {
     [JsonPropertyName("@uniquename")]
     public string UniqueName { get; set; }
+
+    [JsonPropertyName("@slots")]
+    public string Slots { get; set; }
 }

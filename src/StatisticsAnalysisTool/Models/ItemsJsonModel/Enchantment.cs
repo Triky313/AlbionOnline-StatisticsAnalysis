@@ -15,6 +15,9 @@ public class Enchantment
     [JsonPropertyName("@abilitypower")]
     public string AbilityPower { get; set; }
 
+    [JsonPropertyName("@itempower")]
+    public string ItemPower { get; set; }
+
     [JsonPropertyName("@dummyitempower")]
     public string DummyItemPower { get; set; }
 
@@ -35,6 +38,7 @@ public class Enchantment
     {
         EnchantmentLevel = null;
         AbilityPower = null;
+        ItemPower = null;
         DummyItemPower = null;
         ConsumeSpell = null;
         Durability = 0;

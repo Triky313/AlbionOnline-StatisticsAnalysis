@@ -9,6 +9,7 @@ namespace StatisticsAnalysisTool.Trade;
 public class TradeOptionsObject : BaseViewModel
 {
     private bool _isTradeMonitoringActive = true;
+    private bool _isCraftingCostsMonitoringActive = true;
     private bool _isPlayerTradeMonitoringActive = true;
     private List<DeleteTradesAfterDaysStruct> _deleteTradesOlderThanSpecifiedDays = new();
     private DeleteTradesAfterDaysStruct _damageMeterSortSelection;
@@ -20,6 +21,7 @@ public class TradeOptionsObject : BaseViewModel
     {
         RefreshDeleteTradesOlderThanSpecifiedDays(SettingsController.CurrentSettings.DeleteTradesOlderThanSpecifiedDays);
         IsTradeMonitoringActive = SettingsController.CurrentSettings.IsTradeMonitoringActive;
+        IsCraftingCostsMonitoringActive = SettingsController.CurrentSettings.IsCraftingCostsMonitoringActive;
         IsPlayerTradeMonitoringActive = SettingsController.CurrentSettings.IsPlayerTradeMonitoringActive;
         IgnoreMailsWithZeroValues = SettingsController.CurrentSettings.IgnoreMailsWithZeroValues;
         MarketTaxRate = SettingsController.CurrentSettings.TradeMonitoringMarketTaxRate;
@@ -30,6 +32,7 @@ public class TradeOptionsObject : BaseViewModel
     {
         RefreshDeleteTradesOlderThanSpecifiedDays(DeleteTradesOlderThanSpecifiedDaysSelection.Days);
         OnPropertyChanged(nameof(TranslationTradeMonitoringActive));
+        OnPropertyChanged(nameof(TranslationCraftingCostsMonitoringActive));
         OnPropertyChanged(nameof(TranslationPlayerTradeMonitoringActive));
         OnPropertyChanged(nameof(TranslationIgnoreMailsWithZeroValues));
         OnPropertyChanged(nameof(TranslationMarketTaxRate));
@@ -69,6 +72,17 @@ public class TradeOptionsObject : BaseViewModel
         {
             _isTradeMonitoringActive = value;
             SettingsController.CurrentSettings.IsTradeMonitoringActive = _isTradeMonitoringActive;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsCraftingCostsMonitoringActive
+    {
+        get => _isCraftingCostsMonitoringActive;
+        set
+        {
+            _isCraftingCostsMonitoringActive = value;
+            SettingsController.CurrentSettings.IsCraftingCostsMonitoringActive = _isCraftingCostsMonitoringActive;
             OnPropertyChanged();
         }
     }
@@ -138,6 +152,7 @@ public class TradeOptionsObject : BaseViewModel
     }
 
     public static string TranslationTradeMonitoringActive => LocalizationController.Translation("TRADE_MONITORING_ACTIVE");
+    public static string TranslationCraftingCostsMonitoringActive => LocalizationController.Translation("CRAFTING_COSTS_MONITORING_ACTIVE");
     public static string TranslationPlayerTradeMonitoringActive => LocalizationController.Translation("PLAYER_TRADE_MONITORING_ACTIVE");
     public static string TranslationIgnoreMailsWithZeroValues => LocalizationController.Translation("IGNORE_MAILS_WITH_ZERO_VALUES");
     public static string TranslationMarketTaxRate => LocalizationController.Translation("MARKET_TAX_RATE");

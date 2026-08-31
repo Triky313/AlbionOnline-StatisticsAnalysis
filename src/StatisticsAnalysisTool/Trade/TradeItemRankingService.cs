@@ -232,7 +232,7 @@ public sealed class TradeItemRankingService
                 trade.Item.TierLevelString);
         }
 
-        var itemName = string.IsNullOrWhiteSpace(itemKey) ? string.Empty : itemKey;
+        var itemName = string.IsNullOrWhiteSpace(trade.DisplayItemName) ? itemKey : trade.DisplayItemName;
         return new TradeItemMetadata(itemKey, itemName, string.Empty);
     }
 

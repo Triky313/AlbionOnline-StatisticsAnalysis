@@ -33,6 +33,8 @@ public static class DebugConsole
 
     private static BlockingCollection<(string line, ConsoleColor fallback)> _q = new(new ConcurrentQueue<(string, ConsoleColor)>());
 
+    public static bool IsAttached => _attached;
+
     public static bool Attach(string title = "Debug Console")
     {
         lock (Lock)
@@ -340,6 +342,21 @@ public static class DebugConsole
         DateTime.Now.TryFormat(time, out _, "s", CultureInfo.InvariantCulture);
 
         Enq($"[{time}] WARNING {source}: {msg}", ColWarn);
+    }
+
+    public static void WriteWarn(Type? declaringType, string message)
+    {
+        if (!_attached)
+        {
+            return;
+        }
+
+        var source = declaringType?.ToString() ?? string.Empty;
+
+        Span<char> time = stackalloc char[19];
+        DateTime.Now.TryFormat(time, out _, "s", CultureInfo.InvariantCulture);
+
+        Enq($"[{time}] WARNING {source}: {message}", ColWarn);
     }
 
     public static void WriteInfo(Type? declaringType, Exception? e)

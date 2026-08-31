@@ -75,28 +75,69 @@ public partial class App
                 return;
             }
 
-            if (!await GameData.InitializeMainGameDataFilesAsync(SettingsController.CurrentSettings.ServerType))
+            var toolLoadingWindowViewModel = new ToolLoadingWindowViewModel();
+            var toolLoadingWindow = new ToolLoadingWindow(toolLoadingWindowViewModel);
+            var isToolLoadingWindowShown = false;
+
+            void ReportStartupProgress(double progress, string currentTaskName)
             {
-                _isEarlyShutdown = true;
-                Current.Shutdown();
-                return;
+                void UpdateProgress()
+                {
+                    if (!isToolLoadingWindowShown)
+                    {
+                        toolLoadingWindow.Show();
+                        isToolLoadingWindowShown = true;
+                    }
+
+                    toolLoadingWindowViewModel.UpdateProgress(progress, currentTaskName);
+                }
+
+                if (Dispatcher.CheckAccess())
+                {
+                    UpdateProgress();
+                    return;
+                }
+
+                Dispatcher.Invoke(UpdateProgress);
             }
 
-            ShowNpcapInfoDialogOnFirstStart();
+            try
+            {
+                if (!await GameData.InitializeMainGameDataFilesAsync(
+                        SettingsController.CurrentSettings.ServerType,
+                        ReportStartupProgress,
+                        0,
+                        40))
+                {
+                    _isEarlyShutdown = true;
+                    Current.Shutdown();
+                    return;
+                }
 
-            await BackupController.DeleteOldestBackupsIfNeededAsync();
+                ShowNpcapInfoDialogOnFirstStart();
 
-            Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
-            AppDataPaths.SetActiveUserDataServer(SettingsController.CurrentSettings.StartupUserDataServerLocation);
+                ReportStartupProgress(40, "Backups");
+                await BackupController.DeleteOldestBackupsIfNeededAsync();
 
-            RegisterServicesEarly();
-            Current.MainWindow = new MainWindow(_mainWindowViewModel);
-            RegisterServicesLate();
+                Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+                AppDataPaths.SetActiveUserDataServer(SettingsController.CurrentSettings.StartupUserDataServerLocation);
 
-            await _mainWindowViewModel.InitMainWindowDataAsync();
-            await _serverUserDataCoordinator.SyncCurrentServerAsync();
-            await _trackingController.InitTrackingAsync();
-            Current.MainWindow.Show();
+                RegisterServicesEarly();
+                Current.MainWindow = new MainWindow(_mainWindowViewModel);
+                RegisterServicesLate();
+
+                await _mainWindowViewModel.InitMainWindowDataAsync(ReportStartupProgress, 45, 95);
+                ReportStartupProgress(95, LocalizationController.Translation("SERVER"));
+                await _serverUserDataCoordinator.SyncCurrentServerAsync();
+                ReportStartupProgress(97, LocalizationController.Translation("TRACKING"));
+                await _trackingController.InitTrackingAsync();
+                ReportStartupProgress(100, LocalizationController.Translation("TRACKING"));
+                Current.MainWindow.Show();
+            }
+            finally
+            {
+                toolLoadingWindow.Close();
+            }
 
             await AutoUpdateController.StartBackgroundUpdateLoopAsync();
 
@@ -108,10 +149,7 @@ public partial class App
             try
             {
                 Log.Fatal(ex, "An unexpected fatal error has occurred.");
-                MessageBox.Show("An unexpected error has occurred.",
-                    "Statistics Analysis Tool",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                MessageBox.Show("An unexpected error has occurred.", "Statistics Analysis Tool", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
@@ -299,7 +337,7 @@ public partial class App
         {
             ServiceLocator.Resolve<SatNotificationManager>().StopShowingNotifications();
             AutoUpdateController.Dispose();
-            _trackingController?.StopTracking();
+            _trackingController.PrepareForShutdown();
             CriticalData.Save();
 
             if (!BackupController.ExistBackupOnSettingConditions())
@@ -324,7 +362,7 @@ public partial class App
         {
             ServiceLocator.Resolve<SatNotificationManager>().StopShowingNotifications();
             AutoUpdateController.Dispose();
-            _trackingController?.StopTracking();
+            _trackingController.PrepareForShutdown();
             CriticalData.Save();
 
             if (!BackupController.ExistBackupOnSettingConditions())

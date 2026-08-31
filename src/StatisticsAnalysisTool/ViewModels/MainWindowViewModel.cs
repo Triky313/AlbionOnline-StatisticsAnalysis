@@ -9,6 +9,7 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Crafting;
 using StatisticsAnalysisTool.DamageMeter;
+using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Dungeon;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EstimatedMarketValue;
@@ -21,12 +22,10 @@ using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Network;
 using StatisticsAnalysisTool.Network.Manager;
-using StatisticsAnalysisTool.OpenWorld;
 using StatisticsAnalysisTool.Party;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.StorageHistory;
 using StatisticsAnalysisTool.Trade;
-using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -37,7 +36,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
-using StatisticsAnalysisTool.Diagnostics;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 // ReSharper disable UnusedMember.Global
@@ -46,104 +44,10 @@ namespace StatisticsAnalysisTool.ViewModels;
 
 public class MainWindowViewModel : BaseViewModel
 {
-    private double _allianceInfoWidth;
-    private double _currentMapInfoWidth;
-    private string _errorBarText;
-    private Exception _errorBarException;
-    private Visibility _errorBarVisibility = Visibility.Collapsed;
-    private string _warningBarText;
-    private Visibility _warningBarVisibility = Visibility.Collapsed;
-    private string _informationBarText;
-    private Visibility _informationBarVisibility = Visibility.Collapsed;
-    private double _guildInfoWidth;
-    private Visibility _isDamageMeterPopupVisible = Visibility.Hidden;
-    private Visibility _isItemSearchPopupVisible = Visibility.Hidden;
-    private bool _isShowOnlyItemsWithAlertOnActive;
-    private bool _isTrackingActive;
-    private bool _isTrackingResetByMapChangeActive;
-    private bool _isTxtSearchEnabled;
-    private string _itemCounterString;
-    private Dictionary<ItemLevel, string> _itemLevels = new();
-    private ObservableCollection<CategoryDropdownItem> _itemShopCategories = [];
-    private ObservableCollection<CategoryDropdownItem> _itemSubCategories1 = [];
-    private ObservableCollection<CategoryDropdownItem> _itemSubCategories2 = [];
-    private ObservableCollection<CategoryDropdownItem> _itemSubCategories3 = [];
-    private CategoryDropdownItem _selectedItemShopSubCategory1;
-    private CategoryDropdownItem _selectedItemShopSubCategory2;
-    private CategoryDropdownItem _selectedItemShopSubCategory3;
-    private ICollectionView _itemsView;
-    private Dictionary<ItemTier, string> _itemTiers = new();
-    private string _loadTranslation;
-    private int _localImageCounter;
-    private string _numberOfValuesTranslation;
-    private ObservableCollection<PartyMemberCircle> _partyMemberCircles = [];
-    private string _searchText;
-    private ItemLevel _selectedItemLevel;
-    private CategoryDropdownItem _selectedItemShopCategory;
-    private ItemTier _selectedItemTier;
-    private MainWindowTranslation _translation;
-    private string _updateTranslation;
-    private double _usernameInfoWidth;
+    private readonly ItemRefreshCooldownTracker _itemRefreshCooldownTracker = new();
+    private readonly Dictionary<string, ItemDetailsViewModel> _itemDetailsCache = new(StringComparer.Ordinal);
+
     public AlertController AlertManager;
-    private ObservableCollection<MainStatObject> _factionPointStats = new() { new MainStatObject() { Value = 0, ValuePerHour = 0, CityFaction = CityFaction.Unknown } };
-    private string _mainTrackerTimer;
-    private bool _isShowOnlyFavoritesActive;
-    private int _partyMemberNumber;
-    private bool _isItemSearchCheckboxesEnabled;
-    private bool _isFilterResetEnabled;
-    private bool _isDamageMeterTrackingActive;
-    private bool _isTrackingPartyLootOnly;
-    private Axis[] _xAxesDashboardHourValues;
-    private ObservableCollection<ISeries> _seriesDashboardHourValues;
-    private ObservableCollection<DashboardChartRangeOption> _dashboardChartRanges = [];
-    private DashboardChartRangeOption _selectedDashboardChartRange;
-    private ObservableCollection<DashboardChartSeriesFilter> _dashboardChartSeriesFilters = [];
-    private DashboardBindings _dashboardBindings = new();
-    private string _loggingSearchText;
-    private Visibility _toolTasksVisibility = Visibility.Collapsed;
-    private double _taskProgressbarMinimum;
-    private double _taskProgressbarMaximum = 100;
-    private double _taskProgressbarValue;
-    private bool _isTaskProgressbarIndeterminate;
-    private ObservableCollection<ClusterInfo> _enteredCluster = new();
-    private VaultBindings _vaultBindings = new();
-    private UserTrackingBindings _userTrackingBindings = new();
-    private Visibility _debugModeVisibility = Visibility.Collapsed;
-    private TrackingActivityBindings _trackingActivityBindings = new();
-    private MainStatusBindings _mainStatusBindings = new();
-    private TradeMonitoringBindings _tradeMonitoringBindings = new();
-    private DungeonBindings _dungeonBindings = new();
-    private DamageMeterBindings _damageMeterBindings = new();
-    private Visibility _unsupportedOsVisibility = Visibility.Collapsed;
-    private LoggingBindings _loggingBindings = new();
-    private PlayerInformationBindings _playerInformationBindings = new();
-    private GatheringBindings _gatheringBindings = new();
-    private OpenWorldBindings _openWorldBindings = new();
-    private CraftingBindings _craftingBindings = new();
-    private Visibility _dashboardTabVisibility = Visibility.Visible;
-    private Visibility _itemSearchTabVisibility = Visibility.Visible;
-    private Visibility _loggingTabVisibility = Visibility.Visible;
-    private Visibility _dungeonsTabVisibility = Visibility.Visible;
-    private Visibility _damageMeterTabVisibility = Visibility.Visible;
-    private Visibility _tradeMonitoringTabVisibility = Visibility.Visible;
-    private Visibility _openWorldTabVisibility = Visibility.Visible;
-    private Visibility _gatheringTabVisibility = Visibility.Visible;
-    private Visibility _craftingTabVisibility = Visibility.Visible;
-    private Visibility _partyTabVisibility = Visibility.Visible;
-    private Visibility _storageHistoryTabVisibility = Visibility.Visible;
-    private Visibility _mapHistoryTabVisibility = Visibility.Visible;
-    private Visibility _playerInformationTabVisibility = Visibility.Visible;
-    private Visibility _guildTabVisibility = Visibility.Visible;
-    private bool _isNavigationMenuOpen = true;
-    private Visibility _toolTaskFrontViewVisibility = Visibility.Collapsed;
-    private Visibility _statsDropDownVisibility = Visibility.Collapsed;
-    private double _toolTaskProgressBarValue;
-    private string _toolTaskCurrentTaskName;
-    private GuildBindings _guildBindings = new();
-    private PartyBindings _partyBindings = new();
-    private bool _isDataLoaded;
-    private bool _isCloseButtonActive;
-    private Visibility _loadIconVisibility = Visibility.Collapsed;
 
     public MainWindowViewModel()
     {
@@ -165,25 +69,29 @@ public class MainWindowViewModel : BaseViewModel
         UpdateServerStatus();
         RefreshDashboardChartTranslations();
         RefreshItemCategoryTranslations();
+        DungeonBindings.RefreshLocalization();
         TradeMonitoringBindings.RefreshLocalization();
-        OpenWorldBindings.UpdateStats();
+        DashboardBindings.Mobs.RefreshLocalization();
+        CraftingBindings.RefreshLossExplorerLocalization();
         RefreshTrackingActivityText();
         MainStatusBindings.RefreshLocalization();
+        DamageMeterBindings.RefreshContentFilters();
     }
 
     private void RefreshDashboardChartTranslations()
     {
         var selectedDashboardChartRange = SelectedDashboardChartRange;
         var selectedDashboardChartSeriesFilters = DashboardChartSeriesFilters.ToDictionary(x => x.ValueType, x => x.IsSelected);
+        var settings = SettingsController.CurrentSettings;
 
         DashboardChartRanges = new ObservableCollection<DashboardChartRangeOption>(DashboardChartRangeOption.CreateDefault());
-        SelectedDashboardChartRange = selectedDashboardChartRange is null
-            ? DashboardChartRanges.FirstOrDefault()
-            : DashboardChartRanges.FirstOrDefault(x => x.BucketCount == selectedDashboardChartRange.BucketCount
-                                                       && x.UseHourlyValues == selectedDashboardChartRange.UseHourlyValues)
-              ?? DashboardChartRanges.FirstOrDefault();
+        var selectedBucketCount = selectedDashboardChartRange?.BucketCount ?? settings.SelectedDashboardChartRangeBucketCount;
+        var selectedRangeUnit = selectedDashboardChartRange?.Unit ?? settings.SelectedDashboardChartRangeUnit;
+        SelectedDashboardChartRange = DashboardChartRanges.FirstOrDefault(x => x.BucketCount == selectedBucketCount && x.Unit == selectedRangeUnit)
+                                      ?? DashboardChartRanges.FirstOrDefault();
 
         DashboardChartSeriesFilters = new ObservableCollection<DashboardChartSeriesFilter>(CreateDashboardChartSeriesFilters(selectedDashboardChartSeriesFilters));
+        RefreshDashboardMetadataFilters();
     }
 
     private static IEnumerable<DashboardChartSeriesFilter> CreateDashboardChartSeriesFilters(IReadOnlyDictionary<ValueType, bool> selectedFilters)
@@ -193,7 +101,7 @@ public class MainWindowViewModel : BaseViewModel
             CreateDashboardChartSeriesFilter(ValueType.Fame, DashboardBindings.TranslationFame, selectedFilters),
             CreateDashboardChartSeriesFilter(ValueType.Silver, DashboardBindings.TranslationSilver, selectedFilters),
             CreateDashboardChartSeriesFilter(ValueType.ReSpec, DashboardBindings.TranslationReSpec, selectedFilters),
-            CreateDashboardChartSeriesFilter(ValueType.FactionFame, $"{DashboardBindings.TranslationFaction} {DashboardBindings.TranslationFame}", selectedFilters),
+            CreateDashboardChartSeriesFilter(ValueType.FactionStanding, DashboardBindings.TranslationFactionStanding, selectedFilters),
             CreateDashboardChartSeriesFilter(ValueType.FactionPoints, DashboardBindings.TranslationFactionPoints, selectedFilters),
             CreateDashboardChartSeriesFilter(ValueType.Might, DashboardBindings.TranslationMight, selectedFilters),
             CreateDashboardChartSeriesFilter(ValueType.Favor, DashboardBindings.TranslationFavor, selectedFilters)
@@ -209,6 +117,42 @@ public class MainWindowViewModel : BaseViewModel
             Brush = DashboardChartSeriesFilter.GetBrush(valueType),
             IsSelected = !selectedFilters.TryGetValue(valueType, out var isSelected) || isSelected
         };
+    }
+
+    private static DashboardContentFilterOption CreateDashboardContentFilterOption(DashboardContentType contentType)
+    {
+        return new DashboardContentFilterOption(
+            contentType,
+            LocalizationController.Translation(DashboardContentTypeResolver.GetTranslationKey(contentType)));
+    }
+
+    private void RefreshDashboardMetadataFilters()
+    {
+        var selectedContentType = SelectedDashboardContentFilter is null
+            ? SettingsController.CurrentSettings.SelectedDashboardContentType
+            : SelectedDashboardContentFilter.ContentType;
+
+        DashboardContentFilters = new ObservableCollection<DashboardContentFilterOption>
+        {
+            new(null, LocalizationController.Translation("ALL_CONTENT_TYPES"))
+        };
+
+        foreach (var contentType in DashboardContentTypeResolver.ContentTypes)
+        {
+            DashboardContentFilters.Add(CreateDashboardContentFilterOption(contentType));
+        }
+        SelectedDashboardContentFilter = DashboardContentFilters
+            .FirstOrDefault(x => x.ContentType == selectedContentType)
+            ?? DashboardContentFilters[0];
+
+        if (DashboardSessionFilters.Count == 0)
+        {
+            DashboardSessionFilters =
+            [
+                new DashboardSessionFilterOption(null, LocalizationController.Translation("ALL_SESSIONS"))
+            ];
+            SelectedDashboardSessionFilter = DashboardSessionFilters[0];
+        }
     }
 
     private void RefreshItemCategoryTranslations()
@@ -292,36 +236,6 @@ public class MainWindowViewModel : BaseViewModel
         GuildBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.GuildGridSplitterPosition);
     }
 
-    #region Alert
-
-    public void ToggleAlertSender(object sender)
-    {
-        if (sender == null)
-        {
-            return;
-        }
-
-        try
-        {
-            var imageAwesome = (ImageAwesome) sender;
-            var item = (Item) imageAwesome.DataContext;
-
-            if (item.AlertModeMinSellPriceIsUndercutPrice <= 0)
-            {
-                return;
-            }
-
-            item.IsAlertActive = AlertManager.ToggleAlert(ref item);
-        }
-        catch (Exception e)
-        {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-        }
-    }
-
-    #endregion
-
     #region Item list
 
     public void ItemFilterReset()
@@ -352,6 +266,11 @@ public class MainWindowViewModel : BaseViewModel
 
     private void InitAlerts()
     {
+        if (AlertManager != null)
+        {
+            return;
+        }
+
         SoundController.InitializeSoundFilesFromDirectory();
         AlertManager = new AlertController(ItemsView);
     }
@@ -368,7 +287,10 @@ public class MainWindowViewModel : BaseViewModel
         Settings.Default.Save();
     }
 
-    public async Task InitMainWindowDataAsync()
+    public async Task InitMainWindowDataAsync(
+        Action<double, string> reportProgress = null,
+        double progressStart = 0,
+        double progressEnd = 100)
     {
 #if DEBUG
         DebugModeVisibility = Visibility.Visible;
@@ -383,8 +305,11 @@ public class MainWindowViewModel : BaseViewModel
 
         ItemsView = new ListCollectionView(ItemController.Items);
         InitAlerts();
-        await LoadUserDataForActiveServerAsync();
+        var userDataProgressEnd = progressStart + (progressEnd - progressStart) * 0.95;
+        await LoadUserDataForActiveServerAsync(reportProgress, progressStart, userDataProgressEnd);
+        reportProgress?.Invoke(userDataProgressEnd, LocalizationController.Translation("TRACKING"));
         LoggingBindings.Init();
+        reportProgress?.Invoke(progressEnd, LocalizationController.Translation("TRACKING"));
 
         LoadIconVisibility = Visibility.Hidden;
         IsFilterResetEnabled = true;
@@ -445,7 +370,10 @@ public class MainWindowViewModel : BaseViewModel
         MainStatusBindings.SetServerLocation(currentServerLocation);
     }
 
-    public async Task LoadUserDataForActiveServerAsync()
+    public async Task LoadUserDataForActiveServerAsync(
+        Action<double, string> reportProgress = null,
+        double progressStart = 0,
+        double progressEnd = 100)
     {
         if (!AppDataPaths.IsUserDataAvailable)
         {
@@ -455,21 +383,30 @@ public class MainWindowViewModel : BaseViewModel
 
         Log.Information("Loading Albion user data. Server={Server}, Directory={Directory}", AppDataPaths.ActiveUserDataServerLocation, AppDataPaths.UserDataDirectory);
 
+        const int totalTaskCount = 16;
+        double GetProgress(int completedTaskCount) => progressStart + completedTaskCount / (double) totalTaskCount * (progressEnd - progressStart);
+
         ResetItemUserDataState();
+        reportProgress?.Invoke(GetProgress(0), Settings.Default.FavoriteItemsFileName);
         await ItemController.SetFavoriteItemsFromLocalFileAsync();
 
-        AlertManager?.StopAllAlerts();
-        InitAlerts();
+        AlertManager.StopAllAlerts();
+        reportProgress?.Invoke(GetProgress(1), Settings.Default.ActiveAlertsFileName);
+        await AlertManager.LoadFromFileAsync();
 
+        var trackingProgressStart = GetProgress(2);
+        var trackingProgressEnd = GetProgress(15);
         if (ServiceLocator.IsServiceInDictionary<TrackingController>())
         {
-            await ServiceLocator.Resolve<TrackingController>().LoadDataAsync();
+            await ServiceLocator.Resolve<TrackingController>().LoadDataAsync(reportProgress, trackingProgressStart, trackingProgressEnd);
         }
 
+        reportProgress?.Invoke(trackingProgressEnd, Settings.Default.EstimatedMarketValueFileName);
         await EstimatedMarketValueController.SetAllEstimatedMarketValuesToItemsAsync();
         ItemsView?.Refresh();
         LoggingBindings.RefreshLootComparatorSaves();
         Log.Information("Albion user data loaded. Server={Server}, Directory={Directory}", AppDataPaths.ActiveUserDataServerLocation, AppDataPaths.UserDataDirectory);
+        reportProgress?.Invoke(progressEnd, Settings.Default.EstimatedMarketValueFileName);
     }
 
     private void ResetItemUserDataState()
@@ -478,6 +415,15 @@ public class MainWindowViewModel : BaseViewModel
         {
             item.IsFavorite = false;
             item.IsAlertActive = false;
+            item.IsPriceAlertActive = false;
+            item.IsAvailabilityAlertActive = false;
+            item.IsBlackMarketBuyOrderAlertActive = false;
+            item.IsAlertSoundEnabled = true;
+            item.AlertModeMinSellPriceIsUndercutPrice = 0;
+            item.PriceAlertMaximumPriceAgeMinutes = AlertOptions.DefaultMaximumPriceAgeMinutes;
+            item.AvailabilityAlertMaximumPriceAgeMinutes = AlertOptions.DefaultMaximumPriceAgeMinutes;
+            item.BlackMarketBuyOrderAlertThreshold = 0;
+            item.BlackMarketAlertMaximumPriceAgeMinutes = AlertOptions.DefaultMaximumPriceAgeMinutes;
         }
     }
 
@@ -510,33 +456,6 @@ public class MainWindowViewModel : BaseViewModel
         }
 
         return ServiceLocator.Resolve<AlbionServerDetectionService>().CurrentServerLocation;
-    }
-
-    public static void OpenItemWindow(Item item)
-    {
-        if (string.IsNullOrEmpty(item?.UniqueName))
-            return;
-
-        try
-        {
-            if (!SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked && Utilities.IsWindowOpen<ItemWindow>())
-            {
-                var existItemWindow = Application.Current.Windows.OfType<ItemWindow>().FirstOrDefault();
-                //existItemWindow?.Init(item);
-                existItemWindow?.Activate();
-            }
-            else
-            {
-                var itemWindow = new ItemWindow(item);
-                itemWindow.Show();
-            }
-        }
-        catch (ArgumentNullException e)
-        {
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            var catchItemWindow = new ItemWindow(item);
-            catchItemWindow.Show();
-        }
     }
 
     public void ExportLootToFile()
@@ -666,17 +585,11 @@ public class MainWindowViewModel : BaseViewModel
             bool tierMatch = SelectedItemTier == ItemTier.Unknown || (ItemTier) item.Tier == SelectedItemTier;
             bool levelMatch = SelectedItemLevel == ItemLevel.Unknown || (ItemLevel) item.Level == SelectedItemLevel;
 
-            if (IsShowOnlyItemsWithAlertOnActive)
-            {
-                return nameMatch && catMatch && sub1Match && sub2Match && sub3Match && tierMatch && levelMatch && item.IsAlertActive;
-            }
+            var commonFiltersMatch = nameMatch && catMatch && sub1Match && sub2Match && sub3Match && tierMatch && levelMatch;
+            var favoriteFilterMatch = !IsShowOnlyFavoritesActive || item.IsFavorite;
+            var alertFilterMatch = !IsShowOnlyItemsWithAlertOnActive || item.IsAlertActive;
 
-            if (IsShowOnlyFavoritesActive)
-            {
-                return nameMatch && catMatch && sub1Match && sub2Match && sub3Match && tierMatch && levelMatch && item.IsFavorite;
-            }
-
-            return nameMatch && catMatch && sub1Match && sub2Match && sub3Match && tierMatch && levelMatch;
+            return commonFiltersMatch && favoriteFilterMatch && alertFilterMatch;
         };
 
         SetItemCounterAsync();
@@ -702,10 +615,10 @@ public class MainWindowViewModel : BaseViewModel
 
     public string SearchText
     {
-        get => _searchText;
+        get;
         set
         {
-            _searchText = value;
+            field = value;
 
             ItemsViewFilter();
             ItemsView?.Refresh();
@@ -716,230 +629,319 @@ public class MainWindowViewModel : BaseViewModel
 
     public ICollectionView ItemsView
     {
-        get => _itemsView;
+        get;
         set
         {
-            _itemsView = value;
+            field = value;
             OnPropertyChanged();
         }
+    }
+
+    public Item SelectedSearchItem
+    {
+        get;
+        set
+        {
+            if (ReferenceEquals(field, value))
+            {
+                return;
+            }
+
+            var previousItemDetails = SelectedItemDetails;
+            if (previousItemDetails != null)
+            {
+                previousItemDetails.Deactivate();
+
+                if (!previousItemDetails.HasActiveRefreshCooldown)
+                {
+                    ReleaseItemDetails(previousItemDetails);
+                }
+            }
+
+            field = value;
+            SelectedItemDetails = field == null ? null : GetOrCreateItemDetails(field);
+            OnPropertyChanged();
+        }
+    }
+
+    public ItemDetailsViewModel SelectedItemDetails
+    {
+        get;
+        private set
+        {
+            field = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(IsItemDetailsSelected));
+        }
+    }
+
+    public bool IsItemDetailsSelected => SelectedItemDetails != null;
+
+    public async Task RefreshSelectedItemOnOpeningAsync(Item item)
+    {
+        if (item == null
+            || SelectedItemDetails?.Item == null
+            || !string.Equals(SelectedItemDetails.Item.UniqueName, item.UniqueName, StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        await SelectedItemDetails.RefreshOnOpeningAsync();
+    }
+
+    private ItemDetailsViewModel GetOrCreateItemDetails(Item item)
+    {
+        if (!string.IsNullOrWhiteSpace(item?.UniqueName)
+            && _itemDetailsCache.TryGetValue(item.UniqueName, out var cachedItemDetails))
+        {
+            cachedItemDetails.Activate();
+            _ = cachedItemDetails.RefreshOnOpeningAsync();
+            return cachedItemDetails;
+        }
+
+        var itemDetails = new ItemDetailsViewModel(item, _itemRefreshCooldownTracker, AlertManager);
+        itemDetails.RefreshCooldownExpired += ItemDetails_RefreshCooldownExpired;
+        itemDetails.Activate();
+
+        if (!string.IsNullOrWhiteSpace(item?.UniqueName))
+        {
+            _itemDetailsCache[item.UniqueName] = itemDetails;
+        }
+
+        return itemDetails;
+    }
+
+    private void ItemDetails_RefreshCooldownExpired(object sender, EventArgs e)
+    {
+        if (sender is ItemDetailsViewModel itemDetails && !itemDetails.IsActive)
+        {
+            ReleaseItemDetails(itemDetails);
+        }
+    }
+
+    private void ReleaseItemDetails(ItemDetailsViewModel itemDetails)
+    {
+        itemDetails.RefreshCooldownExpired -= ItemDetails_RefreshCooldownExpired;
+
+        if (!string.IsNullOrWhiteSpace(itemDetails.Item?.UniqueName)
+            && _itemDetailsCache.TryGetValue(itemDetails.Item.UniqueName, out var cachedItemDetails)
+            && ReferenceEquals(cachedItemDetails, itemDetails))
+        {
+            _itemDetailsCache.Remove(itemDetails.Item.UniqueName);
+        }
+
+        itemDetails.Dispose();
+    }
+
+    public void DisposeItemDetails()
+    {
+        SelectedSearchItem = null;
+
+        foreach (var itemDetails in _itemDetailsCache.Values.ToList())
+        {
+            ReleaseItemDetails(itemDetails);
+        }
+
+        _itemDetailsCache.Clear();
     }
 
     public Visibility IsDamageMeterPopupVisible
     {
-        get => _isDamageMeterPopupVisible;
+        get;
         set
         {
-            _isDamageMeterPopupVisible = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Hidden;
 
     public string LoggingSearchText
     {
-        get => _loggingSearchText;
+        get;
         set
         {
-            _loggingSearchText = value;
+            field = value;
             var trackingController = ServiceLocator.Resolve<TrackingController>();
-            trackingController?.NotificationUiFilteringAsync(_loggingSearchText);
+            trackingController?.NotificationUiFilteringAsync(field);
             OnPropertyChanged();
         }
     }
 
     public bool IsTrackingPartyLootOnly
     {
-        get => _isTrackingPartyLootOnly;
+        get;
         set
         {
-            _isTrackingPartyLootOnly = value;
+            field = value;
 
-            SettingsController.CurrentSettings.IsTrackingPartyLootOnly = _isTrackingPartyLootOnly;
+            SettingsController.CurrentSettings.IsTrackingPartyLootOnly = field;
             OnPropertyChanged();
         }
     }
 
     public PartyBindings PartyBindings
     {
-        get => _partyBindings;
+        get;
         set
         {
-            _partyBindings = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public GuildBindings GuildBindings
     {
-        get => _guildBindings;
+        get;
         set
         {
-            _guildBindings = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public DamageMeterBindings DamageMeterBindings
     {
-        get => _damageMeterBindings;
+        get;
         set
         {
-            _damageMeterBindings = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public DungeonBindings DungeonBindings
     {
-        get => _dungeonBindings;
+        get;
         set
         {
-            _dungeonBindings = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public GatheringBindings GatheringBindings
     {
-        get => _gatheringBindings;
+        get;
         set
         {
-            _gatheringBindings = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
-    public OpenWorldBindings OpenWorldBindings
-    {
-        get => _openWorldBindings;
-        set
-        {
-            _openWorldBindings = value;
-            OnPropertyChanged();
-        }
-    }
 
     public CraftingBindings CraftingBindings
     {
-        get => _craftingBindings;
+        get;
         set
         {
-            _craftingBindings = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public UserTrackingBindings UserTrackingBindings
     {
-        get => _userTrackingBindings;
+        get;
         set
         {
-            _userTrackingBindings = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public PlayerInformationBindings PlayerInformationBindings
     {
-        get => _playerInformationBindings;
+        get;
         set
         {
-            _playerInformationBindings = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public double UsernameInfoWidth
     {
-        get => _usernameInfoWidth;
+        get;
         set
         {
-            _usernameInfoWidth = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public double GuildInfoWidth
     {
-        get => _guildInfoWidth;
+        get;
         set
         {
-            _guildInfoWidth = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public double AllianceInfoWidth
     {
-        get => _allianceInfoWidth;
+        get;
         set
         {
-            _allianceInfoWidth = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public double CurrentMapInfoWidth
     {
-        get => _currentMapInfoWidth;
+        get;
         set
         {
-            _currentMapInfoWidth = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public string MainTrackerTimer
-    {
-        get => _mainTrackerTimer;
-        set
-        {
-            _mainTrackerTimer = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public bool IsDataLoaded
     {
-        get => _isDataLoaded;
+        get;
         set
         {
-            _isDataLoaded = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public bool IsTrackingResetByMapChangeActive
     {
-        get => _isTrackingResetByMapChangeActive;
+        get;
         set
         {
-            _isTrackingResetByMapChangeActive = value;
-            SettingsController.CurrentSettings.IsTrackingResetByMapChangeActive = _isTrackingResetByMapChangeActive;
+            field = value;
+            SettingsController.CurrentSettings.IsTrackingResetByMapChangeActive = field;
             OnPropertyChanged();
         }
     }
 
     public LoggingBindings LoggingBindings
     {
-        get => _loggingBindings;
+        get;
         set
         {
-            _loggingBindings = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public bool IsTrackingActive
     {
-        get => _isTrackingActive;
+        get;
         set
         {
-            _isTrackingActive = value;
+            field = value;
             var trackingController = ServiceLocator.IsServiceInDictionary<TrackingController>()
                 ? ServiceLocator.Resolve<TrackingController>()
                 : null;
 
-            switch (_isTrackingActive)
+            switch (field)
             {
                 case true when trackingController is { ExistIndispensableInfos: false }:
                     TrackingActivityBindings.TrackingActiveText = MainWindowTranslation.TrackingIsPartiallyActive;
@@ -962,53 +964,59 @@ public class MainWindowViewModel : BaseViewModel
 
     public TrackingActivityBindings TrackingActivityBindings
     {
-        get => _trackingActivityBindings;
+        get;
         set
         {
-            _trackingActivityBindings = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public MainStatusBindings MainStatusBindings
     {
-        get => _mainStatusBindings;
+        get;
         set
         {
-            _mainStatusBindings = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public bool IsDamageMeterTrackingActive
     {
-        get => _isDamageMeterTrackingActive;
+        get;
         set
         {
-            _isDamageMeterTrackingActive = value;
+            field = value;
 
-            DamageMeterBindings.DamageMeterActivationToggleIcon = _isDamageMeterTrackingActive ? EFontAwesomeIcon.Solid_ToggleOn : EFontAwesomeIcon.Solid_ToggleOff;
+            DamageMeterBindings.DamageMeterActivationToggleIcon =
+                field ? EFontAwesomeIcon.Solid_ToggleOn : EFontAwesomeIcon.Solid_ToggleOff;
 
             var colorOn = new SolidColorBrush((Color) Application.Current.Resources["Color.Accent.Blue.2"]!);
             var colorOff = new SolidColorBrush((Color) Application.Current.Resources["Color.Text.1"]!);
-            DamageMeterBindings.DamageMeterActivationToggleColor = _isDamageMeterTrackingActive ? colorOn : colorOff;
+            DamageMeterBindings.DamageMeterActivationToggleColor = field ? colorOn : colorOff;
 
-            SettingsController.CurrentSettings.IsDamageMeterTrackingActive = _isDamageMeterTrackingActive;
+            SettingsController.CurrentSettings.IsDamageMeterTrackingActive = field;
             OnPropertyChanged();
         }
     }
 
-    public bool IsShowOnlyItemsWithAlertOnActive
+    public Visibility IsItemSearchPopupVisible
     {
-        get => _isShowOnlyItemsWithAlertOnActive;
+        get;
         set
         {
-            _isShowOnlyItemsWithAlertOnActive = value;
+            field = value;
+            OnPropertyChanged();
+        }
+    } = Visibility.Hidden;
 
-            if (value)
-            {
-                IsShowOnlyFavoritesActive = false;
-            }
+    public bool IsShowOnlyFavoritesActive
+    {
+        get;
+        set
+        {
+            field = value;
 
             ItemsViewFilter();
             ItemsView?.Refresh();
@@ -1016,27 +1024,12 @@ public class MainWindowViewModel : BaseViewModel
         }
     }
 
-    public Visibility IsItemSearchPopupVisible
+    public bool IsShowOnlyItemsWithAlertOnActive
     {
-        get => _isItemSearchPopupVisible;
+        get;
         set
         {
-            _isItemSearchPopupVisible = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public bool IsShowOnlyFavoritesActive
-    {
-        get => _isShowOnlyFavoritesActive;
-        set
-        {
-            _isShowOnlyFavoritesActive = value;
-
-            if (value)
-            {
-                IsShowOnlyItemsWithAlertOnActive = false;
-            }
+            field = value;
 
             ItemsViewFilter();
             ItemsView?.Refresh();
@@ -1046,42 +1039,42 @@ public class MainWindowViewModel : BaseViewModel
 
     public ObservableCollection<PartyMemberCircle> PartyMemberCircles
     {
-        get => _partyMemberCircles;
+        get;
         set
         {
-            _partyMemberCircles = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = [];
 
     public int PartyMemberNumber
     {
-        get => _partyMemberNumber;
+        get;
         set
         {
-            _partyMemberNumber = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public ObservableCollection<CategoryDropdownItem> ItemShopCategories
     {
-        get => _itemShopCategories;
+        get;
         set
         {
-            _itemShopCategories = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = [];
 
     public CategoryDropdownItem SelectedItemShopCategory
     {
-        get => _selectedItemShopCategory;
+        get;
         set
         {
-            _selectedItemShopCategory = value;
+            field = value;
 
-            var subCatsRaw = ItemController.GetSubCategories1(_selectedItemShopCategory?.Id);
+            var subCatsRaw = ItemController.GetSubCategories1(field?.Id);
             ItemSubCategories1 = ToCategoryDropdownItems(subCatsRaw);
 
             SelectedItemShopSubCategory1 = null;
@@ -1093,26 +1086,26 @@ public class MainWindowViewModel : BaseViewModel
 
     public ObservableCollection<CategoryDropdownItem> ItemSubCategories1
     {
-        get => _itemSubCategories1;
+        get;
         set
         {
-            _itemSubCategories1 = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = [];
 
     public CategoryDropdownItem SelectedItemShopSubCategory1
     {
-        get => _selectedItemShopSubCategory1;
+        get;
         set
         {
-            if (_selectedItemShopSubCategory1 != value)
+            if (field != value)
             {
-                _selectedItemShopSubCategory1 = value;
+                field = value;
 
-                if (_selectedItemShopSubCategory1 != null && SelectedItemShopCategory != null)
+                if (field != null && SelectedItemShopCategory != null)
                 {
-                    var subCats2Raw = ItemController.GetSubCategories2(SelectedItemShopCategory.Id, _selectedItemShopSubCategory1.Id);
+                    var subCats2Raw = ItemController.GetSubCategories2(SelectedItemShopCategory.Id, field.Id);
                     ItemSubCategories2 = ToCategoryDropdownItems(subCats2Raw);
                 }
                 else
@@ -1130,26 +1123,27 @@ public class MainWindowViewModel : BaseViewModel
 
     public ObservableCollection<CategoryDropdownItem> ItemSubCategories2
     {
-        get => _itemSubCategories2;
+        get;
         set
         {
-            _itemSubCategories2 = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = [];
 
     public CategoryDropdownItem SelectedItemShopSubCategory2
     {
-        get => _selectedItemShopSubCategory2;
+        get;
         set
         {
-            if (_selectedItemShopSubCategory2 != value)
+            if (field != value)
             {
-                _selectedItemShopSubCategory2 = value;
+                field = value;
 
-                if (_selectedItemShopSubCategory2 != null && SelectedItemShopCategory != null && SelectedItemShopSubCategory1 != null)
+                if (field != null && SelectedItemShopCategory != null && SelectedItemShopSubCategory1 != null)
                 {
-                    var subCats3Raw = ItemController.GetSubCategories3(SelectedItemShopCategory.Id, SelectedItemShopSubCategory1.Id, _selectedItemShopSubCategory2.Id);
+                    var subCats3Raw = ItemController.GetSubCategories3(SelectedItemShopCategory.Id,
+                        SelectedItemShopSubCategory1.Id, field.Id);
                     ItemSubCategories3 = ToCategoryDropdownItems(subCats3Raw);
                 }
                 else
@@ -1167,22 +1161,22 @@ public class MainWindowViewModel : BaseViewModel
 
     public ObservableCollection<CategoryDropdownItem> ItemSubCategories3
     {
-        get => _itemSubCategories3;
+        get;
         set
         {
-            _itemSubCategories3 = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = [];
 
     public CategoryDropdownItem SelectedItemShopSubCategory3
     {
-        get => _selectedItemShopSubCategory3;
+        get;
         set
         {
-            if (_selectedItemShopSubCategory3 != value)
+            if (field != value)
             {
-                _selectedItemShopSubCategory3 = value;
+                field = value;
                 ItemsViewFilter();
                 ItemsView?.Refresh();
                 OnPropertyChanged();
@@ -1192,20 +1186,20 @@ public class MainWindowViewModel : BaseViewModel
 
     public Dictionary<ItemTier, string> ItemTiers
     {
-        get => _itemTiers;
+        get;
         set
         {
-            _itemTiers = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public ItemTier SelectedItemTier
     {
-        get => _selectedItemTier;
+        get;
         set
         {
-            _selectedItemTier = value;
+            field = value;
             ItemsViewFilter();
             ItemsView?.Refresh();
             OnPropertyChanged();
@@ -1214,30 +1208,30 @@ public class MainWindowViewModel : BaseViewModel
 
     public bool IsCloseButtonActive
     {
-        get => _isCloseButtonActive;
+        get;
         set
         {
-            _isCloseButtonActive = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Dictionary<ItemLevel, string> ItemLevels
     {
-        get => _itemLevels;
+        get;
         set
         {
-            _itemLevels = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public ItemLevel SelectedItemLevel
     {
-        get => _selectedItemLevel;
+        get;
         set
         {
-            _selectedItemLevel = value;
+            field = value;
             ItemsView?.Refresh();
             SetItemCounterAsync();
             OnPropertyChanged();
@@ -1246,390 +1240,431 @@ public class MainWindowViewModel : BaseViewModel
 
     public int LocalImageCounter
     {
-        get => _localImageCounter;
+        get;
         set
         {
-            _localImageCounter = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public string ItemCounterString
     {
-        get => _itemCounterString;
+        get;
         set
         {
-            _itemCounterString = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public bool IsTxtSearchEnabled
     {
-        get => _isTxtSearchEnabled;
+        get;
         set
         {
-            _isTxtSearchEnabled = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public bool IsItemSearchCheckboxesEnabled
     {
-        get => _isItemSearchCheckboxesEnabled;
+        get;
         set
         {
-            _isItemSearchCheckboxesEnabled = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public bool IsFilterResetEnabled
     {
-        get => _isFilterResetEnabled;
+        get;
         set
         {
-            _isFilterResetEnabled = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Visibility LoadIconVisibility
     {
-        get => _loadIconVisibility;
+        get;
         set
         {
-            _loadIconVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Collapsed;
 
     public DashboardBindings DashboardBindings
     {
-        get => _dashboardBindings;
+        get;
         set
         {
-            _dashboardBindings = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public string LoadTranslation
     {
-        get => _loadTranslation;
+        get;
         set
         {
-            _loadTranslation = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public string NumberOfValuesTranslation
     {
-        get => _numberOfValuesTranslation;
+        get;
         set
         {
-            _numberOfValuesTranslation = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Visibility DebugModeVisibility
     {
-        get => _debugModeVisibility;
+        get;
         set
         {
-            _debugModeVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Collapsed;
 
     public ObservableCollection<MainStatObject> FactionPointStats
     {
-        get => _factionPointStats;
+        get;
         set
         {
-            _factionPointStats = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new() { new MainStatObject() { Value = 0, ValuePerHour = 0, CityFaction = CityFaction.Unknown } };
 
     public ObservableCollection<ISeries> SeriesDashboardHourValues
     {
-        get => _seriesDashboardHourValues;
+        get;
         set
         {
-            _seriesDashboardHourValues = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = [];
 
     public Axis[] XAxesDashboardHourValues
     {
-        get => _xAxesDashboardHourValues;
+        get;
         set
         {
-            _xAxesDashboardHourValues = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public ObservableCollection<DashboardChartRangeOption> DashboardChartRanges
     {
-        get => _dashboardChartRanges;
+        get;
         set
         {
-            _dashboardChartRanges = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = [];
 
     public DashboardChartRangeOption SelectedDashboardChartRange
     {
-        get => _selectedDashboardChartRange;
+        get;
         set
         {
-            _selectedDashboardChartRange = value;
+            field = value;
+            if (value != null)
+            {
+                SettingsController.CurrentSettings.SelectedDashboardChartRangeBucketCount = value.BucketCount;
+                SettingsController.CurrentSettings.SelectedDashboardChartRangeUnit = value.Unit;
+            }
             OnPropertyChanged();
         }
     }
 
     public ObservableCollection<DashboardChartSeriesFilter> DashboardChartSeriesFilters
     {
-        get => _dashboardChartSeriesFilters;
+        get;
         set
         {
-            _dashboardChartSeriesFilters = value;
+            field = value;
+            OnPropertyChanged();
+        }
+    } = [];
+
+    public ObservableCollection<DashboardContentFilterOption> DashboardContentFilters
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = [];
+
+    public DashboardContentFilterOption SelectedDashboardContentFilter
+    {
+        get;
+        set
+        {
+            field = value;
+            SettingsController.CurrentSettings.SelectedDashboardContentType = value?.ContentType;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<DashboardSessionFilterOption> DashboardSessionFilters
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = [];
+
+    public DashboardSessionFilterOption SelectedDashboardSessionFilter
+    {
+        get;
+        set
+        {
+            field = value;
+            if (DashboardSessionFilters.Count > 1 || SettingsController.CurrentSettings.SelectedDashboardSessionId is null)
+            {
+                SettingsController.CurrentSettings.SelectedDashboardSessionId = value?.SessionId;
+            }
             OnPropertyChanged();
         }
     }
 
     public double TaskProgressbarMinimum
     {
-        get => _taskProgressbarMinimum;
+        get;
         set
         {
-            _taskProgressbarMinimum = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public double TaskProgressbarMaximum
     {
-        get => _taskProgressbarMaximum;
+        get;
         set
         {
-            _taskProgressbarMaximum = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = 100;
 
     public double TaskProgressbarValue
     {
-        get => _taskProgressbarValue;
+        get;
         set
         {
-            _taskProgressbarValue = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public bool IsTaskProgressbarIndeterminate
     {
-        get => _isTaskProgressbarIndeterminate;
+        get;
         set
         {
-            _isTaskProgressbarIndeterminate = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Visibility ToolTasksVisibility
     {
-        get => _toolTasksVisibility;
+        get;
         set
         {
-            _toolTasksVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Collapsed;
 
     public Visibility StatsDropDownVisibility
     {
-        get => _statsDropDownVisibility;
+        get;
         set
         {
-            _statsDropDownVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Collapsed;
 
     public Visibility UnsupportedOsVisibility
     {
-        get => _unsupportedOsVisibility;
+        get;
         set
         {
-            _unsupportedOsVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Collapsed;
 
     public Visibility DashboardTabVisibility
     {
-        get => _dashboardTabVisibility;
+        get;
         set
         {
-            _dashboardTabVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Visible;
 
     public Visibility ItemSearchTabVisibility
     {
-        get => _itemSearchTabVisibility;
+        get;
         set
         {
-            _itemSearchTabVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Visible;
 
     public Visibility LoggingTabVisibility
     {
-        get => _loggingTabVisibility;
+        get;
         set
         {
-            _loggingTabVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Visible;
 
     public Visibility GuildTabVisibility
     {
-        get => _guildTabVisibility;
+        get;
         set
         {
-            _guildTabVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Visible;
 
     public Visibility DungeonsTabVisibility
     {
-        get => _dungeonsTabVisibility;
+        get;
         set
         {
-            _dungeonsTabVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Visible;
 
     public Visibility DamageMeterTabVisibility
     {
-        get => _damageMeterTabVisibility;
+        get;
         set
         {
-            _damageMeterTabVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Visible;
 
     public Visibility TradeMonitoringTabVisibility
     {
-        get => _tradeMonitoringTabVisibility;
+        get;
         set
         {
-            _tradeMonitoringTabVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Visible;
 
-    public Visibility OpenWorldTabVisibility
-    {
-        get => _openWorldTabVisibility;
-        set
-        {
-            _openWorldTabVisibility = value;
-            OnPropertyChanged();
-        }
-    }
 
     public Visibility GatheringTabVisibility
     {
-        get => _gatheringTabVisibility;
+        get;
         set
         {
-            _gatheringTabVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Visible;
 
     public Visibility CraftingTabVisibility
     {
-        get => _craftingTabVisibility;
+        get;
         set
         {
-            _craftingTabVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Visible;
 
     public Visibility PartyTabVisibility
     {
-        get => _partyTabVisibility;
+        get;
         set
         {
-            _partyTabVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Visible;
 
     public Visibility StorageHistoryTabVisibility
     {
-        get => _storageHistoryTabVisibility;
+        get;
         set
         {
-            _storageHistoryTabVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Visible;
 
     public Visibility MapHistoryTabVisibility
     {
-        get => _mapHistoryTabVisibility;
+        get;
         set
         {
-            _mapHistoryTabVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Visible;
 
     public Visibility PlayerInformationTabVisibility
     {
-        get => _playerInformationTabVisibility;
+        get;
         set
         {
-            _playerInformationTabVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Visible;
 
     public bool IsNavigationMenuOpen
     {
-        get => _isNavigationMenuOpen;
+        get;
         set
         {
-            if (_isNavigationMenuOpen == value)
+            if (field == value)
             {
                 return;
             }
 
-            _isNavigationMenuOpen = value;
-            SettingsController.CurrentSettings.IsNavigationMenuOpen = _isNavigationMenuOpen;
+            field = value;
+            SettingsController.CurrentSettings.IsNavigationMenuOpen = field;
             OnPropertyChanged();
             OnPropertyChanged(nameof(NavigationMenuWidth));
         }
-    }
+    } = true;
 
     public double NavigationMenuWidth
     {
@@ -1641,150 +1676,150 @@ public class MainWindowViewModel : BaseViewModel
 
     public double ToolTaskProgressBarValue
     {
-        get => _toolTaskProgressBarValue;
+        get;
         set
         {
-            _toolTaskProgressBarValue = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public string ToolTaskCurrentTaskName
     {
-        get => _toolTaskCurrentTaskName;
+        get;
         set
         {
-            _toolTaskCurrentTaskName = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Visibility ToolTaskFrontViewVisibility
     {
-        get => _toolTaskFrontViewVisibility;
+        get;
         set
         {
-            _toolTaskFrontViewVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Collapsed;
 
     public TradeMonitoringBindings TradeMonitoringBindings
     {
-        get => _tradeMonitoringBindings;
+        get;
         set
         {
-            _tradeMonitoringBindings = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public VaultBindings VaultBindings
     {
-        get => _vaultBindings;
+        get;
         set
         {
-            _vaultBindings = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public ObservableCollection<ClusterInfo> EnteredCluster
     {
-        get => _enteredCluster;
+        get;
         set
         {
-            _enteredCluster = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = new();
 
     public string ErrorBarText
     {
-        get => _errorBarText;
+        get;
         set
         {
-            _errorBarText = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Exception ErrorBarException
     {
-        get => _errorBarException;
+        get;
         set
         {
-            _errorBarException = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Visibility ErrorBarVisibility
     {
-        get => _errorBarVisibility;
+        get;
         set
         {
-            _errorBarVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Collapsed;
 
     public string WarningBarText
     {
-        get => _warningBarText;
+        get;
         set
         {
-            _warningBarText = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Visibility WarningBarVisibility
     {
-        get => _warningBarVisibility;
+        get;
         set
         {
-            _warningBarVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Collapsed;
 
     public string InformationBarText
     {
-        get => _informationBarText;
+        get;
         set
         {
-            _informationBarText = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Visibility InformationBarVisibility
     {
-        get => _informationBarVisibility;
+        get;
         set
         {
-            _informationBarVisibility = value;
+            field = value;
             OnPropertyChanged();
         }
-    }
+    } = Visibility.Collapsed;
 
     public string UpdateTranslation
     {
-        get => _updateTranslation;
+        get;
         set
         {
-            _updateTranslation = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public MainWindowTranslation Translation
     {
-        get => _translation;
+        get;
         set
         {
-            _translation = value;
+            field = value;
             OnPropertyChanged();
         }
     }

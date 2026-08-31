@@ -1,6 +1,8 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.DamageMeter;
+using StatisticsAnalysisTool.Models;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,6 +10,8 @@ namespace StatisticsAnalysisTool.Models.NetworkModel;
 
 public class PlayerGameObject : GameObject
 {
+    private ConcurrentDictionary<DashboardContentType, DamageMeterPlayerStats> _damageMeterContentStats = new();
+
     public PlayerGameObject(long? objectId)
     {
         ObjectId ??= objectId;
@@ -68,10 +72,65 @@ public class PlayerGameObject : GameObject
     public long Damage { get; set; }
     public long Heal { get; set; }
     public long TakenDamage { get; set; }
+    public int LastContributionWeaponItemIndex { get; set; }
     public List<UsedSpell> Spells { get; set; } = new();
     public long Overhealed { get; set; }
-    public double Dps => Utilities.GetValuePerSecondToDouble(Damage, CombatStart, CombatTime, 9999);
-    public double Hps => Utilities.GetValuePerSecondToDouble(Heal, CombatStart, CombatTime, 9999);
+    public double Dps => Utilities.GetValuePerSecondToDouble(Damage, CombatStart, GetCombatTime(DateTime.UtcNow), 9999);
+    public double Hps => Utilities.GetValuePerSecondToDouble(Heal, CombatStart, GetCombatTime(DateTime.UtcNow), 9999);
+
+    public DamageMeterPlayerStats GetOrCreateDamageMeterContentStats(DashboardContentType contentType)
+    {
+        return _damageMeterContentStats.GetOrAdd(contentType, _ => new DamageMeterPlayerStats());
+    }
+
+    public PlayerGameObject CreateDamageMeterContentView(DashboardContentType contentType)
+    {
+        if (!_damageMeterContentStats.TryGetValue(contentType, out var stats))
+        {
+            return null;
+        }
+
+        var player = new PlayerGameObject(ObjectId)
+        {
+            UserGuid = UserGuid,
+            InteractGuid = InteractGuid,
+            Name = Name,
+            Guild = Guild,
+            Alliance = Alliance,
+            IsInParty = IsInParty,
+            ItemPower = ItemPower,
+            CharacterEquipment = CharacterEquipment,
+            LastContributionWeaponItemIndex = LastContributionWeaponItemIndex,
+            ObjectType = ObjectType,
+            ObjectSubType = ObjectSubType
+        };
+
+        stats.ApplyTo(player);
+        return player;
+    }
+
+    public void CopyDamageMeterContentStatsFrom(PlayerGameObject source)
+    {
+        if (source == null)
+        {
+            return;
+        }
+
+        _damageMeterContentStats = source._damageMeterContentStats;
+    }
+
+    public void EndDamageMeterContentCombatIntervals(DateTime endTime)
+    {
+        foreach (var stats in _damageMeterContentStats.Values)
+        {
+            stats.EndCombatInterval(endTime);
+        }
+    }
+
+    public void ResetDamageMeterContentStats()
+    {
+        _damageMeterContentStats.Clear();
+    }
 
     public override string ToString()
     {
@@ -80,16 +139,52 @@ public class PlayerGameObject : GameObject
 
     #region Combat
 
-    public void AddCombatTime(ActionInterval actionInterval)
+    public void StartCombatInterval(DateTime startTime)
     {
-        CombatTimes.Add(actionInterval);
-        SetCombatTimeSpan();
+        lock (CombatTimes)
+        {
+            SetCombatTimeSpan();
+            if (CombatTimes.Any(x => x.EndTime == null))
+            {
+                return;
+            }
+
+            CombatTimes.Add(new ActionInterval(startTime));
+        }
+    }
+
+    public void EndCombatInterval(DateTime endTime)
+    {
+        lock (CombatTimes)
+        {
+            var combatTime = CombatTimes.FirstOrDefault(x => x.EndTime == null);
+            if (combatTime == null)
+            {
+                return;
+            }
+
+            combatTime.EndTime = endTime;
+            SetCombatTimeSpan();
+        }
+    }
+
+    public TimeSpan GetCombatTime(DateTime currentTime)
+    {
+        lock (CombatTimes)
+        {
+            return CombatTimes.Aggregate(
+                CombatTime,
+                (total, interval) => total + interval.GetDuration(currentTime));
+        }
     }
 
     public void ResetCombatTimes()
     {
-        CombatTimes.Clear();
-        CombatTime = new TimeSpan();
+        lock (CombatTimes)
+        {
+            CombatTimes.Clear();
+            CombatTime = TimeSpan.Zero;
+        }
     }
 
     private void SetCombatTimeSpan()

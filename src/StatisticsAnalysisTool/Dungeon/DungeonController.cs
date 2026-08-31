@@ -1,10 +1,10 @@
 using Serilog;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Dungeon.Models;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.GameFileData;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -13,8 +13,8 @@ using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -25,110 +25,161 @@ using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Dungeon;
 
-public sealed class DungeonController
+public sealed class DungeonController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
 {
-    private const int MaxDungeons = 9999;
     private const int NumberOfDungeonsUntilSaved = 1;
+    private const int DungeonRetentionYears = 2;
+    private const string AbyssalDepthsRewardChestName = "HD_DEMON_SOUL_REWARD";
+    private const float MaxDungeonExitAssociationDistanceSquared = 25f;
 
-    private readonly MainWindowViewModel _mainWindowViewModel;
-    private readonly TrackingController _trackingController;
+    private readonly object _saveSnapshotLock = new();
+    private List<DungeonDto> _preparedShutdownSaveSnapshot;
     private Guid? _currentGuid;
     private Guid? _lastMapGuid;
     private int _addDungeonCounter;
     private readonly List<DiscoveredItem> _discoveredLoot = [];
+    private readonly Dictionary<long, DungeonLootSource> _lootSources = [];
+    private readonly ConcurrentDictionary<int, (string UniqueName, TreasureRarity Rarity)> _pendingAbyssalDepthsChests = [];
     private readonly List<RandomDungeonExitInfo> _discoveredRandomDungeonExits = [];
+    private int? _selectedRandomDungeonExitObjectId;
 
-    public DungeonController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
+    private static bool IsTrackingActive => SettingsController.CurrentSettings.IsDungeonTrackingActive;
+
+    public async Task ApplyTrackingStateAsync(bool isTrackingActive)
     {
-        _trackingController = trackingController;
-        _mainWindowViewModel = mainWindowViewModel;
+        mainWindowViewModel.DungeonBindings.IsDungeonTrackingActive = isTrackingActive;
 
-        if (_mainWindowViewModel?.DungeonBindings?.Dungeons != null)
+        if (!isTrackingActive)
         {
-            _mainWindowViewModel.DungeonBindings.Dungeons.CollectionChanged += OnCollectionChanged;
+            await CompleteActiveDungeonsAsync();
         }
+
+        ResetTrackingContext();
     }
 
-    private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    private void ResetTrackingContext()
     {
-        _mainWindowViewModel?.DungeonBindings?.Stats.Set(_mainWindowViewModel?.DungeonBindings?.Dungeons);
+        _currentGuid = null;
+        _lastMapGuid = null;
+        _currentItemContainer = null;
+        ResetLocalPlayerDiscoveredLoot();
+        ClearRandomDungeonExits();
     }
 
     public async Task AddDungeonAsync(MapType mapType, Guid? mapGuid, string sourceClusterIndex, WorldPosition? sourceExitPosition)
     {
-        if (!_trackingController.IsTrackingAllowedByMainCharacter())
+        if (!IsTrackingActive || !trackingController.IsTrackingAllowedByMainCharacter())
         {
             return;
         }
 
-        UpdateDungeonSaveTimerUi();
+        var dungeonGuid = GetDungeonTrackingGuid(mapType, mapGuid);
+        _currentGuid = dungeonGuid;
 
-        _currentGuid = mapGuid;
-
-        // Last map is a dungeon, add new map
-        if (IsDungeonCluster(mapType, mapGuid)
-            && ExistDungeon(_lastMapGuid)
-            && mapType is not MapType.CorruptedDungeon
-            && mapType is not MapType.HellGate
-            && mapType is not MapType.Mists
-            && mapType is not MapType.MistsDungeon)
+        if (IsDungeonCluster(mapType, dungeonGuid))
         {
-            if (AddClusterToExistDungeon(mapGuid, _lastMapGuid, out var currentDungeon))
+            if (TryAddClusterToExistingDungeon(mapType, dungeonGuid, _lastMapGuid, out var currentDungeon))
             {
                 currentDungeon.AddTimer(DateTime.UtcNow);
             }
-        }
-        // Add new dungeon
-        else if (IsDungeonCluster(mapType, mapGuid)
-                 && !ExistDungeon(_lastMapGuid)
-                 && !ExistDungeon(_currentGuid)
-                 || (IsDungeonCluster(mapType, mapGuid)
-                 && mapType is MapType.CorruptedDungeon or MapType.HellGate or MapType.Mists or MapType.MistsDungeon or MapType.AbyssalDepths))
-        {
-            UpdateDungeonSaveTimerUi(mapType);
-
-            if (mapType is MapType.CorruptedDungeon or MapType.HellGate or MapType.Mists or MapType.MistsDungeon or MapType.AbyssalDepths)
+            else if (StartsNewDungeonRun(mapType) || !ExistDungeon(_currentGuid))
             {
-                var lastDungeon = GetDungeon(_lastMapGuid);
-                lastDungeon?.EndTimer();
+                await AddNewDungeonAsync(mapType, dungeonGuid, sourceClusterIndex, sourceExitPosition);
             }
-
-            _mainWindowViewModel.DungeonBindings.Dungeons.Where(x => x.Status != DungeonStatus.Done).ToList().ForEach(x => x.Status = DungeonStatus.Done);
-
-            var newDungeon = CreateNewDungeon(mapType, ClusterController.CurrentCluster.SourceClusterIndex, mapGuid);
-            UpdateCurrentDungeonLevel(newDungeon, sourceClusterIndex, sourceExitPosition);
-            await Application.Current.Dispatcher.InvokeAsync(() =>
+            else if (GetDungeon(_currentGuid) is { Status: not DungeonStatus.Active } existingDungeon)
             {
-                _mainWindowViewModel.DungeonBindings.Dungeons.Insert(0, newDungeon);
-            });
+                existingDungeon.Status = DungeonStatus.Active;
+                existingDungeon.AddTimer(DateTime.UtcNow);
+            }
         }
-        // Activate exist dungeon again
-        else if (IsDungeonCluster(mapType, mapGuid)
-                 && !ExistDungeon(_lastMapGuid)
-                 && ExistDungeon(_currentGuid)
-                 || IsDungeonCluster(mapType, mapGuid)
-                 && mapType is MapType.CorruptedDungeon or MapType.HellGate or MapType.Mists or MapType.MistsDungeon or MapType.AbyssalDepths)
-        {
-            UpdateDungeonSaveTimerUi(mapType);
-
-            var currentDungeon = GetDungeon(_currentGuid);
-            currentDungeon.Status = DungeonStatus.Active;
-            currentDungeon.AddTimer(DateTime.UtcNow);
-        }
-        // Make last dungeon done
-        else if (mapGuid == null && ExistDungeon(_lastMapGuid))
+        else if (ExistDungeon(_lastMapGuid))
         {
             ClearRandomDungeonExits();
-            var lastDungeon = GetDungeon(_lastMapGuid);
-            lastDungeon.EndTimer();
-            lastDungeon.Status = DungeonStatus.Done;
-            await SaveInFileAfterExceedingLimit(NumberOfDungeonsUntilSaved);
+            await CompleteActiveDungeonsAsync();
         }
 
-        _lastMapGuid = mapGuid;
+        _lastMapGuid = dungeonGuid;
+    }
 
-        await RemoveDungeonsAfterCertainNumberAsync(_mainWindowViewModel.DungeonBindings.Dungeons, MaxDungeons);
-        await Application.Current.Dispatcher.InvokeAsync(_mainWindowViewModel.DungeonBindings.UpdateFilteredDungeonsAsync);
+    private async Task AddNewDungeonAsync(MapType mapType, Guid? dungeonGuid, string sourceClusterIndex, WorldPosition? sourceExitPosition)
+    {
+        await CompleteActiveDungeonsAsync();
+
+        if (!IsTrackingActive)
+        {
+            return;
+        }
+
+        var mainMapIndex = GetMainMapIndex(mapType, sourceClusterIndex);
+        var newDungeon = CreateNewDungeon(mapType, mainMapIndex, dungeonGuid);
+        newDungeon.PartySize = Math.Max(1, mainWindowViewModel.PartyBindings.Party.Count);
+        UpdateCurrentDungeonFromEntrance(newDungeon, sourceClusterIndex, sourceExitPosition);
+        ClearRandomDungeonExits();
+        await Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            if (!IsTrackingActive)
+            {
+                return;
+            }
+
+            mainWindowViewModel.DungeonBindings.Dungeons.Insert(0, newDungeon);
+        });
+    }
+
+    private async Task CompleteActiveDungeonsAsync()
+    {
+        var activeDungeons = mainWindowViewModel.DungeonBindings.Dungeons
+            .Where(x => x.Status != DungeonStatus.Done)
+            .ToList();
+        if (activeDungeons.Count == 0)
+        {
+            return;
+        }
+
+        foreach (var dungeon in activeDungeons)
+        {
+            dungeon.EndTimer();
+            dungeon.Status = DungeonStatus.Done;
+        }
+
+        await SaveInFileAfterExceedingLimit(NumberOfDungeonsUntilSaved);
+    }
+
+    private bool TryAddClusterToExistingDungeon(MapType mapType, Guid? currentGuid, Guid? lastGuid, out DungeonBaseFragment dungeon)
+    {
+        dungeon = null;
+        if (StartsNewDungeonRun(mapType))
+        {
+            return false;
+        }
+
+        var lastDungeon = GetDungeon(lastGuid);
+        if (lastDungeon?.MapType != mapType)
+        {
+            return false;
+        }
+
+        return AddClusterToExistDungeon(currentGuid, lastGuid, out dungeon);
+    }
+
+    private static bool StartsNewDungeonRun(MapType mapType)
+    {
+        return mapType is MapType.CorruptedDungeon
+            or MapType.HellGate
+            or MapType.Mists
+            or MapType.MistsDungeon
+            or MapType.DragonArea
+            or MapType.StaticDungeon;
+    }
+
+    private static Guid? GetDungeonTrackingGuid(MapType mapType, Guid? mapGuid)
+    {
+        return mapType == MapType.StaticDungeon ? Guid.NewGuid() : mapGuid;
+    }
+
+    private static string GetMainMapIndex(MapType mapType, string sourceClusterIndex)
+    {
+        return mapType == MapType.StaticDungeon ? sourceClusterIndex : ClusterController.CurrentCluster.SourceClusterIndex;
     }
 
     private static DungeonBaseFragment CreateNewDungeon(MapType mapType, string mainMapIndex, Guid? guid)
@@ -142,7 +193,12 @@ public sealed class DungeonController
         switch (mapType)
         {
             case MapType.RandomDungeon:
-                var dungeonMode = DungeonData.GetDungeonMode(mainMapIndex);
+                var dungeonMode = DungeonData.GetDungeonMode(
+                    mainMapIndex,
+                    ClusterController.CurrentCluster.SourceClusterIndex,
+                    ClusterController.CurrentCluster.Index,
+                    ClusterController.CurrentCluster.UniqueName,
+                    ClusterController.CurrentCluster.UniqueClusterName);
                 newDungeon = new RandomDungeonFragment((Guid) guid, mapType, dungeonMode, mainMapIndex);
                 break;
             case MapType.CorruptedDungeon:
@@ -164,6 +220,16 @@ public sealed class DungeonController
             case MapType.AbyssalDepths:
                 newDungeon = new AbyssalDepthsFragment((Guid) guid, mapType, DungeonMode.AbyssalDepths, mainMapIndex);
                 break;
+            case MapType.DragonArea:
+                newDungeon = new DragonAreaFragment((Guid) guid, mapType, DungeonMode.DragonArea, mainMapIndex);
+                break;
+            case MapType.StaticDungeon:
+                var faction = DungeonData.GetFaction(
+                    ClusterController.CurrentCluster.Index,
+                    ClusterController.CurrentCluster.File,
+                    ClusterController.CurrentCluster.UniqueName);
+                newDungeon = new StaticDungeonFragment((Guid) guid, mainMapIndex, faction, ClusterController.CurrentCluster.Tier);
+                break;
             default:
                 newDungeon = null;
                 break;
@@ -174,37 +240,37 @@ public sealed class DungeonController
 
     public void ResetDungeons()
     {
-        _mainWindowViewModel.DungeonBindings.Dungeons.Clear();
-        Application.Current.Dispatcher.Invoke(() => { _mainWindowViewModel?.DungeonBindings?.Dungeons?.Clear(); });
+        mainWindowViewModel.DungeonBindings.Dungeons.Clear();
+        Application.Current.Dispatcher.Invoke(() => { mainWindowViewModel?.DungeonBindings?.Dungeons?.Clear(); });
     }
 
     public void ResetDungeonsByDateAscending(DateTime date)
     {
-        var dungeonsToDelete = _mainWindowViewModel.DungeonBindings.Dungeons?.Where(x => x.EnterDungeonFirstTime >= date).ToList();
+        var dungeonsToDelete = mainWindowViewModel.DungeonBindings.Dungeons?.Where(x => x.EnterDungeonFirstTime >= date).ToList();
         foreach (var dungeonObject in dungeonsToDelete ?? [])
         {
-            _mainWindowViewModel.DungeonBindings.Dungeons?.Remove(dungeonObject);
+            mainWindowViewModel.DungeonBindings.Dungeons?.Remove(dungeonObject);
         }
 
-        var trackingDungeonsToDelete = _mainWindowViewModel?.DungeonBindings?.Dungeons?.Where(x => x.EnterDungeonFirstTime >= date).ToList();
+        var trackingDungeonsToDelete = mainWindowViewModel?.DungeonBindings?.Dungeons?.Where(x => x.EnterDungeonFirstTime >= date).ToList();
         foreach (var dungeonObject in trackingDungeonsToDelete ?? [])
         {
-            _mainWindowViewModel?.DungeonBindings?.Dungeons?.Remove(dungeonObject);
+            mainWindowViewModel?.DungeonBindings?.Dungeons?.Remove(dungeonObject);
         }
     }
 
     public void DeleteDungeonsWithZeroFame()
     {
-        var dungeonsToDelete = _mainWindowViewModel.DungeonBindings.Dungeons?.Where(x => x.Fame <= 0 && x.Status != DungeonStatus.Active).ToList();
+        var dungeonsToDelete = mainWindowViewModel.DungeonBindings.Dungeons?.Where(x => x.Fame <= 0 && x.Status != DungeonStatus.Active).ToList();
         foreach (var dungeonObject in dungeonsToDelete ?? [])
         {
-            _mainWindowViewModel.DungeonBindings.Dungeons?.Remove(dungeonObject);
+            mainWindowViewModel.DungeonBindings.Dungeons?.Remove(dungeonObject);
         }
     }
 
     public void RemoveDungeon(string dungeonHash)
     {
-        var dungeon = _mainWindowViewModel.DungeonBindings.Dungeons.FirstOrDefault(x => x.DungeonHash.Contains(dungeonHash));
+        var dungeon = mainWindowViewModel.DungeonBindings.Dungeons.FirstOrDefault(x => x.DungeonHash.Contains(dungeonHash));
 
         if (dungeon == null)
         {
@@ -219,51 +285,16 @@ public sealed class DungeonController
             return;
         }
 
-        _ = _mainWindowViewModel.DungeonBindings.Dungeons.Remove(dungeon);
-    }
-
-    private async Task RemoveDungeonsAfterCertainNumberAsync(ICollection<DungeonBaseFragment> dungeons, int dungeonLimit)
-    {
-        try
-        {
-            var toDelete = dungeons?.Count - dungeonLimit;
-
-            if (toDelete <= 0)
-            {
-                return;
-            }
-
-            await Application.Current.Dispatcher.InvokeAsync(async () =>
-            {
-                for (var i = toDelete; i <= 0; i--)
-                {
-                    var dateTime = GetLowestDate(dungeons);
-                    if (dateTime == null)
-                    {
-                        continue;
-                    }
-
-                    var removableItem = dungeons?.FirstOrDefault(x => x.EnterDungeonFirstTime == dateTime);
-                    dungeons?.Remove(removableItem);
-                }
-
-                await _mainWindowViewModel.DungeonBindings.UpdateFilteredDungeonsAsync();
-            });
-        }
-        catch (Exception e)
-        {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-        }
+        _ = mainWindowViewModel.DungeonBindings.Dungeons.Remove(dungeon);
     }
 
     public async Task RemoveDungeonByHashAsync(IEnumerable<string> dungeonHash)
     {
-        await foreach (var dungeons in _mainWindowViewModel.DungeonBindings.Dungeons.ToList().ToAsyncEnumerable())
+        await foreach (var dungeons in mainWindowViewModel.DungeonBindings.Dungeons.ToList().ToAsyncEnumerable())
         {
             if (dungeonHash.Contains(dungeons.DungeonHash))
             {
-                _mainWindowViewModel.DungeonBindings.Dungeons.Remove(dungeons);
+                mainWindowViewModel.DungeonBindings.Dungeons.Remove(dungeons);
             }
         }
 
@@ -272,74 +303,135 @@ public sealed class DungeonController
 
     private bool AddClusterToExistDungeon(Guid? currentGuid, Guid? lastGuid, out DungeonBaseFragment dungeon)
     {
-        if (currentGuid != null && lastGuid != null && _mainWindowViewModel.DungeonBindings.Dungeons?.Any(x => x.GuidList.Contains((Guid) currentGuid)) != true)
+        if (currentGuid != null && lastGuid != null && mainWindowViewModel.DungeonBindings.Dungeons?.Any(x => x.GuidList.Contains((Guid) currentGuid)) != true)
         {
-            var dun = _mainWindowViewModel.DungeonBindings.Dungeons?.FirstOrDefault(x => x.GuidList.Contains((Guid) lastGuid));
+            var dun = mainWindowViewModel.DungeonBindings.Dungeons?.FirstOrDefault(x => x.GuidList.Contains((Guid) lastGuid));
             dun?.GuidList.Add((Guid) currentGuid);
 
             dungeon = dun;
 
-            return _mainWindowViewModel.DungeonBindings.Dungeons?.Any(x => x.GuidList.Contains((Guid) currentGuid)) ?? false;
+            return mainWindowViewModel.DungeonBindings.Dungeons?.Any(x => x.GuidList.Contains((Guid) currentGuid)) ?? false;
         }
 
         dungeon = null;
         return false;
     }
 
-    public static DateTime? GetLowestDate(IEnumerable<DungeonBaseFragment> items)
-    {
-        if (items?.Count() <= 0)
-        {
-            return null;
-        }
-
-        try
-        {
-            return items?.Select(x => x.EnterDungeonFirstTime).Min();
-        }
-        catch (ArgumentNullException e)
-        {
-            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            return null;
-        }
-    }
-
     #region Dungeon object
 
-    public void SetDungeonChestOpen(int id, List<Guid> allowedToOpen)
+    public async Task UpdateDungeonChestAsync(int id, List<Guid> allowedToOpen, bool isOpened, TreasureRarity rarity)
     {
-        if (!_trackingController.EntityController.IsAnyEntityInParty(allowedToOpen))
+        if (_currentGuid is not { } currentGuid)
         {
             return;
         }
 
-        if (_currentGuid != null)
+        var isAbyssalDepths = GetCurrentDungeonMode() == DungeonMode.AbyssalDepths;
+        if (isAbyssalDepths && !isOpened)
         {
-            try
+            CacheAbyssalDepthsChestRarity(id, rarity);
+            return;
+        }
+
+        if (!isOpened || !trackingController.EntityController.IsAnyEntityInParty(allowedToOpen))
+        {
+            return;
+        }
+
+        var openedChestName = string.Empty;
+        try
+        {
+            await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                var dun = GetDungeon((Guid) _currentGuid);
+                var dun = GetDungeon(currentGuid);
                 var chest = dun?.Events?.FirstOrDefault(x => x?.Id == id);
-                if (chest != null)
+                if (chest == null && dun?.Mode == DungeonMode.AbyssalDepths)
                 {
-                    chest.Status = ChestStatus.Open;
-                    chest.Opened = DateTime.UtcNow;
+                    var hasPendingChest = _pendingAbyssalDepthsChests.TryRemove(id, out var pendingChest);
+                    var uniqueName = hasPendingChest ? pendingChest.UniqueName : AbyssalDepthsRewardChestName;
+                    var openedRarity = rarity != TreasureRarity.Unknown ? rarity : hasPendingChest && pendingChest.Rarity != TreasureRarity.Unknown ? pendingChest.Rarity : TreasureRarity.Common;
+                    chest = new PointOfInterest(id, uniqueName, openedRarity);
+                    dun.Events?.Add(chest);
+                    openedChestName = uniqueName;
                 }
-            }
-            catch (Exception e)
+
+                if (chest == null)
+                {
+                    return;
+                }
+
+                var resolvedRarity = ResolveOpenedChestRarity(dun, rarity);
+                if (resolvedRarity != TreasureRarity.Unknown)
+                {
+                    chest.Rarity = resolvedRarity;
+                }
+
+                chest.Status = ChestStatus.Open;
+                chest.Opened = DateTime.UtcNow;
+            });
+
+            if (!string.IsNullOrWhiteSpace(openedChestName))
             {
-                DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+                SetLootSource(id, openedChestName, DungeonLootSourceType.Chest);
             }
         }
+        catch (Exception e)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+        }
+    }
+
+    public async Task RegisterDungeonChestAsync(int id, string uniqueName, TreasureRarity networkRarity)
+    {
+        if (GetCurrentDungeonMode() == DungeonMode.AbyssalDepths)
+        {
+            if (id > 0 && !string.IsNullOrWhiteSpace(uniqueName))
+            {
+                _pendingAbyssalDepthsChests.AddOrUpdate(
+                    id,
+                    (uniqueName, TreasureRarity.Unknown),
+                    (_, pendingChest) => (uniqueName, pendingChest.Rarity));
+            }
+
+            return;
+        }
+
+        var rarity = networkRarity != TreasureRarity.Unknown
+            ? networkRarity
+            : DungeonData.GetChestRarity(uniqueName);
+        await SetDungeonEventInformationAsync(id, uniqueName, rarity);
+    }
+
+    private static TreasureRarity ResolveOpenedChestRarity(DungeonBaseFragment dungeon, TreasureRarity networkRarity)
+    {
+        if (networkRarity != TreasureRarity.Unknown)
+        {
+            return networkRarity;
+        }
+
+        return dungeon?.Mode == DungeonMode.DragonArea ? TreasureRarity.Common : TreasureRarity.Unknown;
+    }
+
+    private void CacheAbyssalDepthsChestRarity(int id, TreasureRarity rarity)
+    {
+        if (id <= 0 || rarity == TreasureRarity.Unknown)
+        {
+            return;
+        }
+
+        _pendingAbyssalDepthsChests.AddOrUpdate(
+            id,
+            (AbyssalDepthsRewardChestName, rarity),
+            (_, pendingChest) => (pendingChest.UniqueName, rarity));
     }
 
     private DungeonBaseFragment GetDungeon(Guid? guid)
     {
-        return guid == null ? null : _mainWindowViewModel.DungeonBindings.Dungeons.FirstOrDefault(x => x.GuidList.Contains((Guid) guid));
+        return !IsTrackingActive || guid == null ? null : mainWindowViewModel.DungeonBindings.Dungeons.FirstOrDefault(x => x.GuidList.Contains((Guid) guid));
     }
 
-    public async Task SetDungeonEventInformationAsync(int id, string uniqueName)
+    public async Task SetDungeonEventInformationAsync(int id, string uniqueName, TreasureRarity rarity = TreasureRarity.Unknown)
     {
         if (_currentGuid == null || uniqueName == null)
         {
@@ -354,8 +446,12 @@ public sealed class DungeonController
                 return;
             }
 
-            var eventObject = new PointOfInterest(id, uniqueName);
-            await Application.Current.Dispatcher.InvokeAsync(() => { dun.Events?.Add(eventObject); });
+            var eventObject = new PointOfInterest(id, uniqueName, rarity);
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                dun.Events?.Add(eventObject);
+                UpdateDragonAreaPortalSize(dun, uniqueName);
+            });
 
             if (dun.Faction == Faction.Unknown)
             {
@@ -374,13 +470,35 @@ public sealed class DungeonController
         }
     }
 
+    public DungeonMode GetCurrentDungeonMode()
+    {
+        var dungeons = mainWindowViewModel.DungeonBindings.Dungeons;
+        if (dungeons is null || _currentGuid is null)
+        {
+            return DungeonMode.Unknown;
+        }
+
+        lock (dungeons)
+        {
+            var currentDungeon = dungeons.FirstOrDefault(x =>
+                x.GuidList.Contains(_currentGuid.Value)
+                && x.Status == DungeonStatus.Active);
+            return currentDungeon?.Mode ?? DungeonMode.Unknown;
+        }
+    }
+
     public void AddValueToDungeon(double value, ValueType valueType, CityFaction cityFaction = CityFaction.Unknown)
     {
+        if (!IsTrackingActive)
+        {
+            return;
+        }
+
         try
         {
-            lock (_mainWindowViewModel.DungeonBindings.Dungeons)
+            lock (mainWindowViewModel.DungeonBindings.Dungeons)
             {
-                var dun = _mainWindowViewModel.DungeonBindings.Dungeons?.FirstOrDefault(x => _currentGuid != null && x.GuidList.Contains((Guid) _currentGuid) && x.Status == DungeonStatus.Active);
+                var dun = mainWindowViewModel.DungeonBindings.Dungeons?.FirstOrDefault(x => _currentGuid != null && x.GuidList.Contains((Guid) _currentGuid) && x.Status == DungeonStatus.Active);
 
                 switch (dun)
                 {
@@ -405,6 +523,12 @@ public sealed class DungeonController
                     case AbyssalDepthsFragment abyssalDepths:
                         abyssalDepths.Add(value, valueType);
                         break;
+                    case DragonAreaFragment dragonArea:
+                        dragonArea.Add(value, valueType);
+                        break;
+                    case StaticDungeonFragment staticDungeon:
+                        staticDungeon.Add(value, valueType);
+                        break;
                 }
             }
         }
@@ -414,31 +538,47 @@ public sealed class DungeonController
         }
     }
 
-    public void SetDiedIfInDungeon(DiedObject dieObject)
+    public async Task SetDiedIfInDungeonAsync(DiedObject dieObject)
     {
-        if (_currentGuid == null || _trackingController.EntityController.LocalUserData.Username == null)
+        if (!IsTrackingActive
+            || _currentGuid is not { } currentGuid
+            || trackingController.EntityController.LocalUserData.Username is not { } username)
         {
             return;
         }
 
-        var dungeon = _mainWindowViewModel.DungeonBindings.Dungeons.FirstOrDefault(x => x.GuidList.Contains((Guid) _currentGuid));
+        var dispatcher = Application.Current?.Dispatcher;
+        if (dispatcher is null || dispatcher.CheckAccess())
+        {
+            AddCombatEventIfInDungeon(currentGuid, username, dieObject);
+            return;
+        }
+
+        await dispatcher.InvokeAsync(() => AddCombatEventIfInDungeon(currentGuid, username, dieObject));
+    }
+
+    private void AddCombatEventIfInDungeon(Guid currentGuid, string username, DiedObject dieObject)
+    {
+        if (!IsTrackingActive)
+        {
+            return;
+        }
+
+        var dungeon = mainWindowViewModel.DungeonBindings.Dungeons.FirstOrDefault(x => x.GuidList.Contains(currentGuid));
 
         if (dungeon is null)
         {
             return;
         }
 
-        if (dieObject.DiedName == _trackingController.EntityController.LocalUserData.Username)
+        if (dieObject.DiedName == username)
         {
-            dungeon.KillStatus = KillStatus.LocalPlayerDead;
+            dungeon.AddCombatEvent(KillStatus.LocalPlayerDead, dieObject.DiedName, dieObject.KilledBy);
         }
-        else if (dieObject.KilledBy == _trackingController.EntityController.LocalUserData.Username)
+        else if (dieObject.KilledBy == username)
         {
-            dungeon.KillStatus = KillStatus.OpponentDead;
+            dungeon.AddCombatEvent(KillStatus.OpponentDead, dieObject.DiedName, dieObject.KilledBy);
         }
-
-        dungeon.DiedName = dieObject.DiedName;
-        dungeon.KilledBy = dieObject.KilledBy;
     }
 
     #endregion
@@ -463,33 +603,114 @@ public sealed class DungeonController
         }
     }
 
-    public void UpdateCurrentDungeonLevel(DungeonBaseFragment dungeon, string sourceClusterIndex, WorldPosition? worldPosition)
+    public void SelectRandomDungeonExit(int objectId)
     {
-        if (dungeon is not RandomDungeonFragment { IsLevelLockedFromEntrance: false } randomDungeon)
+        lock (_discoveredRandomDungeonExits)
+        {
+            _selectedRandomDungeonExitObjectId = _discoveredRandomDungeonExits.Any(x => x.ObjectId == objectId) ? objectId : null;
+        }
+    }
+
+    private void UpdateCurrentDungeonFromEntrance(DungeonBaseFragment dungeon, string sourceClusterIndex, WorldPosition? worldPosition)
+    {
+        if (dungeon is not (RandomDungeonFragment or MistsFragment or DragonAreaFragment))
         {
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(sourceClusterIndex) || worldPosition is not { } sourceWorldPosition)
+        if (string.IsNullOrWhiteSpace(sourceClusterIndex))
         {
             return;
         }
 
         lock (_discoveredRandomDungeonExits)
         {
-            var discoveredRandomDungeonExit = FindDiscoveredRandomDungeonExit(sourceClusterIndex, sourceWorldPosition);
-            if (discoveredRandomDungeonExit?.HasVisibleLevel != true)
+            var discoveredRandomDungeonExit = FindDiscoveredRandomDungeonExit(sourceClusterIndex, worldPosition, dungeon);
+            _selectedRandomDungeonExitObjectId = null;
+            if (discoveredRandomDungeonExit is null)
             {
                 return;
             }
 
-            randomDungeon.TrySetLevelFromEntrance(discoveredRandomDungeonExit.Level);
+            switch (dungeon)
+            {
+                case RandomDungeonFragment randomDungeon:
+                    UpdateRandomDungeonFromEntrance(randomDungeon, discoveredRandomDungeonExit);
+                    break;
+                case MistsFragment mists:
+                    UpdateMistsFromEntrance(mists, discoveredRandomDungeonExit);
+                    break;
+                case DragonAreaFragment dragonArea:
+                    UpdateDragonAreaFromEntrance(dragonArea, discoveredRandomDungeonExit);
+                    break;
+            }
+        }
+    }
+
+    private static void UpdateRandomDungeonFromEntrance(RandomDungeonFragment dungeon, RandomDungeonExitInfo exit)
+    {
+        dungeon.MobHitPointsFactor = DungeonData.GetDungeonMobHitPointsFactor(exit.DungeonType);
+        dungeon.ZoneLootFactor = DungeonData.GetDungeonZoneLootFactor(exit.DungeonType);
+        dungeon.TrySetTierFromEntrance(DungeonData.GetDungeonTierFromExit(exit.UniqueName));
+
+        var dungeonMode = DungeonData.GetRandomDungeonModeFromExit(exit.UniqueName);
+        if (dungeonMode != DungeonMode.Unknown)
+        {
+            dungeon.Mode = dungeonMode;
+        }
+
+        var faction = DungeonData.GetFaction(exit.UniqueName);
+        if (faction != Faction.Unknown)
+        {
+            dungeon.Faction = faction;
+        }
+
+        if (exit.HasVisibleLevel)
+        {
+            dungeon.TrySetLevelFromEntrance(exit.Level);
+        }
+    }
+
+    private static void UpdateMistsFromEntrance(MistsFragment mists, RandomDungeonExitInfo exit)
+    {
+        var rarity = exit.ResolvedMistsRarity;
+        var mistsType = exit.ResolvedMistsType;
+        if (mistsType != MistsType.Unknown)
+        {
+            mists.PortalType = mistsType;
+        }
+
+        if (rarity != MistsRarity.Unknown)
+        {
+            mists.Rarity = rarity;
+        }
+    }
+
+    private static void UpdateDragonAreaFromEntrance(DragonAreaFragment dragonArea, RandomDungeonExitInfo exit)
+    {
+        if (exit.ResolvedDragonAreaPortalSize != DragonAreaPortalSize.Unknown)
+        {
+            dragonArea.PortalSize = exit.ResolvedDragonAreaPortalSize;
+        }
+    }
+
+    private static void UpdateDragonAreaPortalSize(DungeonBaseFragment dungeon, string uniqueName)
+    {
+        if (dungeon is not DragonAreaFragment dragonArea)
+        {
+            return;
+        }
+
+        var portalSize = DragonAreaPortalSizeResolver.FromUniqueName(uniqueName);
+        if (portalSize != DragonAreaPortalSize.Unknown)
+        {
+            dragonArea.PortalSize = portalSize;
         }
     }
 
     public void UpdateCurrentDungeonLevel(int? mobIndex, double hitPointsMax)
     {
-        if (_currentGuid is not { } currentDungeonGuid || mobIndex is null)
+        if (!IsTrackingActive || _currentGuid is not { } currentDungeonGuid || mobIndex is null)
         {
             return;
         }
@@ -513,18 +734,91 @@ public sealed class DungeonController
         }
     }
 
-    private RandomDungeonExitInfo FindDiscoveredRandomDungeonExit(string sourceClusterIndex, WorldPosition worldPosition)
+    public void UpdateCurrentDungeonLevelFromLootChest(int objectId, double combinedLootFactor)
     {
-        return _discoveredRandomDungeonExits.FirstOrDefault(x =>
-            x.SourceClusterIndex == sourceClusterIndex
-            && x.SourceExitPosition is { } sourceExitPosition
-            && sourceExitPosition.X.Equals(worldPosition.X)
-            && sourceExitPosition.Y.Equals(worldPosition.Y));
+        if (!IsTrackingActive || _currentGuid is not { } currentDungeonGuid)
+        {
+            return;
+        }
+
+        try
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                TryUpdateCurrentDungeonLevelFromLootChest(currentDungeonGuid, objectId, combinedLootFactor);
+            });
+        }
+        catch (Exception e)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+        }
     }
 
-    private void TryUpdateCurrentDungeonLevelFromMob(Guid currentDungeonGuid, int mobIndex, double hitPointsMax)
+    private RandomDungeonExitInfo FindDiscoveredRandomDungeonExit(string sourceClusterIndex, WorldPosition? worldPosition, DungeonBaseFragment dungeon)
     {
-        var activeDungeon = _mainWindowViewModel.DungeonBindings.Dungeons?
+        if (_selectedRandomDungeonExitObjectId is { } selectedObjectId)
+        {
+            var selectedExit = _discoveredRandomDungeonExits.FirstOrDefault(x => x.ObjectId == selectedObjectId && x.SourceClusterIndex == sourceClusterIndex && IsCompatibleExit(x, dungeon));
+            if (selectedExit is not null)
+            {
+                return selectedExit;
+            }
+        }
+
+        if (worldPosition is not { } sourceWorldPosition)
+        {
+            return null;
+        }
+
+        RandomDungeonExitInfo closestExit = null;
+        var closestDistanceSquared = MaxDungeonExitAssociationDistanceSquared;
+
+        foreach (var exit in _discoveredRandomDungeonExits)
+        {
+            if (exit.SourceClusterIndex != sourceClusterIndex
+                || exit.SourceExitPosition is not { } sourceExitPosition
+                || !IsCompatibleExit(exit, dungeon))
+            {
+                continue;
+            }
+
+            var distanceSquared = GetDistanceSquared(sourceWorldPosition, sourceExitPosition);
+            if (distanceSquared > closestDistanceSquared)
+            {
+                continue;
+            }
+
+            closestExit = exit;
+            closestDistanceSquared = distanceSquared;
+        }
+
+        return closestExit;
+    }
+
+    private static bool IsCompatibleExit(RandomDungeonExitInfo exit, DungeonBaseFragment dungeon)
+    {
+        var isMistsExit = exit.UniqueName.StartsWith("MISTS_", StringComparison.Ordinal);
+        var isDragonAreaExit = exit.ResolvedDragonAreaPortalSize != DragonAreaPortalSize.Unknown;
+        return dungeon switch
+        {
+            MistsFragment => isMistsExit,
+            DragonAreaFragment => isDragonAreaExit,
+            RandomDungeonFragment => !isMistsExit && !isDragonAreaExit,
+            _ => false
+        };
+    }
+
+    private static float GetDistanceSquared(WorldPosition first, WorldPosition second)
+    {
+        var deltaX = first.X - second.X;
+        var deltaY = first.Y - second.Y;
+        return deltaX * deltaX + deltaY * deltaY;
+    }
+
+    private void TryUpdateCurrentDungeonLevelFromLootChest(Guid currentDungeonGuid, int objectId, double combinedLootFactor)
+    {
+        var activeDungeon = mainWindowViewModel.DungeonBindings.Dungeons?
             .FirstOrDefault(x => x.GuidList.Contains(currentDungeonGuid) && x.Status == DungeonStatus.Active);
 
         if (activeDungeon is not RandomDungeonFragment { IsLevelLockedFromEntrance: false } randomDungeon)
@@ -532,7 +826,32 @@ public sealed class DungeonController
             return;
         }
 
-        var level = GetLevelFromMob(randomDungeon.MapType, mobIndex, hitPointsMax);
+        var lootChest = randomDungeon.Events?.FirstOrDefault(x => x.Id == objectId);
+        if (lootChest is null || !DungeonData.IsRandomDungeonLootChest(lootChest.UniqueName, randomDungeon.Mode))
+        {
+            return;
+        }
+
+        var level = DungeonData.GetDungeonLevelFromLootFactor(combinedLootFactor, randomDungeon.ZoneLootFactor);
+        if (!randomDungeon.TrySetLevelFromLootFactor(level))
+        {
+            return;
+        }
+
+        UpdateCurrentMapHistoryRandomDungeonInformation(randomDungeon);
+    }
+
+    private void TryUpdateCurrentDungeonLevelFromMob(Guid currentDungeonGuid, int mobIndex, double hitPointsMax)
+    {
+        var activeDungeon = mainWindowViewModel.DungeonBindings.Dungeons?
+            .FirstOrDefault(x => x.GuidList.Contains(currentDungeonGuid) && x.Status == DungeonStatus.Active);
+
+        if (activeDungeon is not RandomDungeonFragment { IsLevelLockedFromEntrance: false } randomDungeon)
+        {
+            return;
+        }
+
+        var level = MobsData.GetRandomDungeonMobLevelByIndex(mobIndex, hitPointsMax, randomDungeon.MobHitPointsFactor);
         if (!randomDungeon.TrySetLevelFromMob(level))
         {
             return;
@@ -541,20 +860,12 @@ public sealed class DungeonController
         UpdateCurrentMapHistoryRandomDungeonInformation(randomDungeon);
     }
 
-    private static int GetLevelFromMob(MapType mapType, int mobIndex, double hitPointsMax)
-    {
-        return mapType switch
-        {
-            MapType.RandomDungeon => MobsData.GetRandomDungeonMobLevelByIndex(mobIndex, hitPointsMax),
-            _ => MobsData.GetMobLevelByIndex(mobIndex, hitPointsMax)
-        };
-    }
-
     public void ClearRandomDungeonExits()
     {
         lock (_discoveredRandomDungeonExits)
         {
             _discoveredRandomDungeonExits.Clear();
+            _selectedRandomDungeonExitObjectId = null;
         }
     }
 
@@ -564,7 +875,7 @@ public sealed class DungeonController
 
     public async Task AddTierToCurrentDungeonAsync(int? mobIndex)
     {
-        if (_currentGuid is not { } currentGuid)
+        if (!IsTrackingActive || _currentGuid is not { } currentGuid)
         {
             return;
         }
@@ -578,7 +889,7 @@ public sealed class DungeonController
         {
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                var dun = _mainWindowViewModel.DungeonBindings.Dungeons?.FirstOrDefault(x => x.GuidList.Contains(currentGuid) && x.Status == DungeonStatus.Active);
+                var dun = mainWindowViewModel.DungeonBindings.Dungeons?.FirstOrDefault(x => x.GuidList.Contains(currentGuid) && x.Status == DungeonStatus.Active);
                 if (dun == null)
                 {
                     return;
@@ -622,12 +933,10 @@ public sealed class DungeonController
 
     private static void SetRandomDungeonTier(DungeonBaseFragment dungeon, Tier mobTier)
     {
-        if (dungeon.Tier != Tier.Unknown && dungeon.Tier <= mobTier)
+        if (dungeon is RandomDungeonFragment randomDungeon)
         {
-            return;
+            randomDungeon.TrySetTierFromMob(mobTier);
         }
-
-        dungeon.Tier = mobTier;
     }
 
     #endregion
@@ -640,6 +949,22 @@ public sealed class DungeonController
     {
         _currentItemContainer = itemContainerObject;
     }
+
+    public void SetLootSource(long objectId, string name, DungeonLootSourceType type)
+    {
+        if (objectId <= 0)
+        {
+            return;
+        }
+
+        _lootSources[objectId] = new DungeonLootSource
+        {
+            ObjectId = objectId,
+            Name = name ?? string.Empty,
+            Type = type
+        };
+    }
+
 
     public void AddDiscoveredItem(DiscoveredItem discoveredItem)
     {
@@ -671,7 +996,7 @@ public sealed class DungeonController
             return;
         }
 
-        await AddLocalPlayerLootedItemToCurrentDungeonAsync(lootedItem);
+        await AddLocalPlayerLootedItemToCurrentDungeonAsync(lootedItem, GetCurrentLootSource());
     }
 
     public async Task AddNewLocalPlayerLootOnCurrentDungeonAsync(IReadOnlyCollection<long> itemObjectIds, Guid containerGuid, Guid userInteractGuid)
@@ -695,13 +1020,13 @@ public sealed class DungeonController
                 continue;
             }
 
-            await AddLocalPlayerLootedItemToCurrentDungeonAsync(lootedItem);
+            await AddLocalPlayerLootedItemToCurrentDungeonAsync(lootedItem, GetCurrentLootSource());
         }
     }
 
     private bool IsLocalPlayerCurrentContainerLoot(Guid containerGuid, Guid userInteractGuid)
     {
-        if (_trackingController.EntityController.LocalUserData.InteractGuid != userInteractGuid)
+        if (trackingController.EntityController.LocalUserData.InteractGuid != userInteractGuid)
         {
             return false;
         }
@@ -734,7 +1059,20 @@ public sealed class DungeonController
         return _currentItemContainer!.SlotItemIds![containerSlot];
     }
 
-    public async Task AddLocalPlayerLootedItemToCurrentDungeonAsync(DiscoveredItem discoveredItem)
+    private DungeonLootSource GetCurrentLootSource()
+    {
+        if (_currentItemContainer == null)
+        {
+            return DungeonLootSource.Unknown;
+        }
+
+        return _currentItemContainer.ObjectId is { } objectId
+               && _lootSources.TryGetValue(objectId, out var source)
+            ? source
+            : DungeonLootSource.Unknown;
+    }
+
+    public async Task AddLocalPlayerLootedItemToCurrentDungeonAsync(DiscoveredItem discoveredItem, DungeonLootSource source)
     {
         if (_currentGuid == null)
         {
@@ -762,11 +1100,11 @@ public sealed class DungeonController
                     EstimatedMarketValueInternal = discoveredItem.EstimatedMarketValueInternal,
                     Quantity = discoveredItem.Quantity,
                     UniqueName = uniqueItemName,
-                    UtcDiscoveryTime = discoveredItem.UtcDiscoveryTime
+                    UtcDiscoveryTime = discoveredItem.UtcDiscoveryTime,
+                    SourceObjectId = source.ObjectId,
+                    SourceName = source.Name,
+                    SourceType = source.Type
                 });
-                dun.UpdateTotalSilverValue();
-                dun.UpdateMostValuableLoot();
-                dun.UpdateMostValuableLootVisibility();
             });
         }
         catch (Exception e)
@@ -779,15 +1117,8 @@ public sealed class DungeonController
     public void ResetLocalPlayerDiscoveredLoot()
     {
         _discoveredLoot.Clear();
-    }
-
-    #endregion
-
-    #region Dungeon timer
-
-    private void UpdateDungeonSaveTimerUi(MapType mapType = MapType.Unknown)
-    {
-        _mainWindowViewModel.DungeonBindings.DungeonCloseTimer.Visibility = mapType == MapType.RandomDungeon ? Visibility.Visible : Visibility.Collapsed;
+        _lootSources.Clear();
+        _pendingAbyssalDepthsChests.Clear();
     }
 
     #endregion
@@ -796,7 +1127,7 @@ public sealed class DungeonController
 
     public async Task UpdateCheckPointAsync(CheckPoint checkPoint)
     {
-        if (_currentGuid is not { } currentGuid)
+        if (!IsTrackingActive || _currentGuid is not { } currentGuid)
         {
             return;
         }
@@ -809,7 +1140,7 @@ public sealed class DungeonController
 
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
-            var dun = _mainWindowViewModel.DungeonBindings.Dungeons?.FirstOrDefault(x => x.GuidList.Contains(currentGuid) && x.Status == DungeonStatus.Active);
+            var dun = mainWindowViewModel.DungeonBindings.Dungeons?.FirstOrDefault(x => x.GuidList.Contains(currentGuid) && x.Status == DungeonStatus.Active);
             if (dun is not ExpeditionFragment expedition)
             {
                 return;
@@ -834,7 +1165,7 @@ public sealed class DungeonController
 
     private void UpdateCurrentMapHistoryRandomDungeonInformation(RandomDungeonFragment randomDungeon)
     {
-        _trackingController.ClusterController.UpdateCurrentMapHistoryRandomDungeonInformation(randomDungeon.Tier, randomDungeon.Level);
+        trackingController.ClusterController.UpdateCurrentMapHistoryRandomDungeonInformation(randomDungeon.Tier, randomDungeon.Level);
     }
 
     #endregion
@@ -843,12 +1174,12 @@ public sealed class DungeonController
 
     private bool ExistDungeon(Guid? mapGuid)
     {
-        return mapGuid != null && _mainWindowViewModel.DungeonBindings.Dungeons.Any(x => x.GuidList.Contains((Guid) mapGuid));
+        return mapGuid != null && mainWindowViewModel.DungeonBindings.Dungeons.Any(x => x.GuidList.Contains((Guid) mapGuid));
     }
 
     private static bool IsDungeonCluster(MapType mapType, Guid? mapGuid)
     {
-        return mapGuid != null && mapType is MapType.RandomDungeon or MapType.CorruptedDungeon or MapType.HellGate or MapType.Expedition or MapType.Mists or MapType.MistsDungeon or MapType.AbyssalDepths;
+        return mapGuid != null && mapType is MapType.RandomDungeon or MapType.CorruptedDungeon or MapType.HellGate or MapType.Expedition or MapType.Mists or MapType.MistsDungeon or MapType.AbyssalDepths or MapType.DragonArea or MapType.StaticDungeon;
     }
 
     #endregion
@@ -861,22 +1192,39 @@ public sealed class DungeonController
             AppDataPaths.UserDataFile(Settings.Default.DungeonRunsFileName));
 
         var dungeonsToAdd = new List<DungeonBaseFragment>();
+        var expirationThreshold = DateTime.UtcNow.AddYears(-DungeonRetentionYears);
+        var expiredDungeonCount = 0;
+        var invalidDungeonCount = 0;
         foreach (DungeonDto dungeonDto in dungeons)
         {
-            try
+            if (dungeonDto.EnterDungeonFirstTime < expirationThreshold)
             {
-                dungeonsToAdd.Add(DungeonMapping.Mapping(dungeonDto));
+                expiredDungeonCount++;
+                continue;
             }
-            catch (MappingException e)
+
+            if (!DungeonMapping.TryMapping(dungeonDto, out var dungeon))
             {
-                DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+                invalidDungeonCount++;
+                continue;
             }
+
+            dungeonsToAdd.Add(dungeon);
         }
 
-        _mainWindowViewModel.DungeonBindings.Dungeons.Clear();
-        _mainWindowViewModel.DungeonBindings.Dungeons.AddRange(dungeonsToAdd.OrderBy(x => x?.EnterDungeonFirstTime).ToList());
-        _mainWindowViewModel.DungeonBindings.InitListCollectionView();
+        if (invalidDungeonCount > 0)
+        {
+            Log.Warning("Skipped {invalidDungeonCount} invalid dungeon records while loading user data.", invalidDungeonCount);
+        }
+
+        mainWindowViewModel.DungeonBindings.Dungeons.Clear();
+        mainWindowViewModel.DungeonBindings.Dungeons.AddRange(dungeonsToAdd.OrderBy(x => x?.EnterDungeonFirstTime).ToList());
+
+        if (expiredDungeonCount > 0)
+        {
+            Log.Information("Deleted {expiredDungeonCount} dungeon records older than {retentionYears} years.", expiredDungeonCount, DungeonRetentionYears);
+            await SaveInFileAsync();
+        }
     }
 
     public async Task SaveInFileAsync()
@@ -886,9 +1234,68 @@ public sealed class DungeonController
             return;
         }
 
-        var toSaveDungeons = _mainWindowViewModel.DungeonBindings.Dungeons.Select(DungeonMapping.Mapping).ToList();
-        await FileController.SaveAsync(toSaveDungeons, AppDataPaths.UserDataFile(Settings.Default.DungeonRunsFileName));
-        Log.Information("Dungeons saved");
+        var toSaveDungeons = await CreateSaveSnapshotAsync();
+        var path = AppDataPaths.UserDataFile(Settings.Default.DungeonRunsFileName);
+        if (await FileController.SaveAsync(toSaveDungeons, path))
+        {
+            Log.Information("Dungeons saved. Count: {dungeonCount}", toSaveDungeons.Count);
+        }
+        else
+        {
+            Log.Warning("Dungeons could not be saved.");
+        }
+    }
+
+    private async Task<List<DungeonDto>> CreateSaveSnapshotAsync()
+    {
+        var preparedSnapshot = GetPreparedShutdownSaveSnapshot();
+        if (preparedSnapshot is not null)
+        {
+            return preparedSnapshot;
+        }
+
+        List<DungeonDto> snapshot = null;
+
+        void CreateSnapshot()
+        {
+            snapshot = CreateSaveSnapshot();
+        }
+
+        if (Application.Current?.Dispatcher is { } dispatcher && !dispatcher.CheckAccess())
+        {
+            await dispatcher.InvokeAsync(CreateSnapshot);
+        }
+        else
+        {
+            CreateSnapshot();
+        }
+
+        return snapshot;
+    }
+
+    public void PrepareShutdownSaveSnapshot()
+    {
+        var snapshot = CreateSaveSnapshot();
+        lock (_saveSnapshotLock)
+        {
+            _preparedShutdownSaveSnapshot = snapshot;
+        }
+    }
+
+    private List<DungeonDto> GetPreparedShutdownSaveSnapshot()
+    {
+        lock (_saveSnapshotLock)
+        {
+            return _preparedShutdownSaveSnapshot;
+        }
+    }
+
+    private List<DungeonDto> CreateSaveSnapshot()
+    {
+        return mainWindowViewModel.DungeonBindings.Dungeons
+            .Where(x => x.Status == DungeonStatus.Done)
+            .Select(DungeonMapping.Mapping)
+            .ToList();
     }
 
     private async Task SaveInFileAfterExceedingLimit(int limit)

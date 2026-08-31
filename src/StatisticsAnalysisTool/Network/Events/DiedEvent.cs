@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Diagnostics;
 
 namespace StatisticsAnalysisTool.Network.Events;
@@ -11,6 +12,11 @@ public class DiedEvent
     {
         try
         {
+            if (parameters.TryGetValue(1, out var diedObjectId))
+            {
+                DiedObjectId = diedObjectId.ObjectToLong() ?? 0;
+            }
+
             if (parameters.ContainsKey(2))
             {
                 Died = string.IsNullOrEmpty(parameters[2].ToString()) ? string.Empty : parameters[2].ToString();
@@ -19,6 +25,16 @@ public class DiedEvent
             if (parameters.ContainsKey(3))
             {
                 DiedPlayerGuild = string.IsNullOrEmpty(parameters[3].ToString()) ? string.Empty : parameters[3].ToString();
+            }
+
+            if (parameters.TryGetValue(17, out var isLethal))
+            {
+                IsLethal = isLethal.ObjectToBool();
+            }
+
+            if (parameters.TryGetValue(9, out var killerObjectId))
+            {
+                KillerObjectId = killerObjectId.ObjectToLong() ?? 0;
             }
 
             if (parameters.ContainsKey(10))
@@ -38,11 +54,17 @@ public class DiedEvent
         }
     }
 
-    public string Died { get; }
+    public long DiedObjectId { get; }
 
-    public string DiedPlayerGuild { get; }
+    public string Died { get; } = string.Empty;
 
-    public string KilledBy { get; }
+    public string DiedPlayerGuild { get; } = string.Empty;
 
-    public string KilledByGuild { get; }
+    public bool IsLethal { get; }
+
+    public long KillerObjectId { get; }
+
+    public string KilledBy { get; } = string.Empty;
+
+    public string KilledByGuild { get; } = string.Empty;
 }

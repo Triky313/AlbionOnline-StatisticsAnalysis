@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net10.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
     <OutputType>WinExe</OutputType>
     <Deterministic>false</Deterministic>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -40,8 +40,11 @@
     <NetSparkleEd25519PublicKey Condition="'$(NetSparkleEd25519PublicKey)' == ''">$(SPARKLE_PUBLIC_KEY)</NetSparkleEd25519PublicKey>
     <AuthenticodePublisherThumbprint Condition="'$(AuthenticodePublisherThumbprint)' == ''">$(AUTHENTICODE_PUBLISHER_THUMBPRINT)</AuthenticodePublisherThumbprint>
     <RequireNetSparkleEd25519PublicKey Condition="'$(RequireNetSparkleEd25519PublicKey)' == ''">false</RequireNetSparkleEd25519PublicKey>
+    <LocalInstallerBuild Condition="'$(LocalInstallerBuild)' == ''">false</LocalInstallerBuild>
     <NetSparkleSignatureVerificationRequiredLiteral>false</NetSparkleSignatureVerificationRequiredLiteral>
     <NetSparkleSignatureVerificationRequiredLiteral Condition="'$(RequireNetSparkleEd25519PublicKey)' == 'true'">true</NetSparkleSignatureVerificationRequiredLiteral>
+    <NetSparkleBackgroundUpdatesEnabledLiteral>true</NetSparkleBackgroundUpdatesEnabledLiteral>
+    <NetSparkleBackgroundUpdatesEnabledLiteral Condition="'$(LocalInstallerBuild)' == 'true'">false</NetSparkleBackgroundUpdatesEnabledLiteral>
     <NetSparkleGeneratedSecurityFile>$(MSBuildProjectDirectory)\obj\$(Platform)\$(Configuration)\Generated\AutoUpdateSecurityBuildSettings.g.cs</NetSparkleGeneratedSecurityFile>
   </PropertyGroup>
   <PropertyGroup>
@@ -139,9 +142,6 @@
     <Content Include="Sounds\deathalert3.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sounds\dungeon_closed.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Resource Include="Assets\abyssal_depths.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -187,13 +187,37 @@
     <Resource Include="Assets\checkpoint.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\chest_blue.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\chest_gold.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\chest_gray.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\chest_green.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\chest_locked.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\chest_purple.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\combat_swords.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\corrupted_dungeon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\crafting_description_image001.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\crafting_description_image002.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\currupted_dungeon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\dungeon.png">
@@ -203,6 +227,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\fishing_lure_box.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\flag_blackmarket.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\gem_level0.png">
@@ -227,6 +254,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\heart.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\hellgate.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\ko-fi-icon.png">
@@ -254,6 +284,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\map_blue_icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\map_orange_icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\map_red_icon.png">
@@ -334,11 +367,47 @@
     <Resource Include="Assets\purple_glow.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\quality_border.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\quality_border_excellent.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\quality_border_good.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\quality_border_masterpiece.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\quality_border_normal.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\quality_border_outstanding.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\repair_cross.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\sat-icon.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\seal_bridgewatch.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\seal_caerleon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\seal_fortsterling.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\seal_lymhurst.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\seal_martlock.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\seal_thetford.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\shiny_common.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -359,6 +428,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\skull.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\skull_blue.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\skull_gold.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\skull_green.png">
@@ -484,6 +559,18 @@
     <Resource Include="Resources\DonationIcon\TOAD1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\dragon_area_banner.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ancient_lands_portal_big.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ancient_lands_portal_medium.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ancient_lands_portal_small.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\fame.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -518,30 +605,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\boss.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\chest_close_legendary.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\chest_close_rare.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\chest_close_standard.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\chest_close_uncommon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\chest_open_legendary.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\chest_open_rare.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\chest_open_standard.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\chest_open_uncommon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\faction_avalon_banner.png">
@@ -657,6 +720,7 @@
     <PackageReference Include="BinaryFormat.Udp" Version="0.1.5" />
     <PackageReference Include="Libpcap" Version="0.1.5" />
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.5" />
+    <PackageReference Include="MahApps.Metro.IconPacks.GameIcons" Version="6.2.1" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4078.44" />
     <PackageReference Include="NetSparkleUpdater.UI.WPF" Version="3.1.0" />
     <PackageReference Include="FontAwesome5" Version="2.1.11" />
@@ -668,14 +732,12 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
     <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
-    <PackageReference Include="SkiaSharp" Version="4.150.1" />
-    <PackageReference Include="SkiaSharp.HarfBuzz" Version="4.150.1" />
-    <PackageReference Include="SkiaSharp.Views.WPF" Version="4.150.1" />
+    <PackageReference Include="SkiaSharp" Version="4.151.1" />
+    <PackageReference Include="SkiaSharp.HarfBuzz" Version="4.151.1" />
+    <PackageReference Include="SkiaSharp.Views.WPF" Version="4.151.1" />
     <PackageReference Include="System.Linq.Async" Version="7.0.1" />
     <PackageReference Include="VirtualizingWrapPanel" Version="2.5.4" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="10.0.10" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="10.0.11" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Models\StatPricesTotal.cs" />
@@ -698,12 +760,22 @@
     <None Remove="Assets\butterfly_rare.png" />
     <None Remove="Assets\butterfly_uncommon.png" />
     <None Remove="Assets\checkpoint.png" />
+    <None Remove="Assets\chest_blue.png" />
+    <None Remove="Assets\chest_gold.png" />
+    <None Remove="Assets\chest_gray.png" />
+    <None Remove="Assets\chest_greem.png" />
+    <None Remove="Assets\chest_green.png" />
     <None Remove="Assets\chest_locked.png" />
+    <None Remove="Assets\chest_purple.png" />
+    <None Remove="Assets\combat_swords.png" />
+    <None Remove="Assets\corrupted_dungeon.png" />
     <None Remove="Assets\crafting_description_image001.png" />
     <None Remove="Assets\crafting_description_image002.png" />
+    <None Remove="Assets\currupted_dungeon.png" />
     <None Remove="Assets\dungeon.png" />
     <None Remove="Assets\empty_icon.png" />
     <None Remove="Assets\fishing_lure_box.png" />
+    <None Remove="Assets\flag_blackmarket.png" />
     <None Remove="Assets\gem_level0.png" />
     <None Remove="Assets\gem_level1.png" />
     <None Remove="Assets\gem_level2.png" />
@@ -712,6 +784,7 @@
     <None Remove="Assets\gold_glow.png" />
     <None Remove="Assets\green_glow.png" />
     <None Remove="Assets\heart.png" />
+    <None Remove="Assets\hellgate.png" />
     <None Remove="Assets\ko-fi-icon.png" />
     <None Remove="Assets\ko-fi-qrcode.png" />
     <None Remove="Assets\loggingcomparator_description01.jpg" />
@@ -721,6 +794,7 @@
     <None Remove="Assets\loot_cpmparator_slot_red.png" />
     <None Remove="Assets\map_black_icon.png" />
     <None Remove="Assets\map_blue_icon.png" />
+    <None Remove="Assets\map_orange_icon.png" />
     <None Remove="Assets\map_red_icon.png" />
     <None Remove="Assets\map_white_icon.png" />
     <None Remove="Assets\map_yellow_icon.png" />
@@ -747,8 +821,20 @@
     <None Remove="Assets\preparation_folder.png" />
     <None Remove="Assets\preparation_folder_steam.png" />
     <None Remove="Assets\purple_glow.png" />
+    <None Remove="Assets\quality_border.png" />
+    <None Remove="Assets\quality_border_excellent.png" />
+    <None Remove="Assets\quality_border_good.png" />
+    <None Remove="Assets\quality_border_masterpiece.png" />
+    <None Remove="Assets\quality_border_normal.png" />
+    <None Remove="Assets\quality_border_outstanding.png" />
     <None Remove="Assets\repair_cross.png" />
     <None Remove="Assets\sat-icon.png" />
+    <None Remove="Assets\seal_bridgewatch.png" />
+    <None Remove="Assets\seal_caerleon.png" />
+    <None Remove="Assets\seal_fortsterling.png" />
+    <None Remove="Assets\seal_lymhurst.png" />
+    <None Remove="Assets\seal_martlock.png" />
+    <None Remove="Assets\seal_thetford.png" />
     <None Remove="Assets\shiny_common.png" />
     <None Remove="Assets\shiny_epic.png" />
     <None Remove="Assets\shiny_legendary.png" />
@@ -756,6 +842,8 @@
     <None Remove="Assets\shiny_uncommon.png" />
     <None Remove="Assets\siphoned_energy_description01.jpg" />
     <None Remove="Assets\skull.png" />
+    <None Remove="Assets\skull_blue.png" />
+    <None Remove="Assets\skull_gold.png" />
     <None Remove="Assets\skull_green.png" />
     <None Remove="Assets\skull_red.png" />
     <None Remove="Assets\static_chest.png" />
@@ -797,6 +885,10 @@
     <None Remove="Resources\DonationIcon\SNOWRABBIT1.png" />
     <None Remove="Resources\DonationIcon\TOAD1.png" />
     <None Remove="Resources\DonationIcon\WOLF.png" />
+    <None Remove="Resources\dragon_area_banner.png" />
+    <None Remove="Resources\ancient_lands_portal_big.png" />
+    <None Remove="Resources\ancient_lands_portal_medium.png" />
+    <None Remove="Resources\ancient_lands_portal_small.png" />
     <None Remove="Resources\favor.png" />
     <None Remove="Resources\icon_daily_season_points.png" />
     <None Remove="Resources\might.png" />
@@ -809,7 +901,6 @@
     <None Remove="Sounds\deathalert1.wav" />
     <None Remove="Sounds\deathalert2.wav" />
     <None Remove="Sounds\deathalert3.wav" />
-    <None Remove="Sounds\dungeon_closed.wav" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StatisticAnalysisTool.Extractor\StatisticAnalysisTool.Extractor.csproj" />
@@ -863,7 +954,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Styles\ItemWindowStyles.xaml">
+    <Page Update="Styles\ItemDetailsStyles.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -953,7 +1044,7 @@
   <Target Name="ValidateNetSparklePublicKey" BeforeTargets="CoreCompile" Condition="'$(RequireNetSparkleEd25519PublicKey)' == 'true' And '$(NetSparkleEd25519PublicKey)' == ''">
     <Error Text="NetSparkleEd25519PublicKey is required for signed release builds. Pass -p:NetSparkleEd25519PublicKey=... or set SPARKLE_PUBLIC_KEY." />
   </Target>
-  <Target Name="ValidateReleasePublishNetSparklePublicKey" BeforeTargets="Publish" Condition="'$(Configuration)' == 'Release' And '$(NetSparkleEd25519PublicKey)' == ''">
+  <Target Name="ValidateReleasePublishNetSparklePublicKey" BeforeTargets="Publish" Condition="'$(Configuration)' == 'Release' And '$(LocalInstallerBuild)' != 'true' And '$(NetSparkleEd25519PublicKey)' == ''">
     <Error Text="NetSparkleEd25519PublicKey is required for Release publishes. Pass -p:NetSparkleEd25519PublicKey=... or set SPARKLE_PUBLIC_KEY. Use Debug builds for local development without updater signing." />
   </Target>
   <Target Name="GenerateNetSparkleSecuritySource" BeforeTargets="CoreCompile">
@@ -965,6 +1056,7 @@
       <NetSparkleSecuritySourceLine Include="    public const string Ed25519PublicKey = &quot;$(NetSparkleEd25519PublicKey)&quot;%3B" />
       <NetSparkleSecuritySourceLine Include="    public const string AuthenticodePublisherThumbprint = &quot;$(AuthenticodePublisherThumbprint)&quot;%3B" />
       <NetSparkleSecuritySourceLine Include="    public const bool IsSignatureVerificationRequired = $(NetSparkleSignatureVerificationRequiredLiteral)%3B" />
+      <NetSparkleSecuritySourceLine Include="    public const bool AreBackgroundUpdatesEnabled = $(NetSparkleBackgroundUpdatesEnabledLiteral)%3B" />
       <NetSparkleSecuritySourceLine Include="}" />
     </ItemGroup>
     <MakeDir Directories="$([System.IO.Path]::GetDirectoryName('$(NetSparkleGeneratedSecurityFile)'))" />

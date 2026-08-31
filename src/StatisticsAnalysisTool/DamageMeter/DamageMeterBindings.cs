@@ -3,27 +3,27 @@ using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Localization;
-using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 
 namespace StatisticsAnalysisTool.DamageMeter;
 
-public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
+public class DamageMeterBindings : BaseViewModel
 {
     private List<DamageMeterSortStruct> _damageMeterSort = new();
     private DamageMeterSortStruct _damageMeterSortSelection;
     private EFontAwesomeIcon _damageMeterActivationToggleIcon = EFontAwesomeIcon.Solid_ToggleOff;
     private Brush _damageMeterActivationToggleColor;
     private ObservableCollection<DamageMeterFragment> _damageMeter = new();
+    private ObservableCollection<MobDamageMeterFragment> _mobDamageMeter = [];
+    private readonly Dictionary<(Guid MobInstanceId, DashboardContentType ContentType), MobDamageMeterFragment> _mobDamageMeterByKey = [];
     private List<DamageMeterSnapshot> _damageMeterSnapshots = new();
     private DamageMeterSnapshot _damageMeterSnapshotSelection;
     private DamageMeterSortStruct _damageMeterSnapshotSortSelection;
@@ -34,6 +34,9 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
     private bool _isDamageMeterResetBeforeCombatActive;
     private bool _shortDamageMeterToClipboard;
     private bool _onlyDamageToPlayersCounts;
+    private ObservableCollection<DamageMeterContentFilterOption> _damageMeterContentFilters = [];
+    private DamageMeterContentFilterOption _damageMeterContentFilterSelection;
+    private DamageMeterContentFilterOption _damageMeterSnapshotContentFilterSelection;
     private DamageStatsSnapshot _currentDamageStats = DamageStatsSnapshot.Empty;
     private DamageStatsSnapshot _snapshotDamageStats = DamageStatsSnapshot.Empty;
     private DamageMeterYourStatsSnapshot _currentYourStats = DamageMeterYourStatsSnapshot.Empty;
@@ -48,7 +51,6 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
     private ObservableCollection<DamageStatsEntry> _topBurstDamageFiveSeconds = [];
     private ObservableCollection<DamageStatsEntry> _topBurstDamageTenSeconds = [];
     private ObservableCollection<DamageStatsEntry> _topAttackedTargets = [];
-    public Task Initialization { get; init; }
 
     public DamageMeterBindings()
     {
@@ -82,6 +84,11 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
             Name = TranslationTakenDamage,
             DamageMeterSortType = DamageMeterSortType.TakenDamage
         };
+        var sortByMobStruct = new DamageMeterSortStruct
+        {
+            Name = TranslationSortByMob,
+            DamageMeterSortType = DamageMeterSortType.Mob
+        };
 
         DamageMeterSort.Clear();
         DamageMeterSort.Add(sortByDamageStruct);
@@ -90,6 +97,7 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
         DamageMeterSort.Add(sortByHealStruct);
         DamageMeterSort.Add(sortByHpsStruct);
         DamageMeterSort.Add(takenDamageStruct);
+        DamageMeterSort.Add(sortByMobStruct);
         DamageMeterSortSelection = sortByDamageStruct;
 
         DamageMeterSnapshotSort.Clear();
@@ -99,14 +107,14 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
         DamageMeterSnapshotSort.Add(sortByHealStruct);
         DamageMeterSnapshotSort.Add(sortByHpsStruct);
         DamageMeterSnapshotSort.Add(takenDamageStruct);
+        DamageMeterSnapshotSort.Add(sortByMobStruct);
         DamageMeterSnapshotSortSelection = sortByDamageStruct;
 
         IsSnapshotAfterMapChangeActive = SettingsController.CurrentSettings.IsSnapshotAfterMapChangeActive;
         IsDamageMeterResetByMapChangeActive = SettingsController.CurrentSettings.IsDamageMeterResetByMapChangeActive;
         IsDamageMeterResetBeforeCombatActive = SettingsController.CurrentSettings.IsDamageMeterResetBeforeCombatActive;
         ShortDamageMeterToClipboard = SettingsController.CurrentSettings.ShortDamageMeterToClipboard;
-
-        Initialization = LoadLocalFileAsync();
+        RefreshContentFilters();
     }
 
     #region Generally
@@ -122,6 +130,9 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
         }
     }
     #endregion
+    public event Action<DashboardContentType?> DamageMeterContentFilterChanged;
+    public event Action DamageMeterDisplayChanged;
+    public Func<DamageMeterSnapshot> DamageMeterSnapshotProvider { private get; set; }
 
     #region Damage meter
 
@@ -133,6 +144,129 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
             _damageMeter = value;
             OnPropertyChanged();
         }
+    }
+
+    public ObservableCollection<MobDamageMeterFragment> MobDamageMeter
+    {
+        get => _mobDamageMeter;
+        private set
+        {
+            _mobDamageMeter = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public void ApplyMobDamageMeterUpdate(
+        IReadOnlyCollection<MobDamageMeterFragment> updatedFragments,
+        long totalDamage)
+    {
+        if (updatedFragments == null)
+        {
+            return;
+        }
+
+        foreach (var updatedFragment in updatedFragments)
+        {
+            var key = GetMobFragmentKey(updatedFragment);
+            if (_mobDamageMeterByKey.TryGetValue(key, out var existingFragment))
+            {
+                existingFragment.UpdateFrom(updatedFragment);
+                continue;
+            }
+
+            InsertMobDamageMeterFragment(updatedFragment);
+            _mobDamageMeterByKey.Add(key, updatedFragment);
+        }
+
+        foreach (var fragment in MobDamageMeter)
+        {
+            var damagePercentage = totalDamage > 0
+                ? fragment.Damage / (double) totalDamage * 100
+                : 0;
+
+            if (!fragment.DamagePercentage.Equals(damagePercentage))
+            {
+                fragment.DamagePercentage = damagePercentage;
+            }
+        }
+    }
+
+    private void InsertMobDamageMeterFragment(MobDamageMeterFragment fragment)
+    {
+        var insertionIndex = MobDamageMeter.Count;
+        while (insertionIndex > 0
+               && fragment.FirstAttackTime > MobDamageMeter[insertionIndex - 1].FirstAttackTime)
+        {
+            insertionIndex--;
+        }
+
+        MobDamageMeter.Insert(insertionIndex, fragment);
+    }
+
+    private static (Guid MobInstanceId, DashboardContentType ContentType) GetMobFragmentKey(MobDamageMeterFragment fragment)
+    {
+        return (fragment.MobInstanceId, fragment.ContentType);
+    }
+
+    public void ClearMobDamageMeter()
+    {
+        MobDamageMeter.Clear();
+        _mobDamageMeterByKey.Clear();
+    }
+
+    public ObservableCollection<DamageMeterContentFilterOption> DamageMeterContentFilters
+    {
+        get => _damageMeterContentFilters;
+        private set
+        {
+            _damageMeterContentFilters = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public DamageMeterContentFilterOption DamageMeterContentFilterSelection
+    {
+        get => _damageMeterContentFilterSelection;
+        set
+        {
+            var previousContentType = _damageMeterContentFilterSelection?.ContentType;
+            _damageMeterContentFilterSelection = value;
+            SettingsController.CurrentSettings.DamageMeterContentType = value?.ContentType;
+            OnPropertyChanged();
+
+            if (previousContentType != value?.ContentType)
+            {
+                DamageMeterContentFilterChanged?.Invoke(value?.ContentType);
+            }
+        }
+    }
+
+    public void RefreshContentFilters()
+    {
+        var selectedContentType = DamageMeterContentFilterSelection?.ContentType
+                                  ?? SettingsController.CurrentSettings.DamageMeterContentType;
+        var selectedSnapshotContentType = DamageMeterSnapshotContentFilterSelection?.ContentType
+                                          ?? SettingsController.CurrentSettings.DamageMeterSnapshotContentType;
+        var contentFilters = new ObservableCollection<DamageMeterContentFilterOption>
+        {
+            new(null, LocalizationController.Translation("ALL_CONTENT_TYPES"))
+        };
+
+        foreach (var contentType in DashboardContentTypeResolver.ContentTypes)
+        {
+            contentFilters.Add(new DamageMeterContentFilterOption(
+                contentType,
+                LocalizationController.Translation(DashboardContentTypeResolver.GetTranslationKey(contentType))));
+        }
+
+        DamageMeterContentFilters = contentFilters;
+        DamageMeterContentFilterSelection = DamageMeterContentFilters
+            .FirstOrDefault(x => x.ContentType == selectedContentType)
+            ?? DamageMeterContentFilters[0];
+        DamageMeterSnapshotContentFilterSelection = DamageMeterContentFilters
+            .FirstOrDefault(x => x.ContentType == selectedSnapshotContentType)
+            ?? DamageMeterContentFilters[0];
+        OnPropertyChanged(nameof(TranslationContent));
     }
 
     public EFontAwesomeIcon DamageMeterActivationToggleIcon
@@ -160,10 +294,16 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
         get => _damageMeterSortSelection;
         set
         {
+            var previousSortType = _damageMeterSortSelection.DamageMeterSortType;
             _damageMeterSortSelection = value;
             SetDamageMeterSort();
 
             OnPropertyChanged();
+
+            if (previousSortType != value.DamageMeterSortType)
+            {
+                DamageMeterDisplayChanged?.Invoke();
+            }
         }
     }
 
@@ -204,6 +344,8 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
             case DamageMeterSortType.TakenDamage:
                 SetIsDamageMeterShowing(DamageMeter, DamageMeterStyleFragmentType.TakenDamage);
                 DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.TakenDamage).ToList());
+                return;
+            case DamageMeterSortType.Mob:
                 return;
         }
     }
@@ -437,6 +579,7 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
         set
         {
             _damageMeterSnapshotSelection = value;
+            ApplySnapshotContentFilter();
             SetDamageMeterSnapshotSort();
             SetSnapshotDamageStats();
             OnPropertyChanged();
@@ -465,6 +608,25 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
         }
     }
 
+    public DamageMeterContentFilterOption DamageMeterSnapshotContentFilterSelection
+    {
+        get => _damageMeterSnapshotContentFilterSelection;
+        set
+        {
+            _damageMeterSnapshotContentFilterSelection = value;
+            SettingsController.CurrentSettings.DamageMeterSnapshotContentType = value?.ContentType;
+            ApplySnapshotContentFilter();
+            SetDamageMeterSnapshotSort();
+            SetSnapshotDamageStats();
+            OnPropertyChanged();
+        }
+    }
+
+    private void ApplySnapshotContentFilter()
+    {
+        DamageMeterSnapshotSelection?.ApplyContentFilter(DamageMeterSnapshotContentFilterSelection?.ContentType);
+    }
+
     public void GetSnapshot(bool takeSnapshot = true, string location = null, bool isAutoSave = false)
     {
         if (!takeSnapshot)
@@ -472,26 +634,17 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
             return;
         }
 
-        if (!DamageMeter.Any(x => x.Damage > 0 || x.Heal > 0))
+        var damageMeterSnapshot = DamageMeterSnapshotProvider?.Invoke() ?? CreateSnapshotFromCurrentView();
+        if (!damageMeterSnapshot.AllContent.HasData)
         {
             return;
         }
 
         var snapshots = DamageMeterSnapshots;
-
-        var damageMeterSnapshot = new DamageMeterSnapshot
-        {
-            Location = string.IsNullOrWhiteSpace(location) ? DamageMeterSnapshotLocationResolver.Resolve(ClusterController.CurrentCluster) : location,
-            IsAutoSave = isAutoSave
-        };
-
-        foreach (var damageMeterFragment in DamageMeter)
-        {
-            damageMeterSnapshot.DamageMeter.Add(new DamageMeterSnapshotFragment(damageMeterFragment));
-        }
-
-        damageMeterSnapshot.DamageStats = DamageStatsSnapshotFactory.Clone(CurrentDamageStats);
-        damageMeterSnapshot.YourStats = DamageMeterYourStatsSnapshotFactory.Clone(CurrentYourStats);
+        damageMeterSnapshot.Location = string.IsNullOrWhiteSpace(location)
+            ? DamageMeterSnapshotLocationResolver.Resolve(ClusterController.CurrentCluster)
+            : location;
+        damageMeterSnapshot.IsAutoSave = isAutoSave;
         DamageMeterSnapshots?.Add(damageMeterSnapshot);
 
         Application.Current.Dispatcher.Invoke(() =>
@@ -499,6 +652,24 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
             DamageMeterSnapshots = snapshots.OrderByDescending(x => x.Timestamp).ToList();
             DamageMeterSnapshotSelection = DamageMeterSnapshots.FirstOrDefault();
         });
+    }
+
+    private DamageMeterSnapshot CreateSnapshotFromCurrentView()
+    {
+        var allContent = new DamageMeterContentSnapshot
+        {
+            DamageMeter = DamageMeter.Select(x => new DamageMeterSnapshotFragment(x)).ToList(),
+            MobDamageMeter = MobDamageMeter.ToList(),
+            DamageStats = DamageStatsSnapshotFactory.Clone(CurrentDamageStats),
+            YourStats = DamageMeterYourStatsSnapshotFactory.Clone(CurrentYourStats)
+        };
+        var snapshot = new DamageMeterSnapshot
+        {
+            AllContent = allContent
+        };
+
+        snapshot.ApplyContentFilter(null);
+        return snapshot;
     }
 
     public bool IsSnapshotAfterMapChangeActive
@@ -588,6 +759,13 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
                     DamageMeterSnapshotSelection.DamageMeter = DamageMeterSnapshotSelection?.DamageMeter?.OrderByDescending(x => x.TakenDamage).ToList();
                 }
                 break;
+            case DamageMeterSortType.Mob:
+                if (DamageMeterSnapshotSelection != null)
+                {
+                    DamageMeterSnapshotSelection.MobDamageMeter = DamageMeterSnapshotSelection.MobDamageMeter
+                        .OrderByDescending(x => x.FirstAttackTime).ToList();
+                }
+                return;
         }
     }
     
@@ -619,12 +797,14 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
     #region Translations
 
     public static string TranslationSortByDamage => LocalizationController.Translation("SORT_BY_DAMAGE");
+    public static string TranslationSortByMob => LocalizationController.Translation("SORT_BY_MOB");
     public static string TranslationSortByDps => LocalizationController.Translation("SORT_BY_DPS");
     public static string TranslationSortByName => LocalizationController.Translation("SORT_BY_NAME");
     public static string TranslationSortByHeal => LocalizationController.Translation("SORT_BY_HEAL");
     public static string TranslationSortByHps => LocalizationController.Translation("SORT_BY_HPS");
     public static string TranslationTakenDamage => LocalizationController.Translation("TAKEN_DAMAGE");
     public static string TranslationSnapshots => LocalizationController.Translation("SNAPSHOTS");
+    public static string TranslationContent => LocalizationController.Translation("CONTENT");
     public static string TranslationDeleteSelectedSnapshot => LocalizationController.Translation("DELETE_SELECTED_SNAPSHOT");
     public static string TranslationDeleteAllSnapshots => LocalizationController.Translation("DELETE_ALL_SNAPSHOTS");
     public static string TranslationTakeASnapshotOfDamageMeterDescription => LocalizationController.Translation("TAKE_A_SNAPSHOT_OF_DAMAGE_METER_DESCRIPTION");
@@ -665,16 +845,18 @@ public class DamageMeterBindings : BaseViewModel, IAsyncInitialization
     public static string TranslationBurstDamageFiveSecondsTop5 => LocalizationController.Translation("BURST_DAMAGE_5_SECONDS_TOP_5");
     public static string TranslationBurstDamageTenSecondsTop5 => LocalizationController.Translation("BURST_DAMAGE_10_SECONDS_TOP_5");
     public static string TranslationAttackedMobsPlayersTop5 => LocalizationController.Translation("ATTACKED_MOBS_PLAYERS_TOP_5");
+    public static string TranslationTotalDamageTop5 => LocalizationController.Translation("TOTAL_DAMAGE_TOP_5");
+    public static string TranslationEffectiveHealingTop5 => LocalizationController.Translation("EFFECTIVE_HEALING_TOP_5");
+    public static string TranslationTopMobKillContributionTop5 => LocalizationController.Translation("TOP_MOB_KILL_CONTRIBUTION_TOP_5");
+    public static string TranslationDamageByType => LocalizationController.Translation("DAMAGE_BY_TYPE");
+    public static string TranslationDamageByAbilityTop10 => LocalizationController.Translation("DAMAGE_BY_ABILITY_TOP_10");
+    public static string TranslationAbility => LocalizationController.Translation("ABILITY");
+    public static string TranslationPercentOfTotal => LocalizationController.Translation("PERCENT_OF_TOTAL");
+    public static string TranslationTopHealer => LocalizationController.Translation("TOP_HEALER");
+    public static string TranslationTopDamageTaken => LocalizationController.Translation("TOP_DAMAGE_TAKEN");
+    public static string TranslationTotalTrackedFights => LocalizationController.Translation("TOTAL_TRACKED_FIGHTS");
+    public static string TranslationTotalLabel => LocalizationController.Translation("TOTAL");
 
     #endregion
 
-    #region Load file
-
-    private async Task LoadLocalFileAsync()
-    {
-        DamageMeterSnapshots = await FileController.LoadAsync<List<DamageMeterSnapshot>>(
-            AppDataPaths.UserDataFile(Settings.Default.DamageMeterSnapshotsFileName));
-    }
-
-    #endregion
 }

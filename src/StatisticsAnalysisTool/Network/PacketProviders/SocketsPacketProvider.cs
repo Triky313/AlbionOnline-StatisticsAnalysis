@@ -10,35 +10,182 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.PacketProviders;
 
-public class SocketsPacketProvider(IPhotonReceiver photonReceiver, AlbionServerDetectionService albionServerDetectionService) : PacketProvider
+public class SocketsPacketProvider : PacketProvider
 {
-    private readonly IPhotonReceiver _photonReceiver = photonReceiver ?? throw new ArgumentNullException(nameof(photonReceiver));
-    private readonly AlbionServerDetectionService _albionServerDetectionService = albionServerDetectionService ?? throw new ArgumentNullException(nameof(albionServerDetectionService));
-
+    private readonly IPhotonReceiver _photonReceiver;
+    private readonly AlbionServerDetectionService _albionServerDetectionService;
+    private readonly NetworkChangeMonitor _networkChangeMonitor;
+    private readonly Lock _lifecycleLock = new();
     private readonly List<Socket> _socketsV4 = [];
     private readonly List<Socket> _socketsV6 = [];
-
     private readonly List<Task> _receiveTasks = [];
     private readonly ConcurrentBag<byte[]> _buffers = [];
     private volatile bool _stopReceiving;
+    private volatile bool _isRefreshing;
+    private bool _isStarted;
+    private int _refreshRequested;
+    private int _refreshWorkerRunning;
 
-    public override bool IsRunning => _socketsV4.Any(s => s is { IsBound: true }) || _socketsV6.Any(s => s is { IsBound: true });
-
-    public override void Start()
+    public override bool IsRunning
     {
-        _stopReceiving = false;
+        get
+        {
+            lock (_lifecycleLock)
+            {
+                return _isStarted;
+            }
+        }
+    }
 
+    public SocketsPacketProvider(IPhotonReceiver photonReceiver, AlbionServerDetectionService albionServerDetectionService)
+    {
+        _photonReceiver = photonReceiver ?? throw new ArgumentNullException(nameof(photonReceiver));
+        _albionServerDetectionService = albionServerDetectionService ?? throw new ArgumentNullException(nameof(albionServerDetectionService));
+        _networkChangeMonitor = new NetworkChangeMonitor(RequestSocketRefresh);
+    }
+
+    public override PacketProviderStartResult Start()
+    {
+        lock (_lifecycleLock)
+        {
+            if (_isStarted)
+            {
+                var activeCaptureSourceCount = _socketsV4.Count + _socketsV6.Count;
+                return activeCaptureSourceCount > 0
+                    ? PacketProviderStartResult.Success(activeCaptureSourceCount)
+                    : PacketProviderStartResult.Failed;
+            }
+
+            ResetGameDataDetectedState();
+            _isStarted = true;
+            _stopReceiving = false;
+        }
+
+        int activeSourceCount;
+        try
+        {
+            _networkChangeMonitor.Start();
+
+            lock (_lifecycleLock)
+            {
+                activeSourceCount = OpenSockets();
+            }
+        }
+        catch
+        {
+            Stop();
+            throw;
+        }
+
+        if (activeSourceCount == 0)
+        {
+            Stop();
+            return PacketProviderStartResult.Failed;
+        }
+
+        return PacketProviderStartResult.Success(activeSourceCount);
+    }
+
+    public override void Stop()
+    {
+        _networkChangeMonitor.Stop();
+
+        lock (_lifecycleLock)
+        {
+            if (!_isStarted)
+            {
+                return;
+            }
+
+            _isStarted = false;
+            _stopReceiving = true;
+            Interlocked.Exchange(ref _refreshRequested, 0);
+            CloseSockets();
+
+            while (_buffers.TryTake(out _))
+            {
+            }
+        }
+    }
+
+    private void RequestSocketRefresh()
+    {
+        Interlocked.Exchange(ref _refreshRequested, 1);
+
+        if (Interlocked.CompareExchange(ref _refreshWorkerRunning, 1, 0) != 0)
+        {
+            return;
+        }
+
+        _ = Task.Run(RefreshSockets);
+    }
+
+    private void RefreshSockets()
+    {
+        try
+        {
+            do
+            {
+                Interlocked.Exchange(ref _refreshRequested, 0);
+
+                lock (_lifecycleLock)
+                {
+                    if (!_isStarted)
+                    {
+                        return;
+                    }
+
+                    _isRefreshing = true;
+                    try
+                    {
+                        CloseSockets();
+                        OpenSockets();
+                    }
+                    finally
+                    {
+                        _isRefreshing = false;
+                    }
+                }
+            }
+            while (Volatile.Read(ref _refreshRequested) == 1);
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "RawSockets: capture refresh failed");
+        }
+        finally
+        {
+            Volatile.Write(ref _refreshWorkerRunning, 0);
+
+            if (Volatile.Read(ref _refreshRequested) == 1 && IsProviderStarted())
+            {
+                RequestSocketRefresh();
+            }
+        }
+    }
+
+    private bool IsProviderStarted()
+    {
+        lock (_lifecycleLock)
+        {
+            return _isStarted;
+        }
+    }
+
+    private int OpenSockets()
+    {
         var v4 = GetLocalUnicastAddresses(AddressFamily.InterNetwork).ToList();
         var v6 = GetLocalUnicastAddresses(AddressFamily.InterNetworkV6).ToList();
 
         if (v4.Count == 0 && v6.Count == 0)
         {
-            Log.Warning("RawSockets: no local unicast addresses found");
-            return;
+            Log.Warning("RawSockets: no local unicast addresses found; waiting for a usable network adapter");
+            return 0;
         }
 
         // IPv4-Sockets
@@ -53,21 +200,30 @@ public class SocketsPacketProvider(IPhotonReceiver photonReceiver, AlbionServerD
             CreateRawSocketIPv6(ip);
         }
 
-        foreach (var s in _socketsV4.Concat(_socketsV6))
+        foreach (var socket in _socketsV4.Concat(_socketsV6))
         {
             var buffer = RentBuffer();
-            _receiveTasks.Add(Task.Run(() => ReceiveLoopAsync(s, buffer)));
+            _receiveTasks.Add(Task.Run(() => ReceiveLoopAsync(socket, buffer)));
         }
+
+        var activeSourceCount = _socketsV4.Count + _socketsV6.Count;
+        if (activeSourceCount == 0)
+        {
+            Log.Warning("RawSockets: no usable network adapter could be opened");
+            return 0;
+        }
+
+        Log.Information("RawSockets: capture active on {IPv4Count} IPv4 and {IPv6Count} IPv6 address(es)", _socketsV4.Count, _socketsV6.Count);
+        return activeSourceCount;
     }
 
-    public override void Stop()
+    private void CloseSockets()
     {
-        _stopReceiving = true;
-
-        foreach (var s in _socketsV4.Concat(_socketsV6))
+        foreach (var socket in _socketsV4.Concat(_socketsV6))
         {
-            SafeClose(s);
+            SafeClose(socket);
         }
+
         _socketsV4.Clear();
         _socketsV6.Clear();
 
@@ -75,14 +231,12 @@ public class SocketsPacketProvider(IPhotonReceiver photonReceiver, AlbionServerD
         {
             Task.WaitAll(_receiveTasks.ToArray(), TimeSpan.FromSeconds(2));
         }
-        catch
+        catch (AggregateException ex)
         {
-            // ignore
+            Log.Debug(ex, "RawSockets: receive tasks did not stop cleanly");
         }
 
         _receiveTasks.Clear();
-
-        while (_buffers.TryTake(out _)) { }
     }
 
     private void CreateRawSocketIPv4(IPAddress ip)
@@ -162,8 +316,15 @@ public class SocketsPacketProvider(IPhotonReceiver photonReceiver, AlbionServerD
             }
             catch (SocketException ex)
             {
-                if (_stopReceiving) break;
+                if (_stopReceiving || _isRefreshing)
+                {
+                    break;
+                }
+
                 DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+                Log.Warning(ex, "RawSockets: receive failed; scheduling capture refresh");
+                RequestSocketRefresh();
+                break;
             }
             catch (ObjectDisposedException)
             {
@@ -342,11 +503,15 @@ public class SocketsPacketProvider(IPhotonReceiver photonReceiver, AlbionServerD
             return;
         }
 
-        _albionServerDetectionService.DetectFromSourceIp(sourceIp);
+        var isAlbionGameData = _albionServerDetectionService.TryDetectFromSourceIp(sourceIp);
 
         try
         {
             _photonReceiver.ReceivePacket(payload);
+            if (isAlbionGameData)
+            {
+                ReportGameDataDetected();
+            }
         }
         catch (Exception ex)
         {

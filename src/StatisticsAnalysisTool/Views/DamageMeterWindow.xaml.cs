@@ -1,7 +1,6 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.DamageMeter;
 using StatisticsAnalysisTool.ViewModels;
-using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 
@@ -14,7 +13,7 @@ public partial class DamageMeterWindow
 {
     private readonly WindowChromeController _windowChromeController;
 
-    public DamageMeterWindow(ObservableCollection<DamageMeterFragment> damageMeter)
+    public DamageMeterWindow(DamageMeterBindings damageMeterBindings)
     {
         InitializeComponent();
         _windowChromeController = new WindowChromeController(
@@ -22,7 +21,7 @@ public partial class DamageMeterWindow
             MaximizedButton,
             ResizeMode.CanResizeWithGrip,
             centerOnRestore: true);
-        DataContext = new DamageMeterWindowViewModel(damageMeter);
+        DataContext = new DamageMeterWindowViewModel(damageMeterBindings);
     }
 
     private void CloseButton_Click(object sender, RoutedEventArgs e) => Close();

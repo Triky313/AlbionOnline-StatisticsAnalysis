@@ -19,15 +19,16 @@ public class Gathered : BaseViewModel
     private string _uniqueName;
     private int _miningProcesses;
     private int _gainedTotalAmount;
-    private bool _isSelectedForDeletion;
     private FixPoint _estimatedMarketValue;
     private long _totalMarketValueWithCulture;
     private Item _item;
     private readonly bool _hasBeenFished;
 
-    public Guid Guid { get; init; } = Guid.NewGuid();
+    public Guid SessionId { get; init; }
+    public string CharacterName { get; init; } = string.Empty;
     public long TimestampUtc { get; init; }
-    public DateTime TimestampDateTimeUtc => new(TimestampUtc);
+    public DateTime TimestampDateTimeUtc => new(TimestampUtc, DateTimeKind.Utc);
+    public DateTime TimestampDateTimeLocal => TimestampDateTimeUtc.ToLocalTime();
     public long ObjectId { get; init; }
     public long UserObjectId { get; init; }
 
@@ -172,7 +173,6 @@ public class Gathered : BaseViewModel
     public static string TranslationBonus => LocalizationController.Translation("BONUS");
     public static string TranslationPremium => LocalizationController.Translation("PREMIUM");
     public static string TranslationTotal => LocalizationController.Translation("TOTAL");
-    public static string TranslationSelectToDelete => LocalizationController.Translation("SELECTED_TO_DELETE");
     public static string TranslationTotalMarketValue => LocalizationController.Translation("TOTAL_MARKET_VALUE");
 
     public bool IsClosed
@@ -185,13 +185,4 @@ public class Gathered : BaseViewModel
         }
     }
 
-    public bool IsSelectedForDeletion
-    {
-        get => _isSelectedForDeletion;
-        set
-        {
-            _isSelectedForDeletion = value;
-            OnPropertyChanged();
-        }
-    }
 }

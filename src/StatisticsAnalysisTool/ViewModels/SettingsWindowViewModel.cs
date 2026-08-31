@@ -1,6 +1,7 @@
 using Ookii.Dialogs.Wpf;
 using Serilog;
 using StatisticAnalysisTool.Extractor;
+using StatisticAnalysisTool.Extractor.Enums;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Diagnostics;
@@ -28,10 +29,10 @@ namespace StatisticsAnalysisTool.ViewModels;
 
 public class SettingsWindowViewModel : BaseViewModel
 {
+    private const double DefaultSoundVolumePercentage = 100;
+
     private static ObservableCollection<FileInformation> _languages = [];
     private static FileInformation _languagesSelection;
-    private static ObservableCollection<SettingDataInformation> _refreshRates = [];
-    private static SettingDataInformation _refreshRatesSelection;
 
     public SettingsWindowViewModel()
     {
@@ -44,9 +45,9 @@ public class SettingsWindowViewModel : BaseViewModel
         InitLanguageFiles();
         InitNaviTabVisibilities();
         InitNotificationAreas();
-        InitRefreshRate();
         InitPacketProvider();
         InitStartupUserDataServers();
+        InitServerTypes();
         InitNetworkDevices();
         MainTrackingCharacterName = SettingsController.CurrentSettings.MainTrackingCharacterName;
 
@@ -76,6 +77,8 @@ public class SettingsWindowViewModel : BaseViewModel
 
         // Alert sounds
         InitAlertSounds();
+        AlertSoundVolumePercentage = NormalizeSoundVolume(SettingsController.CurrentSettings.AlertSoundVolumePercentage);
+        DeathAlertSoundVolumePercentage = NormalizeSoundVolume(SettingsController.CurrentSettings.DeathAlertSoundVolumePercentage);
 
         // Api urls
         AlbionDataProjectBaseUrlWest = SettingsController.CurrentSettings.AlbionDataProjectBaseUrlWest;
@@ -84,9 +87,6 @@ public class SettingsWindowViewModel : BaseViewModel
 
         // Auto update
         IsSuggestPreReleaseUpdatesActive = SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive;
-
-        // Item window
-        IsOpenItemWindowInNewWindowChecked = SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked;
 
         // Info window
         ShowInfoWindowOnStartChecked = SettingsController.CurrentSettings.IsInfoWindowShownOnStart;
@@ -108,7 +108,6 @@ public class SettingsWindowViewModel : BaseViewModel
         var oldPacketFilter = SettingsController.CurrentSettings.PacketFilter;
         var oldNetworkDevices = GetNetworkDeviceSettingsSnapshot(SettingsController.CurrentSettings.NetworkDevices);
 
-        SettingsController.CurrentSettings.RefreshRate = RefreshRatesSelection.Value;
 
         SettingsController.CurrentSettings.PacketProvider = (PacketProviderKind) PacketProviderSelection.Value;
         SetPacketFilter();
@@ -123,10 +122,11 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.MainGameFolderPath = MainGameFolderPath ?? string.Empty;
         SettingsController.CurrentSettings.BackupIntervalByDays = BackupIntervalByDaysSelection.Value;
         SettingsController.CurrentSettings.MaximumNumberOfBackups = MaximumNumberOfBackupsSelection.Value;
-        SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked = IsOpenItemWindowInNewWindowChecked;
         SettingsController.CurrentSettings.IsInfoWindowShownOnStart = ShowInfoWindowOnStartChecked;
-        SettingsController.CurrentSettings.SelectedAlertSound = AlertSoundSelection?.FileName ?? string.Empty;
-        SettingsController.CurrentSettings.SelectedDeathAlertSound = DeathAlertSoundSelection?.FileName ?? string.Empty;
+        SettingsController.CurrentSettings.SelectedAlertSound = AlertSoundSelection?.Identifier ?? string.Empty;
+        SettingsController.CurrentSettings.SelectedDeathAlertSound = DeathAlertSoundSelection?.Identifier ?? string.Empty;
+        SettingsController.CurrentSettings.AlertSoundVolumePercentage = AlertSoundVolumePercentage;
+        SettingsController.CurrentSettings.DeathAlertSoundVolumePercentage = DeathAlertSoundVolumePercentage;
 
         Culture.SetCulture(Culture.GetCultureByIetfLanguageTag(LanguagesSelection.FileName));
 
@@ -134,6 +134,7 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.AlbionDataProjectBaseUrlEast = AlbionDataProjectBaseUrlEast;
         SettingsController.CurrentSettings.AlbionDataProjectBaseUrlEurope = AlbionDataProjectBaseUrlEurope;
         SettingsController.CurrentSettings.StartupUserDataServerLocation = GetSelectedStartupUserDataServerLocation();
+        SettingsController.CurrentSettings.ServerType = (ServerType) ServerTypeSelection.Value;
 
         SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive = IsSuggestPreReleaseUpdatesActive;
         SettingsController.CurrentSettings.ExactMatchPlayerNamesLineNumber = PlayerSelectionWithSameNameInDb;
@@ -168,9 +169,9 @@ public class SettingsWindowViewModel : BaseViewModel
         Translation = new SettingsWindowTranslation();
         RefreshNaviTabVisibilityNames();
         RefreshNotificationFilterNames();
-        InitRefreshRate();
         InitPacketProvider();
         InitStartupUserDataServers();
+        InitServerTypes();
         InitDropDownDownByDays(BackupIntervalByDays);
         BackupIntervalByDaysSelection = BackupIntervalByDays.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.BackupIntervalByDays);
         mainWindowViewModel.RefreshLocalization();
@@ -185,7 +186,6 @@ public class SettingsWindowViewModel : BaseViewModel
         SetNaviTabVisibilityName(NavigationTabFilterType.Dungeons, MainWindowTranslation.Dungeons);
         SetNaviTabVisibilityName(NavigationTabFilterType.DamageMeter, MainWindowTranslation.DamageMeter);
         SetNaviTabVisibilityName(NavigationTabFilterType.TradeMonitoring, MainWindowTranslation.TradeMonitoring);
-        SetNaviTabVisibilityName(NavigationTabFilterType.OpenWorld, MainWindowTranslation.OpenWorld);
         SetNaviTabVisibilityName(NavigationTabFilterType.Gathering, MainWindowTranslation.Gathering);
         SetNaviTabVisibilityName(NavigationTabFilterType.Crafting, MainWindowTranslation.Crafting);
         SetNaviTabVisibilityName(NavigationTabFilterType.Party, MainWindowTranslation.Party);
@@ -227,7 +227,6 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.IsDungeonsNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.Dungeons)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsDamageMeterNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.DamageMeter)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.TradeMonitoring)?.IsSelected ?? true;
-        SettingsController.CurrentSettings.IsOpenWorldNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.OpenWorld)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsGatheringNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.Gathering)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsCraftingNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.Crafting)?.IsSelected ?? true;
         SettingsController.CurrentSettings.IsPartyNaviTabActive = TabVisibilities?.FirstOrDefault(x => x?.NavigationTabFilterType == NavigationTabFilterType.Party)?.IsSelected ?? true;
@@ -241,7 +240,6 @@ public class SettingsWindowViewModel : BaseViewModel
         mainWindowViewModel.DungeonsTabVisibility = SettingsController.CurrentSettings.IsDungeonsNaviTabActive.BoolToVisibility();
         mainWindowViewModel.DamageMeterTabVisibility = SettingsController.CurrentSettings.IsDamageMeterNaviTabActive.BoolToVisibility();
         mainWindowViewModel.TradeMonitoringTabVisibility = SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive.BoolToVisibility();
-        mainWindowViewModel.OpenWorldTabVisibility = SettingsController.CurrentSettings.IsOpenWorldNaviTabActive.BoolToVisibility();
         mainWindowViewModel.GatheringTabVisibility = SettingsController.CurrentSettings.IsGatheringNaviTabActive.BoolToVisibility();
         mainWindowViewModel.CraftingTabVisibility = SettingsController.CurrentSettings.IsCraftingNaviTabActive.BoolToVisibility();
         mainWindowViewModel.PartyTabVisibility = SettingsController.CurrentSettings.IsPartyNaviTabActive.BoolToVisibility();
@@ -268,17 +266,32 @@ public class SettingsWindowViewModel : BaseViewModel
             return;
         }
 
+        var configuredDevices = SettingsController.CurrentSettings.NetworkDevices ?? [];
+        var visibleIdentifiers = NetworkDevices
+            .Where(device => !string.IsNullOrWhiteSpace(device.Identifier))
+            .Select(device => device.Identifier)
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
         var networkDevices = NetworkDevices
-            .Where(x => !string.IsNullOrWhiteSpace(x.Identifier))
-            .Select(x => new NetworkDeviceSettingsObject
+            .Where(device => !string.IsNullOrWhiteSpace(device.Identifier))
+            .Select(device => new NetworkDeviceSettingsObject
             {
-                Identifier = x.Identifier,
-                Name = x.Name,
-                IsSelected = x.IsSelected == true
+                Identifier = device.Identifier,
+                Name = device.Name,
+                IsSelected = device.IsSelected == true
             })
             .ToList();
 
-        SettingsController.CurrentSettings.NetworkDevices = networkDevices.All(x => x.IsSelected)
+        networkDevices.AddRange(configuredDevices
+            .Where(device => !string.IsNullOrWhiteSpace(device.Identifier)
+                             && !visibleIdentifiers.Contains(device.Identifier))
+            .Select(device => new NetworkDeviceSettingsObject
+            {
+                Identifier = device.Identifier,
+                Name = device.Name,
+                IsSelected = device.IsSelected
+            }));
+
+        SettingsController.CurrentSettings.NetworkDevices = networkDevices.All(device => device.IsSelected)
             ? []
             : networkDevices;
     }
@@ -532,11 +545,6 @@ public class SettingsWindowViewModel : BaseViewModel
             IsSelected = SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive,
             Name = MainWindowTranslation.TradeMonitoring
         });
-        TabVisibilities.Add(new TabVisibilityFilter(NavigationTabFilterType.OpenWorld)
-        {
-            IsSelected = SettingsController.CurrentSettings.IsOpenWorldNaviTabActive,
-            Name = MainWindowTranslation.OpenWorld
-        });
         TabVisibilities.Add(new TabVisibilityFilter(NavigationTabFilterType.Gathering)
         {
             IsSelected = SettingsController.CurrentSettings.IsGatheringNaviTabActive,
@@ -575,7 +583,6 @@ public class SettingsWindowViewModel : BaseViewModel
         mainWindowViewModel.DungeonsTabVisibility = SettingsController.CurrentSettings.IsDungeonsNaviTabActive.BoolToVisibility();
         mainWindowViewModel.DamageMeterTabVisibility = SettingsController.CurrentSettings.IsDamageMeterNaviTabActive.BoolToVisibility();
         mainWindowViewModel.TradeMonitoringTabVisibility = SettingsController.CurrentSettings.IsTradeMonitoringNaviTabActive.BoolToVisibility();
-        mainWindowViewModel.OpenWorldTabVisibility = SettingsController.CurrentSettings.IsOpenWorldNaviTabActive.BoolToVisibility();
         mainWindowViewModel.GatheringTabVisibility = SettingsController.CurrentSettings.IsGatheringNaviTabActive.BoolToVisibility();
         mainWindowViewModel.CraftingTabVisibility = SettingsController.CurrentSettings.IsCraftingNaviTabActive.BoolToVisibility();
         mainWindowViewModel.PartyTabVisibility = SettingsController.CurrentSettings.IsPartyNaviTabActive.BoolToVisibility();
@@ -600,17 +607,6 @@ public class SettingsWindowViewModel : BaseViewModel
         });
     }
 
-    private void InitRefreshRate()
-    {
-        RefreshRates.Clear();
-        RefreshRates.Add(new SettingDataInformation { Name = SettingsWindowTranslation.FiveSeconds, Value = 5000 });
-        RefreshRates.Add(new SettingDataInformation { Name = SettingsWindowTranslation.TenSeconds, Value = 10000 });
-        RefreshRates.Add(new SettingDataInformation { Name = SettingsWindowTranslation.ThirtySeconds, Value = 30000 });
-        RefreshRates.Add(new SettingDataInformation { Name = SettingsWindowTranslation.SixtySeconds, Value = 60000 });
-        RefreshRates.Add(new SettingDataInformation { Name = SettingsWindowTranslation.FiveMinutes, Value = 300000 });
-        RefreshRatesSelection = RefreshRates.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.RefreshRate);
-    }
-
     private void InitPacketProvider()
     {
         PacketProvider.Clear();
@@ -630,6 +626,19 @@ public class SettingsWindowViewModel : BaseViewModel
         StartupUserDataServerSelection = IsKnownStartupUserDataServerValue(selectedServer.Value)
             ? selectedServer
             : StartupUserDataServers.First(x => x.Value == (int) ServerLocation.Europe);
+    }
+
+    private void InitServerTypes()
+    {
+        ServerTypes.Clear();
+        ServerTypes.Add(new SettingDataInformation { Name = "Live", Value = (int) ServerType.Live });
+        ServerTypes.Add(new SettingDataInformation { Name = "Stage", Value = (int) ServerType.Staging });
+        ServerTypes.Add(new SettingDataInformation { Name = "Playground", Value = (int) ServerType.Playground });
+
+        var selectedServerType = Enum.IsDefined(SettingsController.CurrentSettings.ServerType)
+            ? SettingsController.CurrentSettings.ServerType
+            : ServerType.Live;
+        ServerTypeSelection = ServerTypes.First(x => x.Value == (int) selectedServerType);
     }
 
     private ServerLocation GetSelectedStartupUserDataServerLocation()
@@ -704,21 +713,37 @@ public class SettingsWindowViewModel : BaseViewModel
 
         // Item alert sounds
         AlertSounds.Clear();
+        AlertSounds.Add(CreateNoSoundOption());
         foreach (var sound in SoundController.Sounds.Where(x => x.FileName.Contains("alert") && !x.FileName.Contains("deathalert")))
         {
-            AlertSounds.Add(new FileInformation(sound.FileName, sound.FilePath));
+            AlertSounds.Add(new SoundOption(sound.FileName, sound.FileName, sound.FilePath));
         }
 
-        AlertSoundSelection = AlertSounds.FirstOrDefault(x => x.FileName == SettingsController.CurrentSettings.SelectedAlertSound);
+        AlertSoundSelection = AlertSounds.FirstOrDefault(x => x.Identifier == SettingsController.CurrentSettings.SelectedAlertSound)
+            ?? AlertSounds[0];
 
         // Death alert sounds
         DeathAlertSounds.Clear();
+        DeathAlertSounds.Add(CreateNoSoundOption());
         foreach (var sound in SoundController.Sounds.Where(x => x.FileName.Contains("deathalert")))
         {
-            DeathAlertSounds.Add(new FileInformation(sound.FileName, sound.FilePath));
+            DeathAlertSounds.Add(new SoundOption(sound.FileName, sound.FileName, sound.FilePath));
         }
 
-        DeathAlertSoundSelection = DeathAlertSounds.FirstOrDefault(x => x.FileName == SettingsController.CurrentSettings.SelectedDeathAlertSound);
+        DeathAlertSoundSelection = DeathAlertSounds.FirstOrDefault(x => x.Identifier == SettingsController.CurrentSettings.SelectedDeathAlertSound)
+            ?? DeathAlertSounds[0];
+    }
+
+    private static SoundOption CreateNoSoundOption()
+    {
+        return new SoundOption(string.Empty, LocalizationController.Translation("NONE"), string.Empty);
+    }
+
+    private static double NormalizeSoundVolume(double volumePercentage)
+    {
+        return double.IsFinite(volumePercentage)
+            ? Math.Clamp(volumePercentage, 0, 100)
+            : DefaultSoundVolumePercentage;
     }
 
     #endregion
@@ -745,7 +770,7 @@ public class SettingsWindowViewModel : BaseViewModel
         }
     } = new();
 
-    public ObservableCollection<FileInformation> AlertSounds
+    public ObservableCollection<SoundOption> AlertSounds
     {
         get;
         set
@@ -755,7 +780,7 @@ public class SettingsWindowViewModel : BaseViewModel
         }
     } = new();
 
-    public ObservableCollection<FileInformation> DeathAlertSounds
+    public ObservableCollection<SoundOption> DeathAlertSounds
     {
         get;
         set
@@ -765,7 +790,7 @@ public class SettingsWindowViewModel : BaseViewModel
         }
     } = new();
 
-    public FileInformation AlertSoundSelection
+    public SoundOption AlertSoundSelection
     {
         get;
         set
@@ -775,7 +800,7 @@ public class SettingsWindowViewModel : BaseViewModel
         }
     }
 
-    public FileInformation DeathAlertSoundSelection
+    public SoundOption DeathAlertSoundSelection
     {
         get;
         set
@@ -784,6 +809,26 @@ public class SettingsWindowViewModel : BaseViewModel
             OnPropertyChanged();
         }
     }
+
+    public double AlertSoundVolumePercentage
+    {
+        get;
+        set
+        {
+            field = NormalizeSoundVolume(value);
+            OnPropertyChanged();
+        }
+    } = DefaultSoundVolumePercentage;
+
+    public double DeathAlertSoundVolumePercentage
+    {
+        get;
+        set
+        {
+            field = NormalizeSoundVolume(value);
+            OnPropertyChanged();
+        }
+    } = DefaultSoundVolumePercentage;
 
     public SettingDataInformation BackupIntervalByDaysSelection
     {
@@ -846,26 +891,6 @@ public class SettingsWindowViewModel : BaseViewModel
     }
 
 
-    public SettingDataInformation RefreshRatesSelection
-    {
-        get => _refreshRatesSelection;
-        set
-        {
-            _refreshRatesSelection = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public ObservableCollection<SettingDataInformation> RefreshRates
-    {
-        get => _refreshRates;
-        set
-        {
-            _refreshRates = value;
-            OnPropertyChanged();
-        }
-    }
-
     public SettingDataInformation PacketProviderSelection
     {
         get;
@@ -899,6 +924,26 @@ public class SettingsWindowViewModel : BaseViewModel
     }
 
     public ObservableCollection<SettingDataInformation> StartupUserDataServers
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = new();
+
+    public SettingDataInformation ServerTypeSelection
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<SettingDataInformation> ServerTypes
     {
         get;
         set
@@ -1019,16 +1064,6 @@ public class SettingsWindowViewModel : BaseViewModel
     }
 
     public SettingsWindowTranslation Translation
-    {
-        get;
-        set
-        {
-            field = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public bool IsOpenItemWindowInNewWindowChecked
     {
         get;
         set

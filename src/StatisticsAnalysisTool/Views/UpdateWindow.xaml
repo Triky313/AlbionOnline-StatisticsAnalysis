@@ -36,7 +36,8 @@
                 </Grid>
                 <Label Margin="41,0,61,0" Height="33" VerticalAlignment="Top" Content="{Binding WindowTitle, FallbackValue=Software Update}"
                        FontSize="16" FontWeight="Bold" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                <Button x:Name="CloseButton" Margin="-2,0,0,0" Click="CloseButton_Click" Content="r" Style="{StaticResource WindowButtonStyle}" />
+                <Button x:Name="CloseButton" Margin="-2,0,0,0" Click="CloseButton_Click" Content="r"
+                        IsEnabled="{Binding AreButtonsEnabled}" Style="{StaticResource WindowButtonStyle}" />
             </Grid>
 
             <Grid Grid.Row="1" Margin="16,16,16,10">
@@ -157,7 +158,8 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <ProgressBar Grid.Column="0" Height="6" Margin="0,0,20,0" IsIndeterminate="{Binding IsBusy}"
+                    <ProgressBar Grid.Column="0" Height="6" Margin="0,0,20,0" Minimum="0" Maximum="100"
+                                 IsIndeterminate="{Binding IsProgressIndeterminate}" Value="{Binding DownloadProgressPercentage}"
                                  Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}" />
                     <Button Grid.Column="1" Width="150" Height="36" Margin="0,0,10,0" Click="RemindLater_Click"
                             Content="{Binding PostponeButtonText, FallbackValue=REMIND__LATER}" IsEnabled="{Binding AreButtonsEnabled}" />

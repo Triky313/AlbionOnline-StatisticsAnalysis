@@ -28,8 +28,8 @@ public sealed class AuctionGetItemAverageStatsRequestHandler : RequestPacketHand
             return Task.CompletedTask;
         }
 
-        var marketLocation = Cluster.ClusterController.CurrentCluster.SourceClusterIndex?.GetMarketLocationByLocationNameOrId()
-                             ?? Cluster.ClusterController.CurrentCluster.Index?.GetMarketLocationByLocationNameOrId()
+        var marketLocation = Cluster.ClusterController.CurrentCluster.Index?.GetMarketLocationByLocationNameOrId()
+                             ?? Cluster.ClusterController.CurrentCluster.SourceClusterIndex?.GetMarketLocationByLocationNameOrId()
                              ?? MarketLocation.Unknown;
 
         var mainWindowViewModel = ServiceLocator.Resolve<MainWindowViewModel>();

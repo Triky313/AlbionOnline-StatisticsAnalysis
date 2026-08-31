@@ -74,7 +74,8 @@ public static class DamageMeterYourStatsSnapshotFactory
                         && x.SourceObjectId != localObjectId)
             .ToList();
 
-        var combatTime = localPlayer.CombatTime;
+        var snapshotTime = DateTime.UtcNow;
+        var combatTime = localPlayer.GetCombatTime(snapshotTime);
         var totalHealing = localPlayer.Heal + localPlayer.Overhealed;
         var fightDurations = events
             .Select(GetDuration)
@@ -102,7 +103,7 @@ public static class DamageMeterYourStatsSnapshotFactory
             DamageTaken = localPlayer.TakenDamage.ToShortNumberString(),
             Dtps = FormatPerSecond(localPlayer.TakenDamage, combatTime),
             TopDamageTakenBySpell = CreateTopEntries(takenDamageContributions
-                .GroupBy(x => x.CausingSpellIndex)
+                .GroupBy(x => SpellPresentationResolver.ResolveSpellIndex(x.CausingSpellIndex))
                 .Select(x => new NamedValue(ResolveSpellName(x.Key), x.Sum(y => y.Value)))
                 .ToList()),
             CombatTime = FormatDuration(combatTime),

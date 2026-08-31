@@ -22,6 +22,6 @@ public class Spell
     public string UniqueName { get; init; }
     public string Target { get; init; }
     public string Category { get; init; }
-    public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => ImageController.GetSpellImage(UniqueName));
+    public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => ImageController.GetSpellImage(SpellData.GetIconUniqueName(UniqueName)));
     public string LocalizationName => SpellData.GetLocalizationName(UniqueName);
 }

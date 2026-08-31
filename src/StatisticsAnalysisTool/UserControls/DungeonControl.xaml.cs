@@ -1,5 +1,6 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Localization;
+using StatisticsAnalysisTool.Dungeon.Models;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
@@ -7,6 +8,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 
 namespace StatisticsAnalysisTool.UserControls;
 
@@ -76,9 +78,48 @@ public partial class DungeonControl
 
     #region Ui events
 
+    private async void DungeonActivationToggle_Click(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        {
+            return;
+        }
+
+        var isTrackingActive = !mainWindowViewModel.DungeonBindings.IsDungeonTrackingActive;
+
+        var trackingController = ServiceLocator.Resolve<TrackingController>();
+        await trackingController.DungeonController.ApplyTrackingStateAsync(isTrackingActive);
+    }
+
     private void BtnDungeonTrackingReset_Click(object sender, RoutedEventArgs e)
     {
         ResetDungeons();
+    }
+
+    private async void TierFilter_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel viewModel
+            || sender is not ToggleButton { DataContext: DungeonNumericFilterOption selectedOption } toggleButton)
+        {
+            return;
+        }
+
+        await viewModel.DungeonBindings.DungeonStatsFilter.UpdateTierFilterSelectionAsync(
+            selectedOption,
+            toggleButton.IsChecked == true);
+    }
+
+    private async void EnchantmentFilter_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel viewModel
+            || sender is not ToggleButton { DataContext: DungeonNumericFilterOption selectedOption } toggleButton)
+        {
+            return;
+        }
+
+        await viewModel.DungeonBindings.DungeonStatsFilter.UpdateEnchantmentFilterSelectionAsync(
+            selectedOption,
+            toggleButton.IsChecked == true);
     }
 
     private void BtnResetTodaysDungeons_Click(object sender, RoutedEventArgs e)

@@ -3,137 +3,46 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
+        xmlns:userControls="clr-namespace:StatisticsAnalysisTool.UserControls"
         xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
-        xmlns:wpf="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
         mc:Ignorable="d"
-        Title="{Binding DashboardBindings.TranslationTitle, FallbackValue=DASHBOARD}" 
-        Height="500" Width="650" MinHeight="450" MinWidth="600" 
-        WindowStartupLocation="CenterScreen" 
+        Title="{Binding DashboardBindings.TranslationTitle, FallbackValue=DASHBOARD}"
+        Height="800"
+        Width="1200"
+        MinHeight="600"
+        MinWidth="1050"
+        WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         ResizeMode="CanResizeWithGrip"
-        BorderThickness="1,1,1,1"
+        BorderThickness="1"
         BorderBrush="{StaticResource SolidColorBrush.Background.3}"
         AllowsTransparency="True"
-        d:DesignHeight="1400" d:DesignWidth="600"
+        d:DesignHeight="900"
+        d:DesignWidth="1400"
         d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
+
     <Grid Background="{StaticResource SolidColorBrush.Background.1}">
-        <Grid ZIndex="1" Height="33" VerticalAlignment="Top" Background="{StaticResource SolidColorBrush.Background.2}" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
-            <Label Content="{Binding DashboardBindings.TranslationTitle, FallbackValue=DASHBOARD}" Margin="0,0,91,0" VerticalAlignment="Top" Height="33" FontSize="16" 
-                   Foreground="{StaticResource SolidColorBrush.Text.1}" FontWeight="Bold" />
+        <Grid ZIndex="1"
+              Height="33"
+              VerticalAlignment="Top"
+              Background="{StaticResource SolidColorBrush.Background.2}"
+              MouseDown="Hotbar_MouseDown"
+              MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+            <Label Content="{Binding DashboardBindings.TranslationTitle, FallbackValue=DASHBOARD}"
+                   Margin="0,0,91,0"
+                   VerticalAlignment="Top"
+                   Height="33"
+                   FontSize="16"
+                   Foreground="{StaticResource SolidColorBrush.Text.1}"
+                   FontWeight="Bold" />
             <Separator Margin="5,30,5,0" VerticalAlignment="Top" />
             <Button Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click" />
             <Button x:Name="MaximizedButton" Style="{StaticResource WindowButtonStyle}" Content="1" Margin="0,0,28,0" Click="MaximizedButton_Click" />
             <Button Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,56,0" Click="MinimizeButton_Click" />
         </Grid>
 
-        <Grid Margin="0,33,-1,0">
-            <ScrollViewer>
-                <Grid>
-                    <StackPanel Orientation="Vertical">
-                        <DockPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10">
-                            <StackPanel Orientation="Vertical" Margin="10,0,10,0">
-                                <Image Source="../Resources/fame.png" Width="22" Height="22" ToolTip="{Binding DashboardBindings.TranslationFame, FallbackValue=FAME}" />
-                                <TextBlock Text="{Binding DashboardBindings.TotalGainedFameInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
-                                <TextBlock FontSize="16" Text="{Binding DashboardBindings.FamePerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
-                               Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
-                            </StackPanel>
-                            <StackPanel Orientation="Vertical" Margin="10,0,10,0">
-                                <Image Source="../Resources/silver.png" Width="22" Height="22" ToolTip="{Binding DashboardBindings.TranslationSilver, FallbackValue=SILVER}" />
-                                <TextBlock Text="{Binding DashboardBindings.TotalGainedSilverInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
-                                <TextBlock FontSize="16" Text="{Binding DashboardBindings.SilverPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
-                               Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
-                            </StackPanel>
-                            <StackPanel Orientation="Vertical" Margin="10,0,10,0">
-                                <Image Source="../Resources/respec.png" Width="22" Height="22" ToolTip="{Binding DashboardBindings.TranslationReSpec, FallbackValue=RESPEC}" />
-                                <TextBlock Text="{Binding DashboardBindings.TotalGainedReSpecPointsInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
-                                <TextBlock FontSize="16" Text="{Binding DashboardBindings.ReSpecPointsPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
-                               Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Vertical" Margin="10,0,10,0">
-                                <Image Source="../Resources/might.png" Width="22" Height="22" ToolTip="{Binding DashboardBindings.TranslationMight, FallbackValue=MIGHT}" />
-                                <TextBlock Text="{Binding DashboardBindings.TotalGainedMightInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
-                                <TextBlock FontSize="16" Text="{Binding DashboardBindings.MightPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
-                               Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
-                            </StackPanel>
-                            <StackPanel Orientation="Vertical" Margin="10,0,10,0">
-                                <Image Source="../Resources/favor.png" Width="22" Height="22" ToolTip="{Binding DashboardBindings.TranslationFavor, FallbackValue=FAVOR}" />
-                                <TextBlock Text="{Binding DashboardBindings.TotalGainedFavorInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
-                                <TextBlock FontSize="16" Text="{Binding DashboardBindings.FavorPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
-                               Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
-                            </StackPanel>
-                            <ItemsControl ItemsSource="{Binding FactionPointStats}" ItemTemplate="{StaticResource FactionPointStatsTemplate}" />
-                        </DockPanel>
-                        <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,0,0,0" VerticalAlignment="Top" />
-                        <Grid>
-                            <ContentControl Margin="3" Content="{Binding DashboardBindings}" ContentTemplate="{StaticResource KillDeathStatsTemplate}" />
-                        </Grid>
-                        <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,2,0,2" />
-                        <Grid>
-                            <ContentControl Margin="3" Content="{Binding DashboardBindings.LootedChests}" ContentTemplate="{StaticResource LootedChestsTemplate}" />
-                        </Grid>
-                        <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,2,0,2" />
-                        <Grid>
-                            <ContentControl Margin="3" Content="{Binding DashboardBindings}" ContentTemplate="{StaticResource SilverCostForReSpecTemplate}" />
-                        </Grid>
-                        <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,2,0,2" />
-                        <Grid>
-                            <ContentControl Margin="3" Content="{Binding DashboardBindings}" ContentTemplate="{StaticResource RepairCostsTemplate}" />
-                        </Grid>
-                        <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,2,0,2" />
-                        <Grid Margin="10,6,10,16">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="300" />
-                            </Grid.RowDefinitions>
-                            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
-                                <TextBlock Text="{Binding DashboardBindings.TranslationActivityChart, FallbackValue='HISTORY'}"
-                                           Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" Margin="0,0,8,0" />
-                                <ComboBox Width="180"
-                                          Height="26"
-                                          ItemsSource="{Binding DashboardChartRanges}"
-                                          SelectedItem="{Binding SelectedDashboardChartRange, Mode=TwoWay}"
-                                          DisplayMemberPath="Name"
-                                          SelectionChanged="DashboardChartRange_SelectionChanged" />
-                            </StackPanel>
-                            <ItemsControl Grid.Row="1" Margin="0,10,0,10" ItemsSource="{Binding DashboardChartSeriesFilters}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel />
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate DataType="{x:Type models:DashboardChartSeriesFilter}">
-                                        <Border BorderBrush="{StaticResource SolidColorBrush.Background.4}"
-                                                BorderThickness="1"
-                                                Margin="0,0,8,8"
-                                                Padding="8,4"
-                                                Background="{StaticResource SolidColorBrush.Background.2}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <Rectangle Width="10" Height="10" Fill="{Binding Brush}" Margin="0,0,6,0" VerticalAlignment="Center" />
-                                                <CheckBox Content="{Binding Name}"
-                                                          IsChecked="{Binding IsSelected, Mode=TwoWay}"
-                                                          Checked="DashboardChartSeriesVisibility_Changed"
-                                                          Unchecked="DashboardChartSeriesVisibility_Changed"
-                                                          VerticalAlignment="Center" />
-                                            </StackPanel>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                            <wpf:CartesianChart Grid.Row="2"
-                                                Series="{Binding SeriesDashboardHourValues}"
-                                                XAxes="{Binding XAxesDashboardHourValues}"
-                                                TooltipPosition="Center"
-                                                FindingStrategy="ExactMatchTakeClosest"
-                                                LegendPosition="Hidden"
-                                                Background="Transparent"
-                                                DrawMarginFrame="{x:Null}" />
-                        </Grid>
-                    </StackPanel>
-                </Grid>
-            </ScrollViewer>
-        </Grid>
+        <userControls:DashboardControl Margin="0,33,0,0"
+                                       ShowOpenWindowButton="False"
+                                       DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
     </Grid>
 </Window>

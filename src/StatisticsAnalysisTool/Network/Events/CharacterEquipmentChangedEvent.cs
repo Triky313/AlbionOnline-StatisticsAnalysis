@@ -23,7 +23,7 @@ public class CharacterEquipmentChangedEvent
         {
             ProcessObjectId(parameters);
             ProcessEquipment(parameters);
-            ProcessSpells(parameters);
+            ProcessEquipmentSpells(parameters);
         }
         catch (Exception e)
         {
@@ -41,35 +41,26 @@ public class CharacterEquipmentChangedEvent
 
     private void ProcessEquipment(IReadOnlyDictionary<byte, object> parameters)
     {
-        if (parameters.TryGetValue(2, out object equipmentObject))
+        if (!TryGetValues(parameters, 2, out var equipment))
         {
-            var valueType = equipmentObject.GetType();
-            if (valueType.IsArray && typeof(short[]).Name == valueType.Name)
-            {
-                var equipment = ((short[]) parameters[2]).ToDictionary();
-                CharacterEquipment.MainHand = equipment[0].ObjectToInt();
-                CharacterEquipment.OffHand = equipment[1].ObjectToInt();
-                CharacterEquipment.Head = equipment[2].ObjectToInt();
-                CharacterEquipment.Chest = equipment[3].ObjectToInt();
-                CharacterEquipment.Shoes = equipment[4].ObjectToInt();
-                CharacterEquipment.Bag = equipment[5].ObjectToInt();
-                CharacterEquipment.Cape = equipment[6].ObjectToInt();
-                CharacterEquipment.Mount = equipment[7].ObjectToInt();
-                CharacterEquipment.Potion = equipment[8].ObjectToInt();
-                CharacterEquipment.BuffFood = equipment[9].ObjectToInt();
-            }
+            return;
         }
-    }
 
-    private void ProcessSpells(IReadOnlyDictionary<byte, object> parameters)
-    {
-        ProcessEquipmentSpells(parameters);
-        ProcessCapeSpell(parameters);
+        CharacterEquipment.MainHand = GetEquipmentValue(equipment, 0);
+        CharacterEquipment.OffHand = GetEquipmentValue(equipment, 1);
+        CharacterEquipment.Head = GetEquipmentValue(equipment, 2);
+        CharacterEquipment.Chest = GetEquipmentValue(equipment, 3);
+        CharacterEquipment.Shoes = GetEquipmentValue(equipment, 4);
+        CharacterEquipment.Bag = GetEquipmentValue(equipment, 5);
+        CharacterEquipment.Cape = GetEquipmentValue(equipment, 6);
+        CharacterEquipment.Mount = GetEquipmentValue(equipment, 7);
+        CharacterEquipment.Potion = GetEquipmentValue(equipment, 8);
+        CharacterEquipment.BuffFood = GetEquipmentValue(equipment, 9);
     }
 
     private void ProcessEquipmentSpells(IReadOnlyDictionary<byte, object> parameters)
     {
-        if (!TryGetSpells(parameters, 7, out var spells))
+        if (!TryGetValues(parameters, 7, out var spells))
         {
             return;
         }
@@ -84,36 +75,34 @@ public class CharacterEquipmentChangedEvent
         AddSpell(SlotType.Food, GetSpellValue(spells, 13));
     }
 
-    private void ProcessCapeSpell(IReadOnlyDictionary<byte, object> parameters)
+    private static bool TryGetValues(IReadOnlyDictionary<byte, object> parameters, byte key, out int[] values)
     {
-        if (!TryGetSpells(parameters, 5, out var spells))
-        {
-            return;
-        }
+        values = [];
 
-        AddSpell(SlotType.Cape, GetSpellValue(spells, 13));
-    }
-
-    private static bool TryGetSpells(IReadOnlyDictionary<byte, object> parameters, byte key, out short[] spells)
-    {
-        spells = [];
-
-        if (!parameters.TryGetValue(key, out object spellsObject))
+        if (!parameters.TryGetValue(key, out object value))
         {
             return false;
         }
 
-        var valueType = spellsObject.GetType();
-        if (!valueType.IsArray || typeof(short[]).Name != valueType.Name)
+        switch (value)
         {
-            return false;
+            case int[] intValues:
+                values = intValues;
+                return true;
+            case short[] shortValues:
+                values = Array.ConvertAll(shortValues, item => (int) item);
+                return true;
+            default:
+                return false;
         }
-
-        spells = (short[]) spellsObject;
-        return true;
     }
 
-    private static int GetSpellValue(IReadOnlyList<short> spells, int index)
+    private static int GetEquipmentValue(IReadOnlyList<int> equipment, int index)
+    {
+        return equipment.Count > index ? equipment[index] : 0;
+    }
+
+    private static int GetSpellValue(IReadOnlyList<int> spells, int index)
     {
         return spells.Count > index ? spells[index] : -1;
     }

@@ -87,13 +87,14 @@ public static class HttpClientUtils
             }
         }
 
-        // Try without Proxy
-        using var handlerWithoutProxy = new HttpClientHandler
+        // Try with the Windows system proxy configuration.
+        using var handlerWithSystemProxy = new HttpClientHandler
         {
-            UseProxy = false
+            UseProxy = true,
+            DefaultProxyCredentials = CredentialCache.DefaultCredentials
         };
 
-        var result = await TryAccessUrl(url, handlerWithoutProxy);
+        var result = await TryAccessUrl(url, handlerWithSystemProxy);
         return (false, result);
     }
 

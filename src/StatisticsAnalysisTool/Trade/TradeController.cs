@@ -10,7 +10,6 @@ using StatisticsAnalysisTool.Trade.PlayerTrades;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -36,16 +35,6 @@ public class TradeController
     {
         _trackingController = trackingController;
         _mainWindowViewModel = mainWindowViewModel;
-
-        if (_mainWindowViewModel?.TradeMonitoringBindings?.Trades != null)
-        {
-            _mainWindowViewModel.TradeMonitoringBindings.Trades.CollectionChanged += OnCollectionChanged;
-        }
-    }
-
-    private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-    {
-        _mainWindowViewModel?.TradeMonitoringBindings?.TradeStatsObject.SetTradeStats(_mainWindowViewModel?.TradeMonitoringBindings?.TradeCollectionView?.Cast<Trade>().ToList());
     }
 
     public async Task<bool> AddTradeToBindingCollectionAsync(Trade trade)
@@ -55,20 +44,41 @@ public class TradeController
             return false;
         }
 
-        var wasAdded = false;
+        var addedTrades = await AddTradesToBindingCollectionAsync([trade]);
+        return addedTrades.Count > 0;
+    }
+
+    private async Task<List<Trade>> AddTradesToBindingCollectionAsync(IReadOnlyCollection<Trade> tradesToAdd)
+    {
+        var addedTrades = new List<Trade>(tradesToAdd.Count);
         await _tradeCollectionLock.WaitAsync();
         try
         {
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 var trades = _mainWindowViewModel?.TradeMonitoringBindings?.Trades;
-                if (trades == null || ContainsEquivalentTrade(trades, trade) || IsLastTradeTheSame(trade))
+                if (trades == null)
                 {
                     return;
                 }
 
-                trades.Add(trade);
-                wasAdded = true;
+                foreach (var trade in tradesToAdd)
+                {
+                    if (trade == null
+                        || ContainsEquivalentTrade(trades, trade)
+                        || ContainsEquivalentTrade(addedTrades, trade)
+                        || IsLastTradeTheSame(trade))
+                    {
+                        continue;
+                    }
+
+                    addedTrades.Add(trade);
+                }
+
+                if (addedTrades.Count > 0)
+                {
+                    trades.AddRange(addedTrades);
+                }
             });
         }
         finally
@@ -76,9 +86,9 @@ public class TradeController
             _tradeCollectionLock.Release();
         }
 
-        if (!wasAdded)
+        if (addedTrades.Count == 0)
         {
-            return false;
+            return addedTrades;
         }
 
         if (_mainWindowViewModel?.TradeMonitoringBindings != null)
@@ -88,10 +98,14 @@ public class TradeController
 
         if (ServiceLocator.IsServiceInDictionary<SatNotificationManager>())
         {
-            await ServiceLocator.Resolve<SatNotificationManager>().ShowTradeAsync(trade);
+            var notificationManager = ServiceLocator.Resolve<SatNotificationManager>();
+            foreach (var trade in addedTrades)
+            {
+                await notificationManager.ShowTradeAsync(trade);
+            }
         }
 
-        return true;
+        return addedTrades;
     }
 
     private static bool ContainsEquivalentTrade(IEnumerable<Trade> trades, Trade trade)
@@ -183,15 +197,9 @@ public class TradeController
     private async Task UpdateTradesAsync(IEnumerable<Trade> updatedList)
     {
         var tradeBindings = _mainWindowViewModel.TradeMonitoringBindings;
-        tradeBindings.Trades.Clear();
-        tradeBindings.Trades.AddRange(updatedList);
+        tradeBindings.Trades.ReplaceRange(updatedList);
         tradeBindings.EnsureTradeCollectionViewInitialized();
         await tradeBindings.UpdateFilteredTradesAsync();
-
-        tradeBindings.TradeStatsObject.SetTradeStats(tradeBindings.TradeCollectionView?.Cast<Trade>().ToList());
-
-        tradeBindings.UpdateTotalTradesUi(null, null);
-        tradeBindings.UpdateCurrentTradesUi(null, null);
     }
 
     public async Task RemoveTradesByDaysInSettingsAsync()
@@ -204,15 +212,17 @@ public class TradeController
 
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
-            foreach (var mail in _mainWindowViewModel?.TradeMonitoringBindings?.Trades?.ToList()
-                         .Where(x => x?.Timestamp.AddDays(deleteAfterDays) < DateTime.UtcNow)!)
+            var trades = _mainWindowViewModel?.TradeMonitoringBindings?.Trades;
+            if (trades == null)
             {
-                _mainWindowViewModel?.TradeMonitoringBindings?.Trades?.Remove(mail);
+                return;
             }
-            _mainWindowViewModel?.TradeMonitoringBindings?.TradeStatsObject?.SetTradeStats(_mainWindowViewModel?.TradeMonitoringBindings?.TradeCollectionView?.Cast<Trade>().ToList());
 
-            _mainWindowViewModel?.TradeMonitoringBindings?.UpdateTotalTradesUi(null, null);
-            _mainWindowViewModel?.TradeMonitoringBindings?.UpdateCurrentTradesUi(null, null);
+            var tradesToRemove = trades.Where(x => x?.Timestamp.AddDays(deleteAfterDays) < DateTime.UtcNow).ToList();
+            if (tradesToRemove.Count > 0)
+            {
+                trades.RemoveRange(tradesToRemove);
+            }
         });
 
         if (_mainWindowViewModel?.TradeMonitoringBindings != null)
@@ -224,9 +234,21 @@ public class TradeController
     #region Merchant buy and crafting costs 
 
     private long _buildingObjectId = -1;
-    private Trade _upcomingTrade;
-    private Trade _lastTrade;
-    private readonly HashSet<CraftingBuildingInfo> _craftingBuildingInfos = new();
+    private PendingBuildingTrade _pendingBuildingTrade;
+    private readonly Dictionary<long, CraftingBuildingInfo> _craftingBuildingInfos = new();
+    private static readonly CraftingBuildingName[] CraftingBuildingNames =
+    [
+        CraftingBuildingName.Forge,
+        CraftingBuildingName.HuntersLodge,
+        CraftingBuildingName.MagicItems,
+        CraftingBuildingName.ToolMaker,
+        CraftingBuildingName.Alchemist,
+        CraftingBuildingName.Cook
+    ];
+    private static readonly CraftingBuildingName[] MerchantBuildingNames =
+    [
+        CraftingBuildingName.FarmingMerchant
+    ];
 
     public void RegisterBuilding(long buildingObjectId)
     {
@@ -241,12 +263,17 @@ public class TradeController
         }
 
         _buildingObjectId = -1;
-        _upcomingTrade = null;
+        _pendingBuildingTrade = null;
     }
 
     public void AddCraftingBuildingInfo(CraftingBuildingInfo craftingBuildingInfo)
     {
-        _craftingBuildingInfos.Add(craftingBuildingInfo);
+        if (craftingBuildingInfo?.ObjectId is not { } objectId)
+        {
+            return;
+        }
+
+        _craftingBuildingInfos[objectId] = craftingBuildingInfo;
     }
 
     public void ResetCraftingBuildingInfo()
@@ -254,80 +281,101 @@ public class TradeController
         _craftingBuildingInfos.Clear();
     }
 
-    public void SetUpcomingTrade(long buildingObjectId, long dateTimeTicks, long internalTotalPrice, int quantity, int itemIndex)
+    public void SetUpcomingTrade(long buildingObjectId, long dateTimeTicks, long internalTotalPrice, int quantity, int itemIndex, bool isMerchantPurchase)
     {
         if (_buildingObjectId != buildingObjectId || quantity <= 0 || internalTotalPrice <= 0)
         {
             return;
         }
 
-        var craftingBuildingInfo = _craftingBuildingInfos?.FirstOrDefault(x => x.ObjectId == buildingObjectId);
-        if (craftingBuildingInfo == null)
+        _pendingBuildingTrade = null;
+
+        _craftingBuildingInfos.TryGetValue(buildingObjectId, out var craftingBuildingInfo);
+        var isMerchantPurchaseConfirmed = BuildingTradeClassifier.IsMerchantPurchase(itemIndex)
+                                          || CraftingBuildingData.DoesCraftingBuildingNameFit(
+                                              craftingBuildingInfo?.BuildingName,
+                                              MerchantBuildingNames);
+        if (!TryGetBuildingTradeType(craftingBuildingInfo?.BuildingName, isMerchantPurchase, out var tradeType))
+        {
+            return;
+        }
+
+        if (!SettingsController.CurrentSettings.IsTradeMonitoringActive
+            || (tradeType == TradeType.Crafting && !SettingsController.CurrentSettings.IsCraftingCostsMonitoringActive))
         {
             return;
         }
 
         var unitPrice = internalTotalPrice / quantity;
-
-        if (CraftingBuildingData.DoesCraftingBuildingNameFit(craftingBuildingInfo.BuildingName, new List<CraftingBuildingName>
-            {
-                CraftingBuildingName.Forge, CraftingBuildingName.HuntersLodge,
-                CraftingBuildingName.MagicItems, CraftingBuildingName.ToolMaker,
-                CraftingBuildingName.Alchemist, CraftingBuildingName.Cook
-            }))
+        _pendingBuildingTrade = new PendingBuildingTrade
         {
-            _upcomingTrade = new Trade()
-            {
-                Ticks = dateTimeTicks,
-                Type = TradeType.Crafting,
-                Id = dateTimeTicks,
-                ClusterIndex = ClusterController.CurrentCluster.SourceClusterIndex ?? ClusterController.CurrentCluster.Index,
-                Guid = Guid.NewGuid(),
-                ItemIndex = itemIndex,
-                InstantBuySellContent = new InstantBuySellContent()
-                {
-                    InternalUnitPrice = unitPrice,
-                    Quantity = quantity,
-                    TaxRate = 0
-                }
-            };
+            Ticks = dateTimeTicks,
+            Type = tradeType,
+            IsMerchantPurchaseConfirmed = isMerchantPurchaseConfirmed,
+            Id = dateTimeTicks,
+            ClusterIndex = ClusterController.CurrentCluster.SourceClusterIndex ?? ClusterController.CurrentCluster.Index,
+            Guid = Guid.NewGuid(),
+            ItemIndex = itemIndex,
+            InternalUnitPrice = unitPrice,
+            Quantity = quantity
+        };
+    }
+
+    public void ConfirmUpcomingCraftingTrade(long userObjectId, long buildingObjectId)
+    {
+        if (_pendingBuildingTrade is null
+            || _buildingObjectId != buildingObjectId
+            || _pendingBuildingTrade.IsMerchantPurchaseConfirmed
+            || _trackingController.EntityController.LocalUserData.UserObjectId != userObjectId)
+        {
+            return;
         }
 
-        if (CraftingBuildingData.DoesCraftingBuildingNameFit(craftingBuildingInfo.BuildingName, new List<CraftingBuildingName>
-            {
-                CraftingBuildingName.FarmingMerchant
-            }))
+        if (!SettingsController.CurrentSettings.IsCraftingCostsMonitoringActive)
         {
-            _upcomingTrade = new Trade()
-            {
-                Ticks = dateTimeTicks,
-                Type = TradeType.InstantBuy,
-                Id = dateTimeTicks,
-                ClusterIndex = ClusterController.CurrentCluster.SourceClusterIndex ?? ClusterController.CurrentCluster.Index,
-                Guid = Guid.NewGuid(),
-                ItemIndex = itemIndex,
-                InstantBuySellContent = new InstantBuySellContent()
-                {
-                    InternalUnitPrice = unitPrice,
-                    Quantity = quantity,
-                    TaxRate = 0
-                }
-            };
+            _pendingBuildingTrade = null;
+            return;
         }
+
+        _pendingBuildingTrade.Type = TradeType.Crafting;
+    }
+
+    private static bool TryGetBuildingTradeType(string buildingName, bool isMerchantPurchase, out TradeType tradeType)
+    {
+        if (CraftingBuildingData.DoesCraftingBuildingNameFit(buildingName, MerchantBuildingNames))
+        {
+            tradeType = TradeType.InstantBuy;
+            return true;
+        }
+
+        if (CraftingBuildingData.DoesCraftingBuildingNameFit(buildingName, CraftingBuildingNames))
+        {
+            tradeType = TradeType.Crafting;
+            return true;
+        }
+
+        if (isMerchantPurchase)
+        {
+            tradeType = TradeType.InstantBuy;
+            return true;
+        }
+
+        tradeType = default;
+        return false;
     }
 
     public async Task TradeFinishedAsync(long userObjectId, long buildingObjectId)
     {
-        if (_upcomingTrade == _lastTrade
-            || _trackingController.EntityController.LocalUserData.UserObjectId != userObjectId
-            || _upcomingTrade is null
+        if (_trackingController.EntityController.LocalUserData.UserObjectId != userObjectId
+            || _pendingBuildingTrade is null
             || _buildingObjectId != buildingObjectId)
         {
             return;
         }
 
-        await AddTradeToBindingCollectionAsync(_upcomingTrade);
-        _lastTrade = _upcomingTrade;
+        var trade = _pendingBuildingTrade.CreateTrade();
+        _pendingBuildingTrade = null;
+        await AddTradeToBindingCollectionAsync(trade);
     }
 
     #endregion
@@ -415,12 +463,9 @@ public class TradeController
         }
 
         var trades = CreatePlayerTrades(session, DateTime.UtcNow.Ticks);
-        foreach (var trade in trades)
-        {
-            await AddTradeToBindingCollectionAsync(trade);
-        }
+        var addedTrades = await AddTradesToBindingCollectionAsync(trades);
 
-        if (trades.Count > 0)
+        if (addedTrades.Count > 0)
         {
             await SaveInFileAfterExceedingLimit(10);
         }
@@ -675,10 +720,7 @@ public class TradeController
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             var enumerable = trades as Trade[] ?? trades.ToArray();
-            _mainWindowViewModel?.TradeMonitoringBindings?.Trades?.Clear();
-            _mainWindowViewModel?.TradeMonitoringBindings?.Trades?.AddRange(enumerable.AsEnumerable());
-            _mainWindowViewModel?.TradeMonitoringBindings?.TradeCollectionView?.Refresh();
-            _mainWindowViewModel?.TradeMonitoringBindings?.TradeStatsObject?.SetTradeStats(enumerable);
+            _mainWindowViewModel?.TradeMonitoringBindings?.Trades?.ReplaceRange(enumerable);
         }, DispatcherPriority.Background, CancellationToken.None);
 
         if (_mainWindowViewModel?.TradeMonitoringBindings != null)

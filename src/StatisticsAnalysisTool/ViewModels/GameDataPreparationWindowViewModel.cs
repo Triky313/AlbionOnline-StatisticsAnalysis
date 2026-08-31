@@ -8,12 +8,6 @@ namespace StatisticsAnalysisTool.ViewModels;
 
 public class GameDataPreparationWindowViewModel : BaseViewModel
 {
-    private string _title;
-    private string _message;
-    private string _path;
-    private bool _isConfirmButtonEnabled;
-    private string _errorMessage;
-
     public GameDataPreparationWindowViewModel()
     {
         Title = LocalizationController.Translation("SELECT_ALBION_ONLINE_MAIN_GAME_FOLDER");
@@ -52,50 +46,50 @@ public class GameDataPreparationWindowViewModel : BaseViewModel
 
     public string Title
     {
-        get => _title;
+        get;
         set
         {
-            _title = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public string Message
     {
-        get => _message;
+        get;
         set
         {
-            _message = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public string ErrorMessage
     {
-        get => _errorMessage;
+        get;
         set
         {
-            _errorMessage = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public string Path
     {
-        get => _path;
+        get;
         set
         {
-            _path = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public bool IsConfirmButtonEnabled
     {
-        get => _isConfirmButtonEnabled;
+        get;
         set
         {
-            _isConfirmButtonEnabled = value;
+            field = value;
             OnPropertyChanged();
         }
     }

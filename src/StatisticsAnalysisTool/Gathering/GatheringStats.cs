@@ -43,6 +43,15 @@ public class GatheringStats : BaseViewModel
     private ObservableCollection<ISeries> _resourceChartSeries = [];
     private Axis[] _resourceChartXAxes = [];
     private GatheringChartValueType _selectedResourceChartValueType = GatheringChartValueType.ResourceAmount;
+    private long _uniqueResourceTypes;
+    private double _averageResourceValue;
+    private long _bestSingleGatheringValue;
+    private double _gatheringDurationSeconds;
+    private GatheringResourceSummary _bestResource;
+    private GatheringResourceSummary _mostGatheredResourceDetails;
+    private GatheringMapSummary _bestGatheringMap;
+    private ObservableCollection<ISeries> _resourceValueByTypeSeries = [];
+    private ObservableCollection<ISeries> _gatheringActivityByLocationSeries = [];
 
     public GatheringStats()
     {
@@ -138,6 +147,84 @@ public class GatheringStats : BaseViewModel
         }
     }
 
+
+    public long UniqueResourceTypes
+    {
+        get => _uniqueResourceTypes;
+        set
+        {
+            _uniqueResourceTypes = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double AverageResourceValue
+    {
+        get => _averageResourceValue;
+        set
+        {
+            _averageResourceValue = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public long BestSingleGatheringValue
+    {
+        get => _bestSingleGatheringValue;
+        set
+        {
+            _bestSingleGatheringValue = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double GatheringDurationSeconds
+    {
+        get => _gatheringDurationSeconds;
+        set
+        {
+            _gatheringDurationSeconds = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public GatheringResourceSummary BestResource
+    {
+        get => _bestResource;
+        set
+        {
+            _bestResource = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public GatheringResourceSummary MostGatheredResourceDetails
+    {
+        get => _mostGatheredResourceDetails;
+        set
+        {
+            _mostGatheredResourceDetails = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public GatheringMapSummary BestGatheringMap
+    {
+        get => _bestGatheringMap;
+        set
+        {
+            _bestGatheringMap = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableRangeCollection<GatheringResourceTypeSummary> ResourceTypeSummaries { get; } = [];
+
+    public ObservableRangeCollection<GatheringMapSummary> LocationSummaries { get; } = [];
+
+    public ObservableRangeCollection<GatheringResourceSummary> TopGatheredResources { get; } = [];
+
+    public ObservableRangeCollection<Gathered> RecentGatherings { get; } = [];
     public ObservableRangeCollection<Gathered> GatheredHide
     {
         get => _gatheredHide;
@@ -348,6 +435,26 @@ public class GatheringStats : BaseViewModel
         }
     }
 
+    public ObservableCollection<ISeries> ResourceValueByTypeSeries
+    {
+        get => _resourceValueByTypeSeries;
+        set
+        {
+            _resourceValueByTypeSeries = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<ISeries> GatheringActivityByLocationSeries
+    {
+        get => _gatheringActivityByLocationSeries;
+        set
+        {
+            _gatheringActivityByLocationSeries = value;
+            OnPropertyChanged();
+        }
+    }
+
     public ObservableCollection<ISeries> ResourceChartSeries
     {
         get => _resourceChartSeries;
@@ -400,4 +507,32 @@ public class GatheringStats : BaseViewModel
     public static string TranslationPerHour => LocalizationController.Translation("PER_HOUR");
     public static string TranslationHistory => LocalizationController.Translation("HISTORY");
     public static string TranslationChartValue => LocalizationController.Translation("GATHERING_CHART_VALUE_TYPE");
+    public static string TranslationOverview => LocalizationController.Translation("OVERVIEW");
+    public static string TranslationBestResource => LocalizationController.Translation("BEST_RESOURCE");
+    public static string TranslationTopMap => LocalizationController.Translation("TOP_MAP");
+    public static string TranslationUniqueResourceTypes => LocalizationController.Translation("UNIQUE_RESOURCE_TYPES");
+    public static string TranslationBestGatheringMap => LocalizationController.Translation("BEST_GATHERING_MAP");
+    public static string TranslationTotalResourcesGathered => LocalizationController.Translation("TOTAL_RESOURCES_GATHERED");
+    public static string TranslationTotalGatheringProcesses => LocalizationController.Translation("TOTAL_GATHERING_PROCESSES");
+    public static string TranslationAverageResourceValue => LocalizationController.Translation("AVERAGE_RESOURCE_VALUE");
+    public static string TranslationBestSingleGathering => LocalizationController.Translation("BEST_SINGLE_GATHERING");
+    public static string TranslationTimesGathered => LocalizationController.Translation("TIMES_GATHERED");
+    public static string TranslationTotalAmount => LocalizationController.Translation("TOTAL_AMOUNT");
+    public static string TranslationTotalValue => LocalizationController.Translation("TOTAL_VALUE");
+    public static string TranslationAverageValuePerGather => LocalizationController.Translation("AVERAGE_VALUE_PER_GATHER");
+    public static string TranslationGatheringTime => LocalizationController.Translation("GATHERING_TIME");
+    public static string TranslationResourceValueByType => LocalizationController.Translation("RESOURCE_VALUE_BY_TYPE");
+    public static string TranslationGatheringActivityOverTime => LocalizationController.Translation("GATHERING_ACTIVITY_OVER_TIME");
+    public static string TranslationGatheringActivityByLocation => LocalizationController.Translation("GATHERING_ACTIVITY_BY_LOCATION");
+    public static string TranslationResourceTypesGathered => LocalizationController.Translation("RESOURCE_TYPES_GATHERED");
+    public static string TranslationTopGatheredResources => LocalizationController.Translation("TOP_GATHERED_RESOURCES");
+    public static string TranslationRecentGatherings => LocalizationController.Translation("RECENT_GATHERINGS");
+    public static string TranslationResourceType => LocalizationController.Translation("RESOURCE_TYPE");
+    public static string TranslationAmount => LocalizationController.Translation("AMOUNT");
+    public static string TranslationValue => LocalizationController.Translation("VALUE");
+    public static string TranslationPercentOfTotal => LocalizationController.Translation("PERCENT_OF_TOTAL");
+    public static string TranslationResource => LocalizationController.Translation("RESOURCE");
+    public static string TranslationTier => LocalizationController.Translation("TIER");
+    public static string TranslationMap => LocalizationController.Translation("MAP");
+    public static string TranslationNoData => LocalizationController.Translation("NO_DATA");
 }

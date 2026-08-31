@@ -52,6 +52,11 @@ public class TradeDto
                 itemName = (string.IsNullOrEmpty(instantIndexItem?.LocalizedName)) ? instantIndexItem?.UniqueName ?? "UNKNOWN_ITEM" : instantIndexItem.LocalizedName;
                 break;
             }
+            case TradeType.InstantBuy or TradeType.InstantSell when AuctionEntry?.ItemTypeId == GoldMarketTrade.ItemTypeId:
+            {
+                itemName = StatisticsAnalysisTool.Localization.LocalizationController.Translation("GOLD");
+                break;
+            }
             case TradeType.InstantBuy or TradeType.InstantSell:
             {
                 var instantItem = ItemController.GetItemByUniqueName(AuctionEntry.ItemTypeId);

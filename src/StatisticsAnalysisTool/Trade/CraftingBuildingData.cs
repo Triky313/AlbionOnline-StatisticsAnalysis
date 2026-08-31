@@ -21,11 +21,17 @@ public class CraftingBuildingData
         return CraftingBuildingNames.TryGetValue(craftingBuildingName, out string result) ? result : string.Empty;
     }
 
-    public static bool DoesCraftingBuildingNameFit(string input, List<CraftingBuildingName> craftingBuildingNamesToCheck)
+    public static bool DoesCraftingBuildingNameFit(string input, IReadOnlyCollection<CraftingBuildingName> craftingBuildingNamesToCheck)
     {
+        if (string.IsNullOrEmpty(input))
+        {
+            return false;
+        }
+
         foreach (var craftingBuildingName in craftingBuildingNamesToCheck)
         {
-            if (CraftingBuildingNames.TryGetValue(craftingBuildingName, out string name) && !string.IsNullOrEmpty(input) && input.ToUpper().Contains(name))
+            if (CraftingBuildingNames.TryGetValue(craftingBuildingName, out string name)
+                && input.Contains(name, System.StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }

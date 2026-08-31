@@ -24,6 +24,7 @@ public class UpdateReSpecPointsEventHandler : EventPacketHandler<UpdateReSpecPoi
             _liveStatsTracker.Add(ValueType.PaidSilverForReSpec, value.PaidSilver.DoubleValue);
             _trackingController.DungeonController?.AddValueToDungeon(value.GainedReSpecPoints.DoubleValue, ValueType.ReSpec);
             _trackingController.StatisticController?.AddValue(ValueType.ReSpec, value.GainedReSpecPoints.DoubleValue);
+            _trackingController.StatisticController?.AddValue(ValueType.PaidSilverForReSpec, value.PaidSilver.DoubleValue);
         }
 
         await Task.CompletedTask;

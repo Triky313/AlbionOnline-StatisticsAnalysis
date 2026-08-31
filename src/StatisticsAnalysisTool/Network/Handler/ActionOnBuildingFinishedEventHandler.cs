@@ -27,5 +27,10 @@ public class ActionOnBuildingFinishedEventHandler : EventPacketHandler<ActionOnB
         {
             await _trackingController.TradeController.TradeFinishedAsync(userObjectIdForBuy, value.BuildingObjectId);
         }
+
+        if (value is { UserObjectId: { } userObjectIdForAwakenedWeapon, ActionType: ActionOnBuildingType.AwakenedWeapon })
+        {
+            _trackingController.AwakenedWeaponActionFinished(userObjectIdForAwakenedWeapon, value.BuildingObjectId);
+        }
     }
 }

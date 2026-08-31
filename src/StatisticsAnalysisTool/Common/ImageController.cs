@@ -16,15 +16,30 @@ internal static class ImageController
     private static readonly string ItemImagesDirectory = AppDataPaths.ImageResourcesDirectory;
     private static readonly string SpellImagesDirectory = AppDataPaths.SpellImageResourcesDirectory;
     private static readonly string DefaultItemImagePath = @"pack://application:,,,/" + Assembly.GetExecutingAssembly().GetName().Name + ";component/" + "Resources/Trash.png";
+    private static readonly string DefaultSpellImagePath = @"pack://application:,,,/" + Assembly.GetExecutingAssembly().GetName().Name + ";component/" + "Assets/empty_icon.png";
+    private static readonly string GoldImagePath = @"pack://application:,,,/" + Assembly.GetExecutingAssembly().GetName().Name + ";component/" + "Resources/gold.png";
     private static readonly Lock CacheLock = new();
     private static readonly Dictionary<string, WeakReference<BitmapImage>> CachedImages = new(StringComparer.Ordinal);
     private static readonly HashSet<string> Downloading = new(StringComparer.Ordinal);
 
     private const int CacheCleanupThreshold = 512;
 
+    internal static event EventHandler<ItemImageStoredEventArgs> ItemImageStored;
+
     #region Item image
 
     public static BitmapImage GetItemImage(string uniqueName = null, int pixelHeight = 100, int pixelWidth = 100, bool freeze = false)
+    {
+        return GetItemImage(uniqueName, null, pixelHeight, pixelWidth, freeze);
+    }
+
+    public static BitmapImage GetItemImageWithQuality(string uniqueName, int qualityLevel, int pixelHeight = 100, int pixelWidth = 100, bool freeze = false)
+    {
+        int? validQualityLevel = qualityLevel is >= 1 and <= 5 ? qualityLevel : null;
+        return GetItemImage(uniqueName, validQualityLevel, pixelHeight, pixelWidth, freeze);
+    }
+
+    private static BitmapImage GetItemImage(string uniqueName, int? qualityLevel, int pixelHeight, int pixelWidth, bool freeze)
     {
         try
         {
@@ -33,13 +48,26 @@ internal static class ImageController
                 return CreateBitmapImage(DefaultItemImagePath);
             }
 
-            return GetImage("item", uniqueName, pixelHeight, pixelWidth, freeze, ItemImagesDirectory, $"https://render.albiononline.com/v1/item/{uniqueName}")
+            var imageName = qualityLevel.HasValue ? $"{uniqueName}_quality_{qualityLevel.Value}" : uniqueName;
+            var webPath = qualityLevel.HasValue
+                ? $"https://render.albiononline.com/v1/item/{uniqueName}?quality={qualityLevel.Value}"
+                : $"https://render.albiononline.com/v1/item/{uniqueName}";
+            Action onImageSaved = qualityLevel.HasValue
+                ? () => ItemImageStored?.Invoke(null, new ItemImageStoredEventArgs(uniqueName, qualityLevel.Value))
+                : null;
+
+            return GetImage("item", imageName, pixelHeight, pixelWidth, freeze, ItemImagesDirectory, webPath, onImageSaved)
                    ?? CreateBitmapImage(DefaultItemImagePath);
         }
         catch
         {
             return CreateBitmapImage(DefaultItemImagePath);
         }
+    }
+
+    public static BitmapImage GetGoldImage()
+    {
+        return CreateBitmapImage(GoldImagePath);
     }
 
     private static BitmapImage CreateBitmapImage(string path)
@@ -87,14 +115,15 @@ internal static class ImageController
         {
             if (string.IsNullOrWhiteSpace(uniqueName))
             {
-                return null;
+                return CreateBitmapImage(DefaultSpellImagePath);
             }
 
-            return GetImage("spell", uniqueName, pixelHeight, pixelWidth, freeze, SpellImagesDirectory, $"https://render.albiononline.com/v1/spell/{uniqueName}");
+            return GetImage("spell", uniqueName, pixelHeight, pixelWidth, freeze, SpellImagesDirectory, $"https://render.albiononline.com/v1/spell/{uniqueName}")
+                   ?? CreateBitmapImage(DefaultSpellImagePath);
         }
         catch
         {
-            return null;
+            return CreateBitmapImage(DefaultSpellImagePath);
         }
     }
 
@@ -102,7 +131,7 @@ internal static class ImageController
 
     #region Utilities
 
-    private static BitmapImage GetImage(string imageType, string uniqueName, int pixelHeight, int pixelWidth, bool freeze, string localDirectory, string webPath)
+    private static BitmapImage GetImage(string imageType, string uniqueName, int pixelHeight, int pixelWidth, bool freeze, string localDirectory, string webPath, Action onImageSaved = null)
     {
         var cacheKey = $"{imageType}|{uniqueName}|{pixelHeight}|{pixelWidth}";
         if (TryGetCachedImage(cacheKey, out var cachedImage))
@@ -132,7 +161,7 @@ internal static class ImageController
         }
 
         CacheImage(cacheKey, webImage);
-        SaveImageLocal(webImage, downloadKey, localFilePath, localDirectory);
+        SaveImageLocal(webImage, downloadKey, localFilePath, localDirectory, onImageSaved);
         return webImage;
     }
 
@@ -165,7 +194,7 @@ internal static class ImageController
         }
     }
 
-    private static void SaveImageLocal(BitmapSource image, string downloadKey, string localFilePath, string localDirectory)
+    private static void SaveImageLocal(BitmapSource image, string downloadKey, string localFilePath, string localDirectory, Action onImageSaved)
     {
         if (!DirectoryController.CreateDirectoryWhenNotExists(localDirectory) && !Directory.Exists(localDirectory))
         {
@@ -175,7 +204,7 @@ internal static class ImageController
 
         if (!image.IsDownloading)
         {
-            PersistImageToLocal(image, localFilePath, downloadKey);
+            PersistImageToLocal(image, localFilePath, downloadKey, onImageSaved);
             return;
         }
 
@@ -184,7 +213,7 @@ internal static class ImageController
             image.DownloadCompleted -= OnDownloadCompleted;
             image.DownloadFailed -= OnDownloadFailed;
 
-            PersistImageToLocal(image, localFilePath, downloadKey);
+            PersistImageToLocal(image, localFilePath, downloadKey, onImageSaved);
         }
 
         void OnDownloadFailed(object sender, ExceptionEventArgs args)
@@ -199,15 +228,20 @@ internal static class ImageController
         image.DownloadFailed += OnDownloadFailed;
     }
 
-    private static void PersistImageToLocal(BitmapSource image, string localFilePath, string downloadKey)
+    private static void PersistImageToLocal(BitmapSource image, string localFilePath, string downloadKey, Action onImageSaved)
     {
+        var isSaved = false;
         try
         {
             var encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(image));
 
-            using var fileStream = new FileStream(localFilePath, FileMode.Create, FileAccess.Write, FileShare.None);
-            encoder.Save(fileStream);
+            using (var fileStream = new FileStream(localFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                encoder.Save(fileStream);
+            }
+
+            isSaved = true;
         }
         catch (Exception e)
         {
@@ -217,6 +251,20 @@ internal static class ImageController
         finally
         {
             ClearDownloading(downloadKey);
+        }
+
+        if (!isSaved)
+        {
+            return;
+        }
+
+        try
+        {
+            onImageSaved?.Invoke();
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, "Item image saved notification failed");
         }
     }
 
@@ -241,7 +289,7 @@ internal static class ImageController
             userImage.UriSource = new Uri(webPath);
             userImage.EndInit();
 
-            if (freeze)
+            if (freeze && userImage.CanFreeze)
             {
                 userImage.Freeze();
             }

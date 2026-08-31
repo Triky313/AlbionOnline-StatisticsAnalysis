@@ -2,34 +2,26 @@ using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
-public class FirstStartGuideNavigationTabOption : BaseViewModel
+public class FirstStartGuideNavigationTabOption(NavigationTabFilterType navigationTabFilterType) : BaseViewModel
 {
-    private bool _isSelected;
-    private string _name;
-
-    public FirstStartGuideNavigationTabOption(NavigationTabFilterType navigationTabFilterType)
-    {
-        NavigationTabFilterType = navigationTabFilterType;
-    }
-
-    public NavigationTabFilterType NavigationTabFilterType { get; }
+    public NavigationTabFilterType NavigationTabFilterType { get; } = navigationTabFilterType;
 
     public string Name
     {
-        get => _name;
+        get;
         set
         {
-            _name = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public bool IsSelected
     {
-        get => _isSelected;
+        get;
         set
         {
-            _isSelected = value;
+            field = value;
             OnPropertyChanged();
         }
     }

@@ -11,7 +11,6 @@ using StatisticsAnalysisTool.Diagnostics;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Trade.Market;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -24,6 +23,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace StatisticsAnalysisTool.Crafting;
 
@@ -35,7 +35,8 @@ public sealed class BlackMarketBindings : BaseViewModel
     private const int FourWeeksTimeRange = 2;
     private const int SevenDaysWindowDays = 7;
     private const int FourWeeksWindowDays = 28;
-    private const int CurrentHistoryFormatVersion = 1;
+    private const string ItemCountChartColorResourceKey = "SolidColorBrush.Accent.Blue.3";
+    private const string ChartLegendTextColorResourceKey = "SolidColorBrush.Text.1";
     private readonly object _historyLock = new();
     private readonly Dictionary<(string ItemUniqueName, int QualityLevel), BlackMarketHistoryEntry> _history = new();
     private readonly Dictionary<(string ItemUniqueName, int QualityLevel), BlackMarketItemRow> _rowsByKey = new();
@@ -70,10 +71,9 @@ public sealed class BlackMarketBindings : BaseViewModel
         ItemsView.Filter = IsItemVisible;
         BuildRows();
         ResetChart();
-        _ = LoadAsync();
     }
 
-    public ObservableCollection<BlackMarketItemRow> Items { get; } = [];
+    public ObservableRangeCollection<BlackMarketItemRow> Items { get; } = [];
 
     public ICollectionView ItemsView { get; }
 
@@ -92,6 +92,8 @@ public sealed class BlackMarketBindings : BaseViewModel
     public Dictionary<int, string> ItemQualities { get; }
 
     public Dictionary<int, string> ChartDayFilters { get; } = CreateChartDayFilters();
+
+    public SolidColorPaint ChartLegendTextPaint { get; } = CreateChartPaint(ChartLegendTextColorResourceKey);
 
     public ObservableCollection<ISeries> ChartSeries
     {
@@ -289,7 +291,7 @@ public sealed class BlackMarketBindings : BaseViewModel
         }
     }
 
-    public string SelectedItemAverageItemsPerDayText => SelectedItemAverageItemsPerDay.ToString("N0", CultureInfo.CurrentCulture);
+    public string SelectedItemAverageItemsPerDayText => SelectedItemAverageItemsPerDay.ToString("N1", CultureInfo.CurrentCulture);
 
     public string MarketStatusText
     {
@@ -402,6 +404,75 @@ public sealed class BlackMarketBindings : BaseViewModel
         });
     }
 
+    public void RecordEstimatedDailyPrice(int itemIndex, int qualityLevel, long estimatedPriceInternal, DateTime observedUtc)
+    {
+        if (!SettingsController.CurrentSettings.Bm || estimatedPriceInternal <= 0 || qualityLevel is < 1 or > 5)
+        {
+            return;
+        }
+
+        var item = ItemController.GetItemByIndex(itemIndex);
+        if (!BlackMarketItemEligibility.IsEligible(item))
+        {
+            return;
+        }
+
+        var estimatedPrice = Math.Max(0, (long) Math.Round(
+            (decimal) estimatedPriceInternal / FixPoint.InternalFactor,
+            MidpointRounding.AwayFromZero));
+        if (estimatedPrice <= 0)
+        {
+            return;
+        }
+
+        var normalizedObservedUtc = observedUtc.Kind == DateTimeKind.Utc
+            ? observedUtc
+            : observedUtc.ToUniversalTime();
+        BlackMarketHistoryEntry entry;
+        lock (_historyLock)
+        {
+            var key = (item.UniqueName, qualityLevel);
+            if (!_history.TryGetValue(key, out entry))
+            {
+                entry = CreateHistoryEntry(item.UniqueName, itemIndex, qualityLevel);
+                _history[key] = entry;
+            }
+
+            var date = normalizedObservedUtc.Date;
+            var dailyPoint = entry.Points.FirstOrDefault(x => x.Date.Date == date);
+            if (dailyPoint is { IsEstimatedPrice: false, AveragePrice: > 0 })
+            {
+                return;
+            }
+
+            if (dailyPoint == null)
+            {
+                dailyPoint = new BlackMarketHistoryPoint
+                {
+                    Date = date,
+                    ItemCount = 0
+                };
+                entry.Points.Add(dailyPoint);
+            }
+            else if (dailyPoint.LastUpdatedUtc > normalizedObservedUtc)
+            {
+                return;
+            }
+
+            dailyPoint.AveragePrice = estimatedPrice;
+            dailyPoint.IsEstimatedPrice = true;
+            dailyPoint.LastUpdatedUtc = normalizedObservedUtc;
+            entry.LastUpdatedUtc = normalizedObservedUtc;
+            TrimHistory(entry);
+        }
+
+        _ = Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            RefreshRow(entry);
+            RefreshSelectedItemDetails();
+        });
+    }
+
     public async Task RecordAverageStatsResponseAsync(int requestId, IReadOnlyList<BlackMarketHistoryPoint> points)
     {
         if (!SettingsController.CurrentSettings.Bm)
@@ -414,7 +485,7 @@ public sealed class BlackMarketBindings : BaseViewModel
             return;
         }
 
-        if (context.MarketLocation != MarketLocation.BlackMarket)
+        if (context.MarketLocation is not (MarketLocation.BlackMarket or MarketLocation.Unknown))
         {
             return;
         }
@@ -463,7 +534,7 @@ public sealed class BlackMarketBindings : BaseViewModel
                     continue;
                 }
 
-                MigrateHistoryEntry(entry);
+                TrimHistory(entry);
                 _history[(entry.ItemUniqueName, entry.QualityLevel)] = entry;
             }
         }
@@ -482,7 +553,7 @@ public sealed class BlackMarketBindings : BaseViewModel
         lock (_historyLock)
         {
             entries = _history.Values
-                .Where(x => IsBlackMarketSellableItem(ItemController.GetItemByUniqueName(x.ItemUniqueName)))
+                .Where(x => BlackMarketItemEligibility.IsEligible(ItemController.GetItemByUniqueName(x.ItemUniqueName)))
                 .Select(CloneAndTrim)
                 .OrderBy(x => x.ItemUniqueName, StringComparer.Ordinal)
                 .ThenBy(x => x.QualityLevel)
@@ -496,30 +567,21 @@ public sealed class BlackMarketBindings : BaseViewModel
     {
         Items.Clear();
         _rowsByKey.Clear();
+        var rows = new List<BlackMarketItemRow>();
 
-        foreach (var item in ItemController.Items.Where(IsBlackMarketSellableItem).OrderBy(x => x.LocalizedName))
+        foreach (var item in ItemController.Items.Where(BlackMarketItemEligibility.IsEligible).OrderBy(x => x.LocalizedName))
         {
             for (var qualityLevel = 1; qualityLevel <= 5; qualityLevel++)
             {
                 var key = (item.UniqueName, qualityLevel);
                 var row = new BlackMarketItemRow(item, qualityLevel, GetHistoryEntry(key));
-                Items.Add(row);
+                rows.Add(row);
                 _rowsByKey[key] = row;
             }
         }
 
+        Items.AddRange(rows);
         ItemCounterText = $"{Items.Count:N0}";
-    }
-
-    private static bool IsBlackMarketSellableItem(Item item)
-    {
-        return item?.FullItemInformation switch
-        {
-            Weapon weapon => weapon.SlotTypeEnum == SlotType.MainHand && weapon.CanHarvest == null,
-            TransformationWeapon transformationWeapon => transformationWeapon.SlotTypeEnum == SlotType.MainHand,
-            EquipmentItem equipmentItem => equipmentItem.SlotTypeEnum is SlotType.OffHand or SlotType.Armor or SlotType.Head or SlotType.Shoes or SlotType.Cape or SlotType.Bag,
-            _ => false
-        };
     }
 
     public string ItemCounterText
@@ -643,7 +705,7 @@ public sealed class BlackMarketBindings : BaseViewModel
             pricePoints.Add(new ObservablePoint(index, (double) (priceTotals[index] / priceWeights[index])));
         }
 
-        SelectedItemAverageItemsPerDay = chartDays > 0 ? Math.Floor((double) totalItemCount / chartDays) : 0;
+        SelectedItemAverageItemsPerDay = chartDays > 0 ? (double) totalItemCount / chartDays : 0;
 
         ChartSeries =
         [
@@ -651,7 +713,7 @@ public sealed class BlackMarketBindings : BaseViewModel
             {
                 Name = "Items",
                 Values = itemCounts,
-                Fill = new SolidColorPaint(new SKColor(149, 35, 63, 160)),
+                Fill = CreateChartPaint(ItemCountChartColorResourceKey),
                 Stroke = null,
                 ScalesYAt = 0
             },
@@ -781,7 +843,6 @@ public sealed class BlackMarketBindings : BaseViewModel
         return new BlackMarketHistoryEntry
         {
             ItemUniqueName = itemUniqueName,
-            FormatVersion = CurrentHistoryFormatVersion,
             ItemIndex = itemIndex,
             Tier = ItemController.GetItemTier(itemUniqueName),
             EnchantmentLevel = ItemController.GetItemLevel(itemUniqueName),
@@ -793,19 +854,41 @@ public sealed class BlackMarketBindings : BaseViewModel
     {
         var now = DateTime.UtcNow;
         var fromDate = now.Date.AddDays(-(windowDays - 1));
+        var estimatedPointsByDate = entry.Points
+            .Where(x => x.Date.Date >= fromDate && x.IsEstimatedPrice && x.AveragePrice > 0)
+            .GroupBy(x => x.Date.Date)
+            .ToDictionary(x => x.Key, x => x.OrderByDescending(point => point.LastUpdatedUtc).First());
         var normalizedPoints = points
             .Where(x => x.Date.Date >= fromDate)
             .GroupBy(x => x.Date.Date)
             .Select(x => CreateDailyHistoryPoint(x.Key, x, now))
             .ToList();
 
+        foreach (var point in normalizedPoints.Where(x => x.AveragePrice <= 0))
+        {
+            if (!estimatedPointsByDate.TryGetValue(point.Date.Date, out var estimatedPoint))
+            {
+                continue;
+            }
+
+            point.AveragePrice = estimatedPoint.AveragePrice;
+            point.IsEstimatedPrice = true;
+        }
+
+        var normalizedDates = normalizedPoints
+            .Select(x => x.Date.Date)
+            .ToHashSet();
+        var estimatedFallbackPoints = estimatedPointsByDate
+            .Where(x => !normalizedDates.Contains(x.Key))
+            .Select(x => x.Value);
+
         entry.Points = entry.Points
             .Where(x => x.Date.Date < fromDate)
             .Concat(normalizedPoints)
+            .Concat(estimatedFallbackPoints)
             .OrderBy(x => x.Date)
             .ToList();
 
-        entry.FormatVersion = CurrentHistoryFormatVersion;
         entry.LastUpdatedUtc = now;
         TrimHistory(entry);
     }
@@ -840,6 +923,7 @@ public sealed class BlackMarketBindings : BaseViewModel
             Date = date.Date,
             ItemCount = itemCount,
             AveragePrice = averagePrice,
+            IsEstimatedPrice = false,
             LastUpdatedUtc = lastUpdatedUtc
         };
     }
@@ -863,28 +947,14 @@ public sealed class BlackMarketBindings : BaseViewModel
         return totalItems > 0 ? (long) Math.Round(totalPrice / totalItems) : 0;
     }
 
-    private static void MigrateHistoryEntry(BlackMarketHistoryEntry entry)
+    private static SolidColorPaint CreateChartPaint(string resourceKey)
     {
-        if (entry.FormatVersion < CurrentHistoryFormatVersion)
+        if (Application.Current?.Resources[resourceKey] is SolidColorBrush brush)
         {
-            foreach (var point in entry.Points)
-            {
-                point.AveragePrice = ConvertSilverTotalToUnitAveragePrice(point.AveragePrice, point.ItemCount);
-            }
+            return new SolidColorPaint(new SKColor(brush.Color.R, brush.Color.G, brush.Color.B, brush.Color.A));
         }
 
-        entry.FormatVersion = CurrentHistoryFormatVersion;
-        TrimHistory(entry);
-    }
-
-    private static long ConvertSilverTotalToUnitAveragePrice(long totalPrice, int itemCount)
-    {
-        if (totalPrice <= 0 || itemCount <= 0)
-        {
-            return 0;
-        }
-
-        return (long) Math.Round((decimal) totalPrice / itemCount, MidpointRounding.AwayFromZero);
+        return new SolidColorPaint(SKColors.Transparent);
     }
 
     private static BlackMarketHistoryEntry CloneAndTrim(BlackMarketHistoryEntry source)
@@ -892,7 +962,6 @@ public sealed class BlackMarketBindings : BaseViewModel
         var clone = new BlackMarketHistoryEntry
         {
             ItemUniqueName = source.ItemUniqueName,
-            FormatVersion = CurrentHistoryFormatVersion,
             ItemIndex = source.ItemIndex,
             Tier = source.Tier,
             EnchantmentLevel = source.EnchantmentLevel,
@@ -906,6 +975,7 @@ public sealed class BlackMarketBindings : BaseViewModel
                     Date = x.Date,
                     ItemCount = x.ItemCount,
                     AveragePrice = x.AveragePrice,
+                    IsEstimatedPrice = x.IsEstimatedPrice,
                     LastUpdatedUtc = x.LastUpdatedUtc
                 })
                 .ToList()
@@ -928,8 +998,8 @@ public sealed class BlackMarketBindings : BaseViewModel
 
     private void UpdateMarketStatus()
     {
-        var location = ClusterController.CurrentCluster.SourceClusterIndex?.GetMarketLocationByLocationNameOrId()
-                       ?? ClusterController.CurrentCluster.Index?.GetMarketLocationByLocationNameOrId()
+        var location = ClusterController.CurrentCluster.Index?.GetMarketLocationByLocationNameOrId()
+                       ?? ClusterController.CurrentCluster.SourceClusterIndex?.GetMarketLocationByLocationNameOrId()
                        ?? MarketLocation.Unknown;
 
         MarketStatusText = location == MarketLocation.BlackMarket

@@ -11,6 +11,9 @@ namespace StatisticsAnalysisTool.Dungeon.Models;
 public class RandomDungeonFragment : DungeonBaseFragment
 {
     public bool IsLevelLockedFromEntrance { get; private set; }
+    public bool IsTierLockedFromEntrance { get; private set; }
+    public double MobHitPointsFactor { get; set; } = 1;
+    public double ZoneLootFactor { get; set; }
 
     public RandomDungeonFragment(Guid guid, MapType mapType, DungeonMode mode, string mainMapIndex) : base(guid, mapType, mode, mainMapIndex)
     {
@@ -24,7 +27,7 @@ public class RandomDungeonFragment : DungeonBaseFragment
         Might = dto.Might;
         Favor = dto.Favor;
         FactionCoins = dto.FactionCoins;
-        FactionFlags = dto.FactionFlags;
+        FactionStanding = dto.FactionStanding;
         CityFaction = dto.CityFaction;
         UpdateNumberOfFloors(null, null);
         UpdateValueVisibility();
@@ -85,13 +88,13 @@ public class RandomDungeonFragment : DungeonBaseFragment
         }
     }
 
-    public double FactionFlags
+    public double FactionStanding
     {
         get;
         set
         {
             field = value;
-            FactionFlagsPerHour = value.GetValuePerHour(TotalRunTimeInSeconds <= 0
+            FactionStandingPerHour = value.GetValuePerHour(TotalRunTimeInSeconds <= 0
                 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds
                 : TotalRunTimeInSeconds);
             OnPropertyChanged();
@@ -170,7 +173,7 @@ public class RandomDungeonFragment : DungeonBaseFragment
         }
     }
 
-    public double FactionFlagsPerHour
+    public double FactionStandingPerHour
     {
         get => double.IsNaN(field) ? 0 : field;
         private set
@@ -239,17 +242,18 @@ public class RandomDungeonFragment : DungeonBaseFragment
             case ValueType.Silver:
                 Silver += value;
                 return;
-            case ValueType.FactionFame:
+            case ValueType.FactionStanding:
                 if (cityFaction != CityFaction.Unknown)
                 {
-                    FactionFlags += value;
+                    CityFaction = cityFaction;
+                    FactionStanding += value;
                 }
                 return;
             case ValueType.FactionPoints:
                 if (cityFaction != CityFaction.Unknown)
                 {
-                    FactionCoins += value;
                     CityFaction = cityFaction;
+                    FactionCoins += value;
                 }
                 return;
             case ValueType.Might:
@@ -281,6 +285,50 @@ public class RandomDungeonFragment : DungeonBaseFragment
     public bool TrySetLevelFromMob(int level)
     {
         if (IsLevelLockedFromEntrance || level is < 0 or > 4 || level <= Level)
+        {
+            return false;
+        }
+
+        Level = level;
+        return true;
+    }
+
+    public bool TrySetTierFromEntrance(Tier tier)
+    {
+        if (tier == Tier.Unknown)
+        {
+            return false;
+        }
+
+        IsTierLockedFromEntrance = true;
+        if (Tier == tier)
+        {
+            return false;
+        }
+
+        Tier = tier;
+        return true;
+    }
+
+    public bool TrySetTierFromMob(Tier tier)
+    {
+        if (IsTierLockedFromEntrance || tier == Tier.Unknown || Tier == tier)
+        {
+            return false;
+        }
+
+        Tier = tier;
+        return true;
+    }
+
+    public bool TrySetLevelFromLootFactor(int level)
+    {
+        if (IsLevelLockedFromEntrance || level is < 0 or > 4)
+        {
+            return false;
+        }
+
+        if (Level == level)
         {
             return false;
         }

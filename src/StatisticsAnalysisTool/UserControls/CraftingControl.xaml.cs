@@ -233,12 +233,12 @@ public partial class CraftingControl
         mainWindowViewModel.CraftingBindings.OpenSellPriceOptions();
     }
 
-    private void OutputUnitPrice_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+    private void PriceTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
     {
         var newFocus = e.NewFocus as DependencyObject;
 
-        if (IsElementOrChildOf(newFocus, OutputUnitPriceTextBox)
-            || IsElementOrChildOf(newFocus, SellPriceOptionsListBox))
+        if ((sender is DependencyObject textBox && IsElementOrChildOf(newFocus, textBox))
+            || IsPriceOptionPopupClick(newFocus))
         {
             return;
         }
@@ -351,7 +351,7 @@ public partial class CraftingControl
         CloseSellPriceOptions();
     }
 
-    private void FilterReset_MouseUp(object sender, MouseButtonEventArgs e)
+    private void FilterReset_Click(object sender, RoutedEventArgs e)
     {
         if (DataContext is not MainWindowViewModel mainWindowViewModel)
         {
@@ -361,7 +361,7 @@ public partial class CraftingControl
         mainWindowViewModel.CraftingBindings.BlackMarket?.ResetFilters();
     }
 
-    private void CraftingItemFilterReset_MouseUp(object sender, MouseButtonEventArgs e)
+    private void CraftingItemFilterReset_Click(object sender, RoutedEventArgs e)
     {
         if (DataContext is not MainWindowViewModel mainWindowViewModel)
         {

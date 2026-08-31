@@ -1,5 +1,6 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -18,6 +19,8 @@ public class LootingPlayer : BaseViewModel
     private ObservableCollection<LootedItem> _lootedItems = new();
     private readonly object _lootedItemsSyncRoot = new();
     private Visibility _lootingPlayerVisibility = Visibility.Visible;
+    private int _killCount;
+    private int _deathCount;
 
     public LootingPlayer()
     {
@@ -69,7 +72,7 @@ public class LootingPlayer : BaseViewModel
             _lootedItems = value ?? [];
             SubscribeLootedItems(_lootedItems);
             OnPropertyChanged();
-            NotifyEstimatedMarketValueChanged();
+            NotifyLootSummaryChanged();
         }
     }
 
@@ -99,6 +102,27 @@ public class LootingPlayer : BaseViewModel
 
     public Visibility TotalEstimatedMarketValueVisibility
         => TotalEstimatedMarketValue > 0 ? Visibility.Visible : Visibility.Collapsed;
+
+    public int KillCount => _killCount;
+
+    public int DeathCount => _deathCount;
+
+    public bool HasCombatEvents => KillCount > 0 || DeathCount > 0;
+
+    public bool HasLootLogEntries => HasCombatEvents
+                                     || GetLootedItemsSnapshot().Any(item => !item.IsItemFromVaultLog);
+
+    public int GrayItemCount
+        => GetLootedItemsSnapshot().Count(item => item.Status is LootedItemStatus.Lost or LootedItemStatus.Ignored);
+
+    public int GreenItemCount
+        => GetLootedItemsSnapshot().Count(item => item.Status == LootedItemStatus.Resolved);
+
+    public int BlueItemCount
+        => GetLootedItemsSnapshot().Count(item => item.Status == LootedItemStatus.Donated);
+
+    public int RedItemCount
+        => GetLootedItemsSnapshot().Count(item => item.Status == LootedItemStatus.Unknown);
 
     private string BuildDisplayName()
     {
@@ -170,6 +194,27 @@ public class LootingPlayer : BaseViewModel
         }
     }
 
+    public void SetCombatCounts(int killCount, int deathCount)
+    {
+        var normalizedKillCount = Math.Max(killCount, 0);
+        var normalizedDeathCount = Math.Max(deathCount, 0);
+
+        if (_killCount != normalizedKillCount)
+        {
+            _killCount = normalizedKillCount;
+            OnPropertyChanged(nameof(KillCount));
+        }
+
+        if (_deathCount != normalizedDeathCount)
+        {
+            _deathCount = normalizedDeathCount;
+            OnPropertyChanged(nameof(DeathCount));
+        }
+
+        OnPropertyChanged(nameof(HasCombatEvents));
+        OnPropertyChanged(nameof(HasLootLogEntries));
+    }
+
     private void SubscribeLootedItems(ObservableCollection<LootedItem> lootedItems)
     {
         if (lootedItems is null)
@@ -224,7 +269,7 @@ public class LootingPlayer : BaseViewModel
             }
         }
 
-        NotifyEstimatedMarketValueChanged();
+        NotifyLootSummaryChanged();
     }
 
     private void LootedItemPropertyChanged(object sender, PropertyChangedEventArgs args)
@@ -233,6 +278,18 @@ public class LootingPlayer : BaseViewModel
         {
             NotifyEstimatedMarketValueChanged();
         }
+
+        if (args.PropertyName == nameof(LootedItem.Status))
+        {
+            NotifyStatusCountsChanged();
+        }
+    }
+
+    private void NotifyLootSummaryChanged()
+    {
+        NotifyEstimatedMarketValueChanged();
+        NotifyStatusCountsChanged();
+        OnPropertyChanged(nameof(HasLootLogEntries));
     }
 
     private void NotifyEstimatedMarketValueChanged()
@@ -240,5 +297,13 @@ public class LootingPlayer : BaseViewModel
         OnPropertyChanged(nameof(TotalEstimatedMarketValue));
         OnPropertyChanged(nameof(TotalEstimatedMarketValueShortString));
         OnPropertyChanged(nameof(TotalEstimatedMarketValueVisibility));
+    }
+
+    private void NotifyStatusCountsChanged()
+    {
+        OnPropertyChanged(nameof(GrayItemCount));
+        OnPropertyChanged(nameof(GreenItemCount));
+        OnPropertyChanged(nameof(BlueItemCount));
+        OnPropertyChanged(nameof(RedItemCount));
     }
 }

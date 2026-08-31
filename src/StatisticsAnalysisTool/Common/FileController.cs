@@ -35,20 +35,27 @@ public static class FileController
         {
             EnsureDirectory(path);
             var tmp = GetTmpPath(path);
+            var ready = GetReadyPath(path);
 
             if (File.Exists(tmp))
             {
-                var (ok, value) = await TryLoad<T>(tmp).ConfigureAwait(false);
+                SafeDelete(tmp);
+                Log.Warning("Deleted incomplete temporary file for {file}.", path);
+            }
+
+            if (File.Exists(ready))
+            {
+                var (ok, value) = await TryLoad<T>(ready).ConfigureAwait(false);
                 if (ok && PassesValidation(value, validate))
                 {
-                    File.Move(tmp, path, overwrite: true);
-                    Log.Information("Recovered from tmp and promoted to {file}.", path);
+                    File.Move(ready, path, overwrite: true);
+                    Log.Information("Recovered completed temporary file and promoted to {file}.", path);
                     return value!;
                 }
                 else
                 {
-                    SafeDelete(tmp);
-                    Log.Warning("Tmp recovery failed for {file}, deleted tmp.", path);
+                    SafeDelete(ready);
+                    Log.Warning("Temporary file recovery failed for {file}, deleted completed temporary file.", path);
                 }
             }
 
@@ -98,15 +105,17 @@ public static class FileController
             }
 
             var tmp = GetTmpPath(path);
+            var ready = GetReadyPath(path);
 
             await using (var stream = CreateWriteStream(tmp))
             {
                 await JsonSerializer.SerializeAsync(stream, value, JsonOptions).ConfigureAwait(false);
             }
 
-            File.Move(tmp, path, overwrite: true);
+            File.Move(tmp, ready, overwrite: true);
+            File.Move(ready, path, overwrite: true);
 
-            Log.Information("Saved {file} via tmp-swap.", path);
+            Log.Information("Saved {file} via staged swap.", path);
             return true;
         }
         catch (Exception ex)
@@ -163,6 +172,8 @@ public static class FileController
     }
 
     private static string GetTmpPath(string path) => path + ".tmp";
+
+    private static string GetReadyPath(string path) => path + ".ready";
 
     private static bool PassesValidation<T>(T value, Func<T, bool> validate) => validate == null || validate(value);
 

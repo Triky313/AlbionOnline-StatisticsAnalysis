@@ -12,13 +12,13 @@ public class NewMobEventHandler(TrackingController trackingController) : EventPa
 
         if (value.ObjectId is { } pendingMobObjectId)
         {
-            var pendingKillRecorded = await trackingController.OpenWorldController.TryAddPendingMobKillAsync(
+            var pendingKillRecorded = trackingController.MobKillController.TryAddPendingMobKill(
                 pendingMobObjectId,
                 trackingController.CombatController.CombatEventTracker.GetKnownMobOrDefault(pendingMobObjectId));
 
             if (!pendingKillRecorded)
             {
-                trackingController.OpenWorldController.ResetRecordedMobKill(pendingMobObjectId);
+                trackingController.MobKillController.ResetRecordedMobKill(pendingMobObjectId);
             }
         }
 

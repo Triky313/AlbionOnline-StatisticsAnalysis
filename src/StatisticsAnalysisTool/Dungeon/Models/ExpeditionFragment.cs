@@ -1,5 +1,6 @@
 ﻿using StatisticsAnalysisTool.Cluster;
 using System;
+using System.Collections.Specialized;
 using System.Collections.ObjectModel;
 using System.Linq;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
@@ -12,6 +13,7 @@ public class ExpeditionFragment : DungeonBaseFragment
 
     public ExpeditionFragment(Guid guid, MapType mapType, DungeonMode mode, string mainMapIndex) : base(guid, mapType, mode, mainMapIndex)
     {
+        _checkPoints.CollectionChanged += OnCheckPointsCollectionChanged;
     }
 
     public ExpeditionFragment(DungeonDto dto) : base(dto)
@@ -24,9 +26,17 @@ public class ExpeditionFragment : DungeonBaseFragment
         get => _checkPoints;
         set
         {
+            _checkPoints.CollectionChanged -= OnCheckPointsCollectionChanged;
+            value ??= [];
             _checkPoints = value;
+            _checkPoints.CollectionChanged += OnCheckPointsCollectionChanged;
             OnPropertyChanged();
         }
+    }
+
+    private void OnCheckPointsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(CheckPoints));
     }
 
     public void Add(double value, ValueType type)

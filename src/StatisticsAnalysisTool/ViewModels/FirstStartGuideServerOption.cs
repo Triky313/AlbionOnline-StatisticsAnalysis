@@ -2,34 +2,26 @@ using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.ViewModels;
 
-public class FirstStartGuideServerOption : BaseViewModel
+public class FirstStartGuideServerOption(ServerLocation serverLocation) : BaseViewModel
 {
-    private bool _isSelected;
-    private string _name;
-
-    public FirstStartGuideServerOption(ServerLocation serverLocation)
-    {
-        ServerLocation = serverLocation;
-    }
-
-    public ServerLocation ServerLocation { get; }
+    public ServerLocation ServerLocation { get; } = serverLocation;
 
     public string Name
     {
-        get => _name;
+        get;
         set
         {
-            _name = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public bool IsSelected
     {
-        get => _isSelected;
+        get;
         set
         {
-            _isSelected = value;
+            field = value;
             OnPropertyChanged();
         }
     }

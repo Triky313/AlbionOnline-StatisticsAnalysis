@@ -224,9 +224,12 @@ public sealed class ClusterInfo : BaseViewModel
             Guid = mapGuid;
         }
 
-        if (mapType is not MapType.Unknown)
+        var resolvedMapType = mapType is MapType.Unknown
+            ? WorldData.GetMapType(Index)
+            : mapType;
+        if (resolvedMapType is not MapType.Unknown)
         {
-            MapType = mapType;
+            MapType = resolvedMapType;
         }
 
         SourceClusterIndex = string.IsNullOrWhiteSpace(sourceClusterIndex) ? Index : sourceClusterIndex;
@@ -269,6 +272,14 @@ public sealed class ClusterInfo : BaseViewModel
 
     public void ClusterHistoryString()
     {
+        if (MapType is MapType.StaticDungeon)
+        {
+            ClusterHistoryString1 = MapTypeString;
+            ClusterHistoryString2 = UniqueName;
+            ClusterHistoryString3 = string.Empty;
+            return;
+        }
+
         if (ClusterMode is ClusterMode.Black or ClusterMode.Red or ClusterMode.Yellow or ClusterMode.SafeArea && MapType is MapType.Unknown)
         {
             ClusterHistoryString1 = ClusterModeString(ClusterMode);
@@ -314,24 +325,14 @@ public sealed class ClusterInfo : BaseViewModel
         IsSelectedInMapHistory = !IsSelectedInMapHistory;
     }
 
-    private MistsRarity GetMistsRarity(byte[] infoArray)
+    private static MistsRarity GetMistsRarity(byte[] infoArray)
     {
-        if (infoArray is null)
+        if (infoArray is not { Length: > 0 })
         {
             return MistsRarity.Unknown;
         }
 
-        var rarity = DungeonInformation[^1];
-
-        return rarity switch
-        {
-            0 => MistsRarity.Common,
-            1 => MistsRarity.Uncommon,
-            2 => MistsRarity.Rare,
-            3 => MistsRarity.Epic,
-            4 => MistsRarity.Legendary,
-            _ => MistsRarity.Unknown
-        };
+        return MistsRarityResolver.FromValue(infoArray[^1]);
     }
 
     public string TierRomanString
@@ -543,6 +544,8 @@ public sealed class ClusterInfo : BaseViewModel
             MapType.MistsDungeon => LocalizationController.Translation("MISTS_DUNGEON"),
             MapType.Mists => LocalizationController.Translation("MISTS"),
             MapType.AbyssalDepths => LocalizationController.Translation("ABYSSALDEPTHS"),
+            MapType.DragonArea => LocalizationController.Translation("DRAGONAREA"),
+            MapType.StaticDungeon => LocalizationController.Translation("STATIC_DUNGEONS"),
             _ => ""
         };
     }
@@ -555,7 +558,8 @@ public sealed class ClusterInfo : BaseViewModel
             or MapType.HellGate
             or MapType.Mists
             or MapType.MistsDungeon
-            or MapType.AbyssalDepths;
+            or MapType.AbyssalDepths
+            or MapType.DragonArea;
     }
 
     private string GetMainClusterName()
@@ -578,6 +582,7 @@ public sealed class ClusterInfo : BaseViewModel
             MapType.CorruptedDungeon => ComposeInstanceClipboardName("Corrupted Dungeon"),
             MapType.HellGate => ComposeInstanceClipboardName("HellGate"),
             MapType.AbyssalDepths => ComposeInstanceClipboardName("AbyssalDepths"),
+            MapType.DragonArea => ComposeInstanceClipboardName("Ancient Lands"),
             _ => string.Empty
         };
     }

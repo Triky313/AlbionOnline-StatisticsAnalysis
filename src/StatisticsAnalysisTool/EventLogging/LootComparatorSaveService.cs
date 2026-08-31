@@ -28,7 +28,8 @@ public sealed class LootComparatorSaveService
     public LootComparatorSave Save(
         string name,
         IEnumerable<VaultContainerLogItem> chestLogItems,
-        IEnumerable<LootingPlayer> lootingPlayers)
+        IEnumerable<LootingPlayer> lootingPlayers,
+        IEnumerable<LootLogCombatEvent> combatEvents = null)
     {
         if (!AppDataPaths.IsUserDataAvailable)
         {
@@ -42,7 +43,7 @@ public sealed class LootComparatorSaveService
         }
 
         var chestLogSnapshot = chestLogItems?.ToList() ?? [];
-        var lootLogSnapshot = CreateLootLogSnapshot(lootingPlayers);
+        var lootLogSnapshot = CreateLootLogSnapshot(lootingPlayers, combatEvents);
         if (chestLogSnapshot.Count <= 0 && lootLogSnapshot.Count <= 0)
         {
             throw new InvalidOperationException("At least one chest or loot log entry is required.");
@@ -62,6 +63,18 @@ public sealed class LootComparatorSaveService
             DeleteIncompleteSaveDirectory(saveDirectory);
             throw;
         }
+    }
+
+    public string CreatePlayerLootLog(
+        LootingPlayer lootingPlayer,
+        IEnumerable<LootLogCombatEvent> combatEvents)
+    {
+        ArgumentNullException.ThrowIfNull(lootingPlayer);
+
+        var playerCombatEvents = combatEvents?
+            .Where(combatEvent => combatEvent.IsForPlayer(lootingPlayer.PlayerName))
+            .ToList() ?? [];
+        return CreateLootLogFile(CreateLootLogSnapshot([lootingPlayer], playerCombatEvents));
     }
 
     public bool Delete(LootComparatorSave save)
@@ -204,14 +217,11 @@ public sealed class LootComparatorSaveService
         return saveDirectory;
     }
 
-    private static List<LootLogSnapshotItem> CreateLootLogSnapshot(IEnumerable<LootingPlayer> lootingPlayers)
+    private static List<LootLogSnapshotItem> CreateLootLogSnapshot(
+        IEnumerable<LootingPlayer> lootingPlayers,
+        IEnumerable<LootLogCombatEvent> combatEvents)
     {
-        if (lootingPlayers is null)
-        {
-            return [];
-        }
-
-        return lootingPlayers
+        var lootLogSnapshot = lootingPlayers?
             .SelectMany(player => player.GetLootedItemsSnapshot()
                 .Where(item => !item.IsItemFromVaultLog)
                 .Select(item => new LootLogSnapshotItem
@@ -227,6 +237,21 @@ public sealed class LootComparatorSaveService
                     LootedFromName = item.LootedFromName ?? string.Empty,
                     ClusterName = item.ClusterName ?? string.Empty
                 }))
+            .ToList() ?? [];
+
+        lootLogSnapshot.AddRange((combatEvents ?? [])
+            .Select(combatEvent => new LootLogSnapshotItem
+            {
+                UtcPickupTime = ToUtc(combatEvent.UtcTimestamp),
+                DiedName = combatEvent.DiedName,
+                DiedPlayerGuild = combatEvent.DiedPlayerGuild,
+                KilledByName = combatEvent.KilledByName,
+                KilledByGuild = combatEvent.KilledByGuild,
+                ClusterName = combatEvent.ClusterName
+            }));
+
+        return lootLogSnapshot
+            .OrderBy(item => item.UtcPickupTime)
             .ToList();
     }
 
@@ -254,14 +279,14 @@ public sealed class LootComparatorSaveService
             EscapeDelimitedValue(item.LootedByName, ';'),
             EscapeDelimitedValue(item.ItemIdentifier, ';'),
             EscapeDelimitedValue(item.ItemName, ';'),
-            item.Quantity.ToString(CultureInfo.InvariantCulture),
+            item.IsCombatEvent ? string.Empty : item.Quantity.ToString(CultureInfo.InvariantCulture),
             string.Empty,
             EscapeDelimitedValue(item.LootedFromGuild, ';'),
             EscapeDelimitedValue(item.LootedFromName, ';'),
-            string.Empty,
-            string.Empty,
-            string.Empty,
-            string.Empty,
+            EscapeDelimitedValue(item.DiedName, ';'),
+            EscapeDelimitedValue(item.DiedPlayerGuild, ';'),
+            EscapeDelimitedValue(item.KilledByName, ';'),
+            EscapeDelimitedValue(item.KilledByGuild, ';'),
             string.Empty,
             EscapeDelimitedValue(item.ClusterName, ';'))));
 
@@ -324,6 +349,12 @@ public sealed class LootComparatorSaveService
         public int Quantity { get; init; }
         public string LootedFromGuild { get; init; } = string.Empty;
         public string LootedFromName { get; init; } = string.Empty;
+        public string DiedName { get; init; } = string.Empty;
+        public string DiedPlayerGuild { get; init; } = string.Empty;
+        public string KilledByName { get; init; } = string.Empty;
+        public string KilledByGuild { get; init; } = string.Empty;
         public string ClusterName { get; init; } = string.Empty;
+        public bool IsCombatEvent => !string.IsNullOrWhiteSpace(DiedName)
+                                     || !string.IsNullOrWhiteSpace(KilledByName);
     }
 }

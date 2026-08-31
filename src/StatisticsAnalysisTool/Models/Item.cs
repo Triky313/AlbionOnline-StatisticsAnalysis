@@ -1,8 +1,10 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Alert;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.EstimatedMarketValue;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
+using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.Json.Serialization;
@@ -11,7 +13,7 @@ using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Models;
 
-public class Item
+public class Item : BaseViewModel
 {
     public string LocalizationNameVariable { get; set; }
     public string LocalizationDescriptionVariable { get; set; }
@@ -42,12 +44,31 @@ public class Item
     public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => ImageController.GetItemImage(UniqueName));
 
     public ItemJsonObject FullItemInformation { get; set; }
-    public int AlertModeMinSellPriceIsUndercutPrice { get; set; }
+    public ulong AlertModeMinSellPriceIsUndercutPrice { get; set; }
+    public uint PriceAlertMaximumPriceAgeMinutes { get; set; } = AlertOptions.DefaultMaximumPriceAgeMinutes;
+    public uint AvailabilityAlertMaximumPriceAgeMinutes { get; set; } = AlertOptions.DefaultMaximumPriceAgeMinutes;
+    public ulong BlackMarketBuyOrderAlertThreshold { get; set; }
+    public uint BlackMarketAlertMaximumPriceAgeMinutes { get; set; } = AlertOptions.DefaultMaximumPriceAgeMinutes;
     public bool IsAlertActive { get; set; }
+    public bool IsPriceAlertActive { get; set; }
+    public bool IsAvailabilityAlertActive { get; set; }
+    public bool IsBlackMarketBuyOrderAlertActive { get; set; }
+    public bool IsAlertSoundEnabled { get; set; } = true;
     public bool IsFavorite { get; set; }
 
     [JsonIgnore]
-    public List<EstQualityValue> EstimatedMarketValues { get; set; }
+    public List<EstQualityValue> EstimatedMarketValues
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(AverageEstMarketValue));
+            OnPropertyChanged(nameof(LastEstimatedUpdateTimeString));
+            OnPropertyChanged(nameof(EstimatedMarketValueStatus));
+        }
+    }
 
     [JsonIgnore]
     public long AverageEstMarketValue => EstimatedMarketValueController.CalculateNearestToAverage(EstimatedMarketValues).MarketValue.IntegerValue;

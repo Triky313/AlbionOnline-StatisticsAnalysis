@@ -19,17 +19,18 @@ public class AlbionServerDetectionService
 
     public DateTime LastServerPacketReceivedUtc { get; private set; } = DateTime.MinValue;
 
-    public void DetectFromSourceIp(string sourceIp)
+    public bool TryDetectFromSourceIp(string sourceIp)
     {
         var detectedServer = AlbionServerRegistry.GetBySourceIp(sourceIp);
 
         if (detectedServer.ServerLocation == ServerLocation.Unknown)
         {
-            return;
+            return false;
         }
 
         LastServerPacketReceivedUtc = DateTime.UtcNow;
         SetCurrentServer(detectedServer);
+        return true;
     }
 
     private void SetCurrentServer(AlbionServerInfo detectedServer)

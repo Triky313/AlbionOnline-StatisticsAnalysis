@@ -122,6 +122,18 @@ public class Protocol18Stream : Stream
         _position = sum;
     }
 
+    internal ReadOnlySpan<byte> RemainingSpan => _buffer.AsSpan(_position, _length - _position);
+
+    internal void Advance(int count)
+    {
+        if (count < 0 || count > _length - _position)
+        {
+            throw new ArgumentOutOfRangeException(nameof(count));
+        }
+
+        _position += count;
+    }
+
     private void ExpandIfNeeded(long requiredSize)
     {
         if (requiredSize <= Capacity)

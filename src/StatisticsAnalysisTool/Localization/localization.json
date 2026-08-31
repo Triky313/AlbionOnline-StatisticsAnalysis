@@ -4053,6 +4053,19 @@
       ]
     },
     {
+      "tuid": "CRAFTING_COSTS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Herstellungskosten"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Crafting costs"
+        }
+      ]
+    },
+    {
       "tuid": "GATHERING",
       "tuv": [
         {
@@ -14863,11 +14876,11 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Nur Items mit Alarm AN zeigen"
+          "seg": "Nur mit aktivem Alarm"
         },
         {
           "lang": "en-US",
-          "seg": "Show only items with alert on"
+          "seg": "Only with active alert"
         },
         {
           "lang": "es-ES",
@@ -16710,6 +16723,23 @@
       ]
     },
     {
+      "tuid": "DUO",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Duo"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Duo"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Duo"
+        }
+      ]
+    },
+    {
       "tuid": "KILLED_BY",
       "tuv": [
         {
@@ -17660,6 +17690,218 @@
         {
           "lang": "zh-TW",
           "seg": "依傷害量排序"
+        }
+      ]
+    },
+    {
+      "tuid": "SORT_BY_MOB",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Nach Mob sortieren"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Sort by mob"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Ordenar por criatura"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Trier par monstre"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "モブ別に並べ替え"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "몹별 정렬"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Sortuj według przeciwnika"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Ordenar por criatura"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Сортировать по мобу"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Yaratığa göre sırala"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "按怪物排序"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "按怪物排序"
+        }
+      ]
+    },
+    {
+      "tuid": "BOSS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Boss"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Boss"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Jefe"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Boss"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ボス"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "보스"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Boss"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Chefe"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Босс"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Boss"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "首领"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "首領"
+        }
+      ]
+    },
+    {
+      "tuid": "ELITE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Elite"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Elite"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Élite"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Élite"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "エリート"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "정예"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Elita"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Elite"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Элита"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Seçkin"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "精英"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "精英"
+        }
+      ]
+    },
+    {
+      "tuid": "FIRST_ATTACK_TIME",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Erste Angriffszeit"
+        },
+        {
+          "lang": "en-US",
+          "seg": "First attack time"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Hora del primer ataque"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Heure de la première attaque"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "初回攻撃時刻"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "첫 공격 시간"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Czas pierwszego ataku"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Horário do primeiro ataque"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Время первой атаки"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "İlk saldırı zamanı"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "首次攻击时间"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "首次攻擊時間"
         }
       ]
     },
@@ -18738,59 +18980,6 @@
         {
           "lang": "zh-TW",
           "seg": "安全"
-        }
-      ]
-    },
-    {
-      "tuid": "DUNGEON_TIMER",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Dungeon Timer"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Dungeon Timer"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Temporizador de mazmorra"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Minuteur de donjon"
-        },
-        {
-          "lang": "ja-JP",
-          "seg": "ダンジョンタイマー"
-        },
-        {
-          "lang": "ko-KR",
-          "seg": "던전 타이머"
-        },
-        {
-          "lang": "pl-PL",
-          "seg": "Ile do bezpiecznej strefy:"
-        },
-        {
-          "lang": "pt-BR",
-          "seg": "Temporizador da Masmorra"
-        },
-        {
-          "lang": "ru-RU",
-          "seg": "Таймер подземелья"
-        },
-        {
-          "lang": "tr-TR",
-          "seg": "Zindan Zamanlayıcısı"
-        },
-        {
-          "lang": "zh-CN",
-          "seg": "入口消失倒计时"
-        },
-        {
-          "lang": "zh-TW",
-          "seg": "副本計時"
         }
       ]
     },
@@ -21405,55 +21594,6 @@
       ]
     },
     {
-      "tuid": "RESET_DUNGEON_TIMER",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Dungeon-Timer zurücksetzen"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Reset dungeon timer"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Reinciar temporizador de mazmorra"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Réinitialiser le minuteur du donjon"
-        },
-        {
-          "lang": "ja-JP",
-          "seg": "ダンジョンタイマーをリセット"
-        },
-        {
-          "lang": "ko-KR",
-          "seg": "던전 타이머 초기화"
-        },
-        {
-          "lang": "pl-PL",
-          "seg": "Zresetuj licznik czasu w lochu"
-        },
-        {
-          "lang": "pt-BR",
-          "seg": "Resetar temporizador de Masmorra"
-        },
-        {
-          "lang": "ru-RU",
-          "seg": "Сброс таймера подземелья"
-        },
-        {
-          "lang": "zh-CN",
-          "seg": "重置副本计时"
-        },
-        {
-          "lang": "zh-TW",
-          "seg": "重置副本計時"
-        }
-      ]
-    },
-    {
       "tuid": "REQUIRED_RESOURCES",
       "tuv": [
         {
@@ -23920,6 +24060,104 @@
       ]
     },
     {
+      "tuid": "TRACKING_PLAYER_LOOT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Spieler-Loot tracken"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Tracking player loot"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Registrar botín de jugadores"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Suivre le butin des joueurs"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "プレイヤーの戦利品を追跡"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "플레이어 전리품 추적"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Śledzenie łupów graczy"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Rastrear saque de jogadores"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Отслеживать добычу игроков"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "追踪玩家战利品"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "追蹤玩家戰利品"
+        }
+      ]
+    },
+    {
+      "tuid": "TRACKING_KILLS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Kills tracken"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Tracking kills"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Seguimiento de asesinatos"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Traquer les éliminations"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "キルを追跡"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "킬 추적"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Śledzenie zabójstw"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Rastreando abates"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Отслеживать убийства"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "追踪击杀"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "追蹤擊殺"
+        }
+      ]
+    },
+    {
       "tuid": "SHOP_CATEGORY",
       "tuv": [
         {
@@ -24508,15 +24746,15 @@
       ]
     },
     {
-      "tuid": "FACTION_FLAGS",
+      "tuid": "FACTION_STANDING",
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Fraktions-Flaggen"
+          "seg": "Fraktionsansehen"
         },
         {
           "lang": "en-US",
-          "seg": "Faction flags"
+          "seg": "Faction Standing"
         },
         {
           "lang": "es-ES",
@@ -24524,7 +24762,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Drapeaux de faction"
+          "seg": "Réputation de faction"
         },
         {
           "lang": "ja-JP",
@@ -24557,15 +24795,15 @@
       ]
     },
     {
-      "tuid": "FACTION_FLAGS_PER_HOUR",
+      "tuid": "FACTION_STANDING_PER_HOUR",
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Fraktions-Flaggen pro Stunde"
+          "seg": "Fraktionsansehen pro Stunde"
         },
         {
           "lang": "en-US",
-          "seg": "Faction flags per hour"
+          "seg": "Faction Standing per hour"
         },
         {
           "lang": "es-ES",
@@ -24573,7 +24811,7 @@
         },
         {
           "lang": "fr-FR",
-          "seg": "Drapeaux de faction par heure"
+          "seg": "Réputation de faction par heure"
         },
         {
           "lang": "ja-JP",
@@ -27836,27 +28074,6 @@
       ]
     },
     {
-      "tuid": "OPEN_WORLD_ACTIVE",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Offene Welt aktiv"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Open World active"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Monde Ouvert actif"
-        },
-        {
-          "lang": "zh-CN",
-          "seg": "开放世界激活"
-        }
-      ]
-    },
-    {
       "tuid": "KILLED_MAMMOTHS",
       "tuv": [
         {
@@ -28102,55 +28319,6 @@
       ]
     },
     {
-      "tuid": "RESET_OPEN_WORLD_STATS",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Open World Statistik zurücksetzen"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Reset Open World stats"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Reset Open World stats"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Réinitialiser les statistiques du Monde Ouvert"
-        },
-        {
-          "lang": "ja-JP",
-          "seg": "Reset Open World stats"
-        },
-        {
-          "lang": "ko-KR",
-          "seg": "Reset Open World stats"
-        },
-        {
-          "lang": "pl-PL",
-          "seg": "Reset Open World stats"
-        },
-        {
-          "lang": "pt-BR",
-          "seg": "Reset Open World stats"
-        },
-        {
-          "lang": "ru-RU",
-          "seg": "Reset Open World stats"
-        },
-        {
-          "lang": "zh-CN",
-          "seg": "重置开放世界统计"
-        },
-        {
-          "lang": "zh-TW",
-          "seg": "Reset Open World stats"
-        }
-      ]
-    },
-    {
       "tuid": "RESET_ALL",
       "tuv": [
         {
@@ -28196,55 +28364,6 @@
         {
           "lang": "zh-TW",
           "seg": "Reset all"
-        }
-      ]
-    },
-    {
-      "tuid": "SURE_YOU_WANT_TO_RESET_OPEN_WORLD_STATS",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Möchtest du die Open World Statistik wirklich zurücksetzen ?"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Are you sure you want to reset the Open World stats ?"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Are you sure you want to reset the Open World stats ?"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Veux-tu vraiment réinitialiser les statistiques du monde ouvert ?"
-        },
-        {
-          "lang": "ja-JP",
-          "seg": "Are you sure you want to reset the Open World stats ?"
-        },
-        {
-          "lang": "ko-KR",
-          "seg": "Are you sure you want to reset the Open World stats ?"
-        },
-        {
-          "lang": "pl-PL",
-          "seg": "Are you sure you want to reset the Open World stats ?"
-        },
-        {
-          "lang": "pt-BR",
-          "seg": "Are you sure you want to reset the Open World stats ?"
-        },
-        {
-          "lang": "ru-RU",
-          "seg": "Are you sure you want to reset the Open World stats ?"
-        },
-        {
-          "lang": "zh-CN",
-          "seg": "确定要重置开放世界统计吗？"
-        },
-        {
-          "lang": "zh-TW",
-          "seg": "Are you sure you want to reset the Open World stats ?"
         }
       ]
     },
@@ -30797,55 +30916,6 @@
       ]
     },
     {
-      "tuid": "DUNGEON_CLOSED_SOUND_ACTIVE",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Dungeon geschlossen Sound aktiv"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Dungeon closed sound active"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Sonido de mazmorra cerrada activado"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Jouer un son à la fermeture du donjon"
-        },
-        {
-          "lang": "ja-JP",
-          "seg": "ダンジョン閉鎖音有効"
-        },
-        {
-          "lang": "ko-KR",
-          "seg": "던전이 닫힐 때 소리 활성화"
-        },
-        {
-          "lang": "pl-PL",
-          "seg": "Dzwięk zamykania lochu"
-        },
-        {
-          "lang": "pt-BR",
-          "seg": "Som de calabouço fechado ativo"
-        },
-        {
-          "lang": "ru-RU",
-          "seg": "Звук при закрытии подземелья"
-        },
-        {
-          "lang": "zh-CN",
-          "seg": "地下城入口消失提示声"
-        },
-        {
-          "lang": "zh-TW",
-          "seg": "開啟地下城入口消失提示聲"
-        }
-      ]
-    },
-    {
       "tuid": "TOTAL_PRICE_WITH_DEDUCTED_TAXES",
       "tuv": [
         {
@@ -31038,6 +31108,55 @@
         {
           "lang": "zh-TW",
           "seg": "開啟交易追蹤"
+        }
+      ]
+    },
+    {
+      "tuid": "CRAFTING_COSTS_MONITORING_ACTIVE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Crafting-Kosten erfassen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Track crafting costs"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Registrar costes de fabricaci\u00f3n"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Enregistrer les co\u00fbts de fabrication"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "\u88fd\u4f5c\u30b3\u30b9\u30c8\u3092\u8a18\u9332"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "\uc81c\uc791 \ube44\uc6a9 \uae30\ub85d"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Rejestruj koszty wytwarzania"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Registrar custos de fabrica\u00e7\u00e3o"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "\u0423\u0447\u0438\u0442\u044b\u0432\u0430\u0442\u044c \u0437\u0430\u0442\u0440\u0430\u0442\u044b \u043d\u0430 \u0438\u0437\u0433\u043e\u0442\u043e\u0432\u043b\u0435\u043d\u0438\u0435"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "\u8bb0\u5f55\u5236\u4f5c\u6210\u672c"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "\u8a18\u9304\u88fd\u4f5c\u6210\u672c"
         }
       ]
     },
@@ -38653,7 +38772,7 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Truhen Dateien laden"
+          "seg": "Truhen-Dateien laden"
         },
         {
           "lang": "en-US",
@@ -38852,7 +38971,7 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Loot Logs hinzugefügt"
+          "seg": "Loot-Log-Dateien hinzufügen"
         },
         {
           "lang": "en-US",
@@ -39157,6 +39276,10 @@
         {
           "lang": "en-US",
           "seg": "Save comparator state"
+        },
+		{
+          "lang": "fr-FR",
+          "seg": "Enregistrer l'état du comparateur"
         }
       ]
     },
@@ -39170,6 +39293,10 @@
         {
           "lang": "en-US",
           "seg": "Load comparator state"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Charger l'état du comparateur"
         }
       ]
     },
@@ -39183,6 +39310,10 @@
         {
           "lang": "en-US",
           "seg": "Name for the comparator state:"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Nom de l'état de référence :"
         }
       ]
     },
@@ -39196,6 +39327,10 @@
         {
           "lang": "en-US",
           "seg": "The currently loaded logs will be removed. Do you want to load the selected state?"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Les journaux actuellement chargés seront supprimés. Souhaitez-vous charger l'état sélectionné ?"
         }
       ]
     },
@@ -39209,6 +39344,10 @@
         {
           "lang": "en-US",
           "seg": "The comparator state could not be saved."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "L'état du comparateur n'a pas pu être enregistré."
         }
       ]
     },
@@ -39222,6 +39361,10 @@
         {
           "lang": "en-US",
           "seg": "The comparator state could not be loaded. The saved files may be corrupted."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Impossible de charger l'état de référence. Les fichiers enregistrés sont peut-être corrompus."
         }
       ]
     },
@@ -39235,6 +39378,10 @@
         {
           "lang": "en-US",
           "seg": "Save"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Enregistrer"
         }
       ]
     },
@@ -39248,6 +39395,10 @@
         {
           "lang": "en-US",
           "seg": "Cancel"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Annuler"
         }
       ]
     },
@@ -39261,6 +39412,10 @@
         {
           "lang": "en-US",
           "seg": "Delete selected comparator state"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Supprimer l'état du comparateur sélectionné"
         }
       ]
     },
@@ -39269,11 +39424,15 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Möchtest du den Comparator-Speicherstand „{SAVE_NAME}“ wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+          "seg": "Möchtest du den Comparator-Speicherstand \"{SAVE_NAME}\" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
         },
         {
           "lang": "en-US",
           "seg": "Do you really want to delete the comparator state \"{SAVE_NAME}\"? This action cannot be undone."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Voulez-vous vraiment supprimer l'état du comparateur \"{SAVE_NAME}\"? Cette action ne peut pas être annulée."
         }
       ]
     },
@@ -39287,6 +39446,10 @@
         {
           "lang": "en-US",
           "seg": "The comparator state could not be deleted."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "L'état de comparaison n'a pas pu être supprimé."
         }
       ]
     },
@@ -39300,6 +39463,10 @@
         {
           "lang": "en-US",
           "seg": "Filters"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Filtres"
         }
       ]
     },
@@ -39313,6 +39480,10 @@
         {
           "lang": "en-US",
           "seg": "Chest log input"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Saisie dans le journal de bord"
         }
       ]
     },
@@ -39326,6 +39497,10 @@
         {
           "lang": "en-US",
           "seg": "Comparison"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Comparaison"
         }
       ]
     },
@@ -39339,6 +39514,10 @@
         {
           "lang": "en-US",
           "seg": "Actions"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Action"
         }
       ]
     },
@@ -39352,6 +39531,10 @@
         {
           "lang": "en-US",
           "seg": "Saved comparator:"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Comparateur enregistré"
         }
       ]
     },
@@ -39377,6 +39560,131 @@
         {
           "lang": "zh-CN",
           "seg": "从战利品比对器中移除玩家"
+        }
+      ]
+    },
+    {
+      "tuid": "COPY_PLAYER_LOOT_LOGS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Loot-Logs dieses Spielers kopieren"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Copy this player's loot logs"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Copier les journaux de butin de ce joueur"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Скопировать журнал добычи этого игрока"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "复制该玩家的战利品日志"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_STATUS_GRAY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Grau"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Gray"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Gris"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Серые"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "灰色"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_STATUS_GREEN",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Grün"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Green"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Vert"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Зелёные"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "绿色"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_STATUS_BLUE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Blau"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Blue"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Bleu"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Синие"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "蓝色"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_COMPARATOR_STATUS_RED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Rot"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Red"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Rouge"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Красные"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "红色"
         }
       ]
     },
@@ -39650,6 +39958,71 @@
       ]
     },
     {
+      "tuid": "DRAGONAREA",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "pt-PT",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "it-IT",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "ko-KO",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "ja-JA",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "id-ID",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "hi-HI",
+          "seg": "Ancient Lands"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Ancient Lands"
+        }
+      ]
+    },
+    {
       "tuid": "OPERATOR",
       "tuv": [
         {
@@ -39804,19 +40177,19 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Um die Truhen Logs aus dem Spiel zu erhalten muss folgendes getan werden:"
+          "seg": "So erhältst du die Truhenlogs aus dem Spiel:"
         },
         {
           "lang": "en-US",
-          "seg": "To obtain the chest logs from the game, follow these steps:"
+          "seg": "Follow these steps to obtain the chest logs from the game:"
         },
         {
           "lang": "fr-FR",
-          "seg": "Pour obtenir les journaux de coffre du jeu, suivez ces étapes :"
+          "seg": "Suivez ces étapes pour obtenir les journaux de coffre du jeu :"
         },
         {
           "lang": "ru-RU",
-          "seg": "Чтобы получить логи сундуков из игры, выполните следующие действия:"
+          "seg": "Чтобы получить журналы сундука из игры, выполните следующие действия:"
         },
         {
           "lang": "zh-CN",
@@ -39829,23 +40202,23 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "1. Klicke auf den Actions Button in deiner Gilden Bank"
+          "seg": "1. Klicke in deiner Gildenbank auf \"Actions\"."
         },
         {
           "lang": "en-US",
-          "seg": "1. Click on the Actions button in your guild bank"
+          "seg": "1. Click \"Actions\" in your guild bank."
         },
         {
           "lang": "fr-FR",
-          "seg": "1. Cliquez sur le bouton Actions dans votre banque de guilde"
+          "seg": "1. Cliquez sur \"Actions\" dans votre banque de guilde."
         },
         {
           "lang": "ru-RU",
-          "seg": "1. Нажмите на кнопку Действия в вашем банке гильдии."
+          "seg": "1. Нажмите \"Actions\" в банке вашей гильдии."
         },
         {
           "lang": "zh-CN",
-          "seg": "1. 点击公会仓库中的‘行动’按钮;"
+          "seg": "1. 在公会仓库中点击\"Actions\"。"
         }
       ]
     },
@@ -39854,23 +40227,23 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "2. Klicke auf den verwalten Button"
+          "seg": "2. Klicke auf \"Manage\"."
         },
         {
           "lang": "en-US",
-          "seg": "2. Click on the Manage button."
+          "seg": "2. Click \"Manage\"."
         },
         {
           "lang": "fr-FR",
-          "seg": "2. Cliquez sur le bouton Gérer."
+          "seg": "2. Cliquez sur \"Manage\"."
         },
         {
           "lang": "ru-RU",
-          "seg": "2. Нажмите на кнопку Управление."
+          "seg": "2. Нажмите \"Manage\"."
         },
         {
           "lang": "zh-CN",
-          "seg": "2. 点击‘管理’按钮;"
+          "seg": "2. 点击\"Manage\"。"
         }
       ]
     },
@@ -39879,23 +40252,23 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "3. Klicke auf den Button mit den 3 Strichen"
+          "seg": "3. Öffne \"Truhen Protokollierung\"."
         },
         {
           "lang": "en-US",
-          "seg": "3. Click on the button with the three lines."
+          "seg": "3. Open \"Chest Log\"."
         },
         {
           "lang": "fr-FR",
-          "seg": "3. Cliquez sur le bouton avec les trois lignes."
+          "seg": "3. Ouvrez \"Chest Log\"."
         },
         {
           "lang": "ru-RU",
-          "seg": "3. Нажмите на кнопку с тремя строчками."
+          "seg": "3. Откройте \"Chest Log\"."
         },
         {
           "lang": "zh-CN",
-          "seg": "3. 点击带有三条横线的按钮;"
+          "seg": "3. 打开\"Chest Log\"。"
         }
       ]
     },
@@ -39904,23 +40277,23 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "4. Klicke auf den Copy to clipboard Button"
+          "seg": "4. Klicke auf \"Copy to clipboard\"."
         },
         {
           "lang": "en-US",
-          "seg": "4. Click on the Copy to clipboard button."
+          "seg": "4. Click \"Copy to clipboard\"."
         },
         {
           "lang": "fr-FR",
-          "seg": "4. Cliquez sur le bouton Copier vers le presse-papier."
+          "seg": "4. Cliquez sur \"Copy to clipboard\"."
         },
         {
           "lang": "ru-RU",
-          "seg": "4. Нажмите на кнопку Копировать в буфер обмена."
+          "seg": "4. Нажмите \"Copy to clipboard\"."
         },
         {
           "lang": "zh-CN",
-          "seg": "4. 点击‘复制到剪贴板’按钮。"
+          "seg": "4. 点\"Copy to clipboard\"。"
         }
       ]
     },
@@ -39929,23 +40302,23 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Erstelle jetzt eine CSV Datei, also eine Datei mit der extension .csv z.B. 'logs.csv'. In diese Datei kopierst du alle logs rein und speicherst die Datei."
+          "seg": "Füge den kopierten Truhenlog direkt in das Feld \"Chest-Log-Eingabe\" ein und klicke auf \"Chest Logs hinzufügen\"."
         },
         {
           "lang": "en-US",
-          "seg": "Next, create a CSV file, i.e., a file with the extension .csv (for example, 'logs.csv'). Paste all the logs into this file and save it."
+          "seg": "Paste the copied chest log directly into the \"Chest log input\" field and click \"Add chest logs\"."
         },
         {
           "lang": "fr-FR",
-          "seg": "Collez ensuite tous les journaux dans un fichier finissant par l'extension '.csv' (par exemple : 'logs.csv') et enregistrez-le."
+          "seg": "Collez le journal de coffre copié directement dans le champ de \"Saisie du journal de coffre\", puis cliquez sur le bouton permettant d'ajouter les journaux."
         },
         {
           "lang": "ru-RU",
-          "seg": "Затем создайте CSV-файл, то есть файл с расширением .csv (например, 'logs.csv'). Вставьте все журналы в этот файл и сохраните его."
+          "seg": "Вставьте скопированный журнал сундука непосредственно в поле ввода журнала сундука и нажмите кнопку добавления журналов."
         },
         {
           "lang": "zh-CN",
-          "seg": "接下来，创建一个 CSV 文件（即扩展名为 .csv 的文件，例如 'logs.csv'）。将所有日志粘贴到该文件中并保存。"
+          "seg": "将复制的箱子日志直接粘贴到箱子日志输入框中，然后点击添加箱子日志按钮。"
         }
       ]
     },
@@ -39954,23 +40327,23 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Im Tool kannst du jetzt den Button Upload Chest File anklicken und deine Datei laden."
+          "seg": "Alternativ kannst du über \"Truhen-Dateien laden\" eine oder mehrere .csv-Dateien auswählen. Unterstützt werden Truhenlogs mit tabulatorgetrennten Spalten, wie sie aus der Zwischenablage kopiert werden, sowie kommagetrennte CSV-Dateien. Andere Dateiformate werden nicht unterstützt."
         },
         {
           "lang": "en-US",
-          "seg": "In the tool, you can now click the Upload Chest File button and load your file."
+          "seg": "Alternatively, use \"Upload chest files\" to select one or more .csv files. Chest logs with tab-separated columns, as copied from the clipboard, and comma-separated CSV files are supported. Other file formats are not supported."
         },
         {
           "lang": "fr-FR",
-          "seg": "Dans l'outil, vous pouvez maintenant cliquer sur le bouton 'Télécharger les données' et charger votre fichier."
+          "seg": "Vous pouvez également sélectionner un ou plusieurs fichiers .csv à l'aide du bouton \"Télécharger les données\". Les journaux de coffre avec des colonnes séparées par des tabulations, tels qu'ils sont copiés depuis le presse-papiers, ainsi que les fichiers CSV séparés par des virgules sont pris en charge. Les autres formats de fichier ne sont pas pris en charge."
         },
         {
           "lang": "ru-RU",
-          "seg": "Теперь в этом инструменте вы можете нажать кнопку 'Загрузить файл сундука' и загрузить свой файл."
+          "seg": "Также можно выбрать один или несколько файлов .csv с помощью кнопки загрузки файлов сундука. Поддерживаются журналы сундука со столбцами, разделёнными табуляцией, как при копировании из буфера обмена, а также CSV-файлы с разделителем-запятой. Другие форматы файлов не поддерживаются."
         },
         {
           "lang": "zh-CN",
-          "seg": "在工具中，你现在可以点击‘上传箱子记录’按钮，然后加载你的文件。"
+          "seg": "你也可以通过加载箱子日志文件按钮选择一个或多个 .csv 文件。支持从剪贴板复制的制表符分隔箱子日志和逗号分隔的 CSV 文件。不支持其他文件格式。"
         }
       ]
     },
@@ -40004,23 +40377,23 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Loot-Log-Dateien können im Logging-Tab über den grünen CSV-Button gespeichert werden. Diese Datei kann anschließend in einem anderen Tool hinzugefügt werden."
+          "seg": "Loot-Logs werden im Logging-Tab über den grünen CSV-Button exportiert. Im Loot Comparator kannst du über \"Loot-Log-Dateien hinzufügen\" eine oder mehrere dieser .csv-Dateien laden. Unterstützt werden semikolongetrennte Loot-Log-CSV-Dateien mit der erwarteten Kopfzeile; JSON und andere Dateiformate werden nicht unterstützt. Klicke anschließend auf \"Logs vergleichen\"."
         },
         {
           "lang": "en-US",
-          "seg": "Loot log files can be saved in the Logging tab using the green CSV button. This file can then be added in another tool."
+          "seg": "Export loot logs from the Logging tab using the green CSV button. In the Loot Comparator, use \"Add loot log files\" to load one or more of these .csv files. Semicolon-separated loot log CSV files with the expected header are supported; JSON and other file formats are not supported. Then click \"Compare logs\"."
         },
         {
           "lang": "fr-FR",
-          "seg": "Les fichiers journaux de butin peuvent être enregistrés dans l'onglet « Journalisation » à l'aide du bouton CSV vert. Ce fichier peut ensuite être importé dans un autre outil."
+          "seg": "Exportez les journaux de butin depuis l'onglet de journalisation à l'aide du bouton CSV vert. Dans le comparateur de butin, utilisez le bouton d'ajout des fichiers journaux de butin pour charger un ou plusieurs de ces fichiers .csv. Les fichiers CSV séparés par des points-virgules et contenant l'en-tête attendu sont pris en charge ; les fichiers JSON et les autres formats ne le sont pas. Cliquez ensuite sur le bouton permettant de comparer les journaux."
         },
         {
           "lang": "ru-RU",
-          "seg": "Файлы журнала добычи можно сохранить на вкладке Ведение журнала с помощью зеленой кнопки CSV. Затем этот файл можно добавить в другой инструмент."
+          "seg": "Экспортируйте журналы добычи на вкладке ведения журнала с помощью зелёной кнопки CSV. В Loot Comparator загрузите один или несколько этих файлов .csv с помощью кнопки добавления файлов журнала добычи. Поддерживаются CSV-файлы журнала добычи с разделителем-точкой с запятой и ожидаемой строкой заголовка; JSON и другие форматы не поддерживаются. Затем нажмите кнопку сравнения журналов."
         },
         {
           "lang": "zh-CN",
-          "seg": "战利品日志文件可以在‘日志’选项卡中，通过绿色的 CSV 按钮进行保存。之后，这个文件还能被导入到另一个工具中。"
+          "seg": "在日志选项卡中使用绿色 CSV 按钮导出战利品日志。在战利品对比器中，通过添加战利品日志文件按钮加载一个或多个此类 .csv 文件。仅支持具有预期表头的分号分隔战利品日志 CSV 文件；不支持 JSON 和其他文件格式。然后点击比较日志。"
         }
       ]
     },
@@ -40029,11 +40402,11 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Was bedeuten die Farben der Gegenstandslots?"
+          "seg": "Was bedeuten die Farben der Gegenstands-Slots?"
         },
         {
           "lang": "en-US",
-          "seg": "What the item slots colors mean?"
+          "seg": "What do the item slot colors mean?"
         },
         {
           "lang": "fr-FR",
@@ -40054,23 +40427,23 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Gegenstände in Graustufen signalisieren aufgelöste Gegenstände. Dies bedeutet, dass die Gegenstände entweder verloren gegangen sind oder bereits in einer Truhe deponiert wurden."
+          "seg": "Graue Gegenstände wurden entweder als verloren erkannt oder stammen aus einem Truheneintrag, der keinem früheren Loot-Eintrag sicher zugeordnet werden konnte. Verloren bedeutet, dass ein anderer Spieler denselben Gegenstand später vom ursprünglichen Plünderer aufgehoben hat."
         },
         {
           "lang": "en-US",
-          "seg": "Items shown in greyscale indicate dissolved items. This means the items have either been lost or already deposited in a chest."
+          "seg": "Grey items were either detected as lost or come from a chest entry that could not be matched reliably to an earlier loot entry. Lost means that another player later picked up the same item from the original looter."
         },
         {
           "lang": "fr-FR",
-          "seg": "Les objets en gris indiquent qu'ils ont été détruits. Cela signifie qu'ils ont été perdus ou déjà déposés dans un autre coffre."
+          "seg": "Les objets gris ont été détectés comme perdus ou proviennent d'une entrée de coffre qui n'a pas pu être associée de manière fiable à une entrée de butin antérieure. Perdu signifie qu'un autre joueur a récupéré plus tard le même objet sur le premier récupérateur."
         },
         {
           "lang": "ru-RU",
-          "seg": "Предметы, выделенные оттенками серого, означают исчезнувшие предметы. Это означает, что предметы были либо потеряны, либо уже помещены в сундук."
+          "seg": "Серые предметы либо распознаны как потерянные, либо относятся к записи сундука, которую не удалось надёжно сопоставить с более ранней записью добычи. Потеря означает, что позднее другой игрок подобрал тот же предмет с первоначального владельца добычи."
         },
         {
           "lang": "zh-CN",
-          "seg": "显示为灰色的物品表示已被分解。这意味着这些物品要么已经损失了，要么已经存入其他仓库中"
+          "seg": "灰色物品表示已检测为丢失，或来自无法可靠匹配到较早战利品记录的箱子记录。丢失表示另一名玩家后来从最初拾取者身上拾取了相同物品。"
         }
       ]
     },
@@ -40079,23 +40452,23 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Gegenstände in grüner Farbe bedeuten, dass sie in einer Truhe deponiert wurden."
+          "seg": "Grüne Gegenstände sind Loot-Einträge, denen ein späterer Truheneintrag desselben Spielers mit demselben Gegenstand und derselben Menge zugeordnet wurde."
         },
         {
           "lang": "en-US",
-          "seg": "Items highlighted in green mean they have been deposited in a chest."
+          "seg": "Green items are loot entries matched to a later chest entry from the same player with the same item and quantity."
         },
         {
           "lang": "fr-FR",
-          "seg": "Les objets en vert signifient qu'ils ont été déposés dans le coffre."
+          "seg": "Les objets verts sont des entrées de butin associées à une entrée de coffre ultérieure du même joueur, avec le même objet et la même quantité."
         },
         {
           "lang": "ru-RU",
-          "seg": "Предметы, выделенные зеленым цветом, означают, что они были помещены в сундук."
+          "seg": "Зелёные предметы — это записи добычи, сопоставленные с более поздней записью сундука того же игрока, с тем же предметом и количеством."
         },
         {
           "lang": "zh-CN",
-          "seg": "绿色高亮的物品表示已被存入"
+          "seg": "绿色物品表示该战利品记录已匹配到同一玩家之后存入箱子的相同物品和数量。"
         }
       ]
     },
@@ -40104,23 +40477,23 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Gegenstand wurde gespendet, ist nicht vorher von einem toten Spieler aufgesammelt wurden."
+          "seg": "Blaue Gegenstände sind positive Truheneinträge, für die kein passender früherer Loot-Eintrag gefunden wurde und die das Tool anhand der zeitlichen Reihenfolge deshalb als Spende einordnet."
         },
         {
           "lang": "en-US",
-          "seg": "The item was donated and was not previously picked up from a dead player."
+          "seg": "Blue items are positive chest entries for which no matching earlier loot entry was found and which the tool therefore classifies as donations based on the event order."
         },
         {
           "lang": "fr-FR",
-          "seg": "Les objets en bleu ont été donnés et n'ont pas été récupérés sur un joueur mort."
+          "seg": "Les objets bleus sont des entrées positives de coffre pour lesquelles aucune entrée de butin antérieure correspondante n'a été trouvée et que l'outil classe donc comme des dons selon l'ordre des événements."
         },
         {
           "lang": "ru-RU",
-          "seg": "Предмет был подарен и ранее не был подобран с тела погибшего игрока."
+          "seg": "Синие предметы — это положительные записи сундука, для которых не найдено соответствующей более ранней записи добычи и которые поэтому классифицируются инструментом как пожертвования с учётом порядка событий."
         },
         {
           "lang": "zh-CN",
-          "seg": "该物品为捐赠所得，且此前并非从阵亡玩家身上拾取"
+          "seg": "蓝色物品表示未找到匹配的较早战利品记录的正数箱子记录，工具会根据事件顺序将其归类为捐赠。"
         }
       ]
     },
@@ -40129,23 +40502,23 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Gegenstände in Rot wurden von einem toten Spieler aufgesammelt aber noch nicht in der Truhe deponiert."
+          "seg": "Rote Gegenstände sind noch nicht aufgelöste Loot-Einträge. Es wurde weder ein passender späterer Truheneintrag noch ein späterer Verlust gefunden. Die Farbe belegt nicht, dass der Spieler den Gegenstand noch besitzt."
         },
         {
           "lang": "en-US",
-          "seg": "Items in red were picked up from a dead player but have not yet been deposited in a chest."
+          "seg": "Red items are unresolved loot entries. No matching later chest entry or later loss was found. The color does not prove that the player still owns the item."
         },
         {
           "lang": "fr-FR",
-          "seg": "Les objets en rouge ont été récupérés sur un joueur mort mais n'ont pas encore été déposés dans un coffre."
+          "seg": "Les objets rouges sont des entrées de butin non résolues. Aucune entrée de coffre ultérieure correspondante ni aucune perte ultérieure n'a été trouvée. La couleur ne prouve pas que le joueur possède encore l'objet."
         },
         {
           "lang": "ru-RU",
-          "seg": "Предметы, отмеченные красным, были подобраны с убитого игрока, но еще не сложены в сундук."
+          "seg": "Красные предметы — это неразрешённые записи добычи. Не найдено ни соответствующей более поздней записи сундука, ни последующей потери. Цвет не доказывает, что предмет всё ещё находится у игрока."
         },
         {
           "lang": "zh-CN",
-          "seg": "红色物品是从阵亡玩家身上拾取的，但尚未存入"
+          "seg": "红色物品表示尚未解析的战利品记录。未找到匹配的后续箱子记录或后续丢失记录。该颜色并不能证明玩家仍然拥有此物品。"
         }
       ]
     },
@@ -40849,6 +41222,74 @@
         {
           "lang": "zh-CN",
           "seg": "正在下载并准备更新..."
+        }
+      ]
+    },
+    {
+      "tuid": "UPDATE_INSTALLING_STATUS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Download abgeschlossen. Das Update wird installiert..."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Download complete. Installing the update..."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Téléchargement terminé. Installation de la mise à jour en cours..."
+        }
+      ]
+    },
+    {
+      "tuid": "UPDATE_INSTALLING_BUTTON",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Wird installiert..."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Installing..."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Installation en cours..."
+        }
+      ]
+    },
+    {
+      "tuid": "UPDATE_DOWNLOAD_FAILED_MESSAGE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Das Update konnte nicht heruntergeladen werden. Bitte pr�fe deine Internet- oder Proxyverbindung und versuche es erneut."
+        },
+        {
+          "lang": "en-US",
+          "seg": "The update could not be downloaded. Please check your internet or proxy connection and try again."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "La mise à jour n'a pas pu être téléchargée. Veuillez vérifier votre connexion Internet ou votre proxy, puis réessayez."
+        }
+      ]
+    },
+    {
+      "tuid": "UPDATE_INSTALL_FAILED_MESSAGE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Das Update konnte nicht automatisch installiert werden. Bitte versuche es erneut oder installiere es manuell."
+        },
+        {
+          "lang": "en-US",
+          "seg": "The update could not be installed automatically. Please try again or install it manually."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "La mise à jour n'a pas pu être installée automatiquement. Veuillez réessayer ou l'installer manuellement."
         }
       ]
     },
@@ -43984,6 +44425,23 @@
       ]
     },
     {
+      "tuid": "VOLUME",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Lautstärke"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Volume"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Volume"
+        }
+      ]
+    },
+    {
       "tuid": "EXPECTED_RRR",
       "tuv": [
         {
@@ -46982,6 +47440,3271 @@
         {
           "lang": "zh-TW",
           "seg": "已偵測到位置"
+        }
+      ]
+    },
+    {
+      "tuid": "STATUS_GAME_DATA_DETECTED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Spieldaten erkannt"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Game data detected"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Datos del juego detectados"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Données de jeu détectées"
+        },
+        {
+          "lang": "hi-HI",
+          "seg": "गेम डेटा का पता चला"
+        },
+        {
+          "lang": "id-ID",
+          "seg": "Data game terdeteksi"
+        },
+        {
+          "lang": "it-IT",
+          "seg": "Dati di gioco rilevati"
+        },
+        {
+          "lang": "ja-JA",
+          "seg": "ゲームデータを検出"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ゲームデータを検出"
+        },
+        {
+          "lang": "ko-KO",
+          "seg": "게임 데이터 감지됨"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "게임 데이터 감지됨"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Wykryto dane gry"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Dados do jogo detectados"
+        },
+        {
+          "lang": "pt-PT",
+          "seg": "Dados do jogo detetados"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Игровые данные обнаружены"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Oyun verileri algılandı"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "已检测到游戏数据"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "已偵測到遊戲資料"
+        }
+      ]
+    },
+    {
+      "tuid": "STATUS_WAITING_FOR_GAME_DATA",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Warte auf Spieldaten"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Waiting for game data"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Esperando datos del juego"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "En attente des données de jeu"
+        },
+        {
+          "lang": "hi-HI",
+          "seg": "गेम डेटा की प्रतीक्षा"
+        },
+        {
+          "lang": "id-ID",
+          "seg": "Menunggu data game"
+        },
+        {
+          "lang": "it-IT",
+          "seg": "In attesa dei dati di gioco"
+        },
+        {
+          "lang": "ja-JA",
+          "seg": "ゲームデータを待機中"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ゲームデータを待機中"
+        },
+        {
+          "lang": "ko-KO",
+          "seg": "게임 데이터 대기 중"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "게임 데이터 대기 중"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Oczekiwanie na dane gry"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Aguardando dados do jogo"
+        },
+        {
+          "lang": "pt-PT",
+          "seg": "A aguardar dados do jogo"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Ожидание игровых данных"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Oyun verileri bekleniyor"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "正在等待游戏数据"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "正在等待遊戲資料"
+        }
+      ]
+    },
+    {
+      "tuid": "CONTENT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Inhalt"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Content"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Sommaire"
+        }
+      ]
+    },
+    {
+      "tuid": "SESSION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Sitzung"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Session"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Session"
+        }
+      ]
+    },
+    {
+      "tuid": "ALL_CONTENT_TYPES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Alle Inhalte"
+        },
+        {
+          "lang": "en-US",
+          "seg": "All content"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Tout le contenu"
+        }
+      ]
+    },
+    {
+      "tuid": "ALL_SESSIONS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Alle Sitzungen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "All sessions"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Toutes les Sessions"
+        }
+      ]
+    },
+    {
+      "tuid": "CORRUPTED_DUNGEON",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Korrumpierter Dungeon"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Corrupted Dungeon"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Donjon corrompu"
+        }
+      ]
+    },
+    {
+      "tuid": "TIME_RANGE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Zeitraum"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Time range"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Période"
+        }
+      ]
+    },
+    {
+      "tuid": "RESET_SESSION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Sitzung zurücksetzen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Reset session"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Réinitialiser la session"
+        }
+      ]
+    },
+    {
+      "tuid": "RESET_SESSION_ON_MAP_CHANGE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Sitzung bei Map-Wechsel zurücksetzen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Reset session on map change"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Réinitialiser la session lors d'un changement de map"
+        }
+      ]
+    },
+    {
+      "tuid": "SESSION_TIME",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Sitzungszeit"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Session time"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Durée de la Session"
+        }
+      ]
+    },
+    {
+      "tuid": "VS_PREVIOUS_HOUR",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "gegenüber der vorherigen Stunde"
+        },
+        {
+          "lang": "en-US",
+          "seg": "vs previous hour"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "par rapport à l'heure précédente"
+        }
+      ]
+    },
+    {
+      "tuid": "VS_PREVIOUS_DAY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "gegenüber dem Vortag"
+        },
+        {
+          "lang": "en-US",
+          "seg": "vs previous day"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "par rapport au jour précédent"
+        }
+      ]
+    },
+    {
+      "tuid": "VS_PREVIOUS_MINUTES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "gegenüber den vorherigen Minuten"
+        },
+        {
+          "lang": "en-US",
+          "seg": "vs previous minutes"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "par rapport aux minutes précédentes"
+        }
+      ]
+    },
+    {
+      "tuid": "VS_PREVIOUS_HOURS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "gegenüber den vorherigen Stunden"
+        },
+        {
+          "lang": "en-US",
+          "seg": "vs previous hours"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "par rapport aux heures précédentes"
+        }
+      ]
+    },
+    {
+      "tuid": "VS_PREVIOUS_DAYS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "gegenüber den vorherigen Tagen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "vs previous days"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "par rapport aux jours précédents"
+        }
+      ]
+    },
+    {
+      "tuid": "COMBAT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Kampf"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Combat"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Combat"
+        }
+      ]
+    },
+    {
+      "tuid": "ECONOMY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Wirtschaft"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Economy"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Economie"
+        }
+      ]
+    },
+    {
+      "tuid": "DELETE_SESSION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Session l\u00f6schen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Delete Session"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Supprimer la Session"
+        }
+      ]
+    },
+    {
+      "tuid": "DELETE_SESSION_CONFIRMATION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Soll die Session \"{0}\" dauerhaft gel\u00f6scht werden?"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Do you want to permanently delete the session \"{0}\"?"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Souhaitez-vous supprimer définitivement la session \"{0}\"?"
+        }
+      ]
+    },
+    {
+      "tuid": "DELETE_SESSION_FAILED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Die Session konnte nicht gel\u00f6scht werden."
+        },
+        {
+          "lang": "en-US",
+          "seg": "The session could not be deleted."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Cette session ne peut pas $etre supprimée."
+        }
+      ]
+    },
+    {
+      "tuid": "TOP_FAME_SOURCES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Top-Ruhmquellen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top Fame Sources"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Principales sources de Fame"
+        }
+      ]
+    },
+    {
+      "tuid": "TOP_SILVER_SOURCES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Top-Silberquellen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top Silver Sources"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Principales sources de Silver"
+        }
+      ]
+    },
+    {
+      "tuid": "SILVER_SPENT_ON_RESPEC",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Für Respec ausgegebenes Silber"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Silver spent on Respec"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Silver dépensés en Respec"
+        }
+      ]
+    },
+    {
+      "tuid": "AVERAGE_RESPEC_SILVER_COST_PER_SESSION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Durchschnittliche Respec-Silberkosten pro Session"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Average Respec silver cost per session"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Coût moyen en Silver d'une session de Respec"
+        }
+      ]
+    },
+    {
+      "tuid": "SPENT_RESPEC",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Ausgegebene Respec-Punkte"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Respec points spent"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Points de Respec dépensés"
+        }
+      ]
+    },
+    {
+      "tuid": "AVERAGE_REPAIR_COST_PER_SESSION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Durchschnittliche Reparaturkosten pro Session"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Average repair cost per session"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Coût moyen des réparations par session"
+        }
+      ]
+    },
+    {
+      "tuid": "HIGHEST_REPAIR_COST",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "H?chste Reparaturkosten"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Highest repair cost"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Coût de réparation le plus élevé"
+        }
+      ]
+    },
+    {
+      "tuid": "RECENT_LOOT_ITEMS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Zuletzt gelootete Items"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Recently looted items"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Objets récemment pillés"
+        }
+      ]
+    },
+    {
+      "tuid": "AVERAGE_LOOT_VALUE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Durchschnittlicher Lootwert"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Average loot value"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Valeur moyenne du butin"
+        }
+      ]
+    },
+    {
+      "tuid": "TOP_LOOT_AREAS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Top-Maps und Loot-Bereiche nach Lootwert"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top maps and loot areas by loot value"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Meilleures cartes et zones de butin classées par valeur de butin"
+        }
+      ]
+    },
+    {
+      "tuid": "REFINE_ITEM_QUALITY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Qualität veredeln"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Refine quality"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Améliorer la qualité"
+        }
+      ]
+    },
+    {
+      "tuid": "SILVER_SPENT_ON_REFINING_ITEM_QUALITY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Für Qualitätsveredelung ausgegebenes Silber"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Silver spent on refining item quality"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Silver dépensés pour des finitions de qualité"
+        }
+      ]
+    },
+    {
+      "tuid": "ITEMS_UPGRADED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Aufgewertete Items"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Upgraded items"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Objets améliorés"
+        }
+      ]
+    },
+    {
+      "tuid": "AWAKEN_WEAPON",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Waffe erwecken"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Awaken weapon"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Arme éveillée"
+        }
+      ]
+    },
+    {
+      "tuid": "SILVER_SPENT_ON_AWAKENED_WEAPONS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Für erweckte Waffen ausgegebenes Silber"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Silver spent on awakened weapons"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Silver dépensés pour les Armes éveillées"
+        }
+      ]
+    },
+    {
+      "tuid": "TRAITS_UPGRADED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Eigenschaften aufgewertet"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Traits upgraded"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Caractéristiques améliorées"
+        }
+      ]
+    },
+    {
+      "tuid": "TRAIT_UPGRADE_PROCS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Aufwertungs-Procs"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Upgrade procs"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Effets de renforcement"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_VALUE_DISTRIBUTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Loot-Verteilung nach Itemwert"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loot distribution by item value"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Répartition du butin en fonction de la valeur des objets"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_BY_TIER_AND_ENCHANTMENT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Loot nach Tier und Verzauberung"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loot by tier and enchantment"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Butin par niveau et enchantement"
+        }
+      ]
+    },
+    {
+      "tuid": "VALUE_CLASS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Wertklasse (Silber)"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Value class (silver)"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Catégorie de valeur (Silver)"
+        }
+      ]
+    },
+    {
+      "tuid": "ITEMS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Items"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Items"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Objets"
+        }
+      ]
+    },
+    {
+      "tuid": "SHARE_OF_TOTAL_VALUE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Anteil am Gesamtwert"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Share of total value"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Part de la valeur totale"
+        }
+      ]
+    },
+    {
+      "tuid": "TIER_DISTRIBUTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Tier Verteilung"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Tier distribution"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Répartition par niveaux"
+        }
+      ]
+    },
+    {
+      "tuid": "ENCHANTMENT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Verzauberung"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Enchantment"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Enchantement"
+        }
+      ]
+    },
+    {
+      "tuid": "MAP_AREA",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Map/Gebiet"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Map/area"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Carte/Région"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_VALUE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Lootwert"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loot value"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Valeur du butin"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_PER_HOUR_SHORT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Loot/h"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loot/h"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Butin/h"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_PER_MAP",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Loot/Map"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loot/map"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Butin/map"
+        }
+      ]
+    },
+    {
+      "tuid": "VISITS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Besuche"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Visits"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Visites"
+        }
+      ]
+    },
+    {
+      "tuid": "SHARE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Anteil"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Share"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Partager"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_VALUE_UNDER_10000",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Unter {0:N0}"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Under {0:N0}"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "En dessous de {0:N0}"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_VALUE_10000_TO_100000",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "{0:N0} - {1:N0}"
+        },
+        {
+          "lang": "en-US",
+          "seg": "{0:N0} - {1:N0}"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "{0:N0} - {1:N0}"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_VALUE_100000_TO_500000",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "{0:N0} - {1:N0}"
+        },
+        {
+          "lang": "en-US",
+          "seg": "{0:N0} - {1:N0}"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "{0:N0} - {1:N0}"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_VALUE_OVER_500000",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Über {0:N0}"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Over {0:N0}"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Plus de {0:N0}"
+        }
+      ]
+    },
+    {
+      "tuid": "IMPORTANT_LOOT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Wichtiger Loot"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Important Loot"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Butin important"
+        }
+      ]
+    },
+    {
+      "tuid": "ITEM_MONITORING",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Monitoring"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Monitoring"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Suivi"
+        }
+      ]
+    },
+    {
+      "tuid": "ITEM_MONITORING_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "\u00dcberwache dieses Item und erhalte eine einmalige Benachrichtigung, sobald eine Bedingung erf\u00fcllt ist."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Monitor this item and receive a one-time notification when a condition is met."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Suivez cet article et recevez une notification unique lorsqu'une condition sera remplie."
+        }
+      ]
+    },
+    {
+      "tuid": "PRICE_MONITORING",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Preis\u00fcberwachung"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Price monitoring"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Suivi des prix"
+        }
+      ]
+    },
+    {
+      "tuid": "PRICE_MONITORING_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Benachrichtigt dich, wenn ein aktuelles Verkaufsangebot den eingetragenen Preis erreicht oder unterschreitet."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Notifies you when a current sell offer reaches or falls below the configured price."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Vous avertit lorsqu'une offre de vente en cours atteint ou passe en dessous du prix défini."
+        }
+      ]
+    },
+    {
+      "tuid": "PRICE_LIMIT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Preisgrenze"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Price limit"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Plafond de prix"
+        }
+      ]
+    },
+    {
+      "tuid": "MARKET_AVAILABILITY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Marktverf\u00fcgbarkeit"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Market availability"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Disponibilité sur le marché"
+        }
+      ]
+    },
+    {
+      "tuid": "MARKET_AVAILABILITY_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Benachrichtigt dich, sobald ein aktuelles Verkaufsangebot f\u00fcr dieses Item gemeldet wird."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Notifies you as soon as a current sell offer for this item is reported."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Vous avertit dès qu'une offre de vente en cours concernant cet article est signalée."
+        }
+      ]
+    },
+    {
+      "tuid": "PLAY_ALERT_SOUND",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Alarmton abspielen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Play alert sound"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Lire le son d'alerte"
+        }
+      ]
+    },
+    {
+      "tuid": "ENTER_VALID_PRICE_LIMIT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gib eine g\u00fcltige Preisgrenze gr\u00f6\u00dfer als 0 ein."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Enter a valid price limit greater than 0."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Saisissez une limite de prix valide supérieure à 0."
+        }
+      ]
+    },
+    {
+      "tuid": "MAXIMUM_ACTIVE_ITEM_ALERTS_REACHED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Es k\u00f6nnen h\u00f6chstens 10 Items gleichzeitig \u00fcberwacht werden."
+        },
+        {
+          "lang": "en-US",
+          "seg": "A maximum of 10 items can be monitored at the same time."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Il est possible de surveiller jusqu'à 10 éléments simultanément."
+        }
+      ]
+    },
+    {
+      "tuid": "ITEM_ALERT_COULD_NOT_BE_ACTIVATED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Die \u00dcberwachung f\u00fcr dieses Item konnte nicht aktiviert werden."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Monitoring could not be activated for this item."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "La surveillance n'a pas pu être activée pour cet élément."
+        }
+      ]
+    },
+    {
+      "tuid": "ITEM_MARKET_OFFER_FOUND",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Marktangebot gefunden"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Market offer found"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Offre trouvée sur le marché"
+        }
+      ]
+    },
+    {
+      "tuid": "A_MARKET_OFFER_FOR",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Ein Marktangebot f\u00fcr"
+        },
+        {
+          "lang": "en-US",
+          "seg": "A market offer for"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Une offre du marché pour"
+        }
+      ]
+    },
+    {
+      "tuid": "WAS_FOUND",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "wurde gefunden."
+        },
+        {
+          "lang": "en-US",
+          "seg": "was found."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "a été retrouvé."
+        }
+      ]
+    },
+    {
+      "tuid": "MAXIMUM_PRICE_AGE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Maximales Preisalter"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Maximum price age"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Âge maximal pour le prix"
+        }
+      ]
+    },
+    {
+      "tuid": "MAXIMUM_PRICE_AGE_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Nur Preise, deren letzte Meldung h\u00f6chstens so viele Minuten zur\u00fcckliegt, k\u00f6nnen einen Alarm ausl\u00f6sen."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Only prices reported within this many minutes can trigger an alert."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Seuls les prix dont la dernière mise à jour remonte à un nombre de minutes au plus égal à cette valeur peuvent déclencher une alerte."
+        }
+      ]
+    },
+    {
+      "tuid": "ENTER_VALID_MAXIMUM_PRICE_AGE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gib ein maximales Preisalter von mindestens einer Minute ein."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Enter a maximum price age of at least one minute."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Indiquez une durée maximale de validité du prix d'au moins une minute."
+        }
+      ]
+    },
+    {
+      "tuid": "BLACK_MARKET_BUY_ORDER_MONITORING",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Black-Market-Kauforder \u00fcberwachen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Monitor Black Market buy order"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Surveiller les ordres d'achat sur le marché noir"
+        }
+      ]
+    },
+    {
+      "tuid": "BLACK_MARKET_BUY_ORDER_MONITORING_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Benachrichtigt dich, sobald die h\u00f6chste gemeldete Kauforder im Black Market den angegebenen Mindestpreis erreicht oder \u00fcberschreitet."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Notifies you when the highest reported Black Market buy order reaches or exceeds the specified minimum price."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Vous avertit lorsque l'ordre d'achat le plus élevé signalé sur le marché noir atteint ou dépasse le prix minimum spécifié."
+        }
+      ]
+    },
+    {
+      "tuid": "MINIMUM_BUY_ORDER_PRICE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Mindestpreis der Kauforder"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Minimum buy order price"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Prix minimum de l'ordre d'achat"
+        }
+      ]
+    },
+    {
+      "tuid": "ITEM_NOT_BLACK_MARKET_ELIGIBLE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Dieses Item kann nicht im Black Market verkauft werden."
+        },
+        {
+          "lang": "en-US",
+          "seg": "This item cannot be sold on the Black Market."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Cet objet ne peut pas être vendu au marché noir."
+        }
+      ]
+    },
+    {
+      "tuid": "BLACK_MARKET_BUY_ORDER_ALERT_TITLE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Black-Market-Kauforder erreicht"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Black Market buy order reached"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Ordre d'achat sur le marché noir reçu"
+        }
+      ]
+    },
+    {
+      "tuid": "HIGHEST_BLACK_MARKET_BUY_ORDER_FOR",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Die h\u00f6chste Black-Market-Kauforder f\u00fcr"
+        },
+        {
+          "lang": "en-US",
+          "seg": "The highest Black Market buy order for"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "L'ordre d'achat le plus élevé sur le marché noir pour"
+        }
+      ]
+    },
+    {
+      "tuid": "REACHED_MINIMUM_PRICE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "hat deinen Mindestpreis erreicht."
+        },
+        {
+          "lang": "en-US",
+          "seg": "has reached your minimum price."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "a atteint ton prix minimum."
+        }
+      ]
+    },
+    {
+      "tuid": "SEARCH",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Suche"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Search"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Rechercher"
+        }
+      ]
+    },
+    {
+      "tuid": "LOCATIONS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Standorte"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Locations"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Lieux"
+        }
+      ]
+    },
+    {
+      "tuid": "TRADING_ACTIVITY_BY_LOCATION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Handelsaktivit\u00e4t nach Standort"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Trading Activity by Location"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Activité commerciale par lieu"
+        }
+      ]
+    },
+    {
+      "tuid": "SALES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Verk\u00e4ufe"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Sales"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Ventes"
+        }
+      ]
+    },
+    {
+      "tuid": "PURCHASES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "K\u00e4ufe"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Purchases"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Achats"
+        }
+      ]
+    },
+    {
+      "tuid": "COUNT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Anzahl"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Count"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Nombre"
+        }
+      ]
+    },
+    {
+      "tuid": "MARGIN",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Marge"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Margin"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Marge"
+        }
+      ]
+    },
+    {
+      "tuid": "TAX_PAID",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gezahlte Steuern"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Tax paid"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Taxes payées"
+        }
+      ]
+    },
+    {
+      "tuid": "MOST_TRADED_CATEGORY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Meistgehandelte Kategorie"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Most traded category"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Catégorie la plus vendue"
+        }
+      ]
+    },
+    {
+      "tuid": "RESET_FILTERS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Filter zur\u00fccksetzen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Reset filters"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Réinitialiser les filtres"
+        }
+      ]
+    },
+    {
+      "tuid": "TOTAL_SALES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gesamtverk\u00e4ufe"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total sales"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Ventes totales"
+        }
+      ]
+    },
+    {
+      "tuid": "TOTAL_PURCHASES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gesamteink\u00e4ufe"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total purchases"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Achats totaux"
+        }
+      ]
+    },
+    {
+      "tuid": "TRADE_VOLUME",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Handelsvolumen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Trade volume"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Volume des échanges"
+        }
+      ]
+    },
+    {
+      "tuid": "TRADE_STATISTICS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Handelsstatistiken"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Trade statistics"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Statistiques commerciales"
+        }
+      ]
+    },
+    {
+      "tuid": "VS_PREVIOUS_PERIOD",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Im Vergleich zum vorherigen Zeitraum"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Compared with the previous period"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Par rapport à la période précédente"
+        }
+      ]
+    },
+    {
+      "tuid": "OVERVIEW",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Übersicht"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Overview"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Aperçu"
+        }
+      ]
+    },
+    {
+      "tuid": "BEST_RESOURCE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Beste Ressource"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Best resource"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Meilleure ressourcese"
+        }
+      ]
+    },
+    {
+      "tuid": "TOP_MAP",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Top-Map"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top map"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Meilleure carte"
+        }
+      ]
+    },
+    {
+      "tuid": "UNIQUE_RESOURCE_TYPES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Einzigartige Ressourcentypen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Unique resource types"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Types de ressources uniques"
+        }
+      ]
+    },
+    {
+      "tuid": "BEST_GATHERING_MAP",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Beste Sammel-Map"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Best gathering map"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Meilleure carte de récolte"
+        }
+      ]
+    },
+    {
+      "tuid": "TOTAL_RESOURCES_GATHERED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Insgesamt gesammelte Ressourcen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total resources gathered"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Ressources totales récoltées"
+        }
+      ]
+    },
+    {
+      "tuid": "TOTAL_GATHERING_PROCESSES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gesamte Sammelvorgänge"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total gathering processes"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Total des récoltes"
+        }
+      ]
+    },
+    {
+      "tuid": "AVERAGE_RESOURCE_VALUE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Durchschnittlicher Ressourcenwert"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Average resource value"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Valeur moyenne des ressources"
+        }
+      ]
+    },
+    {
+      "tuid": "BEST_SINGLE_GATHERING",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Wertvollster einzelner Sammelvorgang"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Best single gathering"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Meilleure récolte individuelle"
+        }
+      ]
+    },
+    {
+      "tuid": "TIMES_GATHERED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Sammelvorgänge"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Times gathered"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Temps total de récolte"
+        }
+      ]
+    },
+    {
+      "tuid": "TOTAL_AMOUNT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gesamtmenge"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total amount"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Quantité totale"
+        }
+      ]
+    },
+    {
+      "tuid": "TOTAL_VALUE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gesamtwert"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total value"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Valeur totale"
+        }
+      ]
+    },
+    {
+      "tuid": "AVERAGE_VALUE_PER_GATHER",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Durchschnittswert pro Sammelvorgang"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Average value per gather"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Valeur moyenne par récolte"
+        }
+      ]
+    },
+    {
+      "tuid": "GATHERING_TIME",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Sammelzeit"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Gathering time"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Temps de collecte"
+        }
+      ]
+    },
+    {
+      "tuid": "RESOURCE_VALUE_BY_TYPE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Ressourcenwert nach Typ"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Resource value by type"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Valeur des ressources par type"
+        }
+      ]
+    },
+    {
+      "tuid": "GATHERING_ACTIVITY_OVER_TIME",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Sammelaktivität im Zeitverlauf"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Gathering activity over time"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Évolution de l'activité de récolte au fil du temps"
+        }
+      ]
+    },
+    {
+      "tuid": "GATHERING_ACTIVITY_BY_LOCATION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Sammelaktivität nach Ort"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Gathering activity by location"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Activité de récolte par lieu"
+        }
+      ]
+    },
+    {
+      "tuid": "RESOURCE_TYPES_GATHERED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gesammelte Ressourcentypen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Resource types gathered"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Types de ressources récoltées"
+        }
+      ]
+    },
+    {
+      "tuid": "TOP_GATHERED_RESOURCES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Meistgesammelte Ressourcen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top gathered resources"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Ressources les plus récoltées"
+        }
+      ]
+    },
+    {
+      "tuid": "RECENT_GATHERINGS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Letzte Sammelvorgänge"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Recent gatherings"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Récoltes récentes"
+        }
+      ]
+    },
+    {
+      "tuid": "RESOURCE_TYPE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Ressourcentyp"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Resource type"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Type de la ressource"
+        }
+      ]
+    },
+    {
+      "tuid": "AMOUNT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Menge"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Amount"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Montant"
+        }
+      ]
+    },
+    {
+      "tuid": "PERCENT_OF_TOTAL",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Anteil am Gesamtwert"
+        },
+        {
+          "lang": "en-US",
+          "seg": "% of total"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "% du total"
+        }
+      ]
+    },
+    {
+      "tuid": "MAP",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Map"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Map"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Carte"
+        }
+      ]
+    },
+    {
+      "tuid": "NO_DATA",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Keine Daten"
+        },
+        {
+          "lang": "en-US",
+          "seg": "No data"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Pas de données"
+        }
+      ]
+    },
+    {
+      "tuid": "OTHER_MAPS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Andere Maps"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Other maps"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Autres cartes"
+        }
+      ]
+    },
+    {
+      "tuid": "RUN_EFFICIENCY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Run-Effizienz"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Run efficiency"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Efficacité de run"
+        }
+      ]
+    },
+    {
+      "tuid": "TOTAL_RUNS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Runs gesamt"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total runs"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Nombre total de Run"
+        }
+      ]
+    },
+    {
+      "tuid": "TOTAL_MIGHT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Macht gesamt"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total Might"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Puissance totale"
+        }
+      ]
+    },
+    {
+      "tuid": "TOTAL_FAVOR",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gunst gesamt"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total Favor"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Faveur totale"
+        }
+      ]
+    },
+    {
+      "tuid": "DUNGEON_DEATHS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Tode in Dungeons"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Deaths in dungeons"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Morts en donjons"
+        }
+      ]
+    },
+    {
+      "tuid": "AVERAGE_RUN_TIME",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Durchschnittliche Run-Zeit"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Average run time"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Durée moyenne de Run"
+        }
+      ]
+    },
+    {
+      "tuid": "MOST_PROFITABLE_TIER",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Profitabelstes Tier"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Most profitable tier"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Tiers le plus rentable"
+        }
+      ]
+    },
+    {
+      "tuid": "MOST_PLAYED_TIER",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Meistgespieltes Tier"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Most played tier"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Tiers le plus joué"
+        }
+      ]
+    },
+    {
+      "tuid": "BEST_DUNGEON_MAP",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Beste Dungeon-Map"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Best dungeon map"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Meilleure carte de donjon"
+        }
+      ]
+    },
+    {
+      "tuid": "FASTEST_RUN",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Schnellster Run"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Fastest run"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Run le plus rapide"
+        }
+      ]
+    },
+    {
+      "tuid": "AVERAGE_CHESTS_PER_RUN",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Durchschn. Truhen / Run"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Average chests / Run"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Moyenne de coffre / Run"
+        }
+      ]
+    },
+    {
+      "tuid": "AVERAGE_LOOT_PER_RUN",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Durchschn. Loot / Run"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Average loot / run"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Moyenne de butins / Run"
+        }
+      ]
+    },
+    {
+      "tuid": "AVERAGE_FAME_PER_RUN",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Durchschn. Ruhm / Run"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Average Fame / run"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Moyenne de Fame / Run"
+        }
+      ]
+    },
+    {
+      "tuid": "AVERAGE_DURATION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Durchschn. Dauer"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Average duration"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Durée moyenne"
+        }
+      ]
+    },
+    {
+      "tuid": "PARTY_SIZE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gruppengröße"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Party size"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Taille de la partie"
+        }
+      ]
+    },
+    {
+      "tuid": "CONTENT_RUNS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Content-Runs"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Content runs"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Résumé des Runs"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_ENTRIES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "{0} Loot-Einträge"
+        },
+        {
+          "lang": "en-US",
+          "seg": "{0} loot entries"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "{0} objets de butin"
+        }
+      ]
+    },
+    {
+      "tuid": "SHOW_COLLECTED_LOOT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Eingesammelten Loot anzeigen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Show collected loot"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Afficher le butin ramasé"
+        }
+      ]
+    },
+    {
+      "tuid": "HIDE_COLLECTED_LOOT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Eingesammelten Loot ausblenden"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Hide collected loot"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Cacher le butin ramassé"
+        }
+      ]
+    },
+    {
+      "tuid": "AVALON",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Avalon"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Avalon"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Avalon"
+        }
+      ]
+    },
+    {
+      "tuid": "UNKNOWN_CHEST",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Unbekannte Truhe"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Unknown chest"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Coffre inconnu"
+        }
+      ]
+    },
+    {
+      "tuid": "DUNGEON_OVERVIEW",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Dungeon-Übersicht"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Dungeon Overview"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Aperçu des donjons"
+        }
+      ]
+    },
+    {
+      "tuid": "DUNGEON_PLAYER_LOOT_VISIBLE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Spieler-Loot berücksichtigen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Include player loot"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Prendre en compte le butin des joueurs"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_SOURCE_CHEST",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Truhe"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Chest"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Coffre"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_SOURCE_MOB",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Mob"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Mob"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Monstre"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_SOURCE_PLAYER",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Spieler"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Player"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Joueur"
+        }
+      ]
+    },
+    {
+      "tuid": "LOOT_SOURCE_UNKNOWN",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Unbekannte Quelle"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Unknown source"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Source inconnue"
+        }
+      ]
+    },
+    {
+      "tuid": "SETTINGS_AND_RESET",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Einstellungen und Zurücksetzen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Settings and Reset"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Paramètres et Réinitialisation"
+        }
+      ]
+    },
+    {
+      "tuid": "OTHER_LOOT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Weitere Beute"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Other loot"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Autre butin"
+        }
+      ]
+    },
+    {
+      "tuid": "MORE_CHESTS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "+{0} weitere Truhen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "+{0} more chests"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "+{0} autres coffres"
+        }
+      ]
+    },
+    {
+      "tuid": "SHOW_FEWER_CHESTS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Weniger anzeigen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Show fewer"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Afficher moins"
+        }
+      ]
+    },
+    {
+      "tuid": "BRECILIAN_STANDING",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Brecilien-Ansehen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Brecilian standing"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Brecilien - Vue d'ensemble"
+        }
+      ]
+    },
+    {
+      "tuid": "PLAYERS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Spieler"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Players"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Joueurs"
+        }
+      ]
+    },
+    {
+      "tuid": "NORMAL_CHEST",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Normale Truhe"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Normal chest"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Coffre normal"
+        }
+      ]
+    },
+    {
+      "tuid": "MORE_ITEMS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "+{0} weitere Items"
+        },
+        {
+          "lang": "en-US",
+          "seg": "+{0} more items"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "+{0} autres objets"
+        }
+      ]
+    },
+    {
+      "tuid": "SHOW_FEWER_ITEMS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Weniger Items anzeigen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Show fewer items"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Monter moins d'objets"
+        }
+      ]
+    },
+    {
+      "tuid": "MORE_COMBAT_EVENTS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "+{0} weitere Tötungen/Tode"
+        },
+        {
+          "lang": "en-US",
+          "seg": "+{0} more kills/deaths"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "+{0} autres de victimes/morts"
+        }
+      ]
+    },
+    {
+      "tuid": "SHOW_FEWER_COMBAT_EVENTS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Weniger Tötungen/Tode anzeigen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Show fewer kills/deaths"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Afficher moins de victimes/morts"
+        }
+      ]
+    },
+    {
+      "tuid": "TOTAL_DAMAGE_TOP_5",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Gesamtschaden – TOP 5"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total Damage – TOP 5"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Dommages totaux – TOP 5"
+        }
+      ]
+    },
+    {
+      "tuid": "EFFECTIVE_HEALING_TOP_5",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Effektive Heilung – TOP 5"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Effective Healing – TOP 5"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Efficacité des Soins – TOP 5"
+        }
+      ]
+    },
+    {
+      "tuid": "TOP_MOB_KILL_CONTRIBUTION_TOP_5",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Beitrag zu Mob-Tötungen – TOP 5"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top Mob Kill Contribution – TOP 5"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Meilleures contibutions aux éliminations des monstres – TOP 5"
+        }
+      ]
+    },
+    {
+      "tuid": "TOP_HEALER",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Top-Heiler"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top Healer"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Top Healer"
+        }
+      ]
+    },
+    {
+      "tuid": "TOP_DAMAGE_TAKEN",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Höchster erlittener Schaden"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Top Damage Taken"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Top Dégâts encaissés"
+        }
+      ]
+    },
+    {
+      "tuid": "DAMAGE_BY_TYPE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Schaden nach Typ"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Damage by Type"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Dégâts par type"
+        }
+      ]
+    },
+    {
+      "tuid": "DAMAGE_BY_ABILITY_TOP_10",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Schaden nach Fähigkeit – Top 10"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Damage by Ability – Top 10"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Dégâts par capacités - Top 10"
+        }
+      ]
+    },
+    {
+      "tuid": "ABILITY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Fähigkeit"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Ability"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Capacités"
+        }
+      ]
+    },
+    {
+      "tuid": "PHYSICAL_DAMAGE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Physischer Schaden"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Physical Damage"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Dégâts physiques"
+        }
+      ]
+    },
+    {
+      "tuid": "MAGIC_DAMAGE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Magischer Schaden"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Magic Damage"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Dégâts magiques"
+        }
+      ]
+    },
+    {
+      "tuid": "TRUE_DAMAGE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Wahrer Schaden"
+        },
+        {
+          "lang": "en-US",
+          "seg": "True Damage"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Dégâts réels"
+        }
+      ]
+    },
+    {
+      "tuid": "TOTAL_TRACKED_FIGHTS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Erfasste Kämpfe insgesamt"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Total Tracked Fights"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Nombre total de combats recensés"
+        }
+      ]
+    },
+    {
+      "tuid": "LOSS_EXPLORER",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Verlust-Explorer"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loss Explorer"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Explorateur de pertes"
+        }
+      ]
+    },
+    {
+      "tuid": "EQUIPMENT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Ausrüstung"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Equipment"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Equipment"
+        }
+      ]
+    },
+    {
+      "tuid": "INVENTORY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Inventar"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Inventory"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Inventaire"
+        }
+      ]
+    },
+    {
+      "tuid": "LOSS_EXPLORER_LOADING_EVENTS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Todesfälle werden geladen – Seite {0}"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loading deaths – page {0}"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Chargement des morts – page {0}"
+        }
+      ]
+    },
+    {
+      "tuid": "LOSS_EXPLORER_LOADING_PRICES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Marktwerte werden geladen – Paket {0} von {1}"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loading market values – batch {0} of {1}"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Chargement des valeurs de marché – batch {0} of {1}"
+        }
+      ]
+    },
+    {
+      "tuid": "LOSS_EXPLORER_READY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "{0:N0} von 7 Tagen gespeichert · Tagesdurchschnitt · aktualisiert {1:g}"
+        },
+        {
+          "lang": "en-US",
+          "seg": "{0:N0} of 7 days stored · daily average · updated {1:g}"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "{0:N0} sur 7 jours · moyenne quotidienne · mise à jour {1:g}"
+        }
+      ]
+    },
+    {
+      "tuid": "LOSS_EXPLORER_LOAD_HINT",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Verlustdaten werden alle 10 Minuten aktualisiert und bis zu 7 Tage gespeichert."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loss data is updated every 10 minutes and stored for up to 7 days."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Les données relatives aux pertes sont mises à jour toutes les 10 minutes et conservées pendant 7 jours maximum."
+        }
+      ]
+    },
+    {
+      "tuid": "LOSS_EXPLORER_LOAD_ERROR",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Die Verlustdaten konnten nicht vollständig geladen werden. Der nächste automatische Abgleich versucht es erneut."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Loss data could not be loaded completely. The next automatic refresh will retry."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Les données relatives aux pertes n'ont pas pu être chargées dans leur intégralité. La prochaine synchronisation automatique effectuera une nouvelle tentative."
+        }
+      ]
+    },
+    {
+      "tuid": "LOSS_EXPLORER_SERVER_UNAVAILABLE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Für den Loss Explorer muss ein Albion-Server aktiv sein."
+        },
+        {
+          "lang": "en-US",
+          "seg": "An Albion server must be active to use the Loss Explorer."
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Pour utiliser l'Explorateur de pertes, un serveur Albion doit être actif."
+        }
+      ]
+    },
+    {
+      "tuid": "LOSS_EXPLORER_STORED_EVENTS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "{0:N0} Events gespeichert"
+        },
+        {
+          "lang": "en-US",
+          "seg": "{0:N0} events stored"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "{0:N0} événements enregistrés"
+        }
+      ]
+    },
+    {
+      "tuid": "LOSS_EXPLORER_VALUE_PER_DAY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "{0:N0} / Tag"
+        },
+        {
+          "lang": "en-US",
+          "seg": "{0:N0} / day"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "{0:N0} / jour"
+        }
+      ]
+    },
+    {
+      "tuid": "LOSS_EXPLORER_UNIT_VALUE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "({0:N0} je Item)"
+        },
+        {
+          "lang": "en-US",
+          "seg": "({0:N0} per item)"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "{0:N0} par objet"
+        }
+      ]
+    },
+    {
+      "tuid": "LOSS_EXPLORER_AMOUNT_PER_DAY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "{0:N0} verlorene Items / Tag"
+        },
+        {
+          "lang": "en-US",
+          "seg": "{0:N0} lost items / day"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "{0:N0} objets perdus / jour"
+        }
+      ]
+    },
+    {
+      "tuid": "SERVER_TYPE",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Servertyp"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Server Type"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Type de serveur"
         }
       ]
     }

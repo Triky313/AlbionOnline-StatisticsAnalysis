@@ -1,12 +1,14 @@
 ﻿using StatisticsAnalysisTool.Network.Operations.Request;
+using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler;
 
-public class ChangeClusterRequestHandler() : RequestPacketHandler<ChangeClusterRequest>((int) OperationCodes.ChangeCluster)
+public class ChangeClusterRequestHandler(TrackingController trackingController) : RequestPacketHandler<ChangeClusterRequest>((int) OperationCodes.ChangeCluster)
 {
     protected override Task OnActionAsync(ChangeClusterRequest value)
     {
+        trackingController.DungeonController.SelectRandomDungeonExit(value.TargetObjectId);
         return Task.CompletedTask;
     }
 }

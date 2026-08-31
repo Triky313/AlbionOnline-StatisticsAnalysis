@@ -52,4 +52,9 @@ public class PlayerModeTranslation
     public static string Pve => LocalizationController.Translation("PVE");
     public static string SearchedPlayer => LocalizationController.Translation("SEARCHED_PLAYER");
     public static string LocalPlayer => LocalizationController.Translation("LOCAL_PLAYER");
+    public static string Search => LocalizationController.Translation("SEARCH");
+    public static string Cancel => LocalizationController.Translation("CANCEL");
+    public static string Server => LocalizationController.Translation("SERVER");
+    public static string LastUpdate => LocalizationController.Translation("LAST_UPDATE");
+    public static string DataFromAlbionOnlineServers => LocalizationController.Translation("DATA_FROM_ALBION_ONLINE_SERVERS");
 }

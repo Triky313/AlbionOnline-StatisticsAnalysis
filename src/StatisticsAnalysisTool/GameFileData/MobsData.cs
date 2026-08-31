@@ -20,7 +20,12 @@ public static class MobsData
     private const double LevelTwoUpperHpPercent = 125;
     private const double LevelThreeUpperHpPercent = 146;
     private const double LevelFourUpperHpPercent = 220;
-    private static IEnumerable<MobJsonObject> _mobs;
+    private const double RandomDungeonLevelZeroUpperHpFactor = 1.08;
+    private const double RandomDungeonLevelOneUpperHpFactor = 1.26;
+    private const double RandomDungeonLevelTwoUpperHpFactor = 1.47;
+    private const double RandomDungeonLevelThreeUpperHpFactor = 1.71;
+    private const double RandomDungeonLevelFourUpperHpFactor = 2;
+    private static IReadOnlyList<MobJsonObject> _mobs;
     private static IReadOnlyDictionary<MobVisualIdentity, string> _nameLocatagByVisualIdentity = new Dictionary<MobVisualIdentity, string>();
 
     public static int GetMobTierByIndex(int index)
@@ -36,7 +41,7 @@ public static class MobsData
             return (int) Tier.Unknown;
         }
 
-        return mob.Tier - 1;
+        return mob.Tier;
     }
 
     public static int GetMobLevelByIndex(int index, double currentInGameMobHp)
@@ -86,6 +91,11 @@ public static class MobsData
         return mob?.Faction ?? string.Empty;
     }
 
+    public static IReadOnlyList<MobJsonObject> GetMobs()
+    {
+        return _mobs ?? [];
+    }
+
     public static IReadOnlyList<string> GetFactions()
     {
         return _mobs?
@@ -122,15 +132,27 @@ public static class MobsData
         return mob.UniqueName ?? string.Empty;
     }
 
-    public static int GetRandomDungeonMobLevelByIndex(int index, double inGameHitPointsMax)
+    public static int GetRandomDungeonMobLevelByIndex(int index, double inGameHitPointsMax, double zoneHitPointsFactor = 1)
     {
         var mob = GetMobJsonObjectByIndex(index);
-        if (!IsReliableRandomDungeonTierMob(mob))
+        if (!IsReliableRandomDungeonTierMob(mob)
+            || mob.HitPointsMax <= 0
+            || inGameHitPointsMax <= 0
+            || zoneHitPointsFactor <= 0)
         {
             return -1;
         }
 
-        return GetMobLevel(mob, inGameHitPointsMax);
+        var dungeonHitPointsFactor = inGameHitPointsMax / zoneHitPointsFactor / mob.HitPointsMax;
+        return dungeonHitPointsFactor switch
+        {
+            < RandomDungeonLevelZeroUpperHpFactor => 0,
+            < RandomDungeonLevelOneUpperHpFactor => 1,
+            < RandomDungeonLevelTwoUpperHpFactor => 2,
+            < RandomDungeonLevelThreeUpperHpFactor => 3,
+            <= RandomDungeonLevelFourUpperHpFactor => 4,
+            _ => -1
+        };
     }
 
     private static int GetMobLevel(MobJsonObject mob, double inGameHitPointsMax)

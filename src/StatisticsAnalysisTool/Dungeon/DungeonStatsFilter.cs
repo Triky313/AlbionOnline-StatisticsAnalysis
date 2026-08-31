@@ -1,8 +1,12 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Dungeon.Models;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Dungeon;
 
@@ -76,9 +80,15 @@ public sealed class DungeonStatsFilter : BaseViewModel
     public DungeonStatsFilter(DungeonBindings dungeonBindings)
     {
         _dungeonBindings = dungeonBindings;
+        TierFilterOptions = BuildTierFilterOptions();
+        EnchantmentFilterOptions = BuildEnchantmentFilterOptions();
     }
 
     #region Dungeon
+
+    public ObservableCollection<DungeonNumericFilterOption> TierFilterOptions { get; }
+
+    public ObservableCollection<DungeonNumericFilterOption> EnchantmentFilterOptions { get; }
 
     public bool? SoloCheckbox
     {
@@ -473,6 +483,108 @@ public sealed class DungeonStatsFilter : BaseViewModel
     }
 
     #endregion
+
+    public async Task UpdateTierFilterSelectionAsync(DungeonNumericFilterOption selectedOption, bool isSelected)
+    {
+        UpdateFilterSelection(TierFilterOptions, selectedOption, isSelected);
+        TierFilters = TierFilterOptions.First(x => x.IsAllOption).IsSelected
+            ? [Tier.Unknown, Tier.T1, Tier.T2, Tier.T3, Tier.T4, Tier.T5, Tier.T6, Tier.T7, Tier.T8]
+            : TierFilterOptions
+                .Where(x => !x.IsAllOption && x.IsSelected)
+                .Select(x => (Tier) x.Value)
+                .ToList();
+
+        await _dungeonBindings.UpdateFilteredDungeonsAsync();
+    }
+
+    public async Task UpdateEnchantmentFilterSelectionAsync(DungeonNumericFilterOption selectedOption, bool isSelected)
+    {
+        UpdateFilterSelection(EnchantmentFilterOptions, selectedOption, isSelected);
+        LevelFilters = EnchantmentFilterOptions.First(x => x.IsAllOption).IsSelected
+            ? [ItemLevel.Unknown, ItemLevel.Level0, ItemLevel.Level1, ItemLevel.Level2, ItemLevel.Level3, ItemLevel.Level4]
+            : EnchantmentFilterOptions
+                .Where(x => !x.IsAllOption && x.IsSelected)
+                .Select(x => (ItemLevel) x.Value)
+                .ToList();
+
+        await _dungeonBindings.UpdateFilteredDungeonsAsync();
+    }
+
+    public void RefreshLocalization()
+    {
+        var allText = LocalizationController.Translation("ALL");
+        TierFilterOptions.First(x => x.IsAllOption).DisplayName = allText;
+        EnchantmentFilterOptions.First(x => x.IsAllOption).DisplayName = allText;
+    }
+
+    private static ObservableCollection<DungeonNumericFilterOption> BuildTierFilterOptions()
+    {
+        return
+        [
+            new((int) Tier.Unknown, LocalizationController.Translation("ALL"), true, true),
+            new((int) Tier.T1, "T1", false),
+            new((int) Tier.T2, "T2", false),
+            new((int) Tier.T3, "T3", false),
+            new((int) Tier.T4, "T4", false),
+            new((int) Tier.T5, "T5", false),
+            new((int) Tier.T6, "T6", false),
+            new((int) Tier.T7, "T7", false),
+            new((int) Tier.T8, "T8", false)
+        ];
+    }
+
+    private static ObservableCollection<DungeonNumericFilterOption> BuildEnchantmentFilterOptions()
+    {
+        return
+        [
+            new((int) ItemLevel.Unknown, LocalizationController.Translation("ALL"), true, true),
+            new((int) ItemLevel.Level0, "0", false),
+            new((int) ItemLevel.Level1, "1", false),
+            new((int) ItemLevel.Level2, "2", false),
+            new((int) ItemLevel.Level3, "3", false),
+            new((int) ItemLevel.Level4, "4", false)
+        ];
+    }
+
+    private static void UpdateFilterSelection(
+        IReadOnlyList<DungeonNumericFilterOption> options,
+        DungeonNumericFilterOption selectedOption,
+        bool isSelected)
+    {
+        if (!options.Contains(selectedOption))
+        {
+            return;
+        }
+
+        selectedOption.IsSelected = isSelected;
+        var allOption = options.First(x => x.IsAllOption);
+
+        if (selectedOption.IsAllOption)
+        {
+            if (isSelected)
+            {
+                foreach (var option in options.Where(x => !x.IsAllOption))
+                {
+                    option.IsSelected = false;
+                }
+            }
+            else if (!options.Any(x => !x.IsAllOption && x.IsSelected))
+            {
+                allOption.IsSelected = true;
+            }
+
+            return;
+        }
+
+        if (isSelected)
+        {
+            allOption.IsSelected = false;
+        }
+        else if (!options.Any(x => !x.IsAllOption && x.IsSelected))
+        {
+            allOption.IsSelected = true;
+        }
+    }
 
     public static string TranslationFilter => LocalizationController.Translation("FILTER");
     public static string TranslationSolo => LocalizationController.Translation("SOLO");

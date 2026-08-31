@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Albion Online Statistics Analysis</title>
     <style>
         body {
@@ -13,8 +15,18 @@
 
         .container {
             width: 70%;
+            max-width: 1400px;
             margin: auto;
             padding: 10px;
+        }
+
+        .feature-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            box-sizing: border-box;
+            margin: 10px 0px 30px 0px;
+            border: 1px solid #343A40;
         }
 
         .download-button {
@@ -64,6 +76,13 @@
             margin: 5px 0px 10px 0px;
             padding: 0px 0px 0px 0px;
         }
+
+        @media (max-width: 900px) {
+            .container {
+                width: auto;
+                padding: 10px 16px;
+            }
+        }
     </style>
 </head>
 
@@ -71,14 +90,14 @@
     <div class="container">
 
         <div style="display: flex; justify-content: left; align-items: center;">
-            <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/sat-icon.png" height="50" style="margin-right: 0px;" />
+            <img src="https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/docs/images/sat-icon.png" alt="Statistics Analysis Tool icon" width="50" height="50" style="margin-right: 0px;">
             <h1>Albion Online Statistics Analysis</h1>
         </div>
 
         <p>A tool for easily reading auction house data, with a loot logger, damage meter, dungeon tracker, dungeon entry timer, crafting calculator, map history, and player information.</p>
         <p>Designed and developed by Triky313.</p>
 
-        <a href="" class="download-button">Statistics Analysis Tool - Download</a>
+        <a href="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/latest" class="download-button">Statistics Analysis Tool - Download</a>
 
         <ul>
             <li>You need <b>Windows 10</b> or higher.</li>
@@ -96,64 +115,67 @@
         <p>Additional information about your current character is also displayed.</p>
         <p>Below that, your player character and, if available, your party members are listed. The small icon next to the player count can be clicked to copy a comma-separated list of all party members to your clipboard.</p>
         <p>On the right side, you can see how long tracking has been running.</p>
-        <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/header.png">
-        <br>
-        <br>
+        <img class="feature-image" src="https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/docs/images/header.png" alt="Application header showing the selected server, tracking status, character, party members, and tracking time">
+
+        <h2>Dashboard</h2>
+        <p>The Dashboard provides a compact overview of your selected time range, content type, and tracking sessions. Key figures such as Fame, Respec, Silver, Might, Favor, and session time are shown together with their hourly rates and changes.</p>
+        <p>Detailed sections highlight the main sources of Fame and Silver, recently looted items, valuable loot, faction progress, and opened chests.</p>
+        <img class="feature-image" src="https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/docs/images/dashboard_dashboard.png" alt="Dashboard overview with session filters, key figures, Fame and Silver sources, and loot statistics" loading="lazy">
+
+        <h3>Dashboard Combat Statistics</h3>
+        <p>The Combat view summarizes your kills, deaths, kill/death ratio, and the estimated value of loot taken from defeated players. It also shows the most important kill and death locations and a history of recent combat events.</p>
+        <img class="feature-image" src="https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/docs/images/dashboard_combat.png" alt="Dashboard combat statistics with kills, deaths, locations, and recent combat events" loading="lazy">
+
+        <h3>Dashboard Mob Statistics</h3>
+        <p>The Mobs view tracks defeated enemies and highlights your most frequently and most recently killed mobs. Search and filters for mob type and faction make it easy to inspect kill counts, first attacks, hourly rates, tiers, and special mob attributes.</p>
+        <img class="feature-image" src="https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/docs/images/dashboard_mobs.png" alt="Dashboard mob statistics with search filters and detailed kill information" loading="lazy">
+
         <h2>Item Search</h2>
         <p>The item search displays all items in the game. Double-click an item to open its window and view more information.</p>
-        <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/itemsearch.png">
-        <br>
-        <br>
+        <img class="feature-image" src="https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/docs/images/itemsearch.png" alt="Item search showing available Albion Online items and filters" loading="lazy">
+
         <h2>Logging</h2>
         <p>The Logging tab displays items collected by nearby players. Fame, Silver, and Faction Points can also be displayed here.</p>
-        <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/logging.png">
-        <br>
-        <br>
+        <img class="feature-image" src="https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/docs/images/logging.png" alt="Logging tab with collected items, Fame, Silver, and Faction Points" loading="lazy">
+
+        <h2>Loot Comparator</h2>
+        <p>The Loot Comparator combines chest and loot logs and presents the recorded items for each player together with their estimated value. Results can be filtered by status, tier, item type, and guild to focus the comparison on the relevant entries.</p>
+        <p>Comparator states can be saved and loaded again, making it easy to continue a comparison or review the loot distribution later.</p>
+        <img class="feature-image" src="https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/docs/images/loot_comparator.png" alt="Loot Comparator showing imported logs and loot grouped by player" loading="lazy">
+
         <h2>Dungeons</h2>
         <p>The Dungeons tab displays Solo Dungeons, Group Dungeons, Avalonian Dungeons, Mists, Mist Dungeons, Hellgates, Corrupted Dungeons, and HCEs with detailed information.</p>
-        <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/dungeons.png">
-        <br>
-        <br>
+        <img class="feature-image" src="https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/docs/images/dungeons.png" alt="Dungeon history with detailed information about tracked dungeon activities" loading="lazy">
+
         <h2>Damage Meter</h2>
         <p>The Damage Meter shows the damage and healing done by you and the players in your party. You can also create snapshots of your damage meter so you do not lose them.</p>
-        <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/damage_meter.png">
-        <br>
-        <br>
+        <img class="feature-image" src="https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/docs/images/damage_meter.png" alt="Damage Meter showing damage and healing for the current party" loading="lazy">
+
+        <h3>Damage Meter Top Statistics</h3>
+        <p>The Top Stats view ranks the most important combat results, including the biggest hit, burst damage over five and ten seconds, total damage, effective healing, overhealing, damage taken, and attacked targets.</p>
+        <p>Additional breakdowns show damage by type and ability, making it easier to understand which players and abilities contributed most during the tracked fights.</p>
+        <img class="feature-image" src="https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/docs/images/damage_meter_top_stats.png" alt="Damage Meter Top Stats with player rankings and damage breakdowns by type and ability" loading="lazy">
+
         <h2>Trade Monitoring</h2>
         <p>The Trade Monitoring tab shows sold and purchased items that you received by in-game mail or traded directly on the market. It also displays trade statistics. You can also create manual entries.</p>
-        <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/trade_monitoring.png">
-        <br>
-        <br>
+        <img class="feature-image" src="https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/docs/images/trade_monitoring.png" alt="Trade Monitoring with sold and purchased items and trade statistics" loading="lazy">
+
         <h2>Gathering</h2>
         <p>The Gathering tab shows information about your gathered resources. Fishing is also displayed.</p>
-        <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/gathering.png">
-        <br>
-        <br>
+        <img class="feature-image" src="https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/docs/images/gathering.png" alt="Gathering statistics for collected resources and fishing" loading="lazy">
+
         <h2>Party Builder</h2>
         <p>The Party Builder shows the item power of your character and your party members. Party member items can be updated when you retrieve the player's values.</p>
-        <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/party_builder.png">
-        <br>
-        <br>
+        <img class="feature-image" src="https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/docs/images/party_builder.png" alt="Party Builder showing party equipment and item power" loading="lazy">
+
         <h2>Storage History</h2>
         <p>When you open chests in the bank, in a hideout, or on your islands, the contents present at that time are saved and displayed in the history.</p>
-        <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/storage_history.png">
-        <br>
-        <br>
+        <img class="feature-image" src="https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/docs/images/storage_history.png" alt="Storage History with previously recorded chest contents" loading="lazy">
+
         <h2>Map History</h2>
         <p>The Map History tab shows the maps you have entered, sorted from newest to oldest.</p>
-        <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/map_history.png">
-        <br>
-        <br>
-        <h2>Open World</h2>
-        <p>This tab tracks mobs and how often they have been killed.</p>
-        <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/open_world.png">
-        <br>
-        <br>
-        <h2>Player Information</h2>
-        <p>Player information can be loaded from the Albion Online servers here.</p>
-        <img src="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/raw/main/docs/images/player_info.png">
-        <br>
-        <br>
+        <img class="feature-image" src="https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/docs/images/map_history.png" alt="Map History sorted from the newest to the oldest visited map" loading="lazy">
+
         <h3>The features mentioned above are the most important ones, but there are many more waiting to be tried out.</h3>
     </div>
 

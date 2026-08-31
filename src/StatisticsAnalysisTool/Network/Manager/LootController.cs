@@ -27,6 +27,7 @@ public class LootController : ILootController
     private readonly List<LootLoggerObject> _lootLoggerObjects = [];
     private ItemContainerObject _currentItemContainer;
     private readonly List<DiscoveredItem> _discoveredLoot = [];
+    private readonly HashSet<long> _recordedLocalLootObjectIds = [];
     private Loot _lastLootedItem;
     private Loot _lastComparedLootedItem;
 
@@ -63,6 +64,11 @@ public class LootController : ILootController
             return;
         }
 
+        if (!_mainWindowViewModel.LoggingBindings.IsLootComparatorTrackingActive)
+        {
+            return;
+        }
+
         if (_mainWindowViewModel.LoggingBindings.IsTrackingPartyLootOnly
             && !_trackingController.EntityController.IsEntityInParty(loot.LootedByName)
             && !_trackingController.EntityController.IsEntityInParty(loot.LootedFromName))
@@ -70,7 +76,7 @@ public class LootController : ILootController
             return;
         }
 
-        if (!_mainWindowViewModel.LoggingBindings.IsTrackingMobLoot && loot.LootedFromName.ToUpper().Equals("MOB"))
+        if (!IsLootSourceTrackingEnabled(loot))
         {
             return;
         }
@@ -144,6 +150,11 @@ public class LootController : ILootController
             return;
         }
 
+        if (!_mainWindowViewModel.LoggingBindings.IsLoggingTrackingActive)
+        {
+            return;
+        }
+
         if (_mainWindowViewModel.LoggingBindings.IsTrackingPartyLootOnly
             && !_trackingController.EntityController.IsEntityInParty(loot.LootedByName)
             && !_trackingController.EntityController.IsEntityInParty(loot.LootedFromName))
@@ -151,7 +162,7 @@ public class LootController : ILootController
             return;
         }
 
-        if (!_mainWindowViewModel.LoggingBindings.IsTrackingMobLoot && loot.LootedFromName.ToUpper().Equals("MOB"))
+        if (!IsLootSourceTrackingEnabled(loot))
         {
             return;
         }
@@ -168,7 +179,9 @@ public class LootController : ILootController
         var lootedFromUser = _trackingController.EntityController.GetEntity(loot.LootedFromName);
         var clusterName = ClusterController.GetCurrentClusterDisplayName();
 
-        var notification = SetNotificationAsync(loot.LootedByName, loot.LootedFromName, lootedByUser?.Value?.Guild, lootedFromUser?.Value?.Guild, item, loot.Quantity);
+        var notification = SetNotificationAsync(loot.LootedByName, loot.LootedFromName,
+            lootedByUser?.Value?.Guild, lootedByUser?.Value?.Alliance,
+            lootedFromUser?.Value?.Guild, lootedFromUser?.Value?.Alliance, item, loot.Quantity);
         notification.SetClusterName(clusterName);
         await _trackingController.AddNotificationAsync(notification);
 
@@ -265,18 +278,56 @@ public class LootController : ILootController
 
     public async Task AddKillDeathAsync(string died, string diedPlayerGuild, string killedBy, string killedByGuild, string clusterName)
     {
-        _lootLoggerObjects.Add(new LootLoggerObject
+        var isLoggingTrackingActive = _mainWindowViewModel.LoggingBindings.IsLoggingTrackingActive;
+        var isLootComparatorTrackingActive = _mainWindowViewModel.LoggingBindings.IsLootComparatorTrackingActive;
+        if (!isLoggingTrackingActive && !isLootComparatorTrackingActive)
         {
-            Died = died,
-            DiedPlayerGuild = diedPlayerGuild,
-            KilledBy = killedBy,
-            KilledByGuild = killedByGuild,
-            ClusterName = clusterName
-        });
+            return;
+        }
 
-        _mainWindowViewModel.LoggingBindings.LootLoggerStats.RecordKillDeath(died, killedBy);
+        var utcTimestamp = DateTime.UtcNow;
+        if (isLoggingTrackingActive)
+        {
+            var lootLoggerObject = new LootLoggerObject
+            {
+                Died = died,
+                DiedPlayerGuild = diedPlayerGuild,
+                KilledBy = killedBy,
+                KilledByGuild = killedByGuild,
+                ClusterName = clusterName
+            };
+            utcTimestamp = lootLoggerObject.UtcPickupTime;
+            _lootLoggerObjects.Add(lootLoggerObject);
 
-        await RemoveLootIfMoreThanLimitAsync(MaxLoot);
+            _mainWindowViewModel.LoggingBindings.LootLoggerStats.RecordKillDeath(died, killedBy);
+            await RemoveLootIfMoreThanLimitAsync(MaxLoot);
+        }
+
+        if (isLootComparatorTrackingActive)
+        {
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+                _mainWindowViewModel.LoggingBindings.AddLootLogCombatEvent(new LootLogCombatEvent
+                {
+                    UtcTimestamp = utcTimestamp,
+                    DiedName = died,
+                    DiedPlayerGuild = diedPlayerGuild,
+                    KilledByName = killedBy,
+                    KilledByGuild = killedByGuild,
+                    ClusterName = clusterName
+                }));
+        }
+    }
+
+    private bool IsLootSourceTrackingEnabled(Loot loot)
+    {
+        var lootedFromName = loot.LootedFromName ?? string.Empty;
+        var localizedMobName = LocalizationController.Translation("MOB");
+        var isMobLoot = string.Equals(lootedFromName, "MOB", StringComparison.OrdinalIgnoreCase)
+                        || string.Equals(lootedFromName, localizedMobName, StringComparison.OrdinalIgnoreCase);
+
+        return isMobLoot
+            ? _mainWindowViewModel.LoggingBindings.IsTrackingMobLoot
+            : _mainWindowViewModel.LoggingBindings.IsTrackingPlayerLoot;
     }
 
     public string GetLootLoggerObjectsAsCsv()
@@ -318,10 +369,12 @@ public class LootController : ILootController
         }
     }
 
-    private static TrackingNotification SetNotificationAsync(string lootedByName, string lootedFromName, string lootedByGuild, string lootedFromGuild, Item item, int quantity)
+    private static TrackingNotification SetNotificationAsync(string lootedByName, string lootedFromName, string lootedByGuild, string lootedByAlliance,
+        string lootedFromGuild, string lootedFromAlliance, Item item, int quantity)
     {
         return new TrackingNotification(DateTime.Now,
-            new OtherGrabbedLootNotificationFragment(lootedByName, lootedFromName, lootedByGuild, lootedFromGuild, item, quantity), item.Index);
+            new OtherGrabbedLootNotificationFragment(lootedByName, lootedFromName, lootedByGuild, lootedByAlliance,
+                lootedFromGuild, lootedFromAlliance, item, quantity), item.Index);
     }
 
     #region Loot tracking
@@ -383,6 +436,7 @@ public class LootController : ILootController
             return;
         }
 
+        RecordDashboardLoot(itemObjectId, lootedItem, identifiedBody.Name);
         await AddLootAsync(new Loot()
         {
             IsSilver = false,
@@ -420,6 +474,7 @@ public class LootController : ILootController
                 continue;
             }
 
+            RecordDashboardLoot(itemObjectId, lootedItem, identifiedBody.Name);
             await AddLootAsync(new Loot()
             {
                 IsSilver = false,
@@ -429,6 +484,35 @@ public class LootController : ILootController
                 LootedFromName = MobController.IsMob(identifiedBody.Name) ? LocalizationController.Translation("MOB") : identifiedBody.Name,
                 Quantity = lootedItem.Quantity,
             });
+        }
+    }
+
+    private void RecordDashboardLoot(long itemObjectId, DiscoveredItem lootedItem, string lootedFromName)
+    {
+        if (itemObjectId <= 0
+            || lootedItem == null
+            || !_recordedLocalLootObjectIds.Add(itemObjectId))
+        {
+            return;
+        }
+
+        var unitValue = FixPoint
+            .FromInternalValue(lootedItem.EstimatedMarketValueInternal)
+            .DoubleValue;
+        if (unitValue <= 0)
+        {
+            unitValue = ItemController.GetItemByIndex(lootedItem.ItemIndex)?.AverageEstMarketValue ?? 0;
+        }
+
+        _trackingController.StatisticController.AddLootValue(
+            lootedItem.ItemIndex,
+            lootedItem.Quantity,
+            unitValue);
+        if (!MobController.IsMob(lootedFromName))
+        {
+            _trackingController.StatisticController.AddCombatLootValue(
+                lootedFromName,
+                Math.Max(0, unitValue) * lootedItem.Quantity);
         }
     }
 
@@ -473,6 +557,7 @@ public class LootController : ILootController
     public void ResetLocalPlayerDiscoveredLoot()
     {
         _discoveredLoot.Clear();
+        _recordedLocalLootObjectIds.Clear();
     }
 
     public void ResetIdentifiedBodies()
@@ -510,17 +595,23 @@ public class LootController : ILootController
 
     private void AddTopLooter(string name, int quantity)
     {
-        var looter = _mainWindowViewModel?.LoggingBindings?.TopLooters?.ToList().FirstOrDefault(x => string.Equals(x?.PlayerName, name, StringComparison.CurrentCultureIgnoreCase));
-        if (looter != null)
-        {
-            looter.Quantity += quantity;
-            looter.LootActions++;
-            return;
-        }
-
         Application.Current.Dispatcher.Invoke(() =>
         {
-            _mainWindowViewModel?.LoggingBindings?.TopLooters?.Add(new TopLooterObject(name, quantity, 1));
+            var topLooters = _mainWindowViewModel?.LoggingBindings?.TopLooters;
+            if (topLooters == null)
+            {
+                return;
+            }
+
+            var looter = topLooters.FirstOrDefault(x => string.Equals(x?.PlayerName, name, StringComparison.CurrentCultureIgnoreCase));
+            if (looter != null)
+            {
+                looter.Quantity += quantity;
+                looter.LootActions++;
+                return;
+            }
+
+            topLooters.Add(new TopLooterObject(name, quantity, 1));
         });
     }
 
@@ -545,30 +636,49 @@ public class LootController : ILootController
                 continue;
             }
 
-            var lootedByPlayer = GetRandomTestLootPlayer(testPlayers);
-            var lootedFromPlayer = GetRandomTestLootPlayer(testPlayers);
-            await AddLootAsync(new Loot()
+            var testLoot = new Loot
             {
-                LootedFromName = lootedFromPlayer.Name,
+                LootedFromName = GetRandomTestLootPlayer(testPlayers).Name,
                 IsTrash = ItemController.IsTrash(randomItem.Index),
                 ItemIndex = randomItem.Index,
-                LootedByName = lootedByPlayer.Name,
+                LootedByName = GetRandomTestLootPlayer(testPlayers).Name,
                 IsSilver = false,
                 Quantity = Random.Next(1, 250)
-            });
+            };
 
-            lootedByPlayer = GetRandomTestLootPlayer(testPlayers);
-            lootedFromPlayer = GetRandomTestLootPlayer(testPlayers);
-            await AddLootedItemAsync(new Loot()
-            {
-                LootedFromName = lootedFromPlayer.Name,
-                IsTrash = ItemController.IsTrash(randomItem.Index),
-                ItemIndex = randomItem.Index,
-                LootedByName = lootedByPlayer.Name,
-                IsSilver = false,
-                Quantity = Random.Next(1, 250)
-            });
+            await AddLootedItemAsync(testLoot);
+            await AddLootAsync(testLoot);
             await Task.Delay(100);
+        }
+
+        await AddTestCombatEventsAsync(testPlayers);
+    }
+
+    private async Task AddTestCombatEventsAsync(IReadOnlyList<TestLootPlayer> testPlayers)
+    {
+        IReadOnlyList<(int DiedPlayerIndex, int KillerPlayerIndex)> combatEvents =
+        [
+            (1, 0),
+            (1, 0),
+            (2, 0),
+            (0, 1),
+            (4, 2),
+            (5, 3),
+            (3, 4),
+            (2, 4),
+            (0, 5)
+        ];
+
+        foreach (var combatEvent in combatEvents)
+        {
+            var diedPlayer = testPlayers[combatEvent.DiedPlayerIndex];
+            var killerPlayer = testPlayers[combatEvent.KillerPlayerIndex];
+            await AddKillDeathAsync(
+                diedPlayer.Name,
+                diedPlayer.Guild,
+                killerPlayer.Name,
+                killerPlayer.Guild,
+                "Debug Cluster");
         }
     }
 

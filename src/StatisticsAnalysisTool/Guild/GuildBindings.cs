@@ -130,6 +130,8 @@ public class GuildBindings : BaseViewModel
     }
 
     public string TranslationSiphonedEnergy => LocalizationController.Translation("SIPHONED_ENERGY");
+    public string TranslationTotalOverview => LocalizationController.Translation("TOTAL_OVERVIEW");
+    public string TranslationDetails => LocalizationController.Translation("DETAILS");
     public string TranslationDeleteSelectedEntries => LocalizationController.Translation("DELETE_SELECTED_ENTRIES");
     public string TranslationSelectDeselectAll => LocalizationController.Translation("SELECT_DESELECT_ALL");
     public string TranslationLastUpdate => LocalizationController.Translation("LAST_UPDATE");

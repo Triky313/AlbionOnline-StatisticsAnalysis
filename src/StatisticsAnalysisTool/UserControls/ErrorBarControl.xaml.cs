@@ -44,11 +44,11 @@ public partial class ErrorBarControl
                 return;
             }
 
-            if (DataContext is ItemWindowViewModel itemWindowViewModel)
+            if (DataContext is ItemDetailsViewModel itemDetailsViewModel)
             {
-                itemWindowViewModel.ErrorBarText = string.Empty;
-                itemWindowViewModel.ErrorBarException = null;
-                itemWindowViewModel.ErrorBarVisibility = Visibility.Collapsed;
+                itemDetailsViewModel.ErrorBarText = string.Empty;
+                itemDetailsViewModel.ErrorBarException = null;
+                itemDetailsViewModel.ErrorBarVisibility = Visibility.Collapsed;
             }
         });
     }

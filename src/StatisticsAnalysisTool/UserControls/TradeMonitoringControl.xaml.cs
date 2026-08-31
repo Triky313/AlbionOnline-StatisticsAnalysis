@@ -13,6 +13,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -34,6 +36,9 @@ public partial class TradeMonitoringControl
     private const int ProfitByTimeOfDayHeatmapDays = 7;
 
     private TradeMonitoringBindings _subscribedTradeMonitoringBindings;
+    private string _locationSortProperty = string.Empty;
+    private ListSortDirection _locationSortDirection = ListSortDirection.Descending;
+    private bool _isApplyingTimeRangeFilter;
 
     public TradeMonitoringControl()
     {
@@ -69,6 +74,17 @@ public partial class TradeMonitoringControl
     }
 
     #region Ui events
+
+    private void TradeMonitoringActivationToggle_Click(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        {
+            return;
+        }
+
+        var tradeOptions = mainWindowViewModel.TradeMonitoringBindings.TradeOptionsObject;
+        tradeOptions.IsTradeMonitoringActive = !tradeOptions.IsTradeMonitoringActive;
+    }
 
     private void OpenMailMonitoringPopup_MouseEnter(object sender, MouseEventArgs e)
     {
@@ -113,18 +129,123 @@ public partial class TradeMonitoringControl
 
     private async void DatePicker_OnSelectedDateChanged(object sender, SelectionChangedEventArgs e)
     {
-        var vm = (MainWindowViewModel) DataContext;
-        await vm.TradeMonitoringBindings.UpdateFilteredTradesAsync();
-    }
-
-    private async void FilterSelection_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        if (DataContext is not MainWindowViewModel vm)
+        if (_isApplyingTimeRangeFilter || DataContext is not MainWindowViewModel vm)
         {
             return;
         }
 
+        vm.TradeMonitoringBindings.SynchronizeTimeRangeFilterSelection();
         await vm.TradeMonitoringBindings.UpdateFilteredTradesAsync();
+    }
+
+    private async void TimeRangeFilter_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel vm
+            || sender is not ToggleButton { DataContext: TradeTimeRangeFilterOption selectedOption })
+        {
+            return;
+        }
+
+        try
+        {
+            _isApplyingTimeRangeFilter = true;
+            vm.TradeMonitoringBindings.ApplyTimeRangeFilter(selectedOption);
+        }
+        finally
+        {
+            _isApplyingTimeRangeFilter = false;
+        }
+
+        await vm.TradeMonitoringBindings.UpdateFilteredTradesAsync();
+    }
+
+    private async void TierFilter_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel vm
+            || sender is not ToggleButton { DataContext: TradeNumericFilterOption selectedOption } toggleButton)
+        {
+            return;
+        }
+
+        vm.TradeMonitoringBindings.UpdateTierFilterSelection(selectedOption, toggleButton.IsChecked == true);
+        await vm.TradeMonitoringBindings.UpdateFilteredTradesAsync();
+    }
+
+    private async void EnchantmentFilter_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel vm
+            || sender is not ToggleButton { DataContext: TradeNumericFilterOption selectedOption } toggleButton)
+        {
+            return;
+        }
+
+        vm.TradeMonitoringBindings.UpdateEnchantmentFilterSelection(selectedOption, toggleButton.IsChecked == true);
+        await vm.TradeMonitoringBindings.UpdateFilteredTradesAsync();
+    }
+
+    private async void LocationFilter_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel vm
+            || sender is not ToggleButton { DataContext: TradeLocationFilterOption selectedOption } toggleButton)
+        {
+            return;
+        }
+
+        vm.TradeMonitoringBindings.UpdateLocationFilterSelection(selectedOption, toggleButton.IsChecked == true);
+        await vm.TradeMonitoringBindings.UpdateFilteredTradesAsync();
+    }
+
+    private void LocationColumnHeader_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (sender is not Button { Tag: string sortProperty })
+        {
+            return;
+        }
+
+        if (string.Equals(_locationSortProperty, sortProperty, StringComparison.Ordinal))
+        {
+            _locationSortDirection = _locationSortDirection == ListSortDirection.Ascending
+                ? ListSortDirection.Descending
+                : ListSortDirection.Ascending;
+        }
+        else
+        {
+            _locationSortProperty = sortProperty;
+            _locationSortDirection = sortProperty is nameof(TradeLocationStatisticsEntry.LocationName)
+                or nameof(TradeLocationStatisticsEntry.MostTradedCategory)
+                ? ListSortDirection.Ascending
+                : ListSortDirection.Descending;
+        }
+
+        ApplyLocationStatisticsSort();
+    }
+
+    private void ApplyLocationStatisticsSort()
+    {
+        if (_subscribedTradeMonitoringBindings == null || string.IsNullOrWhiteSpace(_locationSortProperty))
+        {
+            return;
+        }
+
+        var view = CollectionViewSource.GetDefaultView(_subscribedTradeMonitoringBindings.LocationStatistics);
+
+        using (view.DeferRefresh())
+        {
+            view.SortDescriptions.Clear();
+            view.SortDescriptions.Add(new SortDescription(_locationSortProperty, _locationSortDirection));
+
+            var secondarySortProperty = _locationSortProperty switch
+            {
+                nameof(TradeLocationStatisticsEntry.SalesCount) => nameof(TradeLocationStatisticsEntry.SalesValue),
+                nameof(TradeLocationStatisticsEntry.PurchasesCount) => nameof(TradeLocationStatisticsEntry.PurchasesValue),
+                _ => string.Empty
+            };
+
+            if (!string.IsNullOrWhiteSpace(secondarySortProperty))
+            {
+                view.SortDescriptions.Add(new SortDescription(secondarySortProperty, _locationSortDirection));
+            }
+        }
     }
 
     private async void ProfitOverTimeAggregation_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -174,7 +295,7 @@ public partial class TradeMonitoringControl
         ProfitByTimeOfDayHeatmap?.InvalidateVisual();
     }
 
-    private void FilterReset_MouseUp(object sender, MouseButtonEventArgs e)
+    private void FilterReset_Click(object sender, RoutedEventArgs e)
     {
         var vm = (MainWindowViewModel) DataContext;
         vm.TradeMonitoringBindings?.ItemFilterReset();
@@ -246,6 +367,12 @@ public partial class TradeMonitoringControl
 
     private void TradeMonitoringBindings_OnPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
+        if (e.PropertyName == nameof(TradeMonitoringBindings.LocationStatistics))
+        {
+            Dispatcher.InvokeAsync(ApplyLocationStatisticsSort);
+            return;
+        }
+
         if (string.IsNullOrWhiteSpace(e.PropertyName))
         {
             return;

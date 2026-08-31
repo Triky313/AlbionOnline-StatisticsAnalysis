@@ -13,6 +13,9 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses;
 
 public class JoinResponse
 {
+    private const byte PrimaryParentClusterParameterIndex = 65;
+    private const byte SecondaryParentClusterParameterIndex = 66;
+
     public long? UserObjectId;
     public Guid? UserGuid { get; }
     public string Username { get; }
@@ -29,7 +32,8 @@ public class JoinResponse
     public Guid? InteractGuid { get; }
     public string GuildName { get; }
     public WorldPosition? SourceExitPosition { get; }
-    public string SourceClusterIndex { get; set; } = string.Empty;
+    public string SourceClusterIndex { get; } = string.Empty;
+    public string HomeClusterIndex { get; } = string.Empty;
     public int PlayTimeInSeconds { get; set; }
     public string AllianceName { get; }
     public bool IsReSpecActive { get; }
@@ -121,12 +125,9 @@ public class JoinResponse
                 SourceExitPosition = ParseWorldPosition(positionObj);
             }
 
-            if (parameters.TryGetValue(65, out object sourceClusterIndex))
-            {
-                SourceClusterIndex = sourceClusterIndex.ToString();
-            }
-
-            DebugConsole.WriteInfo(MethodBase.GetCurrentMethod()?.DeclaringType, $"SourceClusterIndex: {SourceClusterIndex}", "#0279be");
+            SourceClusterIndex = ResolveSourceClusterIndex(parameters, MapType);
+            HomeClusterIndex = GetClusterIndex(parameters, 67);
+            DebugConsole.WriteInfo(MethodBase.GetCurrentMethod()?.DeclaringType, $"SourceClusterIndex: {SourceClusterIndex} | HomeClusterIndex: {HomeClusterIndex}", "#0279be");
 
             // Temporarily removed until value is found
             PlayTimeInSeconds = 0;
@@ -146,7 +147,21 @@ public class JoinResponse
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
     }
-    
+
+    private static string ResolveSourceClusterIndex(IReadOnlyDictionary<byte, object> parameters, MapType mapType)
+    {
+        var preferredParameterIndex = mapType == MapType.StaticDungeon ? SecondaryParentClusterParameterIndex : PrimaryParentClusterParameterIndex;
+        var fallbackParameterIndex = mapType == MapType.StaticDungeon ? PrimaryParentClusterParameterIndex : SecondaryParentClusterParameterIndex;
+
+        var sourceClusterIndex = GetClusterIndex(parameters, preferredParameterIndex);
+        return string.IsNullOrWhiteSpace(sourceClusterIndex) ? GetClusterIndex(parameters, fallbackParameterIndex) : sourceClusterIndex;
+    }
+
+    private static string GetClusterIndex(IReadOnlyDictionary<byte, object> parameters, byte parameterIndex)
+    {
+        return parameters.TryGetValue(parameterIndex, out var value) ? value?.ToString() ?? string.Empty : string.Empty;
+    }
+
     private static WorldPosition? ParseWorldPosition(object value)
     {
         if (value is float[] { Length: >= 2 } floatArray)

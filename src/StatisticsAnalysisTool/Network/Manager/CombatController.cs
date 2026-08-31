@@ -1,9 +1,11 @@
 using Serilog;
+using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.DamageMeter;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameFileData;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Properties;
@@ -25,6 +27,7 @@ public class CombatController
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly TrackingController _trackingController;
     private readonly DamageStatsTracker _damageStatsTracker = new();
+    private readonly ConcurrentDictionary<DashboardContentType, DamageStatsTracker> _damageStatsTrackersByContent = new();
     private readonly object _damageStatsUiUpdateLock = new();
     private bool _combatModeWasCombatOver;
     private bool _isDamageStatsUiUpdateActive;
@@ -38,11 +41,14 @@ public class CombatController
         _mainWindowViewModel = mainWindowViewModel;
         CombatEventTracker = new CombatEventTracker(trackingController);
 
+        OnChangeCombatMode += ResetDamageMeterBeforeCombatStart;
         OnChangeCombatMode += AddCombatTime;
         OnChangeCombatMode += SetLastCombatMode;
-        OnChangeCombatMode += ResetDamageMeterBeforeCombatStart;
         OnChangeCombatMode += CombatEventTracker.OnCombatStateUpdate;
         OnDamageUpdate += UpdateDamageMeterUiAsync;
+        _mainWindowViewModel.DamageMeterBindings.DamageMeterContentFilterChanged += OnDamageMeterContentFilterChanged;
+        _mainWindowViewModel.DamageMeterBindings.DamageMeterDisplayChanged += OnDamageMeterDisplayChanged;
+        _mainWindowViewModel.DamageMeterBindings.DamageMeterSnapshotProvider = CreateDamageMeterSnapshot;
 
 #if DEBUG
         RunDamageMeterDebugAsync(0, 0);
@@ -53,7 +59,13 @@ public class CombatController
 
     public event Action<ObservableCollection<DamageMeterFragment>, List<KeyValuePair<Guid, PlayerGameObject>>> OnDamageUpdate;
 
-    public Task AddDamage(long affectedId, long causerId, double healthChange, double newHealthValue, int causingSpellIndex)
+    public Task AddDamage(
+        long affectedId,
+        long causerId,
+        double healthChange,
+        double newHealthValue,
+        int causingSpellIndex,
+        EffectType effectType)
     {
         var healthChangeType = GetHealthChangeType(healthChange);
         if (!SettingsController.CurrentSettings.IsDamageMeterTrackingActive || (affectedId == causerId && healthChangeType == HealthChangeType.Damage))
@@ -76,6 +88,13 @@ public class CombatController
             return Task.CompletedTask;
         }
 
+        var contentType = GetCurrentContentType();
+        var contentStats = causerGameObjectValue.GetOrCreateDamageMeterContentStats(contentType);
+        var contentDamageStatsTracker = _damageStatsTrackersByContent.GetOrAdd(contentType, _ => new DamageStatsTracker());
+        var presentationSpellIndex = SpellPresentationResolver.ResolveSpellIndex(
+            causingSpellIndex,
+            causerGameObjectValue.CharacterEquipment?.ActiveSpells?.Select(spell => spell.Value));
+
         if (healthChangeType == HealthChangeType.Damage)
         {
             var damageChangeValue = (int) Math.Round(healthChange.ToPositiveFromNegativeOrZero(), MidpointRounding.AwayFromZero);
@@ -84,10 +103,20 @@ public class CombatController
                 return Task.CompletedTask;
             }
 
+            RecordLastContributionWeapon(causerGameObjectValue, contentStats);
             causerGameObjectValue.Damage += damageChangeValue;
-            AddOrUpdateSpell(causingSpellIndex, causerGameObjectValue, healthChangeType, damageChangeValue);
-            CombatEventTracker.AddHealthContribution(CombatEventValueType.Damage, causerId, affectedId, damageChangeValue, causingSpellIndex);
-            _damageStatsTracker.RecordDamage(causerGameObject.Value.Key, causerGameObjectValue.Name, affectedId, damageChangeValue, newHealthValue);
+            AddOrUpdateSpell(causingSpellIndex, presentationSpellIndex, causerGameObjectValue, causerGameObjectValue.Spells, healthChangeType, damageChangeValue);
+            lock (contentStats.SyncRoot)
+            {
+                contentStats.Damage += damageChangeValue;
+                AddOrUpdateSpell(causingSpellIndex, presentationSpellIndex, causerGameObjectValue, contentStats.Spells, healthChangeType, damageChangeValue);
+            }
+
+            CombatEventTracker.AddHealthContribution(CombatEventValueType.Damage, causerId, affectedId, damageChangeValue, causingSpellIndex, contentType);
+            var isMobTarget = affectedGameObject?.Value is not { ObjectType: GameObjectType.Player };
+            var damageType = DamageTypeResolver.Resolve(effectType, causingSpellIndex, isMobTarget);
+            _damageStatsTracker.RecordDamage(causerGameObject.Value.Key, causerGameObjectValue.Name, affectedId, damageChangeValue, newHealthValue, isMobTarget, presentationSpellIndex, damageType);
+            contentDamageStatsTracker.RecordDamage(causerGameObject.Value.Key, causerGameObjectValue.Name, affectedId, damageChangeValue, newHealthValue, isMobTarget, presentationSpellIndex, damageType);
         }
 
         if (healthChangeType == HealthChangeType.Heal)
@@ -99,23 +128,41 @@ public class CombatController
             }
 
             var positiveHealChangeValue = (int) Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
+            RecordLastContributionWeapon(causerGameObjectValue, contentStats);
             if (!IsMaxHealthReached(affectedId, newHealthValue))
             {
                 causerGameObjectValue.Heal += positiveHealChangeValue;
-                AddOrUpdateSpell(causingSpellIndex, causerGameObjectValue, healthChangeType, positiveHealChangeValue);
-                CombatEventTracker.AddHealthContribution(CombatEventValueType.Heal, causerId, affectedId, positiveHealChangeValue, causingSpellIndex);
+                AddOrUpdateSpell(causingSpellIndex, presentationSpellIndex, causerGameObjectValue, causerGameObjectValue.Spells, healthChangeType, positiveHealChangeValue);
+                lock (contentStats.SyncRoot)
+                {
+                    contentStats.Heal += positiveHealChangeValue;
+                    AddOrUpdateSpell(causingSpellIndex, presentationSpellIndex, causerGameObjectValue, contentStats.Spells, healthChangeType, positiveHealChangeValue);
+                }
+
+                CombatEventTracker.AddHealthContribution(CombatEventValueType.Heal, causerId, affectedId, positiveHealChangeValue, causingSpellIndex, contentType);
+                contentDamageStatsTracker.RecordHeal(causerGameObject.Value.Key, causerGameObjectValue.Name, positiveHealChangeValue);
                 _damageStatsTracker.RecordHeal(causerGameObject.Value.Key, causerGameObjectValue.Name, positiveHealChangeValue);
             }
             else
             {
                 causerGameObjectValue.Overhealed += positiveHealChangeValue;
+                lock (contentStats.SyncRoot)
+                {
+                    contentStats.Overhealed += positiveHealChangeValue;
+                }
+
+                contentDamageStatsTracker.RecordOverheal(causerGameObject.Value.Key, causerGameObjectValue.Name, positiveHealChangeValue);
                 _damageStatsTracker.RecordOverheal(causerGameObject.Value.Key, causerGameObjectValue.Name, positiveHealChangeValue);
             }
         }
 
         causerGameObjectValue.CombatStart ??= DateTime.UtcNow;
+        lock (contentStats.SyncRoot)
+        {
+            contentStats.CombatStart ??= DateTime.UtcNow;
+        }
 
-        OnDamageUpdate?.Invoke(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter, _trackingController.EntityController.GetAllEntitiesWithDamageOrHealAndInParty());
+        UpdateDamageMeterUiForSelectedContent();
         UpdateDamageStatsUiIfAllowed();
         return Task.CompletedTask;
     }
@@ -136,6 +183,9 @@ public class CombatController
             return Task.CompletedTask;
         }
 
+        var contentType = GetCurrentContentType();
+        var contentStats = gameObjectValue.GetOrCreateDamageMeterContentStats(contentType);
+
         if (healthChangeType == HealthChangeType.Damage)
         {
             var damageChangeValue = (int) Math.Round(healthChange.ToPositiveFromNegativeOrZero(), MidpointRounding.AwayFromZero);
@@ -145,14 +195,54 @@ public class CombatController
             }
 
             gameObjectValue.TakenDamage += damageChangeValue;
-            CombatEventTracker.AddHealthContribution(CombatEventValueType.TakenDamage, causerId, affectedId, damageChangeValue, causingSpellIndex);
+            lock (contentStats.SyncRoot)
+            {
+                contentStats.TakenDamage += damageChangeValue;
+            }
+
+            CombatEventTracker.AddHealthContribution(CombatEventValueType.TakenDamage, causerId, affectedId, damageChangeValue, causingSpellIndex, contentType);
         }
+
+        UpdateDamageMeterUiForSelectedContent();
 
         UpdateDamageStatsUiIfAllowed();
         return Task.CompletedTask;
     }
 
     private static bool _isUiUpdateActive;
+    private readonly object _mobDamageMeterUiStateLock = new();
+    private long _mobDamageMeterVersion;
+    private int _damageMeterViewVersion;
+
+    private DashboardContentType GetCurrentContentType()
+    {
+        var currentCluster = ClusterController.CurrentCluster;
+        return DashboardContentTypeResolver.Resolve(
+            currentCluster.MapType,
+            _trackingController.StatisticController.ResolveDungeonMode(currentCluster.MapType),
+            currentCluster.ClusterMode);
+    }
+
+    private void UpdateDamageMeterUiForSelectedContent()
+    {
+        if (!IsUiUpdateRequired())
+        {
+            return;
+        }
+
+        var bindings = _mainWindowViewModel.DamageMeterBindings;
+        var selectedContentType = bindings.DamageMeterContentFilterSelection?.ContentType;
+
+        if (bindings.DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Mob)
+        {
+            _ = UpdateMobDamageMeterUiAsync(selectedContentType);
+            return;
+        }
+
+        OnDamageUpdate?.Invoke(
+            bindings.DamageMeter,
+            _trackingController.EntityController.GetAllEntitiesWithDamageOrHealAndInParty(selectedContentType));
+    }
 
     public async void UpdateDamageMeterUiAsync(ObservableCollection<DamageMeterFragment> damageMeter, List<KeyValuePair<Guid, PlayerGameObject>> entities)
     {
@@ -163,11 +253,186 @@ public class CombatController
 
         _isUiUpdateActive = true;
 
-        var currentTotalDamage = entities.GetCurrentTotalDamage();
-        var currentTotalHeal = entities.GetCurrentTotalHeal();
-        var currentTotalTakenDamage = entities.GetCurrentTotalDamage();
+        try
+        {
+            await UpdateDamageMeterUiCoreAsync(damageMeter, entities);
+        }
+        catch (Exception e)
+        {
+            Log.Warning(e, "Damage Meter UI update failed");
+        }
+        finally
+        {
+            _isUiUpdateActive = false;
+        }
+    }
 
-        _trackingController.EntityController.DetectUsedWeapon();
+    private async Task UpdateMobDamageMeterUiAsync(DashboardContentType? contentType)
+    {
+        if (!IsUiUpdateAllowed())
+        {
+            return;
+        }
+
+        _isUiUpdateActive = true;
+
+        try
+        {
+            var mobDamageMeterState = GetMobDamageMeterUiState();
+            var mobUpdate = CombatEventTracker.GetMobDamageStatsUpdate(
+                contentType,
+                mobDamageMeterState.DamageVersion);
+
+            if (!IsMobDamageMeterViewCurrent(mobDamageMeterState.ViewVersion))
+            {
+                return;
+            }
+
+            if (mobUpdate.ChangedMobs.Count == 0)
+            {
+                _ = TryAdvanceMobDamageMeterVersion(mobDamageMeterState.ViewVersion, mobUpdate.Version);
+                return;
+            }
+
+            var playersByGuid = _trackingController.EntityController
+                .GetAllEntities()
+                .Where(x => x.Value != null)
+                .ToDictionary(x => x.Key, x => x.Value);
+            var fragments = MobDamageMeterFragmentFactory.Create(
+                mobUpdate.ChangedMobs,
+                mobUpdate.TotalDamage,
+                (playerGuid, spellIndex) => ResolvePlayerSpellItemIndex(playersByGuid, playerGuid, spellIndex));
+            var updateApplied = false;
+
+            await Application.Current.Dispatcher.InvokeAsync(
+                () =>
+                {
+                    if (!IsMobDamageMeterViewCurrent(mobDamageMeterState.ViewVersion))
+                    {
+                        return;
+                    }
+
+                    _mainWindowViewModel.DamageMeterBindings.ApplyMobDamageMeterUpdate(fragments, mobUpdate.TotalDamage);
+                    updateApplied = true;
+                });
+
+            if (updateApplied)
+            {
+                _ = TryAdvanceMobDamageMeterVersion(mobDamageMeterState.ViewVersion, mobUpdate.Version);
+            }
+        }
+        catch (Exception e)
+        {
+            Log.Warning(e, "Mob Damage Meter UI update failed");
+        }
+        finally
+        {
+            _isUiUpdateActive = false;
+        }
+    }
+
+    private (int ViewVersion, long DamageVersion) GetMobDamageMeterUiState()
+    {
+        lock (_mobDamageMeterUiStateLock)
+        {
+            return (_damageMeterViewVersion, _mobDamageMeterVersion);
+        }
+    }
+
+    private bool IsMobDamageMeterViewCurrent(int viewVersion)
+    {
+        lock (_mobDamageMeterUiStateLock)
+        {
+            return viewVersion == _damageMeterViewVersion;
+        }
+    }
+
+    private bool TryAdvanceMobDamageMeterVersion(int viewVersion, long damageVersion)
+    {
+        lock (_mobDamageMeterUiStateLock)
+        {
+            if (viewVersion != _damageMeterViewVersion)
+            {
+                return false;
+            }
+
+            _mobDamageMeterVersion = damageVersion;
+            return true;
+        }
+    }
+
+    private void InvalidateMobDamageMeterView(bool resetDamageVersion)
+    {
+        lock (_mobDamageMeterUiStateLock)
+        {
+            _damageMeterViewVersion++;
+            if (!resetDamageVersion)
+            {
+                return;
+            }
+
+            _mobDamageMeterVersion = 0;
+        }
+    }
+
+    private static void RecordLastContributionWeapon(PlayerGameObject player, DamageMeterPlayerStats contentStats)
+    {
+        var weaponItemIndex = DamageMeterWeaponResolver.GetEquippedWeaponItemIndex(player);
+        if (weaponItemIndex <= 0)
+        {
+            return;
+        }
+
+        player.LastContributionWeaponItemIndex = weaponItemIndex;
+        lock (contentStats.SyncRoot)
+        {
+            contentStats.LastContributionWeaponItemIndex = weaponItemIndex;
+        }
+    }
+
+    private int ResolvePlayerSpellItemIndex(
+        IReadOnlyDictionary<Guid, PlayerGameObject> playersByGuid,
+        Guid playerGuid,
+        int spellIndex)
+    {
+        if (!playersByGuid.TryGetValue(playerGuid, out var player))
+        {
+            return 0;
+        }
+
+        return GetSpellItemIndex(spellIndex, player);
+    }
+
+    private async Task UpdateDamageMeterUiCoreAsync(ObservableCollection<DamageMeterFragment> damageMeter, List<KeyValuePair<Guid, PlayerGameObject>> entities)
+    {
+        long maximumDamage = 0;
+        long maximumHeal = 0;
+        long maximumTakenDamage = 0;
+        long totalDamage = 0;
+        long totalHeal = 0;
+        long totalTakenDamage = 0;
+
+        foreach (var entity in entities)
+        {
+            maximumDamage = Math.Max(maximumDamage, entity.Value.Damage);
+            maximumHeal = Math.Max(maximumHeal, entity.Value.Heal);
+            maximumTakenDamage = Math.Max(maximumTakenDamage, entity.Value.TakenDamage);
+            totalDamage += entity.Value.Damage;
+            totalHeal += entity.Value.Heal;
+            totalTakenDamage += entity.Value.TakenDamage;
+        }
+
+        var fragmentsByCauser = new Dictionary<Guid, DamageMeterFragment>();
+        var fragmentNames = new HashSet<string>(StringComparer.Ordinal);
+        var hasDuplicateFragments = false;
+        foreach (var fragment in damageMeter)
+        {
+            fragmentsByCauser.TryAdd(fragment.CauserGuid, fragment);
+            if (!fragmentNames.Add(fragment.Name ?? string.Empty))
+            {
+                hasDuplicateFragments = true;
+            }
+        }
 
         foreach (var healthChangeObject in entities)
         {
@@ -176,69 +441,64 @@ public class CombatController
                 continue;
             }
 
-            var fragment = damageMeter.ToList().FirstOrDefault(x => x.CauserGuid == healthChangeObject.Value.UserGuid);
+            fragmentsByCauser.TryGetValue(healthChangeObject.Value.UserGuid, out var fragment);
             if (fragment != null)
             {
-                await UpdateDamageMeterFragmentAsync(fragment, healthChangeObject, entities, currentTotalDamage, currentTotalHeal, currentTotalTakenDamage);
+                await UpdateDamageMeterFragmentAsync(
+                    fragment,
+                    healthChangeObject,
+                    maximumDamage,
+                    maximumHeal,
+                    maximumTakenDamage,
+                    totalDamage,
+                    totalHeal,
+                    totalTakenDamage);
             }
             else
             {
-                await AddDamageMeterFragmentAsync(damageMeter, healthChangeObject, entities, currentTotalDamage, currentTotalHeal, currentTotalTakenDamage).ConfigureAwait(true);
+                await AddDamageMeterFragmentAsync(
+                    damageMeter,
+                    healthChangeObject,
+                    maximumDamage,
+                    maximumHeal,
+                    maximumTakenDamage,
+                    totalDamage,
+                    totalHeal,
+                    totalTakenDamage).ConfigureAwait(true);
             }
-
-            Application.Current.Dispatcher.Invoke(() => _mainWindowViewModel.DamageMeterBindings?.SetDamageMeterSort());
         }
 
-        await RemoveDuplicatesAsync(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter);
-        _isUiUpdateActive = false;
+        if (hasDuplicateFragments)
+        {
+            await RemoveDuplicatesAsync(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter);
+        }
+
+        Application.Current.Dispatcher.Invoke(() => _mainWindowViewModel.DamageMeterBindings?.SetDamageMeterSort());
     }
 
     private static async Task UpdateDamageMeterFragmentAsync(DamageMeterFragment fragment, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
-        List<KeyValuePair<Guid, PlayerGameObject>> entities, long currentTotalDamage, long currentTotalHeal, long currentTotalTakenDamage)
+        long maximumDamage, long maximumHeal, long maximumTakenDamage, long totalDamage, long totalHeal, long totalTakenDamage)
     {
         var healthChangeObjectValue = healthChangeObject.Value;
+        var combatTime = healthChangeObjectValue.GetCombatTime(DateTime.UtcNow);
 
-        if (healthChangeObjectValue?.CharacterEquipment?.MainHand != null)
-        {
-            var item = ItemController.GetItemByIndex(healthChangeObjectValue.CharacterEquipment?.MainHand);
-            fragment.CauserMainHand = item?.FullItemInformation?.ItemType is ItemType.TransformationWeapon or ItemType.Weapon ? item : null;
-        }
+        fragment.CauserMainHand = DamageMeterWeaponResolver.GetWeaponByIndex(
+            healthChangeObjectValue.LastContributionWeaponItemIndex);
 
         // Damage
-        if (healthChangeObjectValue?.Damage > 0)
-        {
-            fragment.DamageInPercent = (double) healthChangeObjectValue.Damage / currentTotalDamage * 100;
-            fragment.Damage = healthChangeObjectValue.Damage;
-        }
-
-        if (healthChangeObjectValue?.Dps is not null)
-        {
-            fragment.Dps = healthChangeObjectValue.Dps;
-        }
+        fragment.DamageInPercent = CalculateBarPercentage(healthChangeObjectValue.Damage, maximumDamage);
+        fragment.Damage = healthChangeObjectValue.Damage;
+        fragment.Dps = healthChangeObjectValue.Dps;
 
         // Heal
-        if (healthChangeObjectValue?.Heal > 0)
-        {
-            fragment.HealInPercent = (double) healthChangeObjectValue.Heal / currentTotalHeal * 100;
-            fragment.Heal = healthChangeObjectValue.Heal;
-        }
-
-        if (healthChangeObjectValue?.Hps is not null)
-        {
-            fragment.Hps = healthChangeObjectValue.Hps;
-        }
-
-        if (healthChangeObjectValue?.Overhealed > 0)
-        {
-            fragment.Overhealed = healthChangeObjectValue.Overhealed;
-        }
+        fragment.HealInPercent = CalculateBarPercentage(healthChangeObjectValue.Heal, maximumHeal);
+        fragment.Heal = healthChangeObjectValue.Heal;
+        fragment.Hps = healthChangeObjectValue.Hps;
+        fragment.Overhealed = healthChangeObjectValue.Overhealed;
 
         // Taken Damage
-        if (healthChangeObjectValue?.TakenDamage > 0)
-        {
-            fragment.TakenDamageInPercent = (double) healthChangeObjectValue.TakenDamage / currentTotalTakenDamage * 100;
-            fragment.TakenDamage = healthChangeObjectValue.TakenDamage;
-        }
+        fragment.TakenDamageInPercent = CalculateBarPercentage(healthChangeObjectValue.TakenDamage, maximumTakenDamage);
+        fragment.TakenDamage = healthChangeObjectValue.TakenDamage;
 
         // Spells
         await AddOrUpdateSpellFragmentAsync(fragment.Spells, healthChangeObjectValue?.Spells);
@@ -246,31 +506,41 @@ public class CombatController
         // Generally
         if (healthChangeObjectValue != null)
         {
-            fragment.CombatTime = healthChangeObjectValue.CombatTime;
-            fragment.DamagePercentage = entities.GetDamagePercentage(healthChangeObjectValue.Damage);
-            fragment.HealPercentage = entities.GetHealPercentage(healthChangeObjectValue.Heal);
-            fragment.TakenDamagePercentage = entities.GetTakenDamagePercentage(healthChangeObjectValue.TakenDamage);
+            fragment.CombatTime = combatTime;
+            fragment.DamagePercentage = CalculateBarPercentage(healthChangeObjectValue.Damage, totalDamage);
+            fragment.HealPercentage = CalculateBarPercentage(healthChangeObjectValue.Heal, totalHeal);
+            fragment.TakenDamagePercentage = CalculateBarPercentage(healthChangeObjectValue.TakenDamage, totalTakenDamage);
             fragment.OverhealedPercentageOfTotalHealing = GetOverhealedPercentageOfHealWithOverhealed(healthChangeObjectValue.Overhealed, healthChangeObjectValue.Heal);
         }
     }
 
     public static double GetOverhealedPercentageOfHealWithOverhealed(double overhealed, double heal)
     {
-        return 100.00 / (heal + overhealed) * overhealed;
+        var totalHealing = heal + overhealed;
+        return totalHealing > 0
+            ? overhealed / totalHealing * 100
+            : 0;
+    }
+
+    private static double CalculateBarPercentage(long value, long maximum)
+    {
+        return value > 0 && maximum > 0 ? (double) value / maximum * 100 : 0;
     }
 
     private static async Task AddDamageMeterFragmentAsync(ICollection<DamageMeterFragment> damageMeter, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
-        List<KeyValuePair<Guid, PlayerGameObject>> entities, long currentTotalDamage, long currentTotalHeal, long currentTotalTakenDamage)
+        long maximumDamage, long maximumHeal, long maximumTakenDamage, long totalDamage, long totalHeal, long totalTakenDamage)
     {
         if (healthChangeObject.Value == null
             || (double.IsNaN(healthChangeObject.Value.Damage) && double.IsNaN(healthChangeObject.Value.Heal) && double.IsNaN(healthChangeObject.Value.Overhealed))
-            || (healthChangeObject.Value.Damage <= 0 && healthChangeObject.Value.Heal <= 0 && healthChangeObject.Value.Overhealed <= 0))
+            || (healthChangeObject.Value.Damage <= 0 && healthChangeObject.Value.Heal <= 0 && healthChangeObject.Value.Overhealed <= 0 && healthChangeObject.Value.TakenDamage <= 0))
         {
             return;
         }
 
         var healthChangeObjectValue = healthChangeObject.Value;
-        var item = ItemController.GetItemByIndex(healthChangeObject.Value?.CharacterEquipment?.MainHand ?? 0);
+        var combatTime = healthChangeObjectValue.GetCombatTime(DateTime.UtcNow);
+        var item = DamageMeterWeaponResolver.GetWeaponByIndex(
+            healthChangeObjectValue.LastContributionWeaponItemIndex);
 
         var spells = new ObservableCollection<UsedSpellFragment>();
         await AddOrUpdateSpellFragmentAsync(spells, healthChangeObjectValue.Spells);
@@ -278,21 +548,22 @@ public class CombatController
         var damageMeterFragment = new DamageMeterFragment
         {
             CauserGuid = healthChangeObjectValue.UserGuid,
+            CombatTime = combatTime,
             Damage = healthChangeObjectValue.Damage,
             Dps = healthChangeObjectValue.Dps,
-            DamageInPercent = (double) healthChangeObjectValue.Damage / currentTotalDamage * 100,
-            DamagePercentage = entities.GetDamagePercentage(healthChangeObjectValue.Damage),
+            DamageInPercent = CalculateBarPercentage(healthChangeObjectValue.Damage, maximumDamage),
+            DamagePercentage = CalculateBarPercentage(healthChangeObjectValue.Damage, totalDamage),
 
             Heal = healthChangeObjectValue.Heal,
             Hps = healthChangeObjectValue.Hps,
-            HealInPercent = (double) healthChangeObjectValue.Heal / currentTotalHeal * 100,
-            HealPercentage = entities.GetHealPercentage(healthChangeObjectValue.Heal),
+            HealInPercent = CalculateBarPercentage(healthChangeObjectValue.Heal, maximumHeal),
+            HealPercentage = CalculateBarPercentage(healthChangeObjectValue.Heal, totalHeal),
             Overhealed = healthChangeObjectValue.Overhealed,
             OverhealedPercentageOfTotalHealing = GetOverhealedPercentageOfHealWithOverhealed(healthChangeObjectValue.Overhealed, healthChangeObjectValue.Heal),
 
             TakenDamage = healthChangeObjectValue.TakenDamage,
-            TakenDamageInPercent = (double) healthChangeObjectValue.TakenDamage / currentTotalTakenDamage * 100,
-            TakenDamagePercentage = entities.GetDamagePercentage(healthChangeObjectValue.TakenDamage),
+            TakenDamageInPercent = CalculateBarPercentage(healthChangeObjectValue.TakenDamage, maximumTakenDamage),
+            TakenDamagePercentage = CalculateBarPercentage(healthChangeObjectValue.TakenDamage, totalTakenDamage),
 
             Name = healthChangeObjectValue.Name,
             CauserMainHand = item,
@@ -306,35 +577,24 @@ public class CombatController
         });
     }
 
-    private static bool HasDamageMeterDupes(IEnumerable<DamageMeterFragment> damageMeter)
-    {
-        return damageMeter?.ToList().GroupBy(x => x?.Name).Any(g => g.Count() > 1) ?? false;
-    }
-
     private static async Task RemoveDuplicatesAsync(ICollection<DamageMeterFragment> damageMeter)
     {
-        if (!HasDamageMeterDupes(damageMeter))
+        if (damageMeter == null || damageMeter.Count <= 1)
         {
             return;
         }
 
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
-            var damageMeterWithoutDupes = (from dmf in damageMeter.ToList()
-                                           group dmf by dmf.Name into x
-                                           select new DamageMeterFragment(x.FirstOrDefault())).ToList();
-
-            if (damageMeterWithoutDupes.Count <= 0)
+            var names = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var fragment in damageMeter.ToList())
             {
-                return;
-            }
-
-            foreach (var damageMeterFragment in damageMeter.ToList())
-            {
-                if (damageMeterWithoutDupes.Any(x => x.Equals(damageMeterFragment)))
+                if (names.Add(fragment.Name ?? string.Empty))
                 {
-                    damageMeter.Remove(damageMeterFragment);
+                    continue;
                 }
+
+                damageMeter.Remove(fragment);
             }
         });
     }
@@ -393,6 +653,7 @@ public class CombatController
 
     public void ResetDamageMeter()
     {
+        InvalidateMobDamageMeterView(true);
         lock (_damageStatsUiUpdateLock)
         {
             _damageStatsVersion++;
@@ -401,7 +662,9 @@ public class CombatController
         }
 
         _damageStatsTracker.Clear();
+        _damageStatsTrackersByContent.Clear();
         CombatEventTracker.ClearCombatEvents();
+        _trackingController.EntityController.ResetDamageMeterContentStats();
         _trackingController.EntityController.ResetEntitiesDamageTimes();
         _trackingController.EntityController.ResetEntitiesDamage();
         _trackingController.EntityController.ResetEntitiesHeal();
@@ -413,6 +676,7 @@ public class CombatController
         Application.Current?.Dispatcher?.InvokeAsync(() =>
         {
             _mainWindowViewModel?.DamageMeterBindings?.DamageMeter?.Clear();
+            _mainWindowViewModel?.DamageMeterBindings?.ClearMobDamageMeter();
             _mainWindowViewModel?.DamageMeterBindings?.ClearDamageStats();
         });
     }
@@ -422,13 +686,15 @@ public class CombatController
     public bool IsMaxHealthReached(long objectId, double newHealthValue)
     {
         var gameObject = _trackingController?.EntityController?.GetEntity(objectId);
-        var playerHealth = LastPlayersHealth?.ToArray().FirstOrDefault(x => x.Key == gameObject?.Value?.UserGuid);
-        if (playerHealth?.Value.CompareTo(newHealthValue) == 0)
+        var userGuid = gameObject?.Value?.UserGuid;
+        if (userGuid is { } notNullGuid
+            && LastPlayersHealth.TryGetValue(notNullGuid, out var playerHealth)
+            && playerHealth.CompareTo(newHealthValue) == 0)
         {
             return true;
         }
 
-        SetLastPlayersHealth(gameObject?.Value?.UserGuid, newHealthValue);
+        SetLastPlayersHealth(userGuid, newHealthValue);
         return false;
     }
 
@@ -439,38 +705,112 @@ public class CombatController
             return;
         }
 
-        if (LastPlayersHealth.ContainsKey(notNullGuid))
-        {
-            LastPlayersHealth[notNullGuid] = value;
-        }
-        else
-        {
-            try
-            {
-                LastPlayersHealth.TryAdd(notNullGuid, value);
-            }
-            catch (Exception e)
-            {
-                Log.Warning(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
-            }
-        }
+        LastPlayersHealth[notNullGuid] = value;
     }
 
     private static HealthChangeType GetHealthChangeType(double healthChange) => healthChange <= 0 ? HealthChangeType.Damage : HealthChangeType.Heal;
 
     private DateTime _lastDamageUiUpdate;
 
+    private bool IsUiUpdateRequired(int waitTimeInSeconds = 1)
+    {
+        var difference = DateTime.UtcNow.Subtract(_lastDamageUiUpdate);
+        return difference.TotalSeconds >= waitTimeInSeconds && !_isUiUpdateActive;
+    }
+
     private bool IsUiUpdateAllowed(int waitTimeInSeconds = 1)
     {
         var currentDateTime = DateTime.UtcNow;
         var difference = currentDateTime.Subtract(_lastDamageUiUpdate);
-        if (difference.Seconds >= waitTimeInSeconds && !_isUiUpdateActive)
+        if (difference.TotalSeconds >= waitTimeInSeconds && !_isUiUpdateActive)
         {
             _lastDamageUiUpdate = currentDateTime;
             return true;
         }
 
         return false;
+    }
+
+    private void OnDamageMeterContentFilterChanged(DashboardContentType? contentType)
+    {
+        InvalidateMobDamageMeterView(true);
+        lock (_damageStatsUiUpdateLock)
+        {
+            _damageStatsVersion++;
+            _isDamageStatsUiUpdateActive = false;
+            _lastDamageStatsUiUpdate = DateTime.MinValue;
+        }
+
+        _lastDamageUiUpdate = DateTime.MinValue;
+        _isUiUpdateActive = false;
+
+        Application.Current?.Dispatcher?.Invoke(() =>
+        {
+            _mainWindowViewModel.DamageMeterBindings.DamageMeter.Clear();
+            _mainWindowViewModel.DamageMeterBindings.ClearMobDamageMeter();
+            _mainWindowViewModel.DamageMeterBindings.ClearDamageStats();
+        });
+
+        UpdateDamageMeterUiForSelectedContent();
+        UpdateDamageStatsUiIfAllowed();
+    }
+
+    private void OnDamageMeterDisplayChanged()
+    {
+        InvalidateMobDamageMeterView(false);
+        _lastDamageUiUpdate = DateTime.MinValue;
+        _isUiUpdateActive = false;
+        UpdateDamageMeterUiForSelectedContent();
+    }
+
+    private DamageMeterSnapshot CreateDamageMeterSnapshot()
+    {
+        var playersByGuid = _trackingController.EntityController
+            .GetAllEntities()
+            .Where(x => x.Value != null)
+            .ToDictionary(x => x.Key, x => x.Value);
+        var snapshot = new DamageMeterSnapshot
+        {
+            AllContent = CreateDamageMeterContentSnapshot(null, playersByGuid)
+        };
+
+        foreach (var contentType in DashboardContentTypeResolver.ContentTypes)
+        {
+            var contentSnapshot = CreateDamageMeterContentSnapshot(contentType, playersByGuid);
+            if (contentSnapshot.HasData)
+            {
+                snapshot.ContentSnapshots[contentType] = contentSnapshot;
+            }
+        }
+
+        snapshot.ApplyContentFilter(null);
+        return snapshot;
+    }
+
+    private DamageMeterContentSnapshot CreateDamageMeterContentSnapshot(
+        DashboardContentType? contentType,
+        IReadOnlyDictionary<Guid, PlayerGameObject> playersByGuid)
+    {
+        var entities = _trackingController.EntityController
+            .GetAllEntitiesWithDamageOrHealAndInParty(contentType);
+        var activePlayerGuids = entities.Select(x => x.Key).ToList();
+        var healingPlayerGuids = entities
+            .Where(x => x.Value.Heal > 0)
+            .Select(x => x.Key)
+            .ToList();
+        var trackerSnapshot = GetDamageStatsTracker(contentType)
+            .CreateSnapshot(activePlayerGuids, healingPlayerGuids);
+        var combatEvents = CombatEventTracker.GetCombatEvents(contentType);
+        var mobDamageMeter = MobDamageMeterFragmentFactory.Create(
+            CombatEventTracker.GetMobDamageStats(contentType),
+            (playerGuid, spellIndex) => ResolvePlayerSpellItemIndex(playersByGuid, playerGuid, spellIndex));
+
+        return DamageMeterContentSnapshotFactory.Create(
+            entities,
+            trackerSnapshot,
+            combatEvents,
+            CreateYourStatsSnapshot(contentType, combatEvents),
+            mobDamageMeter);
     }
 
     private void UpdateDamageStatsUiIfAllowed()
@@ -494,11 +834,10 @@ public class CombatController
     {
         try
         {
+            var selectedContentType = _mainWindowViewModel.DamageMeterBindings.DamageMeterContentFilterSelection?.ContentType;
             var activeEntities = _trackingController.EntityController
-                .GetAllEntities()
-                .Where(x => _trackingController.EntityController.IsEntityInParty(x.Key))
-                .Where(x => x.Value.Damage > 0 || x.Value.Heal > 0 || x.Value.Overhealed > 0 || x.Value.TakenDamage > 0)
-                .ToList();
+                .GetAllEntitiesWithDamageOrHealAndInParty(selectedContentType);
+            var damageStatsTracker = GetDamageStatsTracker(selectedContentType);
 
             var activePlayerGuids = activeEntities
                 .Select(x => x.Key)
@@ -509,8 +848,13 @@ public class CombatController
                 .Select(x => x.Key)
                 .ToList();
 
-            var damageStatsSnapshot = CreateDamageStatsSnapshot(_damageStatsTracker.CreateSnapshot(activePlayerGuids, healingPlayerGuids), activeEntities);
-            var yourStatsSnapshot = CreateYourStatsSnapshot();
+            var combatEvents = CombatEventTracker.GetCombatEvents(selectedContentType);
+            var trackerSnapshot = damageStatsTracker.CreateSnapshot(activePlayerGuids, healingPlayerGuids);
+            var damageStatsSnapshot = DamageStatsSnapshotFactory.FromLiveData(
+                trackerSnapshot,
+                activeEntities.Select(x => x.Value),
+                combatEvents);
+            var yourStatsSnapshot = CreateYourStatsSnapshot(selectedContentType, combatEvents);
 
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
@@ -542,25 +886,22 @@ public class CombatController
         }
     }
 
-    private static DamageStatsSnapshot CreateDamageStatsSnapshot(
-        DamageStatsSnapshot trackerSnapshot,
-        IReadOnlyCollection<KeyValuePair<Guid, PlayerGameObject>> activeEntities
-    )
+
+    private DamageStatsTracker GetDamageStatsTracker(DashboardContentType? contentType)
     {
-        return new DamageStatsSnapshot
+        if (!contentType.HasValue)
         {
-            TopSingleHits = trackerSnapshot.TopSingleHits,
-            TopSingleHeals = trackerSnapshot.TopSingleHeals,
-            TopLastHits = trackerSnapshot.TopLastHits,
-            TopOverheals = trackerSnapshot.TopOverheals,
-            TopTakenDamage = DamageStatsSnapshotFactory.CreateTopTakenDamageEntries(activeEntities.Select(x => x.Value)),
-            TopBurstDamageFiveSeconds = trackerSnapshot.TopBurstDamageFiveSeconds,
-            TopBurstDamageTenSeconds = trackerSnapshot.TopBurstDamageTenSeconds,
-            TopAttackedTargets = trackerSnapshot.TopAttackedTargets
-        };
+            return _damageStatsTracker;
+        }
+
+        return _damageStatsTrackersByContent.TryGetValue(contentType.Value, out var tracker)
+            ? tracker
+            : new DamageStatsTracker();
     }
 
-    private DamageMeterYourStatsSnapshot CreateYourStatsSnapshot()
+    private DamageMeterYourStatsSnapshot CreateYourStatsSnapshot(
+        DashboardContentType? contentType,
+        IEnumerable<CombatEvent> combatEvents)
     {
         var localUserData = _trackingController.EntityController.LocalUserData;
         PlayerGameObject localPlayer = null;
@@ -575,7 +916,15 @@ public class CombatController
             localPlayer = _trackingController.EntityController.GetEntity(localUserData.UserObjectId.Value)?.Value;
         }
 
-        return DamageMeterYourStatsSnapshotFactory.FromLiveData(localPlayer, CombatEventTracker.CombatEvents, ResolveObjectName);
+        if (contentType.HasValue && localPlayer != null)
+        {
+            localPlayer = localPlayer.CreateDamageMeterContentView(contentType.Value);
+        }
+
+        return DamageMeterYourStatsSnapshotFactory.FromLiveData(
+            localPlayer,
+            combatEvents,
+            ResolveObjectName);
     }
 
     private string ResolveObjectName(long objectId)
@@ -586,10 +935,19 @@ public class CombatController
             return entity.Value.Value.Name;
         }
 
-        var mob = CombatEventTracker.KnownMobs.FirstOrDefault(x => x.MobObjectId == objectId);
-        if (mob != null)
+        var mob = CombatEventTracker.GetKnownMobOrDefault(objectId);
+        if (mob?.MobData != null)
         {
-            return MobsData.GetLocalizedMobName(mob.MobData);
+            var localizedName = MobsData.GetLocalizedMobName(mob.MobData);
+            if (!string.IsNullOrWhiteSpace(localizedName))
+            {
+                return localizedName;
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(mob?.UniqueName))
+        {
+            return mob.UniqueName;
         }
 
         return objectId.ToString();
@@ -616,11 +974,17 @@ public class CombatController
         }
     }
 
-    private void AddOrUpdateSpell(int causingSpellIndex, PlayerGameObject playerGameObject, HealthChangeType healthChangeType, int healthChangeValue)
+    private void AddOrUpdateSpell(
+        int causingSpellIndex,
+        int presentationSpellIndex,
+        PlayerGameObject playerGameObject,
+        ICollection<UsedSpell> spells,
+        HealthChangeType healthChangeType,
+        int healthChangeValue)
     {
         if (causingSpellIndex <= 0)
         {
-            var autoAttack = playerGameObject.Spells.FirstOrDefault(x => x.SpellIndex == 0);
+            var autoAttack = spells.FirstOrDefault(x => x.SpellIndex == 0);
             if (autoAttack is not null)
             {
                 autoAttack.DamageHealValue += healthChangeValue;
@@ -628,7 +992,7 @@ public class CombatController
             }
             else
             {
-                playerGameObject.Spells.Add(new UsedSpell(0, 0)
+                spells.Add(new UsedSpell(0, 0)
                 {
                     UniqueName = "AUTO_ATTACK",
                     Category = "damage",
@@ -642,7 +1006,7 @@ public class CombatController
         }
 
         var itemIndex = GetSpellItemIndex(causingSpellIndex, playerGameObject);
-        var spell = playerGameObject.Spells.FirstOrDefault(x => x.SpellIndex == causingSpellIndex && x.HealthChangeType == healthChangeType);
+        var spell = spells.FirstOrDefault(x => x.SpellIndex == presentationSpellIndex && x.HealthChangeType == healthChangeType);
         if (spell is not null)
         {
             spell.HealthChangeType = healthChangeType;
@@ -656,7 +1020,7 @@ public class CombatController
         }
         else
         {
-            playerGameObject.Spells.Add(new UsedSpell(causingSpellIndex, itemIndex)
+            spells.Add(new UsedSpell(presentationSpellIndex, itemIndex)
             {
                 ItemIndex = itemIndex,
                 HealthChangeType = healthChangeType,
@@ -688,6 +1052,11 @@ public class CombatController
     private static bool IsMatchingSpell(int causingSpellIndex, string causingSpellUniqueName, int slotSpellIndex)
     {
         if (slotSpellIndex == causingSpellIndex)
+        {
+            return true;
+        }
+
+        if (SpellPresentationResolver.IsPresentationSpellFor(slotSpellIndex, causingSpellIndex))
         {
             return true;
         }
@@ -766,65 +1135,60 @@ public class CombatController
 
     private static async Task AddOrUpdateSpellFragmentAsync(ObservableCollection<UsedSpellFragment> spellsFragments, IReadOnlyCollection<UsedSpell> spells)
     {
-        var fragmentsToAdd = new List<UsedSpellFragment>();
-        var fragmentsToUpdate = new List<UsedSpellFragment>();
-        var totalDamage = spells.Sum(spell => spell?.DamageHealValue) ?? 0;
-        var maxDamage = spells.Max(spell => spell?.DamageHealValue) ?? 0;
+        var spellSnapshot = spells?.Where(x => x != null).ToList() ?? [];
+        long totalDamage = 0;
+        long maximumDamage = 0;
 
-        await Application.Current.Dispatcher.InvokeAsync(async () =>
+        foreach (var spell in spellSnapshot)
         {
-            await foreach (var spell in spells.ToList().ToAsyncEnumerable())
-            {
-                var existingFragment = spellsFragments.FirstOrDefault(x => x.SpellIndex == spell.SpellIndex && x.HealthChangeType == spell.HealthChangeType);
+            totalDamage += spell.DamageHealValue;
+            maximumDamage = Math.Max(maximumDamage, spell.DamageHealValue);
+        }
 
-                if (existingFragment != null)
+        await Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            var existingFragments = spellsFragments
+                .GroupBy(x => (x.SpellIndex, x.HealthChangeType))
+                .ToDictionary(x => x.Key, x => x.First());
+
+            foreach (var spell in spellSnapshot)
+            {
+                var damageInPercent = CalculateBarPercentage(spell.DamageHealValue, maximumDamage);
+                var damagePercentage = CalculateBarPercentage(spell.DamageHealValue, totalDamage);
+                var key = (spell.SpellIndex, spell.HealthChangeType);
+
+                if (existingFragments.TryGetValue(key, out var existingFragment))
                 {
                     existingFragment.ItemIndex = spell.ItemIndex;
+                    existingFragment.UniqueName = spell.UniqueName;
+                    existingFragment.Category = spell.Category;
+                    existingFragment.Target = spell.Target;
                     existingFragment.DamageHealValue = spell.DamageHealValue;
                     existingFragment.Ticks = spell.Ticks;
-                    existingFragment.DamageInPercent = (maxDamage != 0) ? (double) spell.DamageHealValue / maxDamage * 100 : 0;
-                    existingFragment.DamagePercentage = (totalDamage != 0) ? 100.00 / totalDamage * spell.DamageHealValue : 0;
-                    fragmentsToUpdate.Add(existingFragment);
+                    existingFragment.DamageInPercent = damageInPercent;
+                    existingFragment.DamagePercentage = damagePercentage;
+                    continue;
                 }
-                else
+
+                var fragment = new UsedSpellFragment
                 {
-                    var damageInPercent = (maxDamage != 0) ? (double) spell.DamageHealValue / maxDamage * 100 : 0;
-                    var damagePercentage = (totalDamage != 0) ? 100.00 / totalDamage * spell.DamageHealValue : 0;
-
-                    fragmentsToAdd.Add(new UsedSpellFragment
-                    {
-                        SpellIndex = spell.SpellIndex,
-                        ItemIndex = spell.ItemIndex,
-                        UniqueName = spell.UniqueName,
-                        DamageHealValue = spell.DamageHealValue,
-                        Category = spell.Category,
-                        Target = spell.Target,
-                        Ticks = spell.Ticks,
-                        HealthChangeType = spell.HealthChangeType,
-                        DamageInPercent = damageInPercent > 100 ? 100 : damageInPercent,
-                        DamagePercentage = damagePercentage > 100 ? 100 : damagePercentage
-                    });
-                }
-            }
-
-            foreach (var fragment in fragmentsToAdd)
-            {
+                    SpellIndex = spell.SpellIndex,
+                    ItemIndex = spell.ItemIndex,
+                    UniqueName = spell.UniqueName,
+                    DamageHealValue = spell.DamageHealValue,
+                    Category = spell.Category,
+                    Target = spell.Target,
+                    Ticks = spell.Ticks,
+                    HealthChangeType = spell.HealthChangeType,
+                    DamageInPercent = damageInPercent,
+                    DamagePercentage = damagePercentage
+                };
                 spellsFragments.Add(fragment);
+                existingFragments.Add(key, fragment);
             }
 
-            foreach (var fragment in fragmentsToUpdate)
-            {
-                var updatedFragment = fragmentsToAdd.FirstOrDefault(x => x.SpellIndex == fragment.SpellIndex);
-                if (updatedFragment != null)
-                {
-                    fragment.DamageHealValue = updatedFragment.DamageHealValue;
-                    fragment.Ticks = updatedFragment.Ticks;
-                    fragment.DamageInPercent = updatedFragment.DamageInPercent;
-                    fragment.DamagePercentage = updatedFragment.DamagePercentage;
-                }
-            }
-
-            spellsFragments.SortByDescending(x => x.DamageHealValue);
+            spellsFragments.OrderByReference(
+                spellsFragments.OrderByDescending(x => x.DamageHealValue).ToList());
         });
     }
 
@@ -846,28 +1210,22 @@ public class CombatController
             return;
         }
 
-        var playerObject = _trackingController.EntityController.GetEntity(objectId);
-
-        if (playerObject?.Value == null)
+        var player = _trackingController.EntityController.GetEntity(objectId)?.Value;
+        if (player == null)
         {
             return;
         }
 
-        if ((inActiveCombat || inPassiveCombat) && playerObject.Value.Value.CombatTimes.Any(x => x?.EndTime == null))
+        var now = DateTime.UtcNow;
+        if (inActiveCombat || inPassiveCombat)
         {
+            player.StartCombatInterval(now);
+            player.GetOrCreateDamageMeterContentStats(GetCurrentContentType()).StartCombatInterval(now);
             return;
         }
 
-        if (inActiveCombat || inPassiveCombat) playerObject.Value.Value.AddCombatTime(new ActionInterval(DateTime.UtcNow));
-
-        if (!inActiveCombat && !inPassiveCombat)
-        {
-            var combatTime = playerObject.Value.Value.CombatTimes.FirstOrDefault(x => x.EndTime == null);
-            if (combatTime != null)
-            {
-                combatTime.EndTime = DateTime.UtcNow;
-            }
-        }
+        player.EndCombatInterval(now);
+        player.EndDamageMeterContentCombatIntervals(now);
     }
 
     #endregion
@@ -895,7 +1253,7 @@ public class CombatController
         {
             var damage = Random.Next(-5000, 5000);
             var takenDamage = Random.Next(-5000, 5000);
-            await AddDamage(9999, entity.ObjectId ?? -1, damage, Random.Next(2000, 3000), Random.Next(2000, 3000));
+            await AddDamage(9999, entity.ObjectId ?? -1, damage, Random.Next(2000, 3000), Random.Next(2000, 3000), EffectType.Physical);
             await AddTakenDamage(entity.ObjectId ?? -1, 9999, takenDamage, Random.Next(2000, 3000), Random.Next(2000, 3000));
             //Debug.Print($"--- AddDamage - {entity.Name}: {damage}");
 

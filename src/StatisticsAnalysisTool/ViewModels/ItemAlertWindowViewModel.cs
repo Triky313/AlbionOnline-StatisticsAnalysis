@@ -9,11 +9,6 @@ namespace StatisticsAnalysisTool.ViewModels;
 public class ItemAlertWindowViewModel : BaseViewModel
 {
     private readonly AlertInfos _alertInfos;
-    private Color _cityColor;
-    private string _cityName;
-    private BitmapImage _icon;
-    private string _itemName;
-    private ItemAlertWindowTranslation _translation;
 
     public ItemAlertWindowViewModel(AlertInfos alertInfos)
     {
@@ -24,60 +19,124 @@ public class ItemAlertWindowViewModel : BaseViewModel
     private void Init()
     {
         Translation = new ItemAlertWindowTranslation();
+        Title = _alertInfos.AlertType switch
+        {
+            Alert.ItemAlertType.PriceThreshold => Translation.PriceAlertTitle,
+            Alert.ItemAlertType.MarketAvailability => Translation.AvailabilityAlertTitle,
+            Alert.ItemAlertType.BlackMarketBuyOrder => Translation.BlackMarketBuyOrderAlertTitle,
+            _ => string.Empty
+        };
+        LeadText = _alertInfos.AlertType switch
+        {
+            Alert.ItemAlertType.PriceThreshold => Translation.ThePriceOf,
+            Alert.ItemAlertType.MarketAvailability => Translation.AMarketOfferFor,
+            Alert.ItemAlertType.BlackMarketBuyOrder => Translation.HighestBlackMarketBuyOrderFor,
+            _ => string.Empty
+        };
+        ResultText = _alertInfos.AlertType switch
+        {
+            Alert.ItemAlertType.PriceThreshold => Translation.HasBeenUndercut,
+            Alert.ItemAlertType.MarketAvailability => Translation.WasFound,
+            Alert.ItemAlertType.BlackMarketBuyOrder => Translation.ReachedMinimumPrice,
+            _ => string.Empty
+        };
         ItemName = _alertInfos.Item.LocalizedName;
         CityName = _alertInfos.MarketResponse.City;
+        Price = _alertInfos.AlertType == Alert.ItemAlertType.BlackMarketBuyOrder
+            ? _alertInfos.MarketResponse.BuyPriceMax
+            : _alertInfos.MarketResponse.SellPriceMin;
         Icon = _alertInfos.Item.Icon;
         CityColor = Locations.GetLocationColor(_alertInfos.MarketResponse.City.GetMarketLocationByLocationNameOrId());
     }
 
     #region Bindings
 
-    public string ItemName
+    public string Title
     {
-        get => _itemName;
+        get;
         set
         {
-            _itemName = value;
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string LeadText
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string ResultText
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ulong Price
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string ItemName
+    {
+        get;
+        set
+        {
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public string CityName
     {
-        get => _cityName;
+        get;
         set
         {
-            _cityName = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public BitmapImage Icon
     {
-        get => _icon;
+        get;
         set
         {
-            _icon = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public Color CityColor
     {
-        get => _cityColor;
+        get;
         set
         {
-            _cityColor = value;
+            field = value;
             OnPropertyChanged();
         }
     }
 
     public ItemAlertWindowTranslation Translation
     {
-        get => _translation;
+        get;
         set
         {
-            _translation = value;
+            field = value;
             OnPropertyChanged();
         }
     }

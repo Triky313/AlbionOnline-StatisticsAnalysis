@@ -70,4 +70,11 @@ public class LoggingTranslation
     public static string LootComparatorActions => LocalizationController.Translation("LOOT_COMPARATOR_ACTIONS");
     public static string LootComparatorSavedState => LocalizationController.Translation("LOOT_COMPARATOR_SAVED_STATE");
     public static string RemovePlayerFromLootComparator => LocalizationController.Translation("REMOVE_PLAYER_FROM_LOOT_COMPARATOR");
+    public static string CopyPlayerLootLogs => LocalizationController.Translation("COPY_PLAYER_LOOT_LOGS");
+    public static string Kills => LocalizationController.Translation("KILLS");
+    public static string Deaths => LocalizationController.Translation("DEATHS");
+    public static string Gray => LocalizationController.Translation("LOOT_COMPARATOR_STATUS_GRAY");
+    public static string Green => LocalizationController.Translation("LOOT_COMPARATOR_STATUS_GREEN");
+    public static string Blue => LocalizationController.Translation("LOOT_COMPARATOR_STATUS_BLUE");
+    public static string Red => LocalizationController.Translation("LOOT_COMPARATOR_STATUS_RED");
 }

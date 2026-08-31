@@ -8,4 +8,5 @@ public enum ActionOnBuildingType
     Recycling = 3,
     Investigate = 4,
     RerollQuality = 6,
+    AwakenedWeapon = 8
 }
