@@ -4,6 +4,7 @@ using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Crafting;
@@ -47,7 +48,7 @@ public sealed class BlackMarketItemRow : BaseViewModel
         _ => string.Empty
     };
 
-    public BitmapImage Icon => Item?.Icon;
+    public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => ImageController.GetItemImageWithQuality(ItemUniqueName, QualityLevel));
 
     public ulong CurrentBuyPrice => _history?.CurrentBuyPrice ?? 0;
 

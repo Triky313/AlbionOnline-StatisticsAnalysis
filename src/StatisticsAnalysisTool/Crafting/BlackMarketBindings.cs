@@ -36,6 +36,7 @@ public sealed class BlackMarketBindings : BaseViewModel
     private const int SevenDaysWindowDays = 7;
     private const int FourWeeksWindowDays = 28;
     private const string ItemCountChartColorResourceKey = "SolidColorBrush.Accent.Blue.3";
+    private const string ChartLegendTextColorResourceKey = "SolidColorBrush.Text.1";
     private readonly object _historyLock = new();
     private readonly Dictionary<(string ItemUniqueName, int QualityLevel), BlackMarketHistoryEntry> _history = new();
     private readonly Dictionary<(string ItemUniqueName, int QualityLevel), BlackMarketItemRow> _rowsByKey = new();
@@ -91,6 +92,8 @@ public sealed class BlackMarketBindings : BaseViewModel
     public Dictionary<int, string> ItemQualities { get; }
 
     public Dictionary<int, string> ChartDayFilters { get; } = CreateChartDayFilters();
+
+    public SolidColorPaint ChartLegendTextPaint { get; } = CreateChartPaint(ChartLegendTextColorResourceKey);
 
     public ObservableCollection<ISeries> ChartSeries
     {
@@ -288,7 +291,7 @@ public sealed class BlackMarketBindings : BaseViewModel
         }
     }
 
-    public string SelectedItemAverageItemsPerDayText => SelectedItemAverageItemsPerDay.ToString("N0", CultureInfo.CurrentCulture);
+    public string SelectedItemAverageItemsPerDayText => SelectedItemAverageItemsPerDay.ToString("N1", CultureInfo.CurrentCulture);
 
     public string MarketStatusText
     {
@@ -482,7 +485,7 @@ public sealed class BlackMarketBindings : BaseViewModel
             return;
         }
 
-        if (context.MarketLocation != MarketLocation.BlackMarket)
+        if (context.MarketLocation is not (MarketLocation.BlackMarket or MarketLocation.Unknown))
         {
             return;
         }
@@ -702,7 +705,7 @@ public sealed class BlackMarketBindings : BaseViewModel
             pricePoints.Add(new ObservablePoint(index, (double) (priceTotals[index] / priceWeights[index])));
         }
 
-        SelectedItemAverageItemsPerDay = chartDays > 0 ? Math.Floor((double) totalItemCount / chartDays) : 0;
+        SelectedItemAverageItemsPerDay = chartDays > 0 ? (double) totalItemCount / chartDays : 0;
 
         ChartSeries =
         [

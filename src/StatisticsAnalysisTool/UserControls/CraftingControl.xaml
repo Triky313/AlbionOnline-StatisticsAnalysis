@@ -1284,6 +1284,8 @@
                                         TooltipPosition="Center"
                                         FindingStrategy="ExactMatchTakeClosest"
                                         LegendPosition="Top"
+                                        LegendTextPaint="{Binding ChartLegendTextPaint}"
+                                        LegendTextSize="14"
                                         Background="Transparent"
                                         DrawMarginFrame="{x:Null}" />
                 </Grid>
