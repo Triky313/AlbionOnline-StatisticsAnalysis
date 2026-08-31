@@ -26,10 +26,13 @@ namespace StatisticsAnalysisTool;
 
 public partial class App
 {
+    private static readonly Stopwatch _applicationUptimeStopwatch = Stopwatch.StartNew();
     private MainWindowViewModel _mainWindowViewModel;
     private TrackingController _trackingController;
     private ServerUserDataCoordinator _serverUserDataCoordinator;
     private bool _isEarlyShutdown;
+
+    internal static TimeSpan ApplicationUptime => _applicationUptimeStopwatch.Elapsed;
 
     protected override async void OnStartup(StartupEventArgs e)
     {
