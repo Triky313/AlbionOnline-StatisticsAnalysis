@@ -12,6 +12,7 @@ public class SettingsWindowTranslation
     public static string Save => LocalizationController.Translation("SAVE");
     public static string AlarmSoundUsed => LocalizationController.Translation("ALARM_SOUND_USED");
     public static string Volume => LocalizationController.Translation("VOLUME");
+    public static string PreviewSound => LocalizationController.Translation("PREVIEW_SOUND");
     public static string ToolDirectory => LocalizationController.Translation("TOOL_DIRECTORY");
     public static string OpenToolDirectory => LocalizationController.Translation("OPEN_TOOL_DIRECTORY");
     public static string OpenUserDataDirectory => LocalizationController.Translation("OPEN_USER_DATA_DIRECTORY");

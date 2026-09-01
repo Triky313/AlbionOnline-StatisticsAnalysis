@@ -707,6 +707,26 @@ public class SettingsWindowViewModel : BaseViewModel
         updateJsonByDays.Add(new SettingDataInformation { Name = LocalizationController.Translation("EVERY_28_DAYS"), Value = 28 });
     }
 
+    public void PreviewAlertSound()
+    {
+        PreviewSound(AlertSoundSelection, AlertSoundVolumePercentage);
+    }
+
+    public void PreviewDeathAlertSound()
+    {
+        PreviewSound(DeathAlertSoundSelection, DeathAlertSoundVolumePercentage);
+    }
+
+    private static void PreviewSound(SoundOption soundOption, double volumePercentage)
+    {
+        if (!soundOption.IsPlayable)
+        {
+            return;
+        }
+
+        SoundController.PlayAlertSound(soundOption.FilePath, volumePercentage);
+    }
+
     private void InitAlertSounds()
     {
         SoundController.InitializeSoundFilesFromDirectory();

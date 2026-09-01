@@ -44442,6 +44442,23 @@
       ]
     },
     {
+      "tuid": "PREVIEW_SOUND",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Sound testen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Preview sound"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Pr\u00e9\u00e9couter le son"
+        }
+      ]
+    },
+    {
       "tuid": "EXPECTED_RRR",
       "tuv": [
         {

@@ -363,6 +363,11 @@
                                                    TextAlignment="Right" />
                                     </Grid>
                                 </StackPanel>
+                                <Button Content="{Binding Translation.PreviewSound, FallbackValue=PREVIEW__SOUND}"
+                                        HorizontalAlignment="Left"
+                                        IsEnabled="{Binding AlertSoundSelection.IsPlayable}"
+                                        Style="{StaticResource Settings.Button}"
+                                        Click="PreviewAlertSound_Click" />
                             </StackPanel>
                         </StackPanel>
                     </Border>
@@ -403,6 +408,11 @@
                                                    TextAlignment="Right" />
                                     </Grid>
                                 </StackPanel>
+                                <Button Content="{Binding Translation.PreviewSound, FallbackValue=PREVIEW__SOUND}"
+                                        HorizontalAlignment="Left"
+                                        IsEnabled="{Binding DeathAlertSoundSelection.IsPlayable}"
+                                        Style="{StaticResource Settings.Button}"
+                                        Click="PreviewDeathAlertSound_Click" />
                             </StackPanel>
                         </StackPanel>
                     </Border>
