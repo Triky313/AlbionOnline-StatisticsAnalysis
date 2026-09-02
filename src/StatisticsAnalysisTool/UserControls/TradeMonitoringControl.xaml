@@ -189,8 +189,44 @@
             <RowDefinition Height="5" />
             <RowDefinition Height="{Binding TradeMonitoringBindings.GridSplitterPosition, Mode=TwoWay, FallbackValue=125}" />
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" Style="{StaticResource App.TopFilterCard}">
-            <Grid>
+        <Border Grid.Row="0" Margin="15,10,15,8" Padding="0" Style="{StaticResource App.TopFilterCard}">
+            <DockPanel LastChildFill="True">
+                <Grid DockPanel.Dock="Top" Style="{StaticResource Dashboard.SectionHeader}" MouseLeftButtonDown="FilterCardToggle_OnMouseLeftButtonDown">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Margin="12,0,0,0"
+                               Text="{Binding Translation.Filter, FallbackValue=FILTER}"
+                               Style="{StaticResource Dashboard.SectionTitle}" />
+                    <fa5:ImageAwesome Grid.Column="1">
+                        <fa5:ImageAwesome.Style>
+                            <Style TargetType="{x:Type fa5:ImageAwesome}" BasedOn="{StaticResource Dashboard.SectionToggleIcon}">
+                                <Setter Property="Icon" Value="Solid_Plus" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding TradeMonitoringBindings.IsFilterCardExpanded}" Value="True">
+                                        <Setter Property="Icon" Value="Solid_Minus" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </fa5:ImageAwesome.Style>
+                    </fa5:ImageAwesome>
+                </Grid>
+
+                <Border Padding="12,10"
+                        BorderBrush="{StaticResource SolidColorBrush.Background.4}"
+                        BorderThickness="0,1,0,0">
+                    <Border.Style>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding TradeMonitoringBindings.IsFilterCardExpanded}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -374,16 +410,18 @@
                         </ItemsControl>
                     </StackPanel>
                 </Border>
-            </Grid>
+                    </Grid>
+                </Border>
+            </DockPanel>
         </Border>
 
         <TabControl Grid.Row="1" Margin="0" Style="{StaticResource Dashboard.ContentTabControl}" ItemContainerStyle="{StaticResource Dashboard.ContentTabItem}">
-            <TabItem Header="{Binding Translation.TradeOverview, FallbackValue=TRADE_OVERVIEW}">
-                <ScrollViewer Margin="8,8,8,0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                    <StackPanel MinWidth="1025">
+            <TabItem Margin="15,0,0,0" Header="{Binding Translation.TradeOverview, FallbackValue=TRADE_OVERVIEW}">
+                <ScrollViewer Margin="6,5,6,0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <StackPanel MinWidth="700">
                         <ContentControl ContentTemplate="{StaticResource MailStatsObjectTemplate}" Content="{Binding TradeMonitoringBindings.TradeStatsObject}" />
 
-                        <Grid Margin="0,8,0,0">
+                        <Grid Margin="0,10,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />

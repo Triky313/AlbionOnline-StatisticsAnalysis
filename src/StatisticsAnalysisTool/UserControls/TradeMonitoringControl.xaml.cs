@@ -75,6 +75,16 @@ public partial class TradeMonitoringControl
 
     #region Ui events
 
+    private void FilterCardToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel vm)
+        {
+            return;
+        }
+
+        vm.TradeMonitoringBindings.IsFilterCardExpanded = !vm.TradeMonitoringBindings.IsFilterCardExpanded;
+    }
+
     private void TradeMonitoringActivationToggle_Click(object sender, RoutedEventArgs e)
     {
         if (DataContext is not MainWindowViewModel mainWindowViewModel)

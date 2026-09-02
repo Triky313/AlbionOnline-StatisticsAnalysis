@@ -7,6 +7,7 @@ public class MainWindowTranslation
     public static string Update => LocalizationController.Translation("UPDATE");
     public static string NumberOfValues => LocalizationController.Translation("NUMBER_OF_VALUES");
     public static string Search => LocalizationController.Translation("SEARCH");
+    public static string Filter => LocalizationController.Translation("FILTER");
     public static string TimeRange => LocalizationController.Translation("TIME_RANGE");
 
     public static string Load => LocalizationController.Translation("LOAD");
