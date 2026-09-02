@@ -4062,6 +4062,10 @@
         {
           "lang": "en-US",
           "seg": "Crafting costs"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "Coûts de fabrication"
         }
       ]
     },
@@ -38810,7 +38814,8 @@
         {
           "lang": "ru-RU",
           "seg": "Добавьте логи сундука"
-        },{
+        },
+        {
           "lang": "zh-CN",
           "seg": "加载箱子日志（文本）"
         }
@@ -39277,7 +39282,7 @@
           "lang": "en-US",
           "seg": "Save comparator state"
         },
-		{
+        {
           "lang": "fr-FR",
           "seg": "Enregistrer l'état du comparateur"
         }
