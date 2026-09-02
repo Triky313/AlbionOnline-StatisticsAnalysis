@@ -718,9 +718,9 @@ public abstract class DungeonBaseFragment : BaseViewModel
         HellGateFragment => "/Assets/hellgate.png",
         CorruptedFragment => "/Assets/corrupted_dungeon.png",
         AbyssalDepthsFragment => "/Assets/abyssal_depths.png",
-        DragonAreaFragment { PortalSize: DragonAreaPortalSize.Small } => "/Resources/ancient_lands_portal_small.png",
-        DragonAreaFragment { PortalSize: DragonAreaPortalSize.Medium } => "/Resources/ancient_lands_portal_medium.png",
-        DragonAreaFragment { PortalSize: DragonAreaPortalSize.Large } => "/Resources/ancient_lands_portal_big.png",
+        DragonAreaFragment { PortalSize: DragonAreaPortalSize.Small } => "/Assets/ancient_lands_portal_small.png",
+        DragonAreaFragment { PortalSize: DragonAreaPortalSize.Medium } => "/Assets/ancient_lands_portal_medium.png",
+        DragonAreaFragment { PortalSize: DragonAreaPortalSize.Large } => "/Assets/ancient_lands_portal_big.png",
         StaticDungeonFragment => "/Assets/MiniMapMarker/group_dungeon.png",
         _ => "/Assets/dungeon.png"
     };

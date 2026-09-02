@@ -15,5 +15,6 @@ public enum DashboardContentType
     Arena,
     Others,
     StaticDungeon,
-    AvalonianRoads
+    AvalonianRoads,
+    AncientLands
 }

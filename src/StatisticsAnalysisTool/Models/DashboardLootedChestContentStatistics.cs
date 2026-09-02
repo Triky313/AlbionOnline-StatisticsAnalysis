@@ -15,6 +15,7 @@ public sealed class DashboardLootedChestContentStatistics(DashboardContentType c
         DashboardContentType.StandardDungeon => "/Assets/MiniMapMarker/group_dungeon.png",
         DashboardContentType.AvalonDungeon => "/Assets/MiniMapMarker/raid_dungeon.png",
         DashboardContentType.StaticDungeon => "/Assets/MiniMapMarker/group_dungeon.png",
+        DashboardContentType.AncientLands => "/Assets/ancient_lands_portal_small.png",
         DashboardContentType.AvalonianRoads => "/Assets/MiniMapMarker/road_chest_group.png",
         DashboardContentType.OpenWorld => string.Empty,
         DashboardContentType.HellGate => "/Assets/hellgate.png",
