@@ -146,22 +146,22 @@ public static class SettingsController
 
         CurrentSettings.StartupUserDataServerLocation = serverLocation;
 
-        if (Directory.Exists(AppDataPaths.LegacyRuntimeUserDataDirectory))
-        {
-            var hasMigrated = AppDataMigration.TryMigrateLegacyUserDataToServerDirectory(serverLocation, out var migrationMessages);
-            AppDataMigration.LogMessages(migrationMessages);
+        var hasMigrated = AppDataMigration.TryMigrateLegacyUserDataToServerDirectory(
+            serverLocation,
+            out var legacyUserDataExists,
+            out var migrationMessages);
+        AppDataMigration.LogMessages(migrationMessages);
 
-            if (!hasMigrated)
-            {
-                return;
-            }
+        if (legacyUserDataExists && !hasMigrated)
+        {
+            return;
         }
-        else
+
+        if (!legacyUserDataExists)
         {
             Log.Information(
-                "Legacy ServerLocation found but legacy UserData directory is missing. Settings will be updated only. Server={Server}, Directory={Directory}",
-                serverLocation,
-                AppDataPaths.LegacyRuntimeUserDataDirectory);
+                "Legacy ServerLocation found but legacy UserData is missing. Settings will be updated only. Server={Server}",
+                serverLocation);
         }
 
         await FileController.SaveAsync(CurrentSettings, SettingsFilePath, ValidateSettings).ConfigureAwait(false);
