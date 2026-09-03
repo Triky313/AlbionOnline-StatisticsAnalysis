@@ -141,9 +141,19 @@ public sealed class DamageMeterSnapshot : BaseViewModel
         }
 
         DamageMeter = selectedContent.DamageMeter.ToList();
-        MobDamageMeter = (selectedContent.MobDamageMeter ?? [])
+        var filteredMobs = (AllContent.MobDamageMeter ?? [])
+            .Where(x => !contentType.HasValue || x.ContentType == contentType.Value)
             .OrderByDescending(x => x.FirstAttackTime)
             .ToList();
+        var totalMobDamage = filteredMobs.Sum(x => x.Damage);
+        foreach (var mob in filteredMobs)
+        {
+            mob.DamagePercentage = totalMobDamage > 0
+                ? mob.Damage / (double) totalMobDamage * 100
+                : 0;
+        }
+
+        MobDamageMeter = filteredMobs;
         DamageStats = DamageStatsSnapshotFactory.Clone(selectedContent.DamageStats);
         YourStats = DamageMeterYourStatsSnapshotFactory.Clone(selectedContent.YourStats);
     }

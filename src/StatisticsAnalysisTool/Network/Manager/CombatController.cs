@@ -777,7 +777,8 @@ public class CombatController
         foreach (var contentType in DashboardContentTypeResolver.ContentTypes)
         {
             var contentSnapshot = CreateDamageMeterContentSnapshot(contentType, playersByGuid);
-            if (contentSnapshot.HasData)
+            var hasMobDamage = snapshot.AllContent.MobDamageMeter.Any(x => x.ContentType == contentType);
+            if (contentSnapshot.HasData || hasMobDamage)
             {
                 snapshot.ContentSnapshots[contentType] = contentSnapshot;
             }
@@ -792,7 +793,7 @@ public class CombatController
         IReadOnlyDictionary<Guid, PlayerGameObject> playersByGuid)
     {
         var entities = _trackingController.EntityController
-            .GetAllEntitiesWithDamageOrHealAndInParty(contentType);
+            .GetAllEntitiesWithDamageOrHeal(contentType);
         var activePlayerGuids = entities.Select(x => x.Key).ToList();
         var healingPlayerGuids = entities
             .Where(x => x.Value.Heal > 0)
@@ -801,9 +802,11 @@ public class CombatController
         var trackerSnapshot = GetDamageStatsTracker(contentType)
             .CreateSnapshot(activePlayerGuids, healingPlayerGuids);
         var combatEvents = CombatEventTracker.GetCombatEvents(contentType);
-        var mobDamageMeter = MobDamageMeterFragmentFactory.Create(
-            CombatEventTracker.GetMobDamageStats(contentType),
-            (playerGuid, spellIndex) => ResolvePlayerSpellItemIndex(playersByGuid, playerGuid, spellIndex));
+        IReadOnlyCollection<MobDamageMeterFragment> mobDamageMeter = contentType.HasValue
+            ? []
+            : MobDamageMeterFragmentFactory.Create(
+                CombatEventTracker.GetMobDamageStats(),
+                (playerGuid, spellIndex) => ResolvePlayerSpellItemIndex(playersByGuid, playerGuid, spellIndex));
 
         return DamageMeterContentSnapshotFactory.Create(
             entities,
@@ -1307,6 +1310,7 @@ public class CombatController
     {
         var dto = await FileController.LoadAsync<List<DamageMeterSnapshotDto>>(
             AppDataPaths.UserDataFile(Settings.Default.DamageMeterSnapshotsFileName));
+        DamageMeterSnapshotMigration.Migrate(dto);
         var damageMeterSnapshot = dto.Select(SnapshotMapping.Mapping);
 
         _mainWindowViewModel.DamageMeterBindings.DamageMeterSnapshots = damageMeterSnapshot.ToList();
