@@ -85,6 +85,12 @@
                                              TextWrapping="NoWrap"
                                              Style="{StaticResource Settings.TextBox}" />
                                 </StackPanel>
+
+                                <StackPanel Style="{StaticResource Settings.Field}">
+                                    <TextBlock Text="{Binding Translation.MinimizeToSystemTray, FallbackValue=MINIMIZE__TO__SYSTEM__TRAY}" Style="{StaticResource Settings.FieldLabel}" />
+                                    <CheckBox IsChecked="{Binding IsMinimizeToSystemTrayActive}"
+                                              Content="{Binding Translation.Activated, FallbackValue=ACTIVATED}" VerticalContentAlignment="Center" />
+                                </StackPanel>
                             </StackPanel>
 
                             <StackPanel Grid.Column="2">
@@ -363,6 +369,11 @@
                                                    TextAlignment="Right" />
                                     </Grid>
                                 </StackPanel>
+                                <Button Content="{Binding Translation.PreviewSound, FallbackValue=PREVIEW__SOUND}"
+                                        HorizontalAlignment="Left"
+                                        IsEnabled="{Binding AlertSoundSelection.IsPlayable}"
+                                        Style="{StaticResource Settings.Button}"
+                                        Click="PreviewAlertSound_Click" />
                             </StackPanel>
                         </StackPanel>
                     </Border>
@@ -403,6 +414,11 @@
                                                    TextAlignment="Right" />
                                     </Grid>
                                 </StackPanel>
+                                <Button Content="{Binding Translation.PreviewSound, FallbackValue=PREVIEW__SOUND}"
+                                        HorizontalAlignment="Left"
+                                        IsEnabled="{Binding DeathAlertSoundSelection.IsPlayable}"
+                                        Style="{StaticResource Settings.Button}"
+                                        Click="PreviewDeathAlertSound_Click" />
                             </StackPanel>
                         </StackPanel>
                     </Border>

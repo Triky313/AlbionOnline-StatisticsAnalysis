@@ -54,6 +54,7 @@ public class TradeMonitoringBindings : BaseViewModel
 
         DatePickerTradeFrom = SettingsController.CurrentSettings.TradeMonitoringDatePickerTradeFrom;
         DatePickerTradeTo = DateTime.Today.AddDays(1);
+        IsFilterCardExpanded = SettingsController.CurrentSettings.IsTradeMonitoringFilterCardExpanded;
         SynchronizeTimeRangeFilterSelection();
         UpdateProfitByTimeOfDayModeVisibility();
     }
@@ -147,6 +148,22 @@ public class TradeMonitoringBindings : BaseViewModel
             OnPropertyChanged();
         }
     }
+
+    public bool IsFilterCardExpanded
+    {
+        get;
+        set
+        {
+            if (field == value)
+            {
+                return;
+            }
+
+            field = value;
+            SettingsController.CurrentSettings.IsTradeMonitoringFilterCardExpanded = value;
+            OnPropertyChanged();
+        }
+    } = true;
 
     public ObservableCollection<TradeNumericFilterOption> TierFilters
     {

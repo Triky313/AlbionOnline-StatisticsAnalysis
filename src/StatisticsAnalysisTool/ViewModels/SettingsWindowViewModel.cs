@@ -88,6 +88,9 @@ public class SettingsWindowViewModel : BaseViewModel
         // Auto update
         IsSuggestPreReleaseUpdatesActive = SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive;
 
+        // System tray
+        IsMinimizeToSystemTrayActive = SettingsController.CurrentSettings.IsMinimizeToSystemTrayActive;
+
         // Info window
         ShowInfoWindowOnStartChecked = SettingsController.CurrentSettings.IsInfoWindowShownOnStart;
 
@@ -137,6 +140,7 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.ServerType = (ServerType) ServerTypeSelection.Value;
 
         SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive = IsSuggestPreReleaseUpdatesActive;
+        SettingsController.CurrentSettings.IsMinimizeToSystemTrayActive = IsMinimizeToSystemTrayActive;
         SettingsController.CurrentSettings.ExactMatchPlayerNamesLineNumber = PlayerSelectionWithSameNameInDb;
 
         SetBackupStorageDirPath();
@@ -707,6 +711,26 @@ public class SettingsWindowViewModel : BaseViewModel
         updateJsonByDays.Add(new SettingDataInformation { Name = LocalizationController.Translation("EVERY_28_DAYS"), Value = 28 });
     }
 
+    public void PreviewAlertSound()
+    {
+        PreviewSound(AlertSoundSelection, AlertSoundVolumePercentage);
+    }
+
+    public void PreviewDeathAlertSound()
+    {
+        PreviewSound(DeathAlertSoundSelection, DeathAlertSoundVolumePercentage);
+    }
+
+    private static void PreviewSound(SoundOption soundOption, double volumePercentage)
+    {
+        if (!soundOption.IsPlayable)
+        {
+            return;
+        }
+
+        SoundController.PlayAlertSound(soundOption.FilePath, volumePercentage);
+    }
+
     private void InitAlertSounds()
     {
         SoundController.InitializeSoundFilesFromDirectory();
@@ -1124,6 +1148,16 @@ public class SettingsWindowViewModel : BaseViewModel
     }
 
     public bool IsSuggestPreReleaseUpdatesActive
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsMinimizeToSystemTrayActive
     {
         get;
         set

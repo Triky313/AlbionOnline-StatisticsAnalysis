@@ -90,6 +90,9 @@
                             </StackPanel>
                         </StackPanel>
                     </Grid>
+                    <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,18,5,0" Height="18">
+                        <Label x:Name="ApplicationUptimeLabel" Style="{StaticResource HeaderStyle.Tracking.Content}" Content="00:00:00" />
+                    </Grid>
                 </Grid>
             </StackPanel>
 

@@ -6,6 +6,7 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace StatisticsAnalysisTool.Views;
 
@@ -16,18 +17,28 @@ public partial class MainWindow
 {
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly WindowChromeController _windowChromeController;
+    private readonly DispatcherTimer _applicationUptimeTimer;
+    private readonly SystemTrayService _systemTrayService;
 
     public MainWindow(MainWindowViewModel mainWindowViewModel)
     {
         InitializeComponent();
+        _applicationUptimeTimer = new DispatcherTimer(DispatcherPriority.Background)
+        {
+            Interval = TimeSpan.FromSeconds(1)
+        };
+        _applicationUptimeTimer.Tick += ApplicationUptimeTimer_OnTick;
         _windowChromeController = new WindowChromeController(
             this,
             MaximizedButton,
             ResizeMode.CanResizeWithGrip,
             ResizeMode.NoResize);
         InitWindow();
+        _systemTrayService = new SystemTrayService(this, mainWindowViewModel);
         _mainWindowViewModel = mainWindowViewModel;
         DataContext = _mainWindowViewModel;
+        UpdateApplicationUptime();
+        _applicationUptimeTimer.Start();
     }
 
     public void InitWindow()
@@ -59,9 +70,22 @@ public partial class MainWindow
 
     private void MainWindow_OnClosing(object sender, EventArgs eventArgs)
     {
+        var windowStateForPersistence = _systemTrayService.WindowStateForPersistence;
+        _applicationUptimeTimer.Stop();
+        _systemTrayService.Dispose();
         _mainWindowViewModel.DisposeItemDetails();
         _mainWindowViewModel.CraftingBindings.DisposeLossExplorer();
-        SettingsController.SetWindowSettings(WindowState, Height, Width, Left, Top);
+        SettingsController.SetWindowSettings(windowStateForPersistence, Height, Width, Left, Top);
+    }
+
+    private void ApplicationUptimeTimer_OnTick(object sender, EventArgs e)
+    {
+        UpdateApplicationUptime();
+    }
+
+    private void UpdateApplicationUptime()
+    {
+        ApplicationUptimeLabel.Content = App.ApplicationUptime.ToTimerString();
     }
 
     private void MinimizeButton_Click(object sender, RoutedEventArgs e)

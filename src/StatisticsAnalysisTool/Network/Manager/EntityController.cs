@@ -173,9 +173,21 @@ public class EntityController
 
     public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntitiesWithDamageOrHealAndInParty(DashboardContentType? contentType = null)
     {
+        return GetAllEntitiesWithDamageOrHeal(contentType, true);
+    }
+
+    public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntitiesWithDamageOrHeal(DashboardContentType? contentType = null)
+    {
+        return GetAllEntitiesWithDamageOrHeal(contentType, false);
+    }
+
+    private List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntitiesWithDamageOrHeal(
+        DashboardContentType? contentType,
+        bool onlyInParty)
+    {
         return _knownEntities
             .ToArray()
-            .Where(x => x.Value.IsInParty)
+            .Where(x => !onlyInParty || x.Value.IsInParty)
             .Select(x => new KeyValuePair<Guid, PlayerGameObject>(
                 x.Key,
                 contentType.HasValue ? x.Value.CreateDamageMeterContentView(contentType.Value) : x.Value))

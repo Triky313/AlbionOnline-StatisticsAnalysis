@@ -38,6 +38,7 @@ public class SettingsObject
     public double MainWindowLeftPosition { get; set; } = 0;
     public double MainWindowTopPosition { get; set; } = 0;
     public bool MainWindowMaximized { get; set; } = false;
+    public bool IsMinimizeToSystemTrayActive { get; set; } = false;
     public bool IsNavigationMenuOpen { get; set; } = true;
     public bool IsTrackingResetByMapChangeActive { get; set; } = false;
     public bool IsMainTrackerFilterSilver { get; set; } = false;
@@ -69,6 +70,7 @@ public class SettingsObject
     public bool ShortDamageMeterToClipboard { get; set; } = false;
     public bool OnlyDamageToPlayersCounts { get; set; } = false;
     public bool IsTradeMonitoringActive { get; set; } = true;
+    public bool IsTradeMonitoringFilterCardExpanded { get; set; } = true;
     public bool IsCraftingCostsMonitoringActive { get; set; } = true;
     public bool IsPlayerTradeMonitoringActive { get; set; } = true;
     public bool IgnoreMailsWithZeroValues { get; set; } = false;

@@ -45,7 +45,6 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Dirs]
 Name: "{app}"; Permissions: users-modify
-Name: "{app}\UserData"; Permissions: users-modify; Flags: uninsneveruninstall
 
 [Files]
 Source: "..\..\src\StatisticsAnalysisTool\bin\Release\publish\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs

@@ -11,5 +11,6 @@ public sealed class SoundOption
 
     public string Identifier { get; }
     public string DisplayName { get; }
+    public bool IsPlayable => !string.IsNullOrWhiteSpace(FilePath);
     public string FilePath { get; }
 }

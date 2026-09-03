@@ -931,6 +931,8 @@
                                               IsSynchronizedWithCurrentItem="True"
                                               DisplayMemberPath="TimestampString"
                                               SelectedValuePath="DamageMeter" />
+                                    <ProgressBar Height="2" Margin="0,0,0,0" IsIndeterminate="True"
+                                                 Visibility="{Binding DamageMeterBindings.DamageMeterSnapshotLoadBarVisibility}" />
                                 </StackPanel>
                             </Border>
 

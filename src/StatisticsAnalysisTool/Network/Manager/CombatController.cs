@@ -29,6 +29,7 @@ public class CombatController
     private readonly DamageStatsTracker _damageStatsTracker = new();
     private readonly ConcurrentDictionary<DashboardContentType, DamageStatsTracker> _damageStatsTrackersByContent = new();
     private readonly object _damageStatsUiUpdateLock = new();
+    private readonly DamageMeterSnapshotStorage _damageMeterSnapshotStorage = new();
     private bool _combatModeWasCombatOver;
     private bool _isDamageStatsUiUpdateActive;
     private DateTime _lastDamageStatsUiUpdate;
@@ -49,6 +50,7 @@ public class CombatController
         _mainWindowViewModel.DamageMeterBindings.DamageMeterContentFilterChanged += OnDamageMeterContentFilterChanged;
         _mainWindowViewModel.DamageMeterBindings.DamageMeterDisplayChanged += OnDamageMeterDisplayChanged;
         _mainWindowViewModel.DamageMeterBindings.DamageMeterSnapshotProvider = CreateDamageMeterSnapshot;
+        _mainWindowViewModel.DamageMeterBindings.DamageMeterSnapshotLoader = _damageMeterSnapshotStorage.LoadSnapshotAsync;
 
 #if DEBUG
         RunDamageMeterDebugAsync(0, 0);
@@ -777,7 +779,8 @@ public class CombatController
         foreach (var contentType in DashboardContentTypeResolver.ContentTypes)
         {
             var contentSnapshot = CreateDamageMeterContentSnapshot(contentType, playersByGuid);
-            if (contentSnapshot.HasData)
+            var hasMobDamage = snapshot.AllContent.MobDamageMeter.Any(x => x.ContentType == contentType);
+            if (contentSnapshot.HasData || hasMobDamage)
             {
                 snapshot.ContentSnapshots[contentType] = contentSnapshot;
             }
@@ -792,7 +795,7 @@ public class CombatController
         IReadOnlyDictionary<Guid, PlayerGameObject> playersByGuid)
     {
         var entities = _trackingController.EntityController
-            .GetAllEntitiesWithDamageOrHealAndInParty(contentType);
+            .GetAllEntitiesWithDamageOrHeal(contentType);
         var activePlayerGuids = entities.Select(x => x.Key).ToList();
         var healingPlayerGuids = entities
             .Where(x => x.Value.Heal > 0)
@@ -801,9 +804,11 @@ public class CombatController
         var trackerSnapshot = GetDamageStatsTracker(contentType)
             .CreateSnapshot(activePlayerGuids, healingPlayerGuids);
         var combatEvents = CombatEventTracker.GetCombatEvents(contentType);
-        var mobDamageMeter = MobDamageMeterFragmentFactory.Create(
-            CombatEventTracker.GetMobDamageStats(contentType),
-            (playerGuid, spellIndex) => ResolvePlayerSpellItemIndex(playersByGuid, playerGuid, spellIndex));
+        IReadOnlyCollection<MobDamageMeterFragment> mobDamageMeter = contentType.HasValue
+            ? []
+            : MobDamageMeterFragmentFactory.Create(
+                CombatEventTracker.GetMobDamageStats(),
+                (playerGuid, spellIndex) => ResolvePlayerSpellItemIndex(playersByGuid, playerGuid, spellIndex));
 
         return DamageMeterContentSnapshotFactory.Create(
             entities,
@@ -1305,11 +1310,10 @@ public class CombatController
 
     public async Task LoadFromFileAsync()
     {
-        var dto = await FileController.LoadAsync<List<DamageMeterSnapshotDto>>(
+        var snapshots = await _damageMeterSnapshotStorage.LoadAsync(
             AppDataPaths.UserDataFile(Settings.Default.DamageMeterSnapshotsFileName));
-        var damageMeterSnapshot = dto.Select(SnapshotMapping.Mapping);
-
-        _mainWindowViewModel.DamageMeterBindings.DamageMeterSnapshots = damageMeterSnapshot.ToList();
+        _mainWindowViewModel.DamageMeterBindings.DamageMeterSnapshotSelection = null;
+        _mainWindowViewModel.DamageMeterBindings.DamageMeterSnapshots = snapshots;
     }
 
     public async Task SaveInFileAsync()
@@ -1319,9 +1323,8 @@ public class CombatController
             return;
         }
 
-        await FileController.SaveAsync(_mainWindowViewModel.DamageMeterBindings?.DamageMeterSnapshots?.Select(SnapshotMapping.Mapping),
-            AppDataPaths.UserDataFile(Settings.Default.DamageMeterSnapshotsFileName));
-        Log.Information("Damage Meter snapshots saved");
+        await _damageMeterSnapshotStorage.SaveAsync(
+            _mainWindowViewModel.DamageMeterBindings?.DamageMeterSnapshots ?? []);
     }
 
     #endregion

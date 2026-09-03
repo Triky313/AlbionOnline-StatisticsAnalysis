@@ -18,7 +18,6 @@ public static class AppDataMigration
         }
 
         TryMigrateDirectory(source.BackupsDirectory, AppDataPaths.BackupsDirectory, messages);
-        TryMigrateDirectory(source.UserDataDirectory, AppDataPaths.LegacyRuntimeUserDataDirectory, messages);
         TryMigrateDirectory(source.TempDirectory, AppDataPaths.TempDirectory, messages);
         TryMigrateDirectory(source.SpellImageResourcesDirectory, AppDataPaths.SpellImageResourcesDirectory, messages);
         TryMigrateDirectory(source.LogsDirectory, AppDataPaths.LogsDirectory, messages);
@@ -31,17 +30,25 @@ public static class AppDataMigration
 
     public static bool TryMigrateLegacyUserDataToServerDirectory(
         ServerLocation serverLocation,
+        out bool sourceExists,
         out IReadOnlyCollection<AppDataMigrationMessage> messages)
     {
         var migrationMessages = new List<AppDataMigrationMessage>();
         messages = migrationMessages;
+        sourceExists = false;
 
         if (serverLocation is not (ServerLocation.America or ServerLocation.Asia or ServerLocation.Europe))
         {
             return false;
         }
 
-        var sourcePath = AppDataPaths.LegacyRuntimeUserDataDirectory;
+        if (!TryGetLegacyUserDataMigrationSource(out var sourcePath))
+        {
+            return false;
+        }
+
+        sourceExists = true;
+
         var targetPath = AppDataPaths.GetUserDataDirectory(serverLocation);
         var migrationId = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
         var tempTargetPath = $"{targetPath}.migration-{migrationId}";
@@ -49,11 +56,6 @@ public static class AppDataMigration
 
         try
         {
-            if (!Directory.Exists(sourcePath))
-            {
-                return false;
-            }
-
             Log.Information("Migrating legacy user data. Server={Server}, Source={Source}, Target={Target}", serverLocation, sourcePath, targetPath);
 
             CopyDirectory(sourcePath, tempTargetPath, true);
@@ -65,7 +67,6 @@ public static class AppDataMigration
             }
 
             Directory.Move(tempTargetPath, targetPath);
-            Directory.Delete(sourcePath, true);
             migrationMessages.Add(AppDataMigrationMessage.Success(sourcePath, targetPath));
             return true;
         }
@@ -112,10 +113,30 @@ public static class AppDataMigration
         return false;
     }
 
+    private static bool TryGetLegacyUserDataMigrationSource(out string sourcePath)
+    {
+        foreach (var candidatePath in new[]
+                 {
+                     AppDataPaths.LegacyRuntimeUserDataDirectory,
+                     AppDataPaths.LegacyUserDataDirectory,
+                     AppDataPaths.LegacyDefaultUserDataDirectory
+                 })
+        {
+            if (ContainsLegacyUserData(candidatePath))
+            {
+                sourcePath = candidatePath;
+                return true;
+            }
+        }
+
+        sourcePath = string.Empty;
+        return false;
+    }
+
     private static bool HasRuntimeData(AppDataMigrationSource source)
     {
         return Directory.Exists(source.BackupsDirectory)
-            || Directory.Exists(source.UserDataDirectory)
+            || ContainsLegacyUserData(source.UserDataDirectory)
             || Directory.Exists(source.TempDirectory)
             || Directory.Exists(source.SpellImageResourcesDirectory)
             || Directory.Exists(source.LogsDirectory)
@@ -140,6 +161,29 @@ public static class AppDataMigration
         {
             messages.Add(AppDataMigrationMessage.Error(sourcePath, targetPath, ex));
         }
+    }
+
+    private static bool ContainsLegacyUserData(string path)
+    {
+        if (!Directory.Exists(path))
+        {
+            return false;
+        }
+
+        try
+        {
+            return !IsDirectoryEmpty(path);
+        }
+        catch
+        {
+            return true;
+        }
+    }
+
+    private static bool IsDirectoryEmpty(string path)
+    {
+        using var entries = Directory.EnumerateFileSystemEntries(path).GetEnumerator();
+        return !entries.MoveNext();
     }
 
     private static void TryMigrateFile(string sourcePath, string targetPath, ICollection<AppDataMigrationMessage> messages)

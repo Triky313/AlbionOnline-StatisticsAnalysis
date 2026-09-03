@@ -125,6 +125,16 @@ public partial class SettingsControl
         await SettingsWindowViewModel.RestartNetworkTrackingAsync();
     }
 
+    private void PreviewAlertSound_Click(object sender, RoutedEventArgs e)
+    {
+        _settingsWindowViewModel.PreviewAlertSound();
+    }
+
+    private void PreviewDeathAlertSound_Click(object sender, RoutedEventArgs e)
+    {
+        _settingsWindowViewModel.PreviewDeathAlertSound();
+    }
+
     private async void BackupNow_Click(object sender, RoutedEventArgs e)
     {
         _settingsWindowViewModel.IsBackupNowButtonEnabled = false;
