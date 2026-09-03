@@ -38,6 +38,7 @@ public class SettingsObject
     public double MainWindowLeftPosition { get; set; } = 0;
     public double MainWindowTopPosition { get; set; } = 0;
     public bool MainWindowMaximized { get; set; } = false;
+    public bool IsMinimizeToSystemTrayActive { get; set; } = false;
     public bool IsNavigationMenuOpen { get; set; } = true;
     public bool IsTrackingResetByMapChangeActive { get; set; } = false;
     public bool IsMainTrackerFilterSilver { get; set; } = false;

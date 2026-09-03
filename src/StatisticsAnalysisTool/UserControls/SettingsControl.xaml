@@ -85,6 +85,12 @@
                                              TextWrapping="NoWrap"
                                              Style="{StaticResource Settings.TextBox}" />
                                 </StackPanel>
+
+                                <StackPanel Style="{StaticResource Settings.Field}">
+                                    <TextBlock Text="{Binding Translation.MinimizeToSystemTray, FallbackValue=MINIMIZE__TO__SYSTEM__TRAY}" Style="{StaticResource Settings.FieldLabel}" />
+                                    <CheckBox IsChecked="{Binding IsMinimizeToSystemTrayActive}"
+                                              Content="{Binding Translation.Activated, FallbackValue=ACTIVATED}" VerticalContentAlignment="Center" />
+                                </StackPanel>
                             </StackPanel>
 
                             <StackPanel Grid.Column="2">

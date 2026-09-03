@@ -1,6 +1,84 @@
 {
   "translations": [
     {
+      "tuid": "MINIMIZE_TO_SYSTEM_TRAY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Beim Minimieren in den Infobereich ausblenden"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Hide in the notification area when minimized"
+        }
+      ]
+    },
+    {
+      "tuid": "ACTIVATE_TRACKING",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Tracking aktivieren"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Enable tracking"
+        }
+      ]
+    },
+    {
+      "tuid": "DEACTIVATE_TRACKING",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Tracking deaktivieren"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Disable tracking"
+        }
+      ]
+    },
+    {
+      "tuid": "OPEN_APPLICATION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Öffnen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Open"
+        }
+      ]
+    },
+    {
+      "tuid": "EXIT_APPLICATION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Beenden"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Exit"
+        }
+      ]
+    },
+    {
+      "tuid": "APPLICATION_CONTINUES_TO_RUN_IN_SYSTEM_TRAY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Das Statistics Analysis Tool läuft weiterhin im Infobereich."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Statistics Analysis Tool continues to run in the notification area."
+        }
+      ]
+    },
+    {
       "tuid": "LANGUAGE",
       "tuv": [
         {

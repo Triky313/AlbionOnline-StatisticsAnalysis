@@ -18,6 +18,7 @@ public partial class MainWindow
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly WindowChromeController _windowChromeController;
     private readonly DispatcherTimer _applicationUptimeTimer;
+    private readonly SystemTrayService _systemTrayService;
 
     public MainWindow(MainWindowViewModel mainWindowViewModel)
     {
@@ -33,6 +34,7 @@ public partial class MainWindow
             ResizeMode.CanResizeWithGrip,
             ResizeMode.NoResize);
         InitWindow();
+        _systemTrayService = new SystemTrayService(this, mainWindowViewModel);
         _mainWindowViewModel = mainWindowViewModel;
         DataContext = _mainWindowViewModel;
         UpdateApplicationUptime();
@@ -68,10 +70,12 @@ public partial class MainWindow
 
     private void MainWindow_OnClosing(object sender, EventArgs eventArgs)
     {
+        var windowStateForPersistence = _systemTrayService.WindowStateForPersistence;
         _applicationUptimeTimer.Stop();
+        _systemTrayService.Dispose();
         _mainWindowViewModel.DisposeItemDetails();
         _mainWindowViewModel.CraftingBindings.DisposeLossExplorer();
-        SettingsController.SetWindowSettings(WindowState, Height, Width, Left, Top);
+        SettingsController.SetWindowSettings(windowStateForPersistence, Height, Width, Left, Top);
     }
 
     private void ApplicationUptimeTimer_OnTick(object sender, EventArgs e)

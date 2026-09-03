@@ -30,6 +30,7 @@ public class SettingsWindowTranslation
     public static string ExportLootLoggingFileWithRealItemName => LocalizationController.Translation("EXPORT_LOOT_LOGGING_FILE_WITH_REAL_ITEM_NAME");
     public static string SuggestPreReleaseUpdates => LocalizationController.Translation("SUGGEST_PRE_RELEASE_UPDATES");
     public static string AttentionTheseVersionsAreStillBeingTested => LocalizationController.Translation("ATTENTION_THESE_VERSION_ARE_STILL_BEING_TESTED");
+    public static string MinimizeToSystemTray => LocalizationController.Translation("MINIMIZE_TO_SYSTEM_TRAY");
     public static string CharacterNameToTrack => LocalizationController.Translation("CHARACTER_NAME_TO_TRACK");
     public static string NavigationTabVisibility => LocalizationController.Translation("NAVIGATION_TAB_VISIBILITY");
     public static string Automatically => LocalizationController.Translation("AUTOMATICALLY");
