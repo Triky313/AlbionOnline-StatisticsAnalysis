@@ -21,6 +21,10 @@ public sealed class DamageMeterSnapshot : BaseViewModel
     private DamageMeterContentSnapshot _allContent = new();
     private Dictionary<DashboardContentType, DamageMeterContentSnapshot> _contentSnapshots = [];
 
+    internal Guid StorageId { get; set; } = Guid.NewGuid();
+    internal bool IsLoaded { get; set; } = true;
+    internal bool IsPersisted { get; set; }
+
     public DamageMeterSnapshot()
     {
         Timestamp = DateTime.UtcNow;
@@ -156,5 +160,17 @@ public sealed class DamageMeterSnapshot : BaseViewModel
         MobDamageMeter = filteredMobs;
         DamageStats = DamageStatsSnapshotFactory.Clone(selectedContent.DamageStats);
         YourStats = DamageMeterYourStatsSnapshotFactory.Clone(selectedContent.YourStats);
+    }
+
+    internal void LoadContentFrom(DamageMeterSnapshot snapshot)
+    {
+        if (snapshot == null)
+        {
+            return;
+        }
+
+        AllContent = snapshot.AllContent;
+        ContentSnapshots = snapshot.ContentSnapshots;
+        IsLoaded = true;
     }
 }

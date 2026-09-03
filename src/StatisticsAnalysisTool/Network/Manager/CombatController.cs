@@ -29,6 +29,7 @@ public class CombatController
     private readonly DamageStatsTracker _damageStatsTracker = new();
     private readonly ConcurrentDictionary<DashboardContentType, DamageStatsTracker> _damageStatsTrackersByContent = new();
     private readonly object _damageStatsUiUpdateLock = new();
+    private readonly DamageMeterSnapshotStorage _damageMeterSnapshotStorage = new();
     private bool _combatModeWasCombatOver;
     private bool _isDamageStatsUiUpdateActive;
     private DateTime _lastDamageStatsUiUpdate;
@@ -49,6 +50,7 @@ public class CombatController
         _mainWindowViewModel.DamageMeterBindings.DamageMeterContentFilterChanged += OnDamageMeterContentFilterChanged;
         _mainWindowViewModel.DamageMeterBindings.DamageMeterDisplayChanged += OnDamageMeterDisplayChanged;
         _mainWindowViewModel.DamageMeterBindings.DamageMeterSnapshotProvider = CreateDamageMeterSnapshot;
+        _mainWindowViewModel.DamageMeterBindings.DamageMeterSnapshotLoader = _damageMeterSnapshotStorage.LoadSnapshotAsync;
 
 #if DEBUG
         RunDamageMeterDebugAsync(0, 0);
@@ -1308,12 +1310,10 @@ public class CombatController
 
     public async Task LoadFromFileAsync()
     {
-        var dto = await FileController.LoadAsync<List<DamageMeterSnapshotDto>>(
+        var snapshots = await _damageMeterSnapshotStorage.LoadAsync(
             AppDataPaths.UserDataFile(Settings.Default.DamageMeterSnapshotsFileName));
-        DamageMeterSnapshotMigration.Migrate(dto);
-        var damageMeterSnapshot = dto.Select(SnapshotMapping.Mapping);
-
-        _mainWindowViewModel.DamageMeterBindings.DamageMeterSnapshots = damageMeterSnapshot.ToList();
+        _mainWindowViewModel.DamageMeterBindings.DamageMeterSnapshotSelection = null;
+        _mainWindowViewModel.DamageMeterBindings.DamageMeterSnapshots = snapshots;
     }
 
     public async Task SaveInFileAsync()
@@ -1323,9 +1323,8 @@ public class CombatController
             return;
         }
 
-        await FileController.SaveAsync(_mainWindowViewModel.DamageMeterBindings?.DamageMeterSnapshots?.Select(SnapshotMapping.Mapping),
-            AppDataPaths.UserDataFile(Settings.Default.DamageMeterSnapshotsFileName));
-        Log.Information("Damage Meter snapshots saved");
+        await _damageMeterSnapshotStorage.SaveAsync(
+            _mainWindowViewModel.DamageMeterBindings?.DamageMeterSnapshots ?? []);
     }
 
     #endregion

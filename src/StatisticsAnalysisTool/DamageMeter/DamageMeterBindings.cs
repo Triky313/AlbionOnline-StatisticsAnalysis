@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 
@@ -51,6 +52,7 @@ public class DamageMeterBindings : BaseViewModel
     private ObservableCollection<DamageStatsEntry> _topBurstDamageFiveSeconds = [];
     private ObservableCollection<DamageStatsEntry> _topBurstDamageTenSeconds = [];
     private ObservableCollection<DamageStatsEntry> _topAttackedTargets = [];
+    private int _damageMeterSnapshotLoadVersion;
 
     public DamageMeterBindings()
     {
@@ -133,6 +135,7 @@ public class DamageMeterBindings : BaseViewModel
     public event Action<DashboardContentType?> DamageMeterContentFilterChanged;
     public event Action DamageMeterDisplayChanged;
     public Func<DamageMeterSnapshot> DamageMeterSnapshotProvider { private get; set; }
+    public Func<DamageMeterSnapshot, Task<DamageMeterSnapshot>> DamageMeterSnapshotLoader { private get; set; }
 
     #region Damage meter
 
@@ -579,11 +582,38 @@ public class DamageMeterBindings : BaseViewModel
         set
         {
             _damageMeterSnapshotSelection = value;
+            var loadVersion = ++_damageMeterSnapshotLoadVersion;
             ApplySnapshotContentFilter();
             SetDamageMeterSnapshotSort();
             SetSnapshotDamageStats();
             OnPropertyChanged();
+
+            if (value is { IsLoaded: false } && DamageMeterSnapshotLoader != null)
+            {
+                _ = LoadDamageMeterSnapshotAsync(value, loadVersion);
+            }
         }
+    }
+
+    private async Task LoadDamageMeterSnapshotAsync(DamageMeterSnapshot snapshot, int loadVersion)
+    {
+        var loadedSnapshot = await DamageMeterSnapshotLoader(snapshot);
+        if (loadedSnapshot == null)
+        {
+            return;
+        }
+
+        snapshot.LoadContentFrom(loadedSnapshot);
+        if (loadVersion != _damageMeterSnapshotLoadVersion
+            || !ReferenceEquals(snapshot, DamageMeterSnapshotSelection))
+        {
+            return;
+        }
+
+        ApplySnapshotContentFilter();
+        SetDamageMeterSnapshotSort();
+        SetSnapshotDamageStats();
+        OnPropertyChanged(nameof(DamageMeterSnapshotSelection));
     }
 
     public DamageMeterSortStruct DamageMeterSnapshotSortSelection
