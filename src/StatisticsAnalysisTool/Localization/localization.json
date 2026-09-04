@@ -16217,6 +16217,59 @@
       ]
     },
     {
+      "tuid": "LAST_60_MINUTES",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Letzte 60 Minuten"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Last 60 minutes"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Últimos 60 minutos"
+        },
+        {
+          "lang": "fr-FR",
+          "seg": "60 dernières minutes"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "過去60分"
+        },
+        {
+          "lang": "ko-KR",
+          "seg": "최근 60분"
+        },
+        {
+          "lang": "pl-PL",
+          "seg": "Ostatnie 60 minut"
+        },
+        {
+          "lang": "pt-BR",
+          "seg": "Últimos 60 minutos"
+        },
+        {
+          "lang": "ru-RU",
+          "seg": "Последние 60 минут"
+        },
+        {
+          "lang": "tr-TR",
+          "seg": "Son 60 dakika"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "最近60分钟"
+        },
+        {
+          "lang": "zh-TW",
+          "seg": "最近60分鐘"
+        }
+      ]
+    },
+    {
       "tuid": "HOURS",
       "tuv": [
         {
