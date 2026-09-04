@@ -124,19 +124,18 @@
                 </DockPanel>
             </Border>
 
-            <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                <ListBox ItemsSource="{Binding DungeonBindings.DungeonStatsType}"
-                         SelectedItem="{Binding DungeonBindings.SelectedDungeonStatsType, Mode=TwoWay}"
-                         DisplayMemberPath="Name"
-                         Style="{StaticResource Dungeon.ContentTabs}"
-                         ItemContainerStyle="{StaticResource Dungeon.ContentTab}">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <VirtualizingStackPanel Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                </ListBox>
-            </ScrollViewer>
+            <ListBox Grid.Row="1"
+                     ItemsSource="{Binding DungeonBindings.DungeonStatsType}"
+                     SelectedItem="{Binding DungeonBindings.SelectedDungeonStatsType, Mode=TwoWay}"
+                     DisplayMemberPath="Name"
+                     Style="{StaticResource Dungeon.ContentTabs}"
+                     ItemContainerStyle="{StaticResource Dungeon.ContentTab}">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
 
             <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <StackPanel Margin="0,8,0,8">
