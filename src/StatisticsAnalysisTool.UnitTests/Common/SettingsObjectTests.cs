@@ -60,4 +60,19 @@ public class SettingsObjectTests
         result.NetworkDevices[0].Name.Should().Be("Test network adapter");
         result.NetworkDevices[0].IsSelected.Should().BeTrue();
     }
+
+    [Test]
+    public void SettingsObject_WithoutWindowBehaviorSettings_ShouldKeepAllWindowAutomationDisabled()
+    {
+        var result = JsonSerializer.Deserialize<SettingsObject>("{}");
+
+        result.Should().NotBeNull();
+        result!.IsStartWithWindowsActive.Should().BeFalse();
+        result.IsStartInSystemTrayActive.Should().BeFalse();
+        result.IsOpenWithGameActive.Should().BeFalse();
+        result.IsHideWithGameActive.Should().BeFalse();
+        result.IsStartTrackingWithGameActive.Should().BeFalse();
+        result.IsStopTrackingWithGameActive.Should().BeFalse();
+        result.IsMinimizeToSystemTrayActive.Should().BeFalse();
+    }
 }

@@ -1,6 +1,244 @@
 {
   "translations": [
     {
+      "tuid": "WINDOW_AND_STARTUP",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Fenster und Autostart"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Window and startup"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Ventana e inicio"
+        }
+      ]
+    },
+    {
+      "tuid": "START_WITH_WINDOWS",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Mit Windows starten"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Start with Windows"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Iniciar con Windows"
+        }
+      ]
+    },
+    {
+      "tuid": "START_WITH_WINDOWS_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Startet das Statistics Analysis Tool automatisch nach der Windows-Anmeldung."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Starts Statistics Analysis Tool automatically after you sign in to Windows."
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Inicia Statistics Analysis Tool automáticamente después de iniciar sesión en Windows."
+        }
+      ]
+    },
+    {
+      "tuid": "START_IN_SYSTEM_TRAY",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Im Infobereich starten"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Start in the notification area"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Iniciar en el área de notificación"
+        }
+      ]
+    },
+    {
+      "tuid": "START_IN_SYSTEM_TRAY_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Blendet das Fenster direkt nach dem Start in den Infobereich aus."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Hides the window in the notification area immediately after launch."
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Oculta la ventana en el área de notificación inmediatamente después del inicio."
+        }
+      ]
+    },
+    {
+      "tuid": "OPEN_WITH_GAME",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Mit dem Spiel öffnen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Open with the game"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Abrir con el juego"
+        }
+      ]
+    },
+    {
+      "tuid": "OPEN_WITH_GAME_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Stellt das Fenster aus dem Infobereich wieder her, wenn Albion Online startet."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Restores the window from the notification area when Albion Online starts."
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Restaura la ventana desde el área de notificación cuando se inicia Albion Online."
+        }
+      ]
+    },
+    {
+      "tuid": "HIDE_WITH_GAME",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Mit dem Spiel ausblenden"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Hide with the game"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Ocultar con el juego"
+        }
+      ]
+    },
+    {
+      "tuid": "HIDE_WITH_GAME_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Blendet das Fenster in den Infobereich aus, wenn Albion Online beendet wird."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Hides the window in the notification area when Albion Online closes."
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Oculta la ventana en el área de notificación cuando se cierra Albion Online."
+        }
+      ]
+    },
+    {
+      "tuid": "START_TRACKING_WITH_GAME",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Tracking mit dem Spiel starten"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Start tracking with the game"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Iniciar el seguimiento con el juego"
+        }
+      ]
+    },
+    {
+      "tuid": "START_TRACKING_WITH_GAME_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Startet das Tracking automatisch, wenn Albion Online gestartet wird."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Starts tracking automatically when Albion Online starts."
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Inicia el seguimiento automáticamente cuando se inicia Albion Online."
+        }
+      ]
+    },
+    {
+      "tuid": "STOP_TRACKING_WITH_GAME",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Tracking mit dem Spiel stoppen"
+        },
+        {
+          "lang": "en-US",
+          "seg": "Stop tracking with the game"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Detener el seguimiento con el juego"
+        }
+      ]
+    },
+    {
+      "tuid": "STOP_TRACKING_WITH_GAME_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Stoppt das Tracking automatisch, wenn Albion Online beendet wird."
+        },
+        {
+          "lang": "en-US",
+          "seg": "Stops tracking automatically when Albion Online closes."
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Detiene el seguimiento automáticamente cuando se cierra Albion Online."
+        }
+      ]
+    },
+    {
+      "tuid": "WINDOWS_STARTUP_SETTING_UPDATE_FAILED",
+      "tuv": [
+        {
+          "lang": "de-DE",
+          "seg": "Die Windows-Autostart-Einstellung konnte nicht aktualisiert werden. Bitte versuche es erneut."
+        },
+        {
+          "lang": "en-US",
+          "seg": "The Windows startup setting could not be updated. Please try again."
+        },
+        {
+          "lang": "es-ES",
+          "seg": "No se pudo actualizar la configuración de inicio de Windows. Inténtalo de nuevo."
+        }
+      ]
+    },
+    {
       "tuid": "MINIMIZE_TO_SYSTEM_TRAY",
       "tuv": [
         {

@@ -33,38 +33,10 @@
                             <StackPanel>
                                 <TextBlock Text="{Binding Translation.Dungeon, FallbackValue=DUNGEON}"
                                            Style="{StaticResource App.FilterLabel}" />
-                                <Button Width="180" Height="32" Style="{StaticResource Style.Button.Neutral}"
-                                        ToolTip="{Binding Translation.Dungeon}"
-                                        Click="DungeonActivationToggle_Click">
-                                    <StackPanel Orientation="Horizontal">
-                                        <fa5:ImageAwesome Width="16" Height="16" Margin="0,0,8,0" IsHitTestVisible="False">
-                                            <fa5:ImageAwesome.Style>
-                                                <Style TargetType="{x:Type fa5:ImageAwesome}">
-                                                    <Setter Property="Icon" Value="Solid_ToggleOff" />
-                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding DungeonBindings.IsDungeonTrackingActive}" Value="True">
-                                                            <Setter Property="Icon" Value="Solid_ToggleOn" />
-                                                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </fa5:ImageAwesome.Style>
-                                        </fa5:ImageAwesome>
-                                        <TextBlock VerticalAlignment="Center">
-                                            <TextBlock.Style>
-                                                <Style TargetType="{x:Type TextBlock}">
-                                                    <Setter Property="Text" Value="{Binding Translation.TrackingIsNotActive}" />
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding DungeonBindings.IsDungeonTrackingActive}" Value="True">
-                                                            <Setter Property="Text" Value="{Binding Translation.TrackingIsActive}" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-                                    </StackPanel>
-                                </Button>
+                                <ToggleButton IsChecked="{Binding DungeonBindings.IsDungeonTrackingActive, Mode=OneWay}"
+                                              Style="{StaticResource App.TrackingStateButton}"
+                                              ToolTip="{Binding Translation.Dungeon}"
+                                              Click="DungeonActivationToggle_Click" />
                             </StackPanel>
                         </Border>
 

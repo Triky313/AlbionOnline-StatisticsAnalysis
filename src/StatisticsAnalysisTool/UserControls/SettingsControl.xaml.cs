@@ -14,6 +14,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.UserControls;
@@ -123,6 +124,25 @@ public partial class SettingsControl
     private async void RestartNetworkTracking_Click(object sender, RoutedEventArgs e)
     {
         await SettingsWindowViewModel.RestartNetworkTrackingAsync();
+    }
+
+    private async void TrackingStateButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not ToggleButton trackingStateButton)
+        {
+            return;
+        }
+
+        trackingStateButton.IsEnabled = false;
+        try
+        {
+            await _settingsWindowViewModel.ToggleTrackingAsync();
+        }
+        finally
+        {
+            trackingStateButton.GetBindingExpression(ToggleButton.IsCheckedProperty)?.UpdateTarget();
+            trackingStateButton.IsEnabled = true;
+        }
     }
 
     private void PreviewAlertSound_Click(object sender, RoutedEventArgs e)
