@@ -319,26 +319,27 @@ public sealed class DungeonController(TrackingController trackingController, Mai
 
     #region Dungeon object
 
-    public async Task UpdateDungeonChestAsync(int id, List<Guid> allowedToOpen, bool isOpened, TreasureRarity rarity)
+    public async Task<TreasureRarity> UpdateDungeonChestAsync(int id, List<Guid> allowedToOpen, bool isOpened, TreasureRarity rarity)
     {
         if (_currentGuid is not { } currentGuid)
         {
-            return;
+            return TreasureRarity.Unknown;
         }
 
         var isAbyssalDepths = GetCurrentDungeonMode() == DungeonMode.AbyssalDepths;
         if (isAbyssalDepths && !isOpened)
         {
             CacheAbyssalDepthsChestRarity(id, rarity);
-            return;
+            return TreasureRarity.Unknown;
         }
 
         if (!isOpened || !trackingController.EntityController.IsAnyEntityInParty(allowedToOpen))
         {
-            return;
+            return TreasureRarity.Unknown;
         }
 
         var openedChestName = string.Empty;
+        var trackedRarity = TreasureRarity.Unknown;
         try
         {
             await Application.Current.Dispatcher.InvokeAsync(() =>
@@ -360,7 +361,7 @@ public sealed class DungeonController(TrackingController trackingController, Mai
                     return;
                 }
 
-                var resolvedRarity = ResolveOpenedChestRarity(dun, rarity);
+                var resolvedRarity = ResolveOpenedChestRarity(dun, chest.Rarity, rarity);
                 if (resolvedRarity != TreasureRarity.Unknown)
                 {
                     chest.Rarity = resolvedRarity;
@@ -368,6 +369,7 @@ public sealed class DungeonController(TrackingController trackingController, Mai
 
                 chest.Status = ChestStatus.Open;
                 chest.Opened = DateTime.UtcNow;
+                trackedRarity = chest.Rarity;
             });
 
             if (!string.IsNullOrWhiteSpace(openedChestName))
@@ -380,6 +382,8 @@ public sealed class DungeonController(TrackingController trackingController, Mai
             DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(e, "{message}", MethodBase.GetCurrentMethod()?.DeclaringType);
         }
+
+        return trackedRarity;
     }
 
     public async Task RegisterDungeonChestAsync(int id, string uniqueName, TreasureRarity networkRarity)
@@ -403,11 +407,19 @@ public sealed class DungeonController(TrackingController trackingController, Mai
         await SetDungeonEventInformationAsync(id, uniqueName, rarity);
     }
 
-    private static TreasureRarity ResolveOpenedChestRarity(DungeonBaseFragment dungeon, TreasureRarity networkRarity)
+    private static TreasureRarity ResolveOpenedChestRarity(
+        DungeonBaseFragment dungeon,
+        TreasureRarity registeredRarity,
+        TreasureRarity networkRarity)
     {
         if (networkRarity != TreasureRarity.Unknown)
         {
             return networkRarity;
+        }
+
+        if (registeredRarity != TreasureRarity.Unknown)
+        {
+            return registeredRarity;
         }
 
         return dungeon?.Mode == DungeonMode.DragonArea ? TreasureRarity.Common : TreasureRarity.Unknown;
