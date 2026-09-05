@@ -1,4 +1,5 @@
 ﻿using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
@@ -8,8 +9,16 @@ public class UpdateLootChestEventHandler(TrackingController trackingController) 
 {
     protected override async Task OnActionAsync(UpdateLootChestEvent value)
     {
-        await trackingController.DungeonController.UpdateDungeonChestAsync(value.ObjectId, value.PlayerGuid, value.IsOpened, value.Rarity);
+        var trackedRarity = await trackingController.DungeonController.UpdateDungeonChestAsync(
+            value.ObjectId,
+            value.PlayerGuid,
+            value.IsOpened,
+            value.Rarity);
         trackingController.DungeonController?.UpdateCurrentDungeonLevelFromLootChest(value.ObjectId, value.LootFactor);
-        trackingController?.TreasureController?.UpdateTreasure(value.ObjectId, value.PlayerGuid, value.IsOpened, value.Rarity);
+        trackingController?.TreasureController?.UpdateTreasure(
+            value.ObjectId,
+            value.PlayerGuid,
+            value.IsOpened,
+            value.Rarity != TreasureRarity.Unknown ? value.Rarity : trackedRarity);
     }
 }

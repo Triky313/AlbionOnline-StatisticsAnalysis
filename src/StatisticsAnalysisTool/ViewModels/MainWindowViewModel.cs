@@ -84,7 +84,7 @@ public class MainWindowViewModel : BaseViewModel
         var selectedDashboardChartSeriesFilters = DashboardChartSeriesFilters.ToDictionary(x => x.ValueType, x => x.IsSelected);
         var settings = SettingsController.CurrentSettings;
 
-        DashboardChartRanges = new ObservableCollection<DashboardChartRangeOption>(DashboardChartRangeOption.CreateDefault());
+        DashboardChartRanges = new ObservableCollection<DashboardChartRangeOption>(DashboardChartRangeOption.CreateDashboardDefault());
         var selectedBucketCount = selectedDashboardChartRange?.BucketCount ?? settings.SelectedDashboardChartRangeBucketCount;
         var selectedRangeUnit = selectedDashboardChartRange?.Unit ?? settings.SelectedDashboardChartRangeUnit;
         SelectedDashboardChartRange = DashboardChartRanges.FirstOrDefault(x => x.BucketCount == selectedBucketCount && x.Unit == selectedRangeUnit)

@@ -71,9 +71,8 @@ public sealed class SystemTrayService : IDisposable
         _notifyIcon.BalloonTipClicked += NotifyIcon_OnBalloonTipClicked;
     }
 
-    public WindowState WindowStateForPersistence => _isWindowHidden
-        ? _windowStateBeforeMinimizing
-        : _window.WindowState;
+    public WindowState WindowStateForPersistence => _isWindowHidden ? _windowStateBeforeMinimizing : _window.WindowState;
+
 
     public void Dispose()
     {
@@ -109,17 +108,27 @@ public sealed class SystemTrayService : IDisposable
             return;
         }
 
-        MinimizeToSystemTray();
+        HideWindowInSystemTray();
     }
 
-    private void MinimizeToSystemTray()
+    public void HideWindowInSystemTray(bool showNotification = true)
     {
+        if (_isDisposed || _isWindowHidden)
+        {
+            return;
+        }
+
+        if (_window.WindowState != WindowState.Minimized)
+        {
+            _windowStateBeforeMinimizing = _window.WindowState;
+        }
+
         _isWindowHidden = true;
         RefreshLocalizedText();
         _notifyIcon.Visible = true;
         _window.Hide();
 
-        if (_hasShownMinimizedNotification)
+        if (!showNotification || _hasShownMinimizedNotification)
         {
             return;
         }
@@ -131,16 +140,16 @@ public sealed class SystemTrayService : IDisposable
         _notifyIcon.ShowBalloonTip(3000);
     }
 
-    private void RestoreWindow()
+    public void RestoreWindowFromSystemTray()
     {
-        if (_isDisposed)
+        if (_isDisposed || !_isWindowHidden)
         {
             return;
         }
 
         if (!_window.Dispatcher.CheckAccess())
         {
-            _window.Dispatcher.BeginInvoke((Action) RestoreWindow);
+            _window.Dispatcher.BeginInvoke((Action) RestoreWindowFromSystemTray);
             return;
         }
 
@@ -171,18 +180,14 @@ public sealed class SystemTrayService : IDisposable
     private void RefreshLocalizedText()
     {
         _openMenuItem.Text = SystemTrayTranslation.OpenApplication;
-        _trackingMenuItem.Text = _mainWindowViewModel.IsTrackingActive
-            ? SystemTrayTranslation.DeactivateTracking
-            : SystemTrayTranslation.ActivateTracking;
-        _trackingMenuItem.Enabled = !_isTrackingStateChanging
-                                    && ServiceLocator.IsServiceInDictionary<TrackingController>();
+        _trackingMenuItem.Text = _mainWindowViewModel.IsTrackingActive ? SystemTrayTranslation.DeactivateTracking : SystemTrayTranslation.ActivateTracking;
+        _trackingMenuItem.Enabled = !_isTrackingStateChanging && ServiceLocator.IsServiceInDictionary<TrackingController>();
         _exitMenuItem.Text = SystemTrayTranslation.ExitApplication;
     }
 
     private async Task ToggleTrackingAsync()
     {
-        if (_isTrackingStateChanging
-            || !ServiceLocator.IsServiceInDictionary<TrackingController>())
+        if (_isTrackingStateChanging || !ServiceLocator.IsServiceInDictionary<TrackingController>())
         {
             return;
         }
@@ -219,7 +224,7 @@ public sealed class SystemTrayService : IDisposable
 
     private void OpenMenuItem_OnClick(object sender, EventArgs eventArgs)
     {
-        RestoreWindow();
+        RestoreWindowFromSystemTray();
     }
 
     private async void TrackingMenuItem_OnClick(object sender, EventArgs eventArgs)
@@ -234,12 +239,12 @@ public sealed class SystemTrayService : IDisposable
 
     private void NotifyIcon_OnDoubleClick(object sender, EventArgs eventArgs)
     {
-        RestoreWindow();
+        RestoreWindowFromSystemTray();
     }
 
     private void NotifyIcon_OnBalloonTipClicked(object sender, EventArgs eventArgs)
     {
-        RestoreWindow();
+        RestoreWindowFromSystemTray();
     }
 
     private static Icon LoadApplicationIcon()

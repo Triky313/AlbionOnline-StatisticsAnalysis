@@ -10,6 +10,19 @@ public sealed class DashboardChartRangeOption
     public int BucketCount { get; init; }
     public DashboardChartRangeUnit Unit { get; init; }
 
+    public static IReadOnlyList<DashboardChartRangeOption> CreateDashboardDefault()
+    {
+        var options = new List<DashboardChartRangeOption>(CreateDefault());
+        options.Insert(2, new DashboardChartRangeOption()
+        {
+            Name = LocalizationController.Translation("LAST_60_MINUTES"),
+            BucketCount = 60,
+            Unit = DashboardChartRangeUnit.Minute
+        });
+
+        return options;
+    }
+
     public static IReadOnlyList<DashboardChartRangeOption> CreateDefault()
     {
         return

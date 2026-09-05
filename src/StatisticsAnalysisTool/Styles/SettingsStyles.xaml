@@ -49,6 +49,77 @@
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.3}" />
     </Style>
 
+    <Style x:Key="Settings.OptionCheckBox" TargetType="{x:Type CheckBox}">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="MinHeight" Value="21" />
+        <Setter Property="Height" Value="Auto" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+                    <Grid Background="Transparent" SnapsToDevicePixels="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="21" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="Border"
+                                Width="21"
+                                Height="21"
+                                VerticalAlignment="Top"
+                                Background="{StaticResource SolidColorBrush.Background.6}"
+                                BorderThickness="3">
+                            <Path x:Name="CheckMark"
+                                  Width="9"
+                                  Height="9"
+                                  Data="M 0 4 L 3 8 8 0"
+                                  SnapsToDevicePixels="False"
+                                  Stroke="{StaticResource SolidColorBrush.Accent.Blue.4}"
+                                  StrokeThickness="2" />
+                        </Border>
+                        <ContentPresenter Grid.Column="1"
+                                          Margin="8,1,0,0"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Top"
+                                          RecognizesAccessKey="True" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter TargetName="CheckMark" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="{x:Null}">
+                            <Setter TargetName="CheckMark" Property="Data" Value="M 0 8 L 8 0" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Background.6}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.6}" />
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Background.3}" />
+                            <Setter TargetName="CheckMark" Property="Stroke" Value="{StaticResource SolidColorBrush.Text.5}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Settings.OptionTitle" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+
+    <Style x:Key="Settings.DescriptionText" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.4}" />
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="Margin" Value="0,3,0,0" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+
     <Style x:Key="Settings.Footer" TargetType="{x:Type Border}">
         <Setter Property="Height" Value="80" />
         <Setter Property="Padding" Value="10,20" />

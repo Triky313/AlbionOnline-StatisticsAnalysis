@@ -38,6 +38,12 @@ public class SettingsObject
     public double MainWindowLeftPosition { get; set; } = 0;
     public double MainWindowTopPosition { get; set; } = 0;
     public bool MainWindowMaximized { get; set; } = false;
+    public bool IsStartWithWindowsActive { get; set; } = false;
+    public bool IsStartInSystemTrayActive { get; set; } = false;
+    public bool IsOpenWithGameActive { get; set; } = false;
+    public bool IsHideWithGameActive { get; set; } = false;
+    public bool IsStartTrackingWithGameActive { get; set; } = false;
+    public bool IsStopTrackingWithGameActive { get; set; } = false;
     public bool IsMinimizeToSystemTrayActive { get; set; } = false;
     public bool IsNavigationMenuOpen { get; set; } = true;
     public bool IsTrackingResetByMapChangeActive { get; set; } = false;

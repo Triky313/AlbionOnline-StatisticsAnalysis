@@ -86,11 +86,6 @@
                                              Style="{StaticResource Settings.TextBox}" />
                                 </StackPanel>
 
-                                <StackPanel Style="{StaticResource Settings.Field}">
-                                    <TextBlock Text="{Binding Translation.MinimizeToSystemTray, FallbackValue=MINIMIZE__TO__SYSTEM__TRAY}" Style="{StaticResource Settings.FieldLabel}" />
-                                    <CheckBox IsChecked="{Binding IsMinimizeToSystemTrayActive}"
-                                              Content="{Binding Translation.Activated, FallbackValue=ACTIVATED}" VerticalContentAlignment="Center" />
-                                </StackPanel>
                             </StackPanel>
 
                             <StackPanel Grid.Column="2">
@@ -143,6 +138,74 @@
                                         <TextBox Grid.Column="2" Text="{Binding AnotherAppToStartPath}" TextWrapping="Wrap" Style="{StaticResource Settings.TextBox}" />
                                     </Grid>
                                 </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Window and startup -->
+                <Border Style="{StaticResource Settings.Card}">
+                    <StackPanel>
+                        <Border Style="{StaticResource Settings.CardHeader}">
+                            <TextBlock Text="{Binding Translation.WindowAndStartup, FallbackValue=WINDOW__AND__STARTUP}" Style="{StaticResource Settings.CardTitle}" />
+                        </Border>
+
+                        <Grid Margin="14,12,14,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="16" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <CheckBox IsChecked="{Binding IsStartWithWindowsActive}" Margin="0,0,0,14" Style="{StaticResource Settings.OptionCheckBox}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Translation.StartWithWindows, FallbackValue=START__WITH__WINDOWS}" Style="{StaticResource Settings.OptionTitle}" />
+                                        <TextBlock Text="{Binding Translation.StartWithWindowsDescription, FallbackValue=START__WITH__WINDOWS__DESCRIPTION}" Style="{StaticResource Settings.DescriptionText}" />
+                                    </StackPanel>
+                                </CheckBox>
+
+                                <CheckBox IsChecked="{Binding IsStartInSystemTrayActive}" Margin="0,0,0,14" Style="{StaticResource Settings.OptionCheckBox}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Translation.StartInSystemTray, FallbackValue=START__IN__SYSTEM__TRAY}" Style="{StaticResource Settings.OptionTitle}" />
+                                        <TextBlock Text="{Binding Translation.StartInSystemTrayDescription, FallbackValue=START__IN__SYSTEM__TRAY__DESCRIPTION}" Style="{StaticResource Settings.DescriptionText}" />
+                                    </StackPanel>
+                                </CheckBox>
+
+                                <CheckBox IsChecked="{Binding IsMinimizeToSystemTrayActive}"
+                                          Margin="0,0,0,10"
+                                          Style="{StaticResource Settings.OptionCheckBox}">
+                                    <TextBlock Text="{Binding Translation.MinimizeToSystemTray, FallbackValue=MINIMIZE__TO__SYSTEM__TRAY}" Style="{StaticResource Settings.OptionTitle}" />
+                                </CheckBox>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <CheckBox IsChecked="{Binding IsOpenWithGameActive}" Margin="0,0,0,14" Style="{StaticResource Settings.OptionCheckBox}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Translation.OpenWithGame, FallbackValue=OPEN__WITH__GAME}" Style="{StaticResource Settings.OptionTitle}" />
+                                        <TextBlock Text="{Binding Translation.OpenWithGameDescription, FallbackValue=OPEN__WITH__GAME__DESCRIPTION}" Style="{StaticResource Settings.DescriptionText}" />
+                                    </StackPanel>
+                                </CheckBox>
+
+                                <CheckBox IsChecked="{Binding IsHideWithGameActive}" Margin="0,0,0,14" Style="{StaticResource Settings.OptionCheckBox}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Translation.HideWithGame, FallbackValue=HIDE__WITH__GAME}" Style="{StaticResource Settings.OptionTitle}" />
+                                        <TextBlock Text="{Binding Translation.HideWithGameDescription, FallbackValue=HIDE__WITH__GAME__DESCRIPTION}" Style="{StaticResource Settings.DescriptionText}" />
+                                    </StackPanel>
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding IsStartTrackingWithGameActive}" Margin="0,0,0,14" Style="{StaticResource Settings.OptionCheckBox}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Translation.StartTrackingWithGame, FallbackValue=START__TRACKING__WITH__GAME}" Style="{StaticResource Settings.OptionTitle}" />
+                                        <TextBlock Text="{Binding Translation.StartTrackingWithGameDescription, FallbackValue=START__TRACKING__WITH__GAME__DESCRIPTION}" Style="{StaticResource Settings.DescriptionText}" />
+                                    </StackPanel>
+                                </CheckBox>
+
+                                <CheckBox IsChecked="{Binding IsStopTrackingWithGameActive}" Margin="0,0,0,14" Style="{StaticResource Settings.OptionCheckBox}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Translation.StopTrackingWithGame, FallbackValue=STOP__TRACKING__WITH__GAME}" Style="{StaticResource Settings.OptionTitle}" />
+                                        <TextBlock Text="{Binding Translation.StopTrackingWithGameDescription, FallbackValue=STOP__TRACKING__WITH__GAME__DESCRIPTION}" Style="{StaticResource Settings.DescriptionText}" />
+                                    </StackPanel>
+                                </CheckBox>
                             </StackPanel>
                         </Grid>
                     </StackPanel>
@@ -230,9 +293,19 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
 
                             <StackPanel Grid.Row="0" Grid.Column="0" Style="{StaticResource Settings.Field}">
+                                <TextBlock Text="{Binding Translation.TrackingStatus, FallbackValue=TRACKING__STATUS}" Style="{StaticResource Settings.FieldLabel}" />
+                                <ToggleButton HorizontalAlignment="Left"
+                                              IsChecked="{Binding MainWindow.IsTrackingActive, Mode=OneWay}"
+                                              ToolTip="{Binding Translation.TrackingStatus}"
+                                              Style="{StaticResource App.TrackingStateButton}"
+                                              Click="TrackingStateButton_Click" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Grid.Column="0" Style="{StaticResource Settings.Field}">
                                 <TextBlock Text="{Binding Translation.PacketProvider, FallbackValue=PACKET_PROVIDER}" Style="{StaticResource Settings.FieldLabel}" />
                                 <ComboBox ItemsSource="{Binding PacketProvider}"
                                           SelectedItem="{Binding PacketProviderSelection}"
@@ -244,7 +317,7 @@
                                            Style="{StaticResource Settings.WarningText}" />
                             </StackPanel>
 
-                            <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0"
+                            <StackPanel Grid.Row="2" Grid.ColumnSpan="3" Grid.Column="0"
                                         Visibility="{Binding PacketFilterVisibility}"
                                         Style="{StaticResource Settings.Field}">
                                 <TextBlock Text="{Binding Translation.PacketFilter, FallbackValue=PACKET__FILTER}" Style="{StaticResource Settings.FieldLabel}" />
@@ -262,7 +335,7 @@
                                 </Grid>
                             </StackPanel>
 
-                            <StackPanel Grid.Row="2" Grid.ColumnSpan="3" Grid.Column="0"
+                            <StackPanel Grid.Row="3" Grid.ColumnSpan="3" Grid.Column="0"
                                         Visibility="{Binding NetworkDevicesVisibility}"
                                         Style="{StaticResource Settings.Field}">
                                 <TextBlock Text="{Binding Translation.NetworkAdapters, FallbackValue=NETWORK__ADAPTERS}" Style="{StaticResource Settings.FieldLabel}" />
@@ -287,7 +360,7 @@
                                         Click="RestartNetworkTracking_Click" />
                             </StackPanel>
 
-                            <StackPanel Grid.Row="3" Grid.Column="0" Style="{StaticResource Settings.Field}">
+                            <StackPanel Grid.Row="4" Grid.Column="0" Style="{StaticResource Settings.Field}">
                                 <TextBlock Text="{Binding Translation.CharacterNameToTrack, FallbackValue=CHARACTER_NAME_TO_TRACK}" Style="{StaticResource Settings.FieldLabel}" />
                                 <TextBox Text="{Binding MainTrackingCharacterName}"
                                          MaxLength="50"
@@ -295,7 +368,7 @@
                                          Style="{StaticResource Settings.TextBox}" />
                             </StackPanel>
 
-                            <StackPanel Grid.Row="3" Grid.Column="2" Style="{StaticResource Settings.Field}">
+                            <StackPanel Grid.Row="4" Grid.Column="2" Style="{StaticResource Settings.Field}">
                                 <TextBlock Text="{Binding Translation.PlayerSelectionWithSameNameInDb, FallbackValue=PLAYER_SELECTION_WITH_SAME_NAME_IN_DB}" Style="{StaticResource Settings.FieldLabel}" />
                                 <Grid>
                                     <Grid.ColumnDefinitions>

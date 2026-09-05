@@ -56,6 +56,7 @@ public partial class App
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
 
             await SettingsController.LoadSettingsAsync();
+            _ = WindowsStartupService.TrySetEnabled(SettingsController.CurrentSettings.IsStartWithWindowsActive);
 
             if (SettingsController.CurrentSettings.IsOpenDebugConsoleWhenStartingTheToolChecked)
             {
@@ -86,7 +87,8 @@ public partial class App
             {
                 void UpdateProgress()
                 {
-                    if (!isToolLoadingWindowShown)
+                    if (!SettingsController.CurrentSettings.IsStartInSystemTrayActive
+                        && !isToolLoadingWindowShown)
                     {
                         toolLoadingWindow.Show();
                         isToolLoadingWindowShown = true;

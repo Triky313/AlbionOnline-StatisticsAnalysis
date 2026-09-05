@@ -19,6 +19,7 @@ public partial class MainWindow
     private readonly WindowChromeController _windowChromeController;
     private readonly DispatcherTimer _applicationUptimeTimer;
     private readonly SystemTrayService _systemTrayService;
+    private readonly AlbionGameProcessMonitor _albionGameProcessMonitor;
 
     public MainWindow(MainWindowViewModel mainWindowViewModel)
     {
@@ -35,8 +36,13 @@ public partial class MainWindow
             ResizeMode.NoResize);
         InitWindow();
         _systemTrayService = new SystemTrayService(this, mainWindowViewModel);
+        _albionGameProcessMonitor = new AlbionGameProcessMonitor();
+        ServiceLocator.Register<AlbionGameProcessMonitor>(_albionGameProcessMonitor);
+        _albionGameProcessMonitor.GameStarted += AlbionGameProcessMonitor_OnGameStarted;
+        _albionGameProcessMonitor.GameStopped += AlbionGameProcessMonitor_OnGameStopped;
         _mainWindowViewModel = mainWindowViewModel;
         DataContext = _mainWindowViewModel;
+        Loaded += MainWindow_OnLoaded;
         UpdateApplicationUptime();
         _applicationUptimeTimer.Start();
     }
@@ -71,11 +77,77 @@ public partial class MainWindow
     private void MainWindow_OnClosing(object sender, EventArgs eventArgs)
     {
         var windowStateForPersistence = _systemTrayService.WindowStateForPersistence;
+        Loaded -= MainWindow_OnLoaded;
         _applicationUptimeTimer.Stop();
+        _albionGameProcessMonitor.GameStarted -= AlbionGameProcessMonitor_OnGameStarted;
+        _albionGameProcessMonitor.GameStopped -= AlbionGameProcessMonitor_OnGameStopped;
+        _albionGameProcessMonitor.Dispose();
         _systemTrayService.Dispose();
         _mainWindowViewModel.DisposeItemDetails();
         _mainWindowViewModel.CraftingBindings.DisposeLossExplorer();
         SettingsController.SetWindowSettings(windowStateForPersistence, Height, Width, Left, Top);
+    }
+
+    private void MainWindow_OnLoaded(object sender, RoutedEventArgs eventArgs)
+    {
+        Loaded -= MainWindow_OnLoaded;
+
+        var settings = SettingsController.CurrentSettings;
+        _albionGameProcessMonitor.SetMonitoringEnabled(AlbionGameProcessMonitor.IsMonitoringRequired(settings));
+        var shouldRemainVisibleForRunningGame = settings.IsOpenWithGameActive
+                                                && _albionGameProcessMonitor.IsGameRunning;
+        if (settings.IsStartInSystemTrayActive && !shouldRemainVisibleForRunningGame)
+        {
+            _systemTrayService.HideWindowInSystemTray(false);
+        }
+    }
+
+    private async void AlbionGameProcessMonitor_OnGameStarted(object sender, EventArgs eventArgs)
+    {
+        var settings = SettingsController.CurrentSettings;
+        if (settings.IsOpenWithGameActive)
+        {
+            _systemTrayService.RestoreWindowFromSystemTray();
+        }
+
+        if (!settings.IsStartTrackingWithGameActive
+            || _mainWindowViewModel.IsTrackingActive
+            || !ServiceLocator.IsServiceInDictionary<TrackingController>())
+        {
+            return;
+        }
+
+        try
+        {
+            await ServiceLocator.Resolve<TrackingController>().StartTrackingAsync();
+        }
+        catch (Exception exception)
+        {
+            Log.Error(exception, "Tracking could not be started when Albion Online started");
+        }
+    }
+
+    private void AlbionGameProcessMonitor_OnGameStopped(object sender, EventArgs eventArgs)
+    {
+        var settings = SettingsController.CurrentSettings;
+        if (settings.IsStopTrackingWithGameActive
+            && _mainWindowViewModel.IsTrackingActive
+            && ServiceLocator.IsServiceInDictionary<TrackingController>())
+        {
+            try
+            {
+                ServiceLocator.Resolve<TrackingController>().StopTracking();
+            }
+            catch (Exception exception)
+            {
+                Log.Error(exception, "Tracking could not be stopped when Albion Online closed");
+            }
+        }
+
+        if (settings.IsHideWithGameActive)
+        {
+            _systemTrayService.HideWindowInSystemTray(false);
+        }
     }
 
     private void ApplicationUptimeTimer_OnTick(object sender, EventArgs e)

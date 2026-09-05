@@ -88,7 +88,13 @@ public class SettingsWindowViewModel : BaseViewModel
         // Auto update
         IsSuggestPreReleaseUpdatesActive = SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive;
 
-        // System tray
+        // Window and startup
+        IsStartWithWindowsActive = SettingsController.CurrentSettings.IsStartWithWindowsActive;
+        IsStartInSystemTrayActive = SettingsController.CurrentSettings.IsStartInSystemTrayActive;
+        IsOpenWithGameActive = SettingsController.CurrentSettings.IsOpenWithGameActive;
+        IsHideWithGameActive = SettingsController.CurrentSettings.IsHideWithGameActive;
+        IsStartTrackingWithGameActive = SettingsController.CurrentSettings.IsStartTrackingWithGameActive;
+        IsStopTrackingWithGameActive = SettingsController.CurrentSettings.IsStopTrackingWithGameActive;
         IsMinimizeToSystemTrayActive = SettingsController.CurrentSettings.IsMinimizeToSystemTrayActive;
 
         // Info window
@@ -140,6 +146,12 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.ServerType = (ServerType) ServerTypeSelection.Value;
 
         SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive = IsSuggestPreReleaseUpdatesActive;
+        SetWindowsStartupSetting();
+        SettingsController.CurrentSettings.IsStartInSystemTrayActive = IsStartInSystemTrayActive;
+        SettingsController.CurrentSettings.IsOpenWithGameActive = IsOpenWithGameActive;
+        SettingsController.CurrentSettings.IsHideWithGameActive = IsHideWithGameActive;
+        SettingsController.CurrentSettings.IsStartTrackingWithGameActive = IsStartTrackingWithGameActive;
+        SettingsController.CurrentSettings.IsStopTrackingWithGameActive = IsStopTrackingWithGameActive;
         SettingsController.CurrentSettings.IsMinimizeToSystemTrayActive = IsMinimizeToSystemTrayActive;
         SettingsController.CurrentSettings.ExactMatchPlayerNamesLineNumber = PlayerSelectionWithSameNameInDb;
 
@@ -150,6 +162,7 @@ public class SettingsWindowViewModel : BaseViewModel
         SetIconSourceToAnotherAppToStart();
 
         await SettingsController.SaveSettingsAsync();
+        UpdateAlbionGameProcessMonitoring();
 
         if (HaveNetworkTrackingSettingsChanged(oldPacketProvider, oldPacketFilter, oldNetworkDevices))
         {
@@ -162,10 +175,60 @@ public class SettingsWindowViewModel : BaseViewModel
         _ = SaveSettingsAsync();
     }
 
+    public async Task ToggleTrackingAsync()
+    {
+        if (!ServiceLocator.IsServiceInDictionary<TrackingController>())
+        {
+            return;
+        }
+
+        try
+        {
+            var trackingController = ServiceLocator.Resolve<TrackingController>();
+            if (MainWindow?.IsTrackingActive == true)
+            {
+                trackingController.StopTracking();
+                return;
+            }
+
+            await trackingController.StartTrackingAsync();
+        }
+        catch (Exception exception)
+        {
+            Log.Error(exception, "Tracking could not be toggled from settings");
+        }
+    }
+
+    private static void UpdateAlbionGameProcessMonitoring()
+    {
+        if (!ServiceLocator.IsServiceInDictionary<AlbionGameProcessMonitor>())
+        {
+            return;
+        }
+
+        var monitor = ServiceLocator.Resolve<AlbionGameProcessMonitor>();
+        var isMonitoringRequired = AlbionGameProcessMonitor.IsMonitoringRequired(SettingsController.CurrentSettings);
+        monitor.SetMonitoringEnabled(isMonitoringRequired);
+    }
+
     public void ReloadSettings()
     {
         MainTrackingCharacterName = SettingsController.CurrentSettings.MainTrackingCharacterName;
         MainGameFolderPath = SettingsController.CurrentSettings.MainGameFolderPath;
+    }
+
+    private void SetWindowsStartupSetting()
+    {
+        if (WindowsStartupService.TrySetEnabled(IsStartWithWindowsActive))
+        {
+            SettingsController.CurrentSettings.IsStartWithWindowsActive = IsStartWithWindowsActive;
+            return;
+        }
+
+        IsStartWithWindowsActive = SettingsController.CurrentSettings.IsStartWithWindowsActive;
+        _ = MessageBox.Show(
+            LocalizationController.Translation("WINDOWS_STARTUP_SETTING_UPDATE_FAILED"),
+            LocalizationController.Translation("ERROR"));
     }
 
     private void RefreshLocalization(MainWindowViewModel mainWindowViewModel)
@@ -1156,6 +1219,70 @@ public class SettingsWindowViewModel : BaseViewModel
             OnPropertyChanged();
         }
     }
+
+    public bool IsStartWithWindowsActive
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsStartInSystemTrayActive
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsOpenWithGameActive
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsHideWithGameActive
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsStartTrackingWithGameActive
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsStopTrackingWithGameActive
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public MainWindowViewModel MainWindow => ServiceLocator.IsServiceInDictionary<MainWindowViewModel>()
+        ? ServiceLocator.Resolve<MainWindowViewModel>()
+        : null;
 
     public bool IsMinimizeToSystemTrayActive
     {
