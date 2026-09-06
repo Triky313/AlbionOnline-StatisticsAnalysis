@@ -13,11 +13,11 @@ public class OtherGrabbedLootNotificationFragment : LineFragment
         LootedByName = lootedByName;
         LootedByGuild = lootedByGuild;
         LootedByAlliance = lootedByAlliance;
-        LootedByAffiliations = BuildAffiliations(lootedByGuild, lootedByAlliance);
+        LootedByAffiliations = PlayerAffiliationFormatter.Format(lootedByGuild, lootedByAlliance);
         LootedFromName = lootedFromName;
         LootedFromGuild = lootedFromGuild;
         LootedFromAlliance = lootedFromAlliance;
-        LootedFromAffiliations = BuildAffiliations(lootedFromGuild, lootedFromAlliance);
+        LootedFromAffiliations = PlayerAffiliationFormatter.Format(lootedFromGuild, lootedFromAlliance);
         LocalizedName = item.LocalizedName;
         Icon = item.Icon;
         Quantity = quantity;
@@ -50,21 +50,6 @@ public class OtherGrabbedLootNotificationFragment : LineFragment
     public static string TranslationAlliance => LocalizationController.Translation("ALLIANCE");
     public static string TranslationAffiliations => $"{TranslationGuild} / {TranslationAlliance}";
     public static string TranslationAverageEstMarketValue => LocalizationController.Translation("AVERAGE_EST_MARKET_VALUE");
-
-    private static string BuildAffiliations(string guild, string alliance)
-    {
-        var normalizedGuild = guild?.Trim() ?? string.Empty;
-        var normalizedAlliance = alliance?.Trim() ?? string.Empty;
-
-        if (string.IsNullOrEmpty(normalizedGuild))
-        {
-            return normalizedAlliance;
-        }
-
-        return string.IsNullOrEmpty(normalizedAlliance)
-            ? normalizedGuild
-            : $"{normalizedGuild}, {normalizedAlliance}";
-    }
 
     private static string GetEstimatedMarketValueDisplayString(int quantity, long averageEstMarketValue, string averageEstMarketValueShortString)
     {

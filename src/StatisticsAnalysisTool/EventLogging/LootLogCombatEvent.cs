@@ -7,8 +7,10 @@ public sealed class LootLogCombatEvent
     public DateTime UtcTimestamp { get; init; }
     public string DiedName { get; init; } = string.Empty;
     public string DiedPlayerGuild { get; init; } = string.Empty;
+    public string DiedPlayerAlliance { get; init; } = string.Empty;
     public string KilledByName { get; init; } = string.Empty;
     public string KilledByGuild { get; init; } = string.Empty;
+    public string KilledByAlliance { get; init; } = string.Empty;
     public string ClusterName { get; init; } = string.Empty;
 
     public bool IsForPlayer(string playerName)

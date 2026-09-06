@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.EventValidations;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
@@ -14,6 +14,7 @@ public class NewCharacterEvent
     public Guid? Guid { get; }
     public string Name { get; }
     public string GuildName { get; }
+    public string AllianceName { get; } = string.Empty;
     public CharacterEquipment CharacterEquipment { get; } = new();
 
     public NewCharacterEvent(Dictionary<byte, object> parameters)
@@ -40,6 +41,11 @@ public class NewCharacterEvent
             if (parameters.TryGetValue(8, out object guildName))
             {
                 GuildName = guildName.ToString();
+            }
+
+            if (parameters.TryGetValue(51, out var allianceName) && allianceName is string alliance)
+            {
+                AllianceName = alliance;
             }
 
             if (parameters.ContainsKey(40))

@@ -17,7 +17,7 @@ public sealed class LootComparatorSaveService
     private const string LootLogFileName = "loot-logs.csv";
     private const string MetadataFileName = "meta.json";
     private const string ChestLogHeader = "Date,Player,Item,Enchantment,Quality,Amount";
-    private const string LootLogHeader = "timestamp_utc;looted_by__alliance;looted_by__guild;looted_by__name;item_id;item_name;quantity;looted_from__alliance;looted_from__guild;looted_from__name;died;died_player_guild;killed_by;killed_by_guild;average_est_market_value;cluster";
+    private const string LootLogHeader = "timestamp_utc;looted_by__alliance;looted_by__guild;looted_by__name;item_id;item_name;quantity;looted_from__alliance;looted_from__guild;looted_from__name;died;died_player_guild;killed_by;killed_by_guild;average_est_market_value;cluster;died_player_alliance;killed_by_alliance";
     private static readonly UTF8Encoding Utf8Encoding = new(false);
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -245,8 +245,10 @@ public sealed class LootComparatorSaveService
                 UtcPickupTime = ToUtc(combatEvent.UtcTimestamp),
                 DiedName = combatEvent.DiedName,
                 DiedPlayerGuild = combatEvent.DiedPlayerGuild,
+                DiedPlayerAlliance = combatEvent.DiedPlayerAlliance,
                 KilledByName = combatEvent.KilledByName,
                 KilledByGuild = combatEvent.KilledByGuild,
+                KilledByAlliance = combatEvent.KilledByAlliance,
                 ClusterName = combatEvent.ClusterName
             }));
 
@@ -288,7 +290,9 @@ public sealed class LootComparatorSaveService
             EscapeDelimitedValue(item.KilledByName, ';'),
             EscapeDelimitedValue(item.KilledByGuild, ';'),
             string.Empty,
-            EscapeDelimitedValue(item.ClusterName, ';'))));
+            EscapeDelimitedValue(item.ClusterName, ';'),
+            EscapeDelimitedValue(item.DiedPlayerAlliance, ';'),
+            EscapeDelimitedValue(item.KilledByAlliance, ';'))));
 
         return string.Join(Environment.NewLine, lines);
     }
@@ -351,8 +355,10 @@ public sealed class LootComparatorSaveService
         public string LootedFromName { get; init; } = string.Empty;
         public string DiedName { get; init; } = string.Empty;
         public string DiedPlayerGuild { get; init; } = string.Empty;
+        public string DiedPlayerAlliance { get; init; } = string.Empty;
         public string KilledByName { get; init; } = string.Empty;
         public string KilledByGuild { get; init; } = string.Empty;
+        public string KilledByAlliance { get; init; } = string.Empty;
         public string ClusterName { get; init; } = string.Empty;
         public bool IsCombatEvent => !string.IsNullOrWhiteSpace(DiedName)
                                      || !string.IsNullOrWhiteSpace(KilledByName);

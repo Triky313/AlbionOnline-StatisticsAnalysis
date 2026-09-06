@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
@@ -21,6 +21,7 @@ public class NewCharacterEventHandler(TrackingController trackingController) : E
                 UserGuid = value.Guid ?? Guid.Empty,
                 Name = value.Name,
                 Guild = value.GuildName,
+                Alliance = value.AllianceName,
                 CharacterEquipment = value.CharacterEquipment,
                 ObjectType = GameObjectType.Player,
                 ObjectSubType = GameObjectSubType.Player
