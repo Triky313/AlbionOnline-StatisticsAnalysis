@@ -723,7 +723,7 @@
     <PackageReference Include="MahApps.Metro.IconPacks.GameIcons" Version="6.2.1" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4078.44" />
     <PackageReference Include="NetSparkleUpdater.UI.WPF" Version="3.1.0" />
-    <PackageReference Include="FontAwesome5" Version="2.1.11" />
+    <PackageReference Include="DSaladin.FontAwesome.WPF" Version="6.7.1" />
     <PackageReference Include="Notification.Wpf" Version="11.0.0" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
     <PackageReference Include="OpenTK" Version="4.9.4" />

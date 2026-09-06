@@ -1,10 +1,10 @@
-﻿<UserControl x:Class="StatisticsAnalysisTool.UserControls.DonationControl"
+<UserControl x:Class="StatisticsAnalysisTool.UserControls.DonationControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
-             xmlns:fa5="http://schemas.fontawesome.com/icons/"
+             xmlns:fa="clr-namespace:StatisticsAnalysisTool.Common.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="950" d:DesignWidth="1000"
              d:DataContext="{d:DesignInstance Type=viewModels:DonationViewModel}">
@@ -36,14 +36,14 @@
                     <Grid Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="230" Height="72">
                         <TextBlock>
                             <Hyperlink NavigateUri="{Binding PatreonUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
-                                <fa5:ImageAwesome Icon="Brands_Patreon" Foreground="{StaticResource Solid.Color.Patreon}" />
+                                <fa:FontAwesomeImage Icon="BrandsPatreon" Foreground="{StaticResource Solid.Color.Patreon}" />
                             </Hyperlink>
                         </TextBlock>
                     </Grid>
                     <Grid Margin="0" HorizontalAlignment="Left" Width="230" Height="72" VerticalAlignment="Bottom">
                         <TextBlock>
                             <Hyperlink NavigateUri="{Binding DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
-                                <fa5:ImageAwesome Icon="Brands_Paypal" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                <fa:FontAwesomeImage Icon="BrandsPaypal" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                             </Hyperlink>
                         </TextBlock>
                         <Image Source="../Assets/paypal-QR-Code.png" Height="72" Width="72" Margin="20,0,0,0" />
@@ -61,7 +61,7 @@
                     <Grid Margin="0" HorizontalAlignment="Left" Width="230" Height="72" VerticalAlignment="Bottom">
                         <TextBlock>
                             <Hyperlink NavigateUri="{Binding GitHubSponsorsUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
-                                <fa5:ImageAwesome Icon="Regular_Heart" Foreground="{StaticResource Solid.Color.GitHubSponsors}" />
+                                <fa:FontAwesomeImage Icon="RegularHeart" Foreground="{StaticResource Solid.Color.GitHubSponsors}" />
                             </Hyperlink>
                         </TextBlock>
                     </Grid>

@@ -1,9 +1,9 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=System.Runtime"
                     xmlns:controls="clr-namespace:StatisticsAnalysisTool.Common.Controls"
                     xmlns:converters="clr-namespace:StatisticsAnalysisTool.Common.Converters"
-                    xmlns:fa5="http://schemas.fontawesome.com/icons/">
+                    xmlns:fa="clr-namespace:StatisticsAnalysisTool.Common.Controls">
 
     <system:Double x:Key="BaseFontSize">12</system:Double>
     <system:Double x:Key="App.ControlHeight">32</system:Double>
@@ -174,7 +174,7 @@
         <TextBlock Margin="8,0" Text="{Binding}" />
     </DataTemplate>
 
-    <Style x:Key="Style.Button.Icon.White" TargetType="{x:Type fa5:ImageAwesome}">
+    <Style x:Key="Style.Button.Icon.White" TargetType="{x:Type fa:FontAwesomeImage}">
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Button.Text.Normal}" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" Value="False">
@@ -183,7 +183,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="Style.Button.Icon.Black" TargetType="{x:Type fa5:ImageAwesome}">
+    <Style x:Key="Style.Button.Icon.Black" TargetType="{x:Type fa:FontAwesomeImage}">
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Button.Icon.Black}" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" Value="False">
@@ -965,12 +965,12 @@
                             SnapsToDevicePixels="True"
                             TextBlock.Foreground="{TemplateBinding Foreground}">
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
-                            <fa5:ImageAwesome x:Name="TrackingStateIcon"
+                            <fa:FontAwesomeImage x:Name="TrackingStateIcon"
                                               Width="16"
                                               Height="16"
                                               Margin="0,0,8,0"
                                               Foreground="{StaticResource SolidColorBrush.Text.1}"
-                                              Icon="Solid_ToggleOff"
+                                              Icon="SolidToggleOff"
                                               IsHitTestVisible="False" />
                             <TextBlock x:Name="TrackingStateText"
                                        VerticalAlignment="Center"
@@ -979,7 +979,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="TrackingStateIcon" Property="Icon" Value="Solid_ToggleOn" />
+                            <Setter TargetName="TrackingStateIcon" Property="Icon" Value="SolidToggleOn" />
                             <Setter TargetName="TrackingStateIcon" Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
                             <Setter TargetName="TrackingStateText" Property="Text" Value="{Binding DataContext.Translation.TrackingIsActive, RelativeSource={RelativeSource TemplatedParent}}" />
                         </Trigger>

@@ -5,7 +5,7 @@ namespace StatisticsAnalysisTool.Models;
 
 public class TaskTextObject : BaseViewModel
 {
-    private string _statusIcon = "Solid_CircleNotch";
+    private string _statusIcon = "SolidCircleNotch";
     private bool _statusIconSpin = true;
     private bool _isTaskDone;
     private TaskTextObjectStatus _status = TaskTextObjectStatus.Check;
@@ -22,17 +22,17 @@ public class TaskTextObject : BaseViewModel
         switch (taskTextObjectStatus)
         {
             case TaskTextObjectStatus.Done:
-                StatusIcon = "Regular_CheckCircle";
+                StatusIcon = "RegularCircleCheck";
                 StatusIconSpin = false;
                 Status = TaskTextObjectStatus.Done;
                 break;
             case TaskTextObjectStatus.Canceled:
-                StatusIcon = "Solid_Ban";
+                StatusIcon = "SolidBan";
                 StatusIconSpin = false;
                 Status = TaskTextObjectStatus.Canceled;
                 break;
             case TaskTextObjectStatus.Check:
-                StatusIcon = "Solid_CircleNotch";
+                StatusIcon = "SolidCircleNotch";
                 StatusIconSpin = true;
                 Status = TaskTextObjectStatus.Check;
                 break;

@@ -1,4 +1,4 @@
-using FontAwesome5;
+using DSaladin.FontAwesome.WPF;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.ItemDetailsModel;
@@ -160,13 +160,13 @@ public static class ItemInformationService
         return
         [
             ..GetItemPowerStats(itemPower),
-            CreateStat(EFontAwesomeIcon.Solid_ShieldAlt, "@ITEMDETAILS_STATS_PHYSICAL_ARMOR", "Physical Armor", physicalArmor, _maximums.PhysicalArmor, FormatSignedNumber(physicalArmor, "N0")),
-            CreateStat(EFontAwesomeIcon.Solid_Magic, "@ITEMDETAILS_STATS_MAGIC_RESISTANCE", "Magic Resistance", magicResistance, _maximums.MagicResistance, FormatSignedNumber(magicResistance, "N0")),
-            CreateStat(EFontAwesomeIcon.Solid_Heart, "@ITEMDETAILS_STATS_MAX_HITPOINTS", "Max Health", maxHealth, _maximums.MaxHealth, FormatSignedNumber(maxHealth, "N0")),
-            CreateStat(EFontAwesomeIcon.Solid_Bolt, "@ITEMDETAILS_STATS_ENERGY_REGENERATION", "Energy Regeneration", energyRegeneration, _maximums.EnergyRegeneration, $"{FormatSignedNumber(energyRegeneration, "N2")}/s"),
-            CreateStat(EFontAwesomeIcon.Solid_Stopwatch, "@ITEMDETAILS_STATS_COOLDOWN_REDUCTION", "Cooldown Reduction", cooldownReduction, _maximums.CooldownReduction, FormatPercentage(cooldownReduction, "-")),
-            CreateStat(EFontAwesomeIcon.Solid_Running, "@ITEMDETAILS_STATS_MOVE_SPEED_BONUS", "Move Speed Bonus", moveSpeed, _maximums.MoveSpeed, FormatPercentage(moveSpeed, "+")),
-            CreateStat(EFontAwesomeIcon.Solid_Plus, "@ITEMDETAILS_STATS_HEAL_MODIFIER", "Healing Received Bonus", Math.Abs(healingReceived), _maximums.HealingReceived, FormatPercentage(healingReceived, healingReceived < 0 ? "-" : "+"))
+            CreateStat(FontAwesomeIcon.SolidShieldHalved, "@ITEMDETAILS_STATS_PHYSICAL_ARMOR", "Physical Armor", physicalArmor, _maximums.PhysicalArmor, FormatSignedNumber(physicalArmor, "N0")),
+            CreateStat(FontAwesomeIcon.SolidWandMagicSparkles, "@ITEMDETAILS_STATS_MAGIC_RESISTANCE", "Magic Resistance", magicResistance, _maximums.MagicResistance, FormatSignedNumber(magicResistance, "N0")),
+            CreateStat(FontAwesomeIcon.SolidHeart, "@ITEMDETAILS_STATS_MAX_HITPOINTS", "Max Health", maxHealth, _maximums.MaxHealth, FormatSignedNumber(maxHealth, "N0")),
+            CreateStat(FontAwesomeIcon.SolidBolt, "@ITEMDETAILS_STATS_ENERGY_REGENERATION", "Energy Regeneration", energyRegeneration, _maximums.EnergyRegeneration, $"{FormatSignedNumber(energyRegeneration, "N2")}/s"),
+            CreateStat(FontAwesomeIcon.SolidStopwatch, "@ITEMDETAILS_STATS_COOLDOWN_REDUCTION", "Cooldown Reduction", cooldownReduction, _maximums.CooldownReduction, FormatPercentage(cooldownReduction, "-")),
+            CreateStat(FontAwesomeIcon.SolidPersonRunning, "@ITEMDETAILS_STATS_MOVE_SPEED_BONUS", "Move Speed Bonus", moveSpeed, _maximums.MoveSpeed, FormatPercentage(moveSpeed, "+")),
+            CreateStat(FontAwesomeIcon.SolidPlus, "@ITEMDETAILS_STATS_HEAL_MODIFIER", "Healing Received Bonus", Math.Abs(healingReceived), _maximums.HealingReceived, FormatPercentage(healingReceived, healingReceived < 0 ? "-" : "+"))
         ];
     }
 
@@ -199,10 +199,10 @@ public static class ItemInformationService
         return
         [
             ..GetItemPowerStats(itemPower),
-            CreateStat(EFontAwesomeIcon.Solid_FistRaised, attackDamageTranslationKey, "Attack Damage", attackDamage, _maximums.AttackDamage, FormatNumber(attackDamage, "N0")),
-            CreateStat(EFontAwesomeIcon.Solid_TachometerAlt, "@ITEMDETAILS_STATS_ATTACK_SPEED", "Attack Speed", attackSpeed, _maximums.AttackSpeed, $"{FormatNumber(attackSpeed, "N2")}/s"),
-            CreateStat(EFontAwesomeIcon.Solid_Crosshairs, "@ITEMDETAILS_STATS_ATTACK_RANGE", "Attack Range", attackRange, _maximums.AttackRange, $"{FormatNumber(attackRange, "N1")} m"),
-            CreateStat(EFontAwesomeIcon.Solid_Heartbeat, "@ITEMDETAILS_STATS_HITPOINT_REGENERATION_BONUS", "Health Regeneration", healthRegeneration, _maximums.HealthRegeneration, $"{FormatSignedNumber(healthRegeneration, "N2")}/s")
+            CreateStat(FontAwesomeIcon.SolidHandFist, attackDamageTranslationKey, "Attack Damage", attackDamage, _maximums.AttackDamage, FormatNumber(attackDamage, "N0")),
+            CreateStat(FontAwesomeIcon.SolidGaugeHigh, "@ITEMDETAILS_STATS_ATTACK_SPEED", "Attack Speed", attackSpeed, _maximums.AttackSpeed, $"{FormatNumber(attackSpeed, "N2")}/s"),
+            CreateStat(FontAwesomeIcon.SolidCrosshairs, "@ITEMDETAILS_STATS_ATTACK_RANGE", "Attack Range", attackRange, _maximums.AttackRange, $"{FormatNumber(attackRange, "N1")} m"),
+            CreateStat(FontAwesomeIcon.SolidHeartPulse, "@ITEMDETAILS_STATS_HITPOINT_REGENERATION_BONUS", "Health Regeneration", healthRegeneration, _maximums.HealthRegeneration, $"{FormatSignedNumber(healthRegeneration, "N2")}/s")
         ];
     }
 
@@ -214,8 +214,8 @@ public static class ItemInformationService
         return
         [
             ..GetItemPowerStats(itemPower),
-            CreateStat(EFontAwesomeIcon.Solid_Heart, "@ITEMDETAILS_STATS_MOUNT_HITPOINTS", "Mount Health", mountHealth, _maximums.MountHealth, FormatNumber(mountHealth, "N0")),
-            CreateStat(EFontAwesomeIcon.Solid_Heartbeat, "@ITEMDETAILS_STATS_HITPOINT_REGENERATION", "Health Regeneration", mountHealthRegeneration, _maximums.MountHealthRegeneration, $"{FormatNumber(mountHealthRegeneration, "N2")}/s")
+            CreateStat(FontAwesomeIcon.SolidHeart, "@ITEMDETAILS_STATS_MOUNT_HITPOINTS", "Mount Health", mountHealth, _maximums.MountHealth, FormatNumber(mountHealth, "N0")),
+            CreateStat(FontAwesomeIcon.SolidHeartPulse, "@ITEMDETAILS_STATS_HITPOINT_REGENERATION", "Health Regeneration", mountHealthRegeneration, _maximums.MountHealthRegeneration, $"{FormatNumber(mountHealthRegeneration, "N2")}/s")
         ];
     }
 
@@ -227,19 +227,19 @@ public static class ItemInformationService
         return
         [
             ..GetItemPowerStats(itemPower),
-            CreateStat(EFontAwesomeIcon.Solid_Stopwatch, "@ITEMDETAILS_STATS_TRACKING_TIME_REDUCTION", "Tracking Time Reduction", trackingTimeReduction, _maximums.TrackingTimeReduction, FormatPercentage(trackingTimeReduction, "-")),
-            CreateStat(EFontAwesomeIcon.Solid_Star, "@ITEMDETAILS_STATS_TRACKING_FAME_TOOL_BONUS", "Tracking Fame Bonus", trackingFameBonus, _maximums.TrackingFameBonus, FormatPercentage(trackingFameBonus, "+"))
+            CreateStat(FontAwesomeIcon.SolidStopwatch, "@ITEMDETAILS_STATS_TRACKING_TIME_REDUCTION", "Tracking Time Reduction", trackingTimeReduction, _maximums.TrackingTimeReduction, FormatPercentage(trackingTimeReduction, "-")),
+            CreateStat(FontAwesomeIcon.SolidStar, "@ITEMDETAILS_STATS_TRACKING_FAME_TOOL_BONUS", "Tracking Fame Bonus", trackingFameBonus, _maximums.TrackingFameBonus, FormatPercentage(trackingFameBonus, "+"))
         ];
     }
 
     private static IReadOnlyList<ItemStat> GetItemPowerStats(double itemPower)
     {
         return itemPower > 0
-            ? [CreateStat(EFontAwesomeIcon.Solid_Star, "ITEM_POWER", "Item Power", itemPower, _maximums.ItemPower, FormatNumber(itemPower, "N0"))]
+            ? [CreateStat(FontAwesomeIcon.SolidStar, "ITEM_POWER", "Item Power", itemPower, _maximums.ItemPower, FormatNumber(itemPower, "N0"))]
             : [];
     }
 
-    private static ItemStat CreateStat(EFontAwesomeIcon icon, string translationKey, string fallbackName, double value, double maximum, string valueText)
+    private static ItemStat CreateStat(FontAwesomeIcon icon, string translationKey, string fallbackName, double value, double maximum, string valueText)
     {
         var localizedName = translationKey.StartsWith('@')
             ? LocalizationController.GameTranslation(translationKey)

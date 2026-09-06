@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:fa5="http://schemas.fontawesome.com/icons/"
+             xmlns:fa="clr-namespace:StatisticsAnalysisTool.Common.Controls"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              xmlns:trade="clr-namespace:StatisticsAnalysisTool.Trade"
@@ -199,18 +199,18 @@
                     <TextBlock Margin="12,0,0,0"
                                Text="{Binding Translation.Filter, FallbackValue=FILTER}"
                                Style="{StaticResource Dashboard.SectionTitle}" />
-                    <fa5:ImageAwesome Grid.Column="1">
-                        <fa5:ImageAwesome.Style>
-                            <Style TargetType="{x:Type fa5:ImageAwesome}" BasedOn="{StaticResource Dashboard.SectionToggleIcon}">
-                                <Setter Property="Icon" Value="Solid_Plus" />
+                    <fa:FontAwesomeImage Grid.Column="1">
+                        <fa:FontAwesomeImage.Style>
+                            <Style TargetType="{x:Type fa:FontAwesomeImage}" BasedOn="{StaticResource Dashboard.SectionToggleIcon}">
+                                <Setter Property="Icon" Value="SolidPlus" />
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding TradeMonitoringBindings.IsFilterCardExpanded}" Value="True">
-                                        <Setter Property="Icon" Value="Solid_Minus" />
+                                        <Setter Property="Icon" Value="SolidMinus" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </fa5:ImageAwesome.Style>
-                    </fa5:ImageAwesome>
+                        </fa:FontAwesomeImage.Style>
+                    </fa:FontAwesomeImage>
                 </Grid>
 
                 <Border Padding="12,10"
@@ -241,20 +241,20 @@
                                     ToolTip="{Binding TradeMonitoringBindings.TradeOptionsObject.TranslationTradeMonitoringActive, FallbackValue=TRADE__MONITORING__ACTIVE}"
                                     Click="TradeMonitoringActivationToggle_Click">
                                 <StackPanel Orientation="Horizontal">
-                                    <fa5:ImageAwesome Width="16" Height="16" Margin="0,0,8,0" IsHitTestVisible="False">
-                                        <fa5:ImageAwesome.Style>
-                                            <Style TargetType="{x:Type fa5:ImageAwesome}">
-                                                <Setter Property="Icon" Value="Solid_ToggleOff" />
+                                    <fa:FontAwesomeImage Width="16" Height="16" Margin="0,0,8,0" IsHitTestVisible="False">
+                                        <fa:FontAwesomeImage.Style>
+                                            <Style TargetType="{x:Type fa:FontAwesomeImage}">
+                                                <Setter Property="Icon" Value="SolidToggleOff" />
                                                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding TradeMonitoringBindings.TradeOptionsObject.IsTradeMonitoringActive}" Value="True">
-                                                        <Setter Property="Icon" Value="Solid_ToggleOn" />
+                                                        <Setter Property="Icon" Value="SolidToggleOn" />
                                                         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
-                                        </fa5:ImageAwesome.Style>
-                                    </fa5:ImageAwesome>
+                                        </fa:FontAwesomeImage.Style>
+                                    </fa:FontAwesomeImage>
                                     <TextBlock VerticalAlignment="Center">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
@@ -283,7 +283,7 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <fa5:ImageAwesome Grid.Column="0" Icon="Solid_Search" Width="15" Height="15" Margin="0,0,8,0" VerticalAlignment="Center" 
+                            <fa:FontAwesomeImage Grid.Column="0" Icon="SolidMagnifyingGlass" Width="15" Height="15" Margin="0,0,8,0" VerticalAlignment="Center"
                                               Foreground="{StaticResource SolidColorBrush.Text.2}" />
                             <TextBox Grid.Row="0" Grid.Column="1" Height="{StaticResource App.ControlHeight}"
                                      Text="{Binding TradeMonitoringBindings.TradesSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -329,7 +329,7 @@
                     <Button Width="{StaticResource App.ControlHeight}" Margin="0,10,10,0" Padding="0"
                             Style="{StaticResource Style.Button.Neutral}" ToolTip="{Binding Translation.ResetFilters, FallbackValue=RESET_FILTERS}"
                             Click="FilterReset_Click">
-                        <fa5:ImageAwesome Icon="Solid_Redo" Width="14" Height="14" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                        <fa:FontAwesomeImage Icon="SolidRotateRight" Width="14" Height="14" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                     </Button>
 
                     <Button MinWidth="190" Margin="0,10,8,0"
@@ -344,7 +344,7 @@
                     <Grid Width="20" Height="20" Margin="0,26,0,0" VerticalAlignment="Top"
                           MouseEnter="OpenMailMonitoringPopup_MouseEnter"
                           MouseLeave="CloseMailMonitoringPopup_MouseLeave">
-                        <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                        <fa:FontAwesomeImage Icon="SolidCircleInfo" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                     </Grid>
                 </WrapPanel>
 
@@ -940,10 +940,10 @@
                                 </MultiBinding>
                             </TextBlock.Text>
                         </TextBlock>
-                        <fa5:ImageAwesome Width="16"
+                        <fa:FontAwesomeImage Width="16"
                                           Height="16"
                                           VerticalAlignment="Center"
-                                          Icon="Solid_ListAlt"
+                                          Icon="SolidRectangleList"
                                           Foreground="{StaticResource SolidColorBrush.Text.3}" />
                     </StackPanel>
                 </Border>
@@ -956,7 +956,7 @@
             <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
                 <DockPanel Margin="0,0,0,16">
                     <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
-                        <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                        <fa:FontAwesomeImage Icon="RegularCircleDot" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
                     </Grid>
                     <TextBlock Text="{Binding Translation.TradeMonitoringDescription1}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
                                FontSize="16" TextWrapping="Wrap" Width="auto" />

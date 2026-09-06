@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:fa5="http://schemas.fontawesome.com/icons/"
+             xmlns:fa="clr-namespace:StatisticsAnalysisTool.Common.Controls"
              xmlns:vm="clr-namespace:StatisticsAnalysisTool.ViewModels"
              d:DataContext="{d:DesignInstance Type=vm:FooterViewModel}"
              mc:Ignorable="d"
@@ -47,28 +47,28 @@
             <Grid ZIndex="10" Margin="5,0" HorizontalAlignment="Left" Width="22" Height="22" VerticalAlignment="Bottom">
                 <TextBlock>
                     <Hyperlink NavigateUri="{Binding GitHubRepoUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
-                        <fa5:ImageAwesome Icon="Brands_Github" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                        <fa:FontAwesomeImage Icon="BrandsGithub" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                     </Hyperlink>
                 </TextBlock>
             </Grid>
             <Grid ZIndex="10" Margin="5,0" HorizontalAlignment="Left" Width="22" Height="22" VerticalAlignment="Bottom">
                 <TextBlock>
                     <Hyperlink NavigateUri="{Binding DiscordUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
-                        <fa5:ImageAwesome Icon="Brands_Discord" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                        <fa:FontAwesomeImage Icon="BrandsDiscord" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                     </Hyperlink>
                 </TextBlock>
             </Grid>
             <Grid ZIndex="10" Margin="5,0" HorizontalAlignment="Left" Width="22" Height="22" VerticalAlignment="Bottom">
                 <TextBlock>
                     <Hyperlink NavigateUri="{Binding DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
-                        <fa5:ImageAwesome Icon="Brands_Paypal" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                        <fa:FontAwesomeImage Icon="BrandsPaypal" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                     </Hyperlink>
                 </TextBlock>
             </Grid>
             <Grid ZIndex="10" Margin="5,0" HorizontalAlignment="Left" Width="22" Height="22" VerticalAlignment="Bottom">
                 <TextBlock>
                     <Hyperlink NavigateUri="{Binding PatreonUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
-                        <fa5:ImageAwesome Icon="Brands_Patreon" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                        <fa:FontAwesomeImage Icon="BrandsPatreon" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                     </Hyperlink>
                 </TextBlock>
             </Grid>

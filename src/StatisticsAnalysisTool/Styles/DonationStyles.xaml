@@ -4,7 +4,7 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
                     xmlns:enumerations="clr-namespace:StatisticsAnalysisTool.Enumerations"
-                    xmlns:fa5="http://schemas.fontawesome.com/icons/"
+                    xmlns:fa="clr-namespace:StatisticsAnalysisTool.Common.Controls"
                     mc:Ignorable="d">
 
     <!--<Style TargetType="TextBlock" x:Key="Donation.Text">
@@ -156,9 +156,9 @@
         </Style.Triggers>
     </Style>
 
-    <Style TargetType="fa5:ImageAwesome" x:Key="Donation.Image.RealMoney.Style">
+    <Style TargetType="fa:FontAwesomeImage" x:Key="Donation.Image.RealMoney.Style">
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
-        <Setter Property="Icon" Value="Solid_EuroSign" />
+        <Setter Property="Icon" Value="SolidEuroSign" />
         <Setter Property="Margin" Value="0,0,0,0" />
         <Setter Property="Width" Value="20" />
         <Setter Property="Height" Value="20" />
@@ -347,7 +347,7 @@
             </StackPanel>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" Visibility="{Binding DonationRealMoneyVisibility}" HorizontalAlignment="Left" VerticalAlignment="Center">
-                <fa5:ImageAwesome Style="{StaticResource Donation.Image.RealMoney.Style}" Width="18" Height="18" />
+                <fa:FontAwesomeImage Style="{StaticResource Donation.Image.RealMoney.Style}" Width="18" Height="18" />
                 <TextBlock Style="{StaticResource Donation.TextBlock.Amount.Compact.Style}" Text="{Binding RealMoneyAmount, StringFormat='{} {0:N2}'}" />
             </StackPanel>
 

@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:fa5="http://schemas.fontawesome.com/icons/"
+             xmlns:fa="clr-namespace:StatisticsAnalysisTool.Common.Controls"
              xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:crafting="clr-namespace:StatisticsAnalysisTool.Crafting"
@@ -169,7 +169,7 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <fa5:ImageAwesome Grid.Column="0" Icon="Solid_Search" Width="16" Height="16" Margin="0,0,9,0"
+                    <fa:FontAwesomeImage Grid.Column="0" Icon="SolidMagnifyingGlass" Width="16" Height="16" Margin="0,0,9,0"
                                       VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.2}" />
                     <TextBox Grid.Column="1"
                              Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -179,7 +179,7 @@
                             ToolTip="{x:Static translation:MainWindowTranslation.ResetFilters}"
                             Style="{StaticResource Style.Button.Neutral}"
                             Click="LossExplorerFilterReset_Click">
-                        <fa5:ImageAwesome Icon="Solid_Redo" Width="14" Height="14" IsHitTestVisible="False"
+                        <fa:FontAwesomeImage Icon="SolidRotateRight" Width="14" Height="14" IsHitTestVisible="False"
                                           Foreground="{StaticResource SolidColorBrush.Text.1}" />
                     </Button>
                 </Grid>

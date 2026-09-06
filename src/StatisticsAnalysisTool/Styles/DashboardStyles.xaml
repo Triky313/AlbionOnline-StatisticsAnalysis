@@ -7,7 +7,7 @@
                     xmlns:gl="clr-namespace:System.Globalization;assembly=System.Runtime"
                     xmlns:bindingModel="clr-namespace:StatisticsAnalysisTool.Models.BindingModel"
                     xmlns:converters="clr-namespace:StatisticsAnalysisTool.Common.Converters"
-                    xmlns:fa5="http://schemas.fontawesome.com/icons/"
+                    xmlns:fa="clr-namespace:StatisticsAnalysisTool.Common.Controls"
                     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                     mc:Ignorable="d">
 
@@ -223,7 +223,7 @@
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
 
-    <Style x:Key="Dashboard.SectionToggleIcon" TargetType="{x:Type fa5:ImageAwesome}">
+    <Style x:Key="Dashboard.SectionToggleIcon" TargetType="{x:Type fa:FontAwesomeImage}">
         <Setter Property="Width" Value="14" />
         <Setter Property="Height" Value="14" />
         <Setter Property="Margin" Value="12,0" />
@@ -517,9 +517,9 @@
                             </Style>
                         </Image.Style>
                     </Image>
-                    <fa5:ImageAwesome Icon="Solid_Dungeon" Foreground="{StaticResource SolidColorBrush.Dungeon.Mode.DragonArea.1}">
-                        <fa5:ImageAwesome.Style>
-                            <Style TargetType="fa5:ImageAwesome">
+                    <fa:FontAwesomeImage Icon="SolidDungeon" Foreground="{StaticResource SolidColorBrush.Dungeon.Mode.DragonArea.1}">
+                        <fa:FontAwesomeImage.Style>
+                            <Style TargetType="fa:FontAwesomeImage">
                                 <Setter Property="Visibility" Value="Collapsed" />
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding DungeonMode}" Value="{x:Static dungeon:DungeonMode.DragonArea}">
@@ -527,8 +527,8 @@
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </fa5:ImageAwesome.Style>
-                    </fa5:ImageAwesome>
+                        </fa:FontAwesomeImage.Style>
+                    </fa:FontAwesomeImage>
                 </Grid>
                 <TextBlock Grid.Column="1"
                            Margin="7,0,10,0"
@@ -677,17 +677,17 @@
                                                         VerticalAlignment="Center"
                                                         Background="{StaticResource SolidColorBrush.Background.3}"
                                                         CornerRadius="13">
-                                                    <fa5:ImageAwesome x:Name="CombatEventExpandIcon"
+                                                    <fa:FontAwesomeImage x:Name="CombatEventExpandIcon"
                                                                       Width="10"
                                                                       Height="10"
-                                                                      Icon="Solid_ChevronDown"
+                                                                      Icon="SolidChevronDown"
                                                                       Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
                                                 </Border>
                                             </Grid>
                                         </Border>
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsChecked" Value="True">
-                                                <Setter TargetName="CombatEventExpandIcon" Property="Icon" Value="Solid_ChevronUp" />
+                                                <Setter TargetName="CombatEventExpandIcon" Property="Icon" Value="SolidChevronUp" />
                                                 <Setter TargetName="CombatEventHeader" Property="Background" Value="{StaticResource SolidColorBrush.Background.3}" />
                                             </Trigger>
                                             <Trigger Property="IsMouseOver" Value="True">
@@ -1092,7 +1092,7 @@
                         <TextBlock Text="{Binding TranslationTraitsUpgraded, FallbackValue=TRAITS_UPGRADED}"
                                    Style="{StaticResource Dashboard.CostLabel}" />
                         <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
-                            <fa5:ImageAwesome Icon="Solid_Plus" Width="16" Height="16" Margin="0,0,5,0"
+                            <fa:FontAwesomeImage Icon="SolidPlus" Width="16" Height="16" Margin="0,0,5,0"
                                               Foreground="{StaticResource SolidColorBrush.Text.2}" />
                             <TextBlock Text="{Binding AwakenedWeaponTraitUpgradeCount, StringFormat='{}{0:N0}', FallbackValue=0}"
                                        Style="{StaticResource Dashboard.CostValue}" />
@@ -1104,7 +1104,7 @@
                         <TextBlock Text="{Binding TranslationTraitUpgradeProcs, FallbackValue=TRAIT_UPGRADE_PROCS}"
                                    Style="{StaticResource Dashboard.CostLabel}" />
                         <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
-                            <fa5:ImageAwesome Icon="Solid_Bolt" Width="16" Height="16" Margin="0,0,5,0"
+                            <fa:FontAwesomeImage Icon="SolidBolt" Width="16" Height="16" Margin="0,0,5,0"
                                               Foreground="{StaticResource SolidColorBrush.Text.2}" />
                             <TextBlock Text="{Binding AwakenedWeaponTraitUpgradeProcCount, StringFormat='{}{0:N0}', FallbackValue=0}"
                                        Style="{StaticResource Dashboard.CostValue}" />
@@ -1203,10 +1203,10 @@
                                 </Style>
                             </Image.Style>
                         </Image>
-                        <fa5:ImageAwesome Icon="Solid_GlobeEurope"
+                        <fa:FontAwesomeImage Icon="SolidEarthEurope"
                                           Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}">
-                            <fa5:ImageAwesome.Style>
-                                <Style TargetType="{x:Type fa5:ImageAwesome}">
+                            <fa:FontAwesomeImage.Style>
+                                <Style TargetType="{x:Type fa:FontAwesomeImage}">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ContentType}" Value="{x:Static models:DashboardContentType.OpenWorld}">
@@ -1214,8 +1214,8 @@
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </fa5:ImageAwesome.Style>
-                        </fa5:ImageAwesome>
+                            </fa:FontAwesomeImage.Style>
+                        </fa:FontAwesomeImage>
                     </Grid>
                     <TextBlock Text="{Binding Name}" Style="{StaticResource Dashboard.LootedChestTitle}" />
                 </DockPanel>
@@ -1355,13 +1355,13 @@
                                                         VerticalAlignment="Center"
                                                         Background="{StaticResource SolidColorBrush.Background.3}"
                                                         CornerRadius="14">
-                                                    <fa5:ImageAwesome x:Name="MobExpandIcon" Width="11" Height="11" Icon="Solid_ChevronDown" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                                                    <fa:FontAwesomeImage x:Name="MobExpandIcon" Width="11" Height="11" Icon="SolidChevronDown" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
                                                 </Border>
                                             </Grid>
                                         </Border>
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsChecked" Value="True">
-                                                <Setter TargetName="MobExpandIcon" Property="Icon" Value="Solid_ChevronUp" />
+                                                <Setter TargetName="MobExpandIcon" Property="Icon" Value="SolidChevronUp" />
                                             </Trigger>
                                             <Trigger Property="IsMouseOver" Value="True">
                                                 <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.3}" />
