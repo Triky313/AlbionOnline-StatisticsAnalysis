@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
-        xmlns:fa5="http://schemas.fontawesome.com/icons/"
+        xmlns:fa="clr-namespace:StatisticsAnalysisTool.Common.Controls"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=viewModels:FirstStartGuideViewModel}"
         Title="{Binding WindowTitle}"
@@ -30,7 +30,7 @@
             <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.2}" />
             <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.2}" />
             <Grid Margin="10,4,0,0" Width="24" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left">
-                <fa5:ImageAwesome Icon="Solid_Tasks" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                <fa:FontAwesomeImage Icon="SolidListCheck" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
             </Grid>
             <Label Content="{Binding WindowTitle}"
                    Margin="41,0,61,0"
@@ -306,7 +306,7 @@
             <Hyperlink NavigateUri="{Binding DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
                 <InlineUIContainer BaselineAlignment="Center">
                     <StackPanel Orientation="Vertical" Width="100">
-                        <fa5:ImageAwesome Icon="Brands_Paypal" Width="32" Height="32" HorizontalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                        <fa:FontAwesomeImage Icon="BrandsPaypal" Width="32" Height="32" HorizontalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                         <TextBlock Text="PayPal" FontSize="14" Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Center" Margin="0,8,0,0" />
                     </StackPanel>
                 </InlineUIContainer>
@@ -326,7 +326,7 @@
             <Hyperlink NavigateUri="{Binding PatreonUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
                 <InlineUIContainer BaselineAlignment="Center">
                     <StackPanel Orientation="Vertical" Width="100">
-                        <fa5:ImageAwesome Icon="Brands_Patreon" Width="32" Height="32" HorizontalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                        <fa:FontAwesomeImage Icon="BrandsPatreon" Width="32" Height="32" HorizontalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                         <TextBlock Text="Patreon" FontSize="14" Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Center" Margin="0,8,0,0" />
                     </StackPanel>
                 </InlineUIContainer>
@@ -336,7 +336,7 @@
             <Hyperlink NavigateUri="{Binding GitHubSponsorsUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
                 <InlineUIContainer BaselineAlignment="Center">
                     <StackPanel Orientation="Vertical" Width="100">
-                        <fa5:ImageAwesome Icon="Regular_Heart" Width="32" Height="32" HorizontalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                        <fa:FontAwesomeImage Icon="RegularHeart" Width="32" Height="32" HorizontalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                         <TextBlock Text="GitHub Sponsors" FontSize="14" Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,8,0,0" />
                     </StackPanel>
                 </InlineUIContainer>

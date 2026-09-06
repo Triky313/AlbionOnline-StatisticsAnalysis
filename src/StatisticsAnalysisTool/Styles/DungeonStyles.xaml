@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:fa5="http://schemas.fontawesome.com/icons/"
+                    xmlns:fa="clr-namespace:StatisticsAnalysisTool.Common.Controls"
                     xmlns:converters="clr-namespace:StatisticsAnalysisTool.Common.Converters" 
                     xmlns:glob="clr-namespace:System.Globalization;assembly=mscorlib"
                     xmlns:dungeon="clr-namespace:StatisticsAnalysisTool.Dungeon"
@@ -3285,18 +3285,18 @@
                         <CheckBox HorizontalAlignment="Right" IsChecked="{Binding IsSelectedForDeletion}"
                                   ToolTip="{Binding TranslationSelectToDelete}" />
                         <StackPanel Grid.Row="1" Margin="0,4,0,0" Orientation="Horizontal">
-                            <fa5:ImageAwesome Icon="Solid_Users" Width="17" Height="17" Foreground="{StaticResource SolidColorBrush.Text.3}" />
+                            <fa:FontAwesomeImage Icon="SolidUsers" Width="17" Height="17" Foreground="{StaticResource SolidColorBrush.Text.3}" />
                             <TextBlock Margin="7,0,0,0" Text="{Binding PartySize}" FontWeight="SemiBold" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                             <TextBlock Margin="5,1,0,0" Text="{Binding TranslationPlayers}" FontSize="9.5" Foreground="{StaticResource SolidColorBrush.Text.4}" />
                         </StackPanel>
                         <StackPanel Grid.Row="2" Margin="0,8,0,0" Orientation="Horizontal">
-                            <fa5:ImageAwesome Icon="Regular_Clock" Width="17" Height="17" Foreground="{StaticResource SolidColorBrush.Text.3}" />
+                            <fa:FontAwesomeImage Icon="RegularClock" Width="17" Height="17" Foreground="{StaticResource SolidColorBrush.Text.3}" />
                             <TextBlock Margin="7,0,0,0" Text="{Binding TotalRunTimeInSeconds, Converter={StaticResource SecondsToTimeFormatConverter}}"
                                        FontWeight="SemiBold" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                         </StackPanel>
                         <WrapPanel Grid.Row="3" Margin="0,7,0,0">
                             <StackPanel Margin="0,0,8,0" Orientation="Horizontal" Visibility="{Binding FloorCountVisibility}">
-                                <fa5:ImageAwesome Icon="Solid_Dungeon" Width="16" Height="16" Foreground="{StaticResource SolidColorBrush.Text.3}"
+                                <fa:FontAwesomeImage Icon="SolidDungeon" Width="16" Height="16" Foreground="{StaticResource SolidColorBrush.Text.3}"
                                                   ToolTip="{Binding TranslationNumberOfDungeonFloors}" />
                                 <TextBlock Margin="5,0,0,0" Text="{Binding FloorCount}" Foreground="{StaticResource SolidColorBrush.Text.2}" />
                             </StackPanel>

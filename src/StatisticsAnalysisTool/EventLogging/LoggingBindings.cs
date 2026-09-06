@@ -935,8 +935,10 @@ public class LoggingBindings : BaseViewModel
             UtcTimestamp = utcTimestamp,
             DiedName = values[10],
             DiedPlayerGuild = values[11],
+            DiedPlayerAlliance = values.Length > 16 ? values[16] : string.Empty,
             KilledByName = values[12],
             KilledByGuild = values[13],
+            KilledByAlliance = values.Length > 17 ? values[17] : string.Empty,
             ClusterName = values.Length > 15 ? values[15] : string.Empty
         };
         return true;
@@ -1085,8 +1087,8 @@ public class LoggingBindings : BaseViewModel
             }
 
             LootLogCombatEvents.Add(combatEvent);
-            AddOrUpdateCombatPlayer(combatEvent.DiedName, combatEvent.DiedPlayerGuild);
-            AddOrUpdateCombatPlayer(combatEvent.KilledByName, combatEvent.KilledByGuild);
+            AddOrUpdateCombatPlayer(combatEvent.DiedName, combatEvent.DiedPlayerGuild, combatEvent.DiedPlayerAlliance);
+            AddOrUpdateCombatPlayer(combatEvent.KilledByName, combatEvent.KilledByGuild, combatEvent.KilledByAlliance);
             addedEvents++;
         }
 
@@ -1104,7 +1106,7 @@ public class LoggingBindings : BaseViewModel
                && string.Equals(firstEvent.ClusterName, secondEvent.ClusterName, StringComparison.OrdinalIgnoreCase);
     }
 
-    private void AddOrUpdateCombatPlayer(string playerName, string playerGuild)
+    private void AddOrUpdateCombatPlayer(string playerName, string playerGuild, string playerAlliance)
     {
         if (string.IsNullOrWhiteSpace(playerName))
         {
@@ -1119,6 +1121,7 @@ public class LoggingBindings : BaseViewModel
             {
                 PlayerName = playerName,
                 PlayerGuild = playerGuild,
+                PlayerAlliance = playerAlliance,
                 LootingPlayerVisibility = Visibility.Visible
             });
             return;
@@ -1127,6 +1130,11 @@ public class LoggingBindings : BaseViewModel
         if (string.IsNullOrWhiteSpace(lootingPlayer.PlayerGuild) && !string.IsNullOrWhiteSpace(playerGuild))
         {
             lootingPlayer.PlayerGuild = playerGuild;
+        }
+
+        if (string.IsNullOrWhiteSpace(lootingPlayer.PlayerAlliance) && !string.IsNullOrWhiteSpace(playerAlliance))
+        {
+            lootingPlayer.PlayerAlliance = playerAlliance;
         }
     }
 

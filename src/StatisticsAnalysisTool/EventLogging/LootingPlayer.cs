@@ -131,19 +131,8 @@ public class LootingPlayer : BaseViewModel
             return string.Empty;
         }
 
-        List<string> affiliations = [];
-
-        if (!string.IsNullOrWhiteSpace(PlayerGuild))
-        {
-            affiliations.Add(PlayerGuild);
-        }
-
-        if (!string.IsNullOrWhiteSpace(PlayerAlliance))
-        {
-            affiliations.Add(PlayerAlliance);
-        }
-
-        return affiliations.Count > 0 ? $"{PlayerName} ({string.Join(", ", affiliations)})" : PlayerName;
+        var affiliations = PlayerAffiliationFormatter.Format(PlayerGuild, PlayerAlliance);
+        return string.IsNullOrEmpty(affiliations) ? PlayerName : $"{PlayerName} ({affiliations})";
     }
 
     public int LootedItemCount

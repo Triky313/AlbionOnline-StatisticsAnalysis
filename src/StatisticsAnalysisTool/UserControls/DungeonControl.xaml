@@ -7,7 +7,7 @@
              xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              xmlns:dungeon="clr-namespace:StatisticsAnalysisTool.Dungeon"
              xmlns:dungeonModels="clr-namespace:StatisticsAnalysisTool.Dungeon.Models"
-             xmlns:fa5="http://schemas.fontawesome.com/icons/"
+             xmlns:fa="clr-namespace:StatisticsAnalysisTool.Common.Controls"
              xmlns:glob="clr-namespace:System.Globalization;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="1600" d:DesignWidth="1000"
@@ -115,7 +115,7 @@
                         <Border Style="{StaticResource Dungeon.AnalyticsCard}">
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="Auto" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
-                                <fa5:ImageAwesome Icon="Solid_Running" Width="21" Height="21" Margin="0,0,7,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Text.2}" />
+                                <fa:FontAwesomeImage Icon="SolidPersonRunning" Width="21" Height="21" Margin="0,0,7,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Text.2}" />
                                 <StackPanel Grid.Column="1">
                                     <TextBlock Text="{Binding DungeonBindings.Analytics.TranslationTotalRuns, FallbackValue=TOTAL_RUNS}" Style="{StaticResource Dashboard.SummaryTitle}" />
                                     <ContentControl Content="{Binding DungeonBindings.Analytics.TotalRuns}" ContentTemplate="{StaticResource Dungeon.SummaryMetricTemplate}" />
@@ -198,7 +198,7 @@
                         <Border Style="{StaticResource Dungeon.AnalyticsCard}">
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="Auto" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
-                                <fa5:ImageAwesome Icon="Regular_Clock" Width="21" Height="21" Margin="0,0,7,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Text.2}" />
+                                <fa:FontAwesomeImage Icon="RegularClock" Width="21" Height="21" Margin="0,0,7,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Text.2}" />
                                 <StackPanel Grid.Column="1">
                                     <TextBlock Text="{Binding DungeonBindings.Analytics.TranslationAverageRunTime, FallbackValue=AVERAGE_RUN_TIME}" Style="{StaticResource Dashboard.SummaryTitle}" />
                                     <ContentControl Content="{Binding DungeonBindings.Analytics.AverageRunTime}" ContentTemplate="{StaticResource Dungeon.DurationMetricTemplate}" />
@@ -344,7 +344,7 @@
                                                         <ColumnDefinition Width="48" />
                                                         <ColumnDefinition Width="*" />
                                                     </Grid.ColumnDefinitions>
-                                                    <fa5:ImageAwesome Icon="Regular_Clock" Width="34" Height="34"
+                                                    <fa:FontAwesomeImage Icon="RegularClock" Width="34" Height="34"
                                                                       Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}"
                                                                       HorizontalAlignment="Center"
                                                                       VerticalAlignment="Center" />
@@ -433,7 +433,7 @@
                                                     <TextBlock Text="{Binding AverageFamePerRun, Converter={StaticResource Dungeon.ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}}" Margin="7,0" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
                                                 </Grid>
                                                 <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                    <fa5:ImageAwesome Icon="Regular_Clock" Width="12" Height="12" Margin="0,0,5,0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                                                    <fa:FontAwesomeImage Icon="RegularClock" Width="12" Height="12" Margin="0,0,5,0" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
                                                     <TextBlock Text="{Binding AverageDurationInSeconds, Converter={StaticResource Dungeon.DurationConverter}}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                                 </StackPanel>
                                             </Grid>

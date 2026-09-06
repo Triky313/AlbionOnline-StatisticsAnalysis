@@ -1,4 +1,4 @@
-﻿using FontAwesome5;
+using DSaladin.FontAwesome.WPF;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Localization;
@@ -24,39 +24,39 @@ public class DashboardBindings : BaseViewModel
         RepairCostsChestVisibility = Settings.Default.IsContainerRepairCostsVisible ? Visibility.Visible : Visibility.Collapsed;
 
         KillDeathStatsVisibility = SettingsController.CurrentSettings.IsKillDeathStatsVisible ? Visibility.Visible : Visibility.Collapsed;
-        KillDeathStatsToggleIcon = SettingsController.CurrentSettings.IsKillDeathStatsVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
+        KillDeathStatsToggleIcon = SettingsController.CurrentSettings.IsKillDeathStatsVisible ? FontAwesomeIcon.SolidMinus : FontAwesomeIcon.SolidPlus;
 
         TopKillLocationsVisibility = SettingsController.CurrentSettings.IsTopKillLocationsVisible ? Visibility.Visible : Visibility.Collapsed;
-        TopKillLocationsToggleIcon = SettingsController.CurrentSettings.IsTopKillLocationsVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
+        TopKillLocationsToggleIcon = SettingsController.CurrentSettings.IsTopKillLocationsVisible ? FontAwesomeIcon.SolidMinus : FontAwesomeIcon.SolidPlus;
 
         TopDeathLocationsVisibility = SettingsController.CurrentSettings.IsTopDeathLocationsVisible ? Visibility.Visible : Visibility.Collapsed;
-        TopDeathLocationsToggleIcon = SettingsController.CurrentSettings.IsTopDeathLocationsVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
+        TopDeathLocationsToggleIcon = SettingsController.CurrentSettings.IsTopDeathLocationsVisible ? FontAwesomeIcon.SolidMinus : FontAwesomeIcon.SolidPlus;
 
         RecentKillsDeathsVisibility = SettingsController.CurrentSettings.IsRecentKillsDeathsVisible ? Visibility.Visible : Visibility.Collapsed;
-        RecentKillsDeathsToggleIcon = SettingsController.CurrentSettings.IsRecentKillsDeathsVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
+        RecentKillsDeathsToggleIcon = SettingsController.CurrentSettings.IsRecentKillsDeathsVisible ? FontAwesomeIcon.SolidMinus : FontAwesomeIcon.SolidPlus;
 
         FactionSummaryVisibility = SettingsController.CurrentSettings.IsFactionSummaryVisible ? Visibility.Visible : Visibility.Collapsed;
-        FactionSummaryToggleIcon = SettingsController.CurrentSettings.IsFactionSummaryVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
+        FactionSummaryToggleIcon = SettingsController.CurrentSettings.IsFactionSummaryVisible ? FontAwesomeIcon.SolidMinus : FontAwesomeIcon.SolidPlus;
 
         var isContentRankingVisible = SettingsController.CurrentSettings.IsFameContentRankingVisible
                                       || SettingsController.CurrentSettings.IsSilverContentRankingVisible;
         ContentRankingVisibility = isContentRankingVisible ? Visibility.Visible : Visibility.Collapsed;
-        ContentRankingToggleIcon = isContentRankingVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
+        ContentRankingToggleIcon = isContentRankingVisible ? FontAwesomeIcon.SolidMinus : FontAwesomeIcon.SolidPlus;
 
         LootedChestsStatsVisibility = SettingsController.CurrentSettings.IsLootedChestsStatsVisible ? Visibility.Visible : Visibility.Collapsed;
-        LootedChestsStatsToggleIcon = SettingsController.CurrentSettings.IsLootedChestsStatsVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
+        LootedChestsStatsToggleIcon = SettingsController.CurrentSettings.IsLootedChestsStatsVisible ? FontAwesomeIcon.SolidMinus : FontAwesomeIcon.SolidPlus;
 
         LootStatsVisibility = SettingsController.CurrentSettings.IsLootStatsVisible ? Visibility.Visible : Visibility.Collapsed;
-        LootStatsToggleIcon = SettingsController.CurrentSettings.IsLootStatsVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
+        LootStatsToggleIcon = SettingsController.CurrentSettings.IsLootStatsVisible ? FontAwesomeIcon.SolidMinus : FontAwesomeIcon.SolidPlus;
 
         ReSpecStatsVisibility = SettingsController.CurrentSettings.IsReSpecStatsVisible ? Visibility.Visible : Visibility.Collapsed;
-        ReSpecStatsToggleIcon = SettingsController.CurrentSettings.IsReSpecStatsVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
+        ReSpecStatsToggleIcon = SettingsController.CurrentSettings.IsReSpecStatsVisible ? FontAwesomeIcon.SolidMinus : FontAwesomeIcon.SolidPlus;
 
         RepairCostsStatsVisibility = SettingsController.CurrentSettings.IsRepairCostsStatsVisible ? Visibility.Visible : Visibility.Collapsed;
-        RepairCostsStatsToggleIcon = SettingsController.CurrentSettings.IsRepairCostsStatsVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
+        RepairCostsStatsToggleIcon = SettingsController.CurrentSettings.IsRepairCostsStatsVisible ? FontAwesomeIcon.SolidMinus : FontAwesomeIcon.SolidPlus;
 
         ActivityChartVisibility = SettingsController.CurrentSettings.IsActivityChartVisible ? Visibility.Visible : Visibility.Collapsed;
-        ActivityChartToggleIcon = SettingsController.CurrentSettings.IsActivityChartVisible ? EFontAwesomeIcon.Solid_Minus : EFontAwesomeIcon.Solid_Plus;
+        ActivityChartToggleIcon = SettingsController.CurrentSettings.IsActivityChartVisible ? FontAwesomeIcon.SolidMinus : FontAwesomeIcon.SolidPlus;
     }
 
     #region Summary
@@ -149,7 +149,7 @@ public class DashboardBindings : BaseViewModel
         }
     }
 
-    public EFontAwesomeIcon FactionSummaryToggleIcon
+    public FontAwesomeIcon FactionSummaryToggleIcon
     {
         get;
         set
@@ -170,7 +170,7 @@ public class DashboardBindings : BaseViewModel
         }
     }
 
-    public EFontAwesomeIcon KillDeathStatsToggleIcon
+    public FontAwesomeIcon KillDeathStatsToggleIcon
     {
         get;
         set
@@ -191,7 +191,7 @@ public class DashboardBindings : BaseViewModel
         }
     }
 
-    public EFontAwesomeIcon TopKillLocationsToggleIcon
+    public FontAwesomeIcon TopKillLocationsToggleIcon
     {
         get;
         set
@@ -212,7 +212,7 @@ public class DashboardBindings : BaseViewModel
         }
     }
 
-    public EFontAwesomeIcon TopDeathLocationsToggleIcon
+    public FontAwesomeIcon TopDeathLocationsToggleIcon
     {
         get;
         set
@@ -233,7 +233,7 @@ public class DashboardBindings : BaseViewModel
         }
     }
 
-    public EFontAwesomeIcon RecentKillsDeathsToggleIcon
+    public FontAwesomeIcon RecentKillsDeathsToggleIcon
     {
         get;
         set
@@ -256,7 +256,7 @@ public class DashboardBindings : BaseViewModel
         }
     }
 
-    public EFontAwesomeIcon ContentRankingToggleIcon
+    public FontAwesomeIcon ContentRankingToggleIcon
     {
         get;
         set
@@ -277,7 +277,7 @@ public class DashboardBindings : BaseViewModel
         }
     }
 
-    public EFontAwesomeIcon LootedChestsStatsToggleIcon
+    public FontAwesomeIcon LootedChestsStatsToggleIcon
     {
         get;
         set
@@ -298,7 +298,7 @@ public class DashboardBindings : BaseViewModel
         }
     }
 
-    public EFontAwesomeIcon LootStatsToggleIcon
+    public FontAwesomeIcon LootStatsToggleIcon
     {
         get;
         set
@@ -318,7 +318,7 @@ public class DashboardBindings : BaseViewModel
         }
     } = Visibility.Visible;
 
-    public EFontAwesomeIcon LootValueDistributionToggleIcon
+    public FontAwesomeIcon LootValueDistributionToggleIcon
     {
         get;
         set
@@ -326,7 +326,7 @@ public class DashboardBindings : BaseViewModel
             field = value;
             OnPropertyChanged();
         }
-    } = EFontAwesomeIcon.Solid_Minus;
+    } = FontAwesomeIcon.SolidMinus;
 
     public Visibility LootTierEnchantmentVisibility
     {
@@ -338,7 +338,7 @@ public class DashboardBindings : BaseViewModel
         }
     } = Visibility.Visible;
 
-    public EFontAwesomeIcon LootTierEnchantmentToggleIcon
+    public FontAwesomeIcon LootTierEnchantmentToggleIcon
     {
         get;
         set
@@ -346,7 +346,7 @@ public class DashboardBindings : BaseViewModel
             field = value;
             OnPropertyChanged();
         }
-    } = EFontAwesomeIcon.Solid_Minus;
+    } = FontAwesomeIcon.SolidMinus;
 
     public Visibility TopLootAreasVisibility
     {
@@ -358,7 +358,7 @@ public class DashboardBindings : BaseViewModel
         }
     } = Visibility.Visible;
 
-    public EFontAwesomeIcon TopLootAreasToggleIcon
+    public FontAwesomeIcon TopLootAreasToggleIcon
     {
         get;
         set
@@ -366,7 +366,7 @@ public class DashboardBindings : BaseViewModel
             field = value;
             OnPropertyChanged();
         }
-    } = EFontAwesomeIcon.Solid_Minus;
+    } = FontAwesomeIcon.SolidMinus;
 
     public Visibility ReSpecStatsVisibility
     {
@@ -379,7 +379,7 @@ public class DashboardBindings : BaseViewModel
         }
     }
 
-    public EFontAwesomeIcon ReSpecStatsToggleIcon
+    public FontAwesomeIcon ReSpecStatsToggleIcon
     {
         get;
         set
@@ -400,7 +400,7 @@ public class DashboardBindings : BaseViewModel
         }
     }
 
-    public EFontAwesomeIcon RepairCostsStatsToggleIcon
+    public FontAwesomeIcon RepairCostsStatsToggleIcon
     {
         get;
         set
@@ -420,7 +420,7 @@ public class DashboardBindings : BaseViewModel
         }
     } = Visibility.Visible;
 
-    public EFontAwesomeIcon ItemQualityRerollStatsToggleIcon
+    public FontAwesomeIcon ItemQualityRerollStatsToggleIcon
     {
         get;
         set
@@ -428,7 +428,7 @@ public class DashboardBindings : BaseViewModel
             field = value;
             OnPropertyChanged();
         }
-    } = EFontAwesomeIcon.Solid_Minus;
+    } = FontAwesomeIcon.SolidMinus;
 
     public Visibility AwakenedWeaponStatsVisibility
     {
@@ -440,7 +440,7 @@ public class DashboardBindings : BaseViewModel
         }
     } = Visibility.Visible;
 
-    public EFontAwesomeIcon AwakenedWeaponStatsToggleIcon
+    public FontAwesomeIcon AwakenedWeaponStatsToggleIcon
     {
         get;
         set
@@ -448,7 +448,7 @@ public class DashboardBindings : BaseViewModel
             field = value;
             OnPropertyChanged();
         }
-    } = EFontAwesomeIcon.Solid_Minus;
+    } = FontAwesomeIcon.SolidMinus;
 
     public Visibility ActivityChartVisibility
     {
@@ -461,7 +461,7 @@ public class DashboardBindings : BaseViewModel
         }
     }
 
-    public EFontAwesomeIcon ActivityChartToggleIcon
+    public FontAwesomeIcon ActivityChartToggleIcon
     {
         get;
         set

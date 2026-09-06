@@ -1,10 +1,10 @@
-using FontAwesome5;
+using DSaladin.FontAwesome.WPF;
 
 namespace StatisticsAnalysisTool.Models.ItemDetailsModel;
 
 public sealed class ItemStat
 {
-    public ItemStat(EFontAwesomeIcon icon, string name, double value, double maximum, string valueText)
+    public ItemStat(FontAwesomeIcon icon, string name, double value, double maximum, string valueText)
     {
         Icon = icon;
         Name = name;
@@ -13,7 +13,7 @@ public sealed class ItemStat
         ValueText = valueText;
     }
 
-    public EFontAwesomeIcon Icon { get; }
+    public FontAwesomeIcon Icon { get; }
     public string Name { get; }
     public double Value { get; }
     public double Maximum { get; }

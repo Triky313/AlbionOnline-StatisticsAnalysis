@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:fa5="http://schemas.fontawesome.com/icons/"
+             xmlns:fa="clr-namespace:StatisticsAnalysisTool.Common.Controls"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:userControls="clr-namespace:StatisticsAnalysisTool.UserControls"
              mc:Ignorable="d"
@@ -46,7 +46,7 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <fa5:ImageAwesome Grid.Column="0" Icon="Solid_Search" Width="16" Height="16" Margin="0,0,9,0"
+                            <fa:FontAwesomeImage Grid.Column="0" Icon="SolidMagnifyingGlass" Width="16" Height="16" Margin="0,0,9,0"
                                               VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.2}" />
                             <TextBox x:Name="TxtSearch" Grid.Column="1"
                                      Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -56,14 +56,14 @@
                                     Style="{StaticResource Style.Button.Neutral}"
                                     IsEnabled="{Binding IsFilterResetEnabled, FallbackValue=false}"
                                     Click="FilterReset_Click">
-                                <fa5:ImageAwesome Icon="Solid_Redo" Width="14" Height="14" IsHitTestVisible="False"
+                                <fa:FontAwesomeImage Icon="SolidRotateRight" Width="14" Height="14" IsHitTestVisible="False"
                                                   Foreground="{StaticResource SolidColorBrush.Text.1}" />
                             </Button>
                             <Grid Grid.Column="3" Height="20" Width="20" Margin="10,0,0,0"
                                   HorizontalAlignment="Right" VerticalAlignment="Center"
                                   MouseEnter="OpenItemSearchInfoPopup_MouseEnter"
                                   MouseLeave="CloseItemSearchInfoPopup_MouseLeave">
-                                <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                <fa:FontAwesomeImage Icon="SolidCircleInfo" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                             </Grid>
                         </Grid>
 
@@ -155,7 +155,7 @@
                     <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,8">
                         <DockPanel Margin="0,0,0,16">
                             <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
-                                <fa5:ImageAwesome Icon="Regular_DotCircle"
+                                <fa:FontAwesomeImage Icon="RegularCircleDot"
                                                   Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
                             </Grid>
                             <TextBlock Text="{Binding Translation.ItemSearchDescription3, FallbackValue='Item Prices: The prices listed under the item names in the list are averages taken directly from the game and update automatically when items are viewed in-game.'}"

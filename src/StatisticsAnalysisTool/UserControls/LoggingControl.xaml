@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:fa5="http://schemas.fontawesome.com/icons/"
+             xmlns:fa="clr-namespace:StatisticsAnalysisTool.Common.Controls"
              xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              xmlns:eventLogging="clr-namespace:StatisticsAnalysisTool.EventLogging"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
@@ -178,20 +178,20 @@
                                             ToolTip="{Binding Translation.Logging}"
                                             Click="LoggingActivationToggle_Click">
                                         <StackPanel Orientation="Horizontal">
-                                            <fa5:ImageAwesome Width="16" Height="16" Margin="0,0,8,0" IsHitTestVisible="False">
-                                                <fa5:ImageAwesome.Style>
-                                                    <Style TargetType="{x:Type fa5:ImageAwesome}">
-                                                        <Setter Property="Icon" Value="Solid_ToggleOff" />
+                                            <fa:FontAwesomeImage Width="16" Height="16" Margin="0,0,8,0" IsHitTestVisible="False">
+                                                <fa:FontAwesomeImage.Style>
+                                                    <Style TargetType="{x:Type fa:FontAwesomeImage}">
+                                                        <Setter Property="Icon" Value="SolidToggleOff" />
                                                         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding LoggingBindings.IsLoggingTrackingActive}" Value="True">
-                                                                <Setter Property="Icon" Value="Solid_ToggleOn" />
+                                                                <Setter Property="Icon" Value="SolidToggleOn" />
                                                                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
-                                                </fa5:ImageAwesome.Style>
-                                            </fa5:ImageAwesome>
+                                                </fa:FontAwesomeImage.Style>
+                                            </fa:FontAwesomeImage>
                                             <TextBlock VerticalAlignment="Center">
                                                 <TextBlock.Style>
                                                     <Style TargetType="{x:Type TextBlock}">
@@ -277,14 +277,14 @@
                                            Style="{StaticResource App.FilterLabel}" />
                                 <StackPanel Orientation="Horizontal">
                                     <Grid Height="32" Width="32" Margin="0,0,6,0" VerticalAlignment="Center">
-                                        <fa5:ImageAwesome Icon="Solid_FileCsv" ToolTip="{Binding Translation.ExportLootToFile}"
+                                        <fa:FontAwesomeImage Icon="SolidFileCsv" ToolTip="{Binding Translation.ExportLootToFile}"
                                                           Width="30" Height="30" Foreground="{StaticResource SolidColorBrush.Accent.Green.4}"
-                                                          MouseUp="BtnExportLootToFile_MouseUp" />
+                                                          UIElement.MouseUp="BtnExportLootToFile_MouseUp" />
                                     </Grid>
                                     <Grid Height="32" Width="32" Margin="0,0,6,0" VerticalAlignment="Center">
-                                        <fa5:ImageAwesome Icon="Solid_FileCode" ToolTip="{Binding Translation.ExportLootToJsonFile}"
+                                        <fa:FontAwesomeImage Icon="SolidFileCode" ToolTip="{Binding Translation.ExportLootToJsonFile}"
                                                           Width="30" Height="30" Foreground="{StaticResource SolidColorBrush.Accent.Green.4}"
-                                                          MouseUp="BtnExportLootToJsonFile_MouseUp" />
+                                                          UIElement.MouseUp="BtnExportLootToJsonFile_MouseUp" />
                                     </Grid>
                                     <Button Content="{Binding Translation.ResetTrackingNotifications, FallbackValue=RESET__TRACKING__NOTIFICATIONS}"
                                             Height="32" MaxWidth="500" MinWidth="210"
@@ -350,7 +350,7 @@
                     <Border Grid.Row="0" Style="{StaticResource App.TopFilterCard}" IsEnabled="{Binding LoggingBindings.IsAllButtonsEnabled}">
                         <WrapPanel VerticalAlignment="Bottom">
                             <Grid Height="45" Width="32" Margin="0,0,0,0" VerticalAlignment="Bottom">
-                                <fa5:ImageAwesome Icon="Solid_Filter" Width="18" Height="18" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                <fa:FontAwesomeImage Icon="SolidFilter" Width="18" Height="18" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                             </Grid>
 
                             <Border Margin="0,0,12,8" Style="{StaticResource App.FilterGroup}">
@@ -360,20 +360,20 @@
                                     <Button Width="180" Height="32" Style="{StaticResource Style.Button.Neutral}" ToolTip="{Binding Translation.LootComparator}"
                                             Click="LootComparatorActivationToggle_Click">
                                         <StackPanel Orientation="Horizontal">
-                                            <fa5:ImageAwesome Width="16" Height="16" Margin="0,0,8,0" IsHitTestVisible="False">
-                                                <fa5:ImageAwesome.Style>
-                                                    <Style TargetType="{x:Type fa5:ImageAwesome}">
-                                                        <Setter Property="Icon" Value="Solid_ToggleOff" />
+                                            <fa:FontAwesomeImage Width="16" Height="16" Margin="0,0,8,0" IsHitTestVisible="False">
+                                                <fa:FontAwesomeImage.Style>
+                                                    <Style TargetType="{x:Type fa:FontAwesomeImage}">
+                                                        <Setter Property="Icon" Value="SolidToggleOff" />
                                                         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding LoggingBindings.IsLootComparatorTrackingActive}" Value="True">
-                                                                <Setter Property="Icon" Value="Solid_ToggleOn" />
+                                                                <Setter Property="Icon" Value="SolidToggleOn" />
                                                                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.2}" />
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
-                                                </fa5:ImageAwesome.Style>
-                                            </fa5:ImageAwesome>
+                                                </fa:FontAwesomeImage.Style>
+                                            </fa:FontAwesomeImage>
                                             <TextBlock VerticalAlignment="Center">
                                                 <TextBlock.Style>
                                                     <Style TargetType="{x:Type TextBlock}">
@@ -532,7 +532,7 @@
                             </Border>
 
                             <Grid Height="53" Width="32" Margin="0,0,0,0" Cursor="Hand" VerticalAlignment="Bottom" MouseUp="ToggleLootComparatorInfoPopup_MouseUp">
-                                <fa5:ImageAwesome Icon="Solid_InfoCircle" Width="18" Height="18" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                <fa:FontAwesomeImage Icon="SolidCircleInfo" Width="18" Height="18" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                             </Grid>
                         </WrapPanel>
                     </Border>
@@ -555,7 +555,7 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <StackPanel Orientation="Horizontal">
-                                    <fa5:ImageAwesome Icon="Regular_FileAlt" Width="15" Height="17" Margin="0,0,10,0"
+                                    <fa:FontAwesomeImage Icon="RegularFileLines" Width="15" Height="17" Margin="0,0,10,0"
                                                       Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                     <TextBlock Style="{StaticResource Logging.ComparatorSectionTitle}"
                                                Text="{Binding LoggingBindings.Translation.LootComparatorChestLogInput, FallbackValue=CHEST__LOG__INPUT}" />
@@ -590,14 +590,14 @@
                                     <Button Grid.Column="0" Style="{StaticResource Style.Button.Warning}" Margin="0,0,5,0"
                                             Click="BtnLoadVaultLogText_Click">
                                         <StackPanel Orientation="Horizontal">
-                                            <fa5:ImageAwesome Icon="Solid_Plus" Width="15" Height="15" Margin="0,0,8,0" Style="{StaticResource Style.Button.Icon.White}" />
+                                            <fa:FontAwesomeImage Icon="SolidPlus" Width="15" Height="15" Margin="0,0,8,0" Style="{StaticResource Style.Button.Icon.White}" />
                                             <TextBlock Text="{Binding LoggingBindings.Translation.LoadChestLogText, FallbackValue=LOAD__CHEST__LOG__TEXT}" />
                                         </StackPanel>
                                     </Button>
                                     <Button Grid.Column="1" Style="{StaticResource Style.Button.Warning}" Margin="5,0,0,0"
                                             Click="BtnLoadVaultLogFiles_Click">
                                         <StackPanel Orientation="Horizontal">
-                                            <fa5:ImageAwesome Icon="Solid_Upload" Width="15" Height="15" Margin="0,0,8,0" Style="{StaticResource Style.Button.Icon.White}" />
+                                            <fa:FontAwesomeImage Icon="SolidUpload" Width="15" Height="15" Margin="0,0,8,0" Style="{StaticResource Style.Button.Icon.White}" />
                                             <TextBlock Text="{Binding LoggingBindings.Translation.UploadChestFiles, FallbackValue=UPLOAD__CHEST__FILES}" />
                                         </StackPanel>
                                     </Button>
@@ -605,7 +605,7 @@
                                 <Button Grid.Row="4" Style="{StaticResource Style.Button.Orange}" Margin="0,8,0,0"
                                         Click="BtnAddLootLogFiles_Click">
                                     <StackPanel Orientation="Horizontal">
-                                        <fa5:ImageAwesome Icon="Solid_ListAlt" Width="15" Height="15" Margin="0,0,8,0" Style="{StaticResource Style.Button.Icon.White}" />
+                                        <fa:FontAwesomeImage Icon="SolidRectangleList" Width="15" Height="15" Margin="0,0,8,0" Style="{StaticResource Style.Button.Icon.White}" />
                                         <TextBlock Text="{Binding LoggingBindings.Translation.AddLootLogFiles, FallbackValue=ADD__LOOT__LOG__FILES}" />
                                     </StackPanel>
                                 </Button>
@@ -627,7 +627,7 @@
                                     <RowDefinition Height="42" />
                                 </Grid.RowDefinitions>
                                 <StackPanel Orientation="Horizontal">
-                                    <fa5:ImageAwesome Icon="Solid_BalanceScale" Width="17" Height="17" Margin="0,0,10,0"
+                                    <fa:FontAwesomeImage Icon="SolidScaleBalanced" Width="17" Height="17" Margin="0,0,10,0"
                                                       Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                     <TextBlock Style="{StaticResource Logging.ComparatorSectionTitle}"
                                                Text="{Binding LoggingBindings.Translation.LootComparatorComparison, FallbackValue=COMPARISON}" />
@@ -636,7 +636,7 @@
                                         IsEnabled="{Binding LoggingBindings.IsCompareButtonEnabled, FallbackValue=true}"
                                         Click="BtnLogCompare_Click">
                                     <StackPanel Orientation="Horizontal">
-                                        <fa5:ImageAwesome Icon="Solid_BalanceScale" Width="17" Height="17" Margin="0,0,9,0" Style="{StaticResource Style.Button.Icon.White}" />
+                                        <fa:FontAwesomeImage Icon="SolidScaleBalanced" Width="17" Height="17" Margin="0,0,9,0" Style="{StaticResource Style.Button.Icon.White}" />
                                         <TextBlock Text="{Binding LoggingBindings.Translation.CompareLogs, FallbackValue=COMPARE__LOGS}" FontSize="16" />
                                     </StackPanel>
                                 </Button>
@@ -649,7 +649,7 @@
                                         IsEnabled="{Binding LoggingBindings.CanLoadLootComparatorSave, FallbackValue=false}"
                                         Click="BtnLoadLootComparatorSave_Click">
                                     <StackPanel Orientation="Horizontal">
-                                        <fa5:ImageAwesome Icon="Regular_FolderOpen" Width="16" Height="16" Margin="0,0,9,0" Style="{StaticResource Style.Button.Icon.White}" />
+                                        <fa:FontAwesomeImage Icon="RegularFolderOpen" Width="16" Height="16" Margin="0,0,9,0" Style="{StaticResource Style.Button.Icon.White}" />
                                         <TextBlock Text="{Binding LoggingBindings.Translation.LoadLootComparatorState, FallbackValue=LOAD__LOOT__COMPARATOR__STATE}" />
                                     </StackPanel>
                                 </Button>
@@ -657,7 +657,7 @@
                                         IsEnabled="{Binding LoggingBindings.CanDeleteLootComparatorSave, FallbackValue=false}"
                                         Click="BtnDeleteLootComparatorSave_Click">
                                     <StackPanel Orientation="Horizontal">
-                                        <fa5:ImageAwesome Icon="Regular_TrashAlt" Width="16" Height="16" Margin="0,0,9,0" Style="{StaticResource Style.Button.Icon.White}" />
+                                        <fa:FontAwesomeImage Icon="RegularTrashCan" Width="16" Height="16" Margin="0,0,9,0" Style="{StaticResource Style.Button.Icon.White}" />
                                         <TextBlock Text="{Binding LoggingBindings.Translation.DeleteLootComparatorState, FallbackValue=DELETE__LOOT__COMPARATOR__STATE}" />
                                     </StackPanel>
                                 </Button>
@@ -674,7 +674,7 @@
                                     <RowDefinition Height="42" />
                                 </Grid.RowDefinitions>
                                 <StackPanel Orientation="Horizontal">
-                                    <fa5:ImageAwesome Icon="Solid_Bolt" Width="17" Height="17" Margin="0,0,10,0"
+                                    <fa:FontAwesomeImage Icon="SolidBolt" Width="17" Height="17" Margin="0,0,10,0"
                                                       Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                     <TextBlock Style="{StaticResource Logging.ComparatorSectionTitle}"
                                                Text="{Binding LoggingBindings.Translation.LootComparatorActions, FallbackValue=ACTIONS}" />
@@ -682,14 +682,14 @@
                                 <Button Grid.Row="1" Style="{StaticResource Style.Button.Danger}" Margin="0,12,0,0"
                                         Click="BtnClearVaultLogItems_Click">
                                     <StackPanel Orientation="Horizontal">
-                                        <fa5:ImageAwesome Icon="Regular_TrashAlt" Width="16" Height="16" Margin="0,0,9,0" Style="{StaticResource Style.Button.Icon.White}" />
+                                        <fa:FontAwesomeImage Icon="RegularTrashCan" Width="16" Height="16" Margin="0,0,9,0" Style="{StaticResource Style.Button.Icon.White}" />
                                         <TextBlock Text="{Binding LoggingBindings.Translation.DeleteChestLogs, FallbackValue=DELETE__CHEST__FILE__LOGS}" />
                                     </StackPanel>
                                 </Button>
                                 <Button Grid.Row="2" Style="{StaticResource Style.Button.Danger}" Margin="0,10,0,0"
                                         Click="BtnClearLootLogs_Click">
                                     <StackPanel Orientation="Horizontal">
-                                        <fa5:ImageAwesome Icon="Regular_TrashAlt" Width="16" Height="16" Margin="0,0,9,0" Style="{StaticResource Style.Button.Icon.White}" />
+                                        <fa:FontAwesomeImage Icon="RegularTrashCan" Width="16" Height="16" Margin="0,0,9,0" Style="{StaticResource Style.Button.Icon.White}" />
                                         <TextBlock Text="{Binding LoggingBindings.Translation.DeleteAllLogs, FallbackValue=DELETE__ALL__LOGS}" />
                                     </StackPanel>
                                 </Button>
@@ -698,7 +698,7 @@
                                         IsEnabled="{Binding LoggingBindings.CanSaveLootComparator, FallbackValue=false}"
                                         Click="BtnSaveLootComparator_Click">
                                     <StackPanel Orientation="Horizontal">
-                                        <fa5:ImageAwesome Icon="Regular_Save" Width="16" Height="16" Margin="0,0,9,0" Style="{StaticResource Style.Button.Icon.White}" />
+                                        <fa:FontAwesomeImage Icon="RegularFloppyDisk" Width="16" Height="16" Margin="0,0,9,0" Style="{StaticResource Style.Button.Icon.White}" />
                                         <TextBlock Text="{Binding LoggingBindings.Translation.SaveLootComparatorState, FallbackValue=SAVE__LOOT__COMPARATOR__STATE}" />
                                     </StackPanel>
                                 </Button>

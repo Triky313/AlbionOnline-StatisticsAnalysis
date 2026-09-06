@@ -1,4 +1,4 @@
-using FontAwesome5;
+using DSaladin.FontAwesome.WPF;
 using StatisticsAnalysisTool.Cluster;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
@@ -20,7 +20,7 @@ public class DamageMeterBindings : BaseViewModel
 {
     private List<DamageMeterSortStruct> _damageMeterSort = new();
     private DamageMeterSortStruct _damageMeterSortSelection;
-    private EFontAwesomeIcon _damageMeterActivationToggleIcon = EFontAwesomeIcon.Solid_ToggleOff;
+    private FontAwesomeIcon _damageMeterActivationToggleIcon = FontAwesomeIcon.SolidToggleOff;
     private Brush _damageMeterActivationToggleColor;
     private ObservableCollection<DamageMeterFragment> _damageMeter = new();
     private ObservableCollection<MobDamageMeterFragment> _mobDamageMeter = [];
@@ -273,7 +273,7 @@ public class DamageMeterBindings : BaseViewModel
         OnPropertyChanged(nameof(TranslationContent));
     }
 
-    public EFontAwesomeIcon DamageMeterActivationToggleIcon
+    public FontAwesomeIcon DamageMeterActivationToggleIcon
     {
         get => _damageMeterActivationToggleIcon;
         set

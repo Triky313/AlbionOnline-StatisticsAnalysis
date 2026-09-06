@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:fa5="http://schemas.fontawesome.com/icons/"
+             xmlns:fa="clr-namespace:StatisticsAnalysisTool.Common.Controls"
              xmlns:wpf="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:userControls="clr-namespace:StatisticsAnalysisTool.UserControls"
@@ -208,7 +208,7 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
 
-                                <fa5:ImageAwesome Grid.Column="0" Icon="Solid_Search" Width="16" Height="16" Margin="0,0,9,0"
+                                <fa:FontAwesomeImage Grid.Column="0" Icon="SolidMagnifyingGlass" Width="16" Height="16" Margin="0,0,9,0"
                                                   VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.2}" />
                                 <TextBox x:Name="CraftingItemSearchTextBox" Grid.Column="1"
                                          Text="{Binding CraftingBindings.ItemSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -220,7 +220,7 @@
                                         ToolTip="{x:Static translation:MainWindowTranslation.ResetFilters}"
                                         Style="{StaticResource Style.Button.Neutral}"
                                         Click="CraftingItemFilterReset_Click">
-                                    <fa5:ImageAwesome Icon="Solid_Redo" Width="14" Height="14" IsHitTestVisible="False"
+                                    <fa:FontAwesomeImage Icon="SolidRotateRight" Width="14" Height="14" IsHitTestVisible="False"
                                                       Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 </Button>
                             </Grid>
@@ -916,20 +916,20 @@
                         <GridViewColumn Header="{x:Static crafting:CraftingBindings.TranslationFocus}" Width="70">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <fa5:ImageAwesome Width="16" Height="16" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                        <fa5:ImageAwesome.Style>
-                                            <Style TargetType="{x:Type fa5:ImageAwesome}">
-                                                <Setter Property="Icon" Value="Solid_Times" />
+                                    <fa:FontAwesomeImage Width="16" Height="16" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <fa:FontAwesomeImage.Style>
+                                            <Style TargetType="{x:Type fa:FontAwesomeImage}">
+                                                <Setter Property="Icon" Value="SolidXmark" />
                                                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.4}" />
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding UsesFocus}" Value="True">
-                                                        <Setter Property="Icon" Value="Solid_Check" />
+                                                        <Setter Property="Icon" Value="SolidCheck" />
                                                         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.4}" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
-                                        </fa5:ImageAwesome.Style>
-                                    </fa5:ImageAwesome>
+                                        </fa:FontAwesomeImage.Style>
+                                    </fa:FontAwesomeImage>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
@@ -1016,7 +1016,7 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
 
-                                <fa5:ImageAwesome Grid.Column="0" Icon="Solid_Search" Width="16" Height="16" Margin="0,0,9,0"
+                                <fa:FontAwesomeImage Grid.Column="0" Icon="SolidMagnifyingGlass" Width="16" Height="16" Margin="0,0,9,0"
                                                   VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.2}" />
                                 <TextBox Grid.Column="1"
                                          Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -1025,7 +1025,7 @@
                                         ToolTip="{x:Static translation:MainWindowTranslation.ResetFilters}"
                                         Style="{StaticResource Style.Button.Neutral}"
                                         Click="FilterReset_Click">
-                                    <fa5:ImageAwesome Icon="Solid_Redo" Width="14" Height="14" IsHitTestVisible="False"
+                                    <fa:FontAwesomeImage Icon="SolidRotateRight" Width="14" Height="14" IsHitTestVisible="False"
                                                       Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 </Button>
                             </Grid>

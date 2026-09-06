@@ -3,12 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:fa5="http://schemas.fontawesome.com/icons/"
+        xmlns:fa="clr-namespace:StatisticsAnalysisTool.Common.Controls"
+        xmlns:networkModel="clr-namespace:StatisticsAnalysisTool.Models.NetworkModel"
         xmlns:userControls="clr-namespace:StatisticsAnalysisTool.UserControls"
         xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
         xmlns:glob="clr-namespace:System.Globalization;assembly=System.Runtime"
         mc:Ignorable="d"
-        d:DesignHeight="850" d:DesignWidth="1100"
+        d:DesignHeight="850" d:DesignWidth="1150"
         Title="AlbionOnline - StatisticsAnalysisTool"
         Closing="MainWindow_OnClosing"
         d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}"
@@ -17,13 +18,28 @@
     <Grid Style="{StaticResource MainGridStyle}">
         <Grid Style="{StaticResource BackgroundImageGridStyle}" />
 
-        <Grid ZIndex="-1" Height="90" VerticalAlignment="Top" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
-            <Grid Background="{StaticResource SolidColorBrush.Background.5}" Opacity="0.5" />
-            <Button IsEnabled="{Binding IsCloseButtonActive}" Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click" />
-            <Button x:Name="MaximizedButton" Style="{StaticResource WindowButtonStyle}" Content="1" Margin="0,0,28,0" Click="MaximizeButton_Click" />
-            <Button x:Name="MinimizeButton" Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,58,0" Click="MinimizeButton_Click" />
+        <Grid ZIndex="-1" Style="{StaticResource MainHeader.Root}" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="38" />
+                <RowDefinition Height="18" />
+                <RowDefinition Height="33" />
+                <RowDefinition Height="1" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="190" />
+                <ColumnDefinition Width="90" />
+            </Grid.ColumnDefinitions>
 
-            <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,4,90,0" MinWidth="170" Height="82">
+            <Grid Grid.RowSpan="4" Grid.ColumnSpan="3" Style="{StaticResource MainHeader.Background}" />
+
+            <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="MinimizeButton" Style="{StaticResource WindowButtonStyle}" Content="0" Click="MinimizeButton_Click" />
+                <Button x:Name="MaximizedButton" Style="{StaticResource WindowButtonStyle}" Content="1" Click="MaximizeButton_Click" />
+                <Button IsEnabled="{Binding IsCloseButtonActive}" Style="{StaticResource WindowButtonStyle}" Content="r" Click="CloseButton_Click" />
+            </StackPanel>
+
+            <Grid Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" Style="{StaticResource MainHeader.StatusContainer}">
                 <StackPanel Orientation="Vertical">
                     <TextBlock Text="{Binding Translation.Status, FallbackValue=STATUS}" Style="{StaticResource MainHeaderStatus.Title}" />
                     <StackPanel Style="{StaticResource MainHeaderStatus.Row}" Tag="{Binding MainStatusBindings.IsGameDataDetected}">
@@ -45,83 +61,103 @@
                 </StackPanel>
             </Grid>
 
-            <StackPanel Orientation="Vertical" Margin="0">
-                <Grid>
-                    <StackPanel Orientation="Horizontal"  Height="38" VerticalAlignment="Top" Margin="35,0,280,0">
-                        <Label Content="AlbionOnline - STATISTICS ANALYSIS TOOL" Style="{StaticResource MainWindow.Title}" />
-                        <Grid Visibility="{Binding UnsupportedOsVisibility, FallbackValue=Collapsed}" 
-                              Height="20" Width="20" VerticalAlignment="Center" ToolTip="{Binding Translation.UnsupportedOs, FallbackValue='UNSUPPORTED_OS'}">
-                            <fa5:ImageAwesome Icon="Solid_ExclamationTriangle" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" />
+            <Grid Grid.Row="0" Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" Style="{StaticResource Image.ToolIcon}" />
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Height="38">
+                    <Label Content="AlbionOnline - STATISTICS ANALYSIS TOOL" Style="{StaticResource MainWindow.Title}" />
+                    <Grid Visibility="{Binding UnsupportedOsVisibility, FallbackValue=Collapsed}"
+                          Height="20" Width="20" VerticalAlignment="Center" ToolTip="{Binding Translation.UnsupportedOs, FallbackValue='UNSUPPORTED_OS'}">
+                        <fa:FontAwesomeImage Icon="SolidTriangleExclamation" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" />
+                    </Grid>
+                    <Label Content="- DEBUG -" Style="{StaticResource MainWindow.Title}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
+                           Visibility="{Binding DebugModeVisibility}" />
+                    <Grid Style="{StaticResource LoadingIconGridStyle}">
+                        <fa:FontAwesomeImage Visibility="{Binding LoadIconVisibility}" Style="{StaticResource LoadingIconStyle}" />
+                    </Grid>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="1" Grid.Column="0" Margin="10,0,10,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding UserTrackingBindings.UsernameInformationVisibility, FallbackValue=Visible}">
+                        <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.Username, FallbackValue=USERNAME}" ContentStringFormat="{}{0}: " />
+                        <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding UserTrackingBindings.Username, FallbackValue=USERNAME}" />
+                        <Grid Visibility="{Binding TrackingActivityBindings.CharacterIsNotTrackedInfoVisibility, FallbackValue=Visible}" Margin="3,0,0,0" Height="12" Width="12"
+                              ToolTip="{Binding Translation.ThisCharacterIsNotTracked, FallbackValue=THIS_CHARACTER_IS_NOT_TRACKED}">
+                            <fa:FontAwesomeImage Icon="SolidTriangleExclamation" Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" Margin="0,2,0,0" />
                         </Grid>
-                        <Label Content="- DEBUG -" Style="{StaticResource MainWindow.Title}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
-                               Visibility="{Binding DebugModeVisibility}" />
-                        <Grid Style="{StaticResource LoadingIconGridStyle}">
-                            <fa5:ImageAwesome Visibility="{Binding LoadIconVisibility}" Style="{StaticResource LoadingIconStyle}" />
-                        </Grid>
+                        <TextBlock Text="|" Style="{StaticResource MainHeader.TrackingSeparator}" />
                     </StackPanel>
-                    <Image Style="{StaticResource Image.ToolIcon}" />
-                </Grid>
-
-                <Grid>
-                    <Grid HorizontalAlignment="Left">
-                        <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
-                            <StackPanel Orientation="Horizontal" Visibility="{Binding UserTrackingBindings.UsernameInformationVisibility, FallbackValue=Hidden}">
-                                <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.Username, FallbackValue=USERNAME}" ContentStringFormat="{}{0}: "/>
-                                <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding UserTrackingBindings.Username, FallbackValue=USERNAME}"/>
-                                <Grid Visibility="{Binding TrackingActivityBindings.CharacterIsNotTrackedInfoVisibility, FallbackValue=Collapsed}" Height="20" Width="20" Margin="5,0,0,3" VerticalAlignment="Center" 
-                                      ToolTip="{Binding Translation.ThisCharacterIsNotTracked, FallbackValue=THIS_CHARACTER_IS_NOT_TRACKED}">
-                                    <fa5:ImageAwesome Icon="Solid_ExclamationTriangle" Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" />
-                                </Grid>
-                                <Label Content=" | "/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Visibility="{Binding UserTrackingBindings.GuildInformationVisibility, FallbackValue=Collapsed}">
-                                <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.GuildCap, FallbackValue=GUILD}" ContentStringFormat="{}{0}: " />
-                                <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding UserTrackingBindings.GuildName, FallbackValue=GUILD__NAME}" />
-                                <Label Content=" | "/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Visibility="{Binding UserTrackingBindings.AllianceInformationVisibility, FallbackValue=Collapsed}">
-                                <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.Alliance, FallbackValue=ALLIANCE}" ContentStringFormat="{}{0}: " />
-                                <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding UserTrackingBindings.AllianceName, FallbackValue=ALLIANCE__NAME}" />
-                                <Label Content=" | "/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Visibility="{Binding UserTrackingBindings.CurrentMapInfoBinding.CurrentMapInformationVisibility, FallbackValue=Collapsed}">
-                                <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.CurrentMap, FallbackValue=CURRENT__MAP}" ContentStringFormat="{}{0}: " />
-                                <ContentControl Content="{Binding UserTrackingBindings.CurrentMapInfoBinding}" ContentTemplate="{StaticResource CurrentMapInfoTemplate}" />
-                            </StackPanel>
-                        </StackPanel>
-                    </Grid>
-                    <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,18,5,0" Height="18">
-                        <Label x:Name="ApplicationUptimeLabel" Style="{StaticResource HeaderStyle.Tracking.Content}" Content="00:00:00" />
-                    </Grid>
-                </Grid>
-            </StackPanel>
-
-            <Grid Height="26" VerticalAlignment="Top" Margin="10,62,0,0" HorizontalAlignment="Left" Width="500">
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="{Binding PartyMemberNumber, FallbackValue=0}"/>
-                    <Grid Height="20" Width="20" Margin="0,0,5,0" VerticalAlignment="Center" PreviewMouseDown="CopyPartyToClipboard_PreviewMouseDown">
-                        <fa5:ImageAwesome Icon="Solid_Users" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
-                    </Grid>
-                    <ItemsControl ItemsSource="{Binding PartyMemberCircles}" Style="{StaticResource PartyMember.ItemsControl}"/>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding UserTrackingBindings.GuildInformationVisibility, FallbackValue=Visible}">
+                        <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.GuildCap, FallbackValue=GUILD}" ContentStringFormat="{}{0}: " />
+                        <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding UserTrackingBindings.GuildName, FallbackValue=GUILD__NAME}" />
+                        <TextBlock Text="|" Style="{StaticResource MainHeader.TrackingSeparator}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding UserTrackingBindings.AllianceInformationVisibility, FallbackValue=Visible}">
+                        <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.Alliance, FallbackValue=ALLIANCE}" ContentStringFormat="{}{0}: " />
+                        <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding UserTrackingBindings.AllianceName, FallbackValue=ALLIANCE__NAME}" />
+                        <TextBlock Text="|" Style="{StaticResource MainHeader.TrackingSeparator}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding UserTrackingBindings.CurrentMapInfoBinding.CurrentMapInformationVisibility, FallbackValue=Visible}">
+                        <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.CurrentMap, FallbackValue=CURRENT__MAP}" ContentStringFormat="{}{0}: " />
+                        <ContentControl Content="{Binding UserTrackingBindings.CurrentMapInfoBinding}" ContentTemplate="{StaticResource CurrentMapInfoTemplate}" />
+                    </StackPanel>
                 </StackPanel>
             </Grid>
 
-            <ProgressBar Margin="0,89,0,0" Height="1" Minimum="0" Maximum="100" Value="{Binding ToolTaskProgressBarValue, FallbackValue=0}" />
-
-            <!--<Grid Height="20" Width="300" Margin="0,65,5,0" VerticalAlignment="Top" HorizontalAlignment="Right" PreviewMouseDown="ToolTasksOpenClose_PreviewMouseDown">
-                <StackPanel Orientation="Horizontal" Visibility="{Binding ToolTaskFrontViewVisibility}" Margin="0,2,30,0" HorizontalAlignment="Right">
-                    <Label Content="{Binding ToolTaskCurrentTaskName}" HorizontalContentAlignment="Left" 
-                           FontSize="14" Margin="0" Padding="0" Height="20" VerticalContentAlignment="Top" />
-                    <TextBlock Text="{Binding ToolTaskProgressBarValue, StringFormat={} ({0:#,##0.##}%)}" Padding="0" Height="20" FontSize="14"
-                           Margin="0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                </StackPanel>
-                <fa5:ImageAwesome Icon="Solid_Tasks" Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="0,0,0,1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="18" />
-            </Grid>-->
-
-            <Grid PreviewMouseDown="TatsDropDownOpenClose_PreviewMouseDown">
-                <fa5:ImageAwesome Icon="Solid_AngleDoubleDown" Foreground="{StaticResource SolidColorBrush.Text.1}" 
-                                  Width="10" Height="10" Margin="0,0,0,2" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
+            <Grid Grid.Row="2" Grid.Column="0" Margin="10,0,10,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="{Binding PartyMemberNumber, FallbackValue=0}" d:Content="20" Style="{StaticResource MainHeader.PartyCount}" />
+                <Grid Grid.Column="1" Style="{StaticResource MainHeader.PartyCopyButton}" PreviewMouseDown="CopyPartyToClipboard_PreviewMouseDown">
+                    <fa:FontAwesomeImage Icon="SolidUsers" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                </Grid>
+                <ItemsControl Grid.Column="2" ItemsSource="{Binding PartyMemberCircles}" Style="{StaticResource MainHeader.PartyMembers}">
+                    <d:ItemsControl.ItemsSource>
+                        <x:Array Type="{x:Type networkModel:PartyMemberCircle}">
+                            <networkModel:PartyMemberCircle Name="Triky313" />
+                            <networkModel:PartyMemberCircle Name="Rhaegaryn" />
+                            <networkModel:PartyMemberCircle Name="Dicky" />
+                            <networkModel:PartyMemberCircle Name="faxerix" />
+                            <networkModel:PartyMemberCircle Name="Test Player 05" />
+                            <networkModel:PartyMemberCircle Name="Test Player 06" />
+                            <networkModel:PartyMemberCircle Name="Test Player 07" />
+                            <networkModel:PartyMemberCircle Name="Test Player 08" />
+                            <networkModel:PartyMemberCircle Name="Test Player 09" />
+                            <networkModel:PartyMemberCircle Name="Test Player 10" />
+                            <networkModel:PartyMemberCircle Name="Test Player 11" />
+                            <networkModel:PartyMemberCircle Name="Test Player 12" />
+                            <networkModel:PartyMemberCircle Name="Test Player 13" />
+                            <networkModel:PartyMemberCircle Name="Test Player 14" />
+                            <networkModel:PartyMemberCircle Name="Test Player 15" />
+                            <networkModel:PartyMemberCircle Name="Test Player 16" />
+                            <networkModel:PartyMemberCircle Name="Test Player 17" />
+                            <networkModel:PartyMemberCircle Name="Test Player 18" />
+                            <networkModel:PartyMemberCircle Name="Test Player 19" />
+                            <networkModel:PartyMemberCircle Name="Test Player 20" />
+                        </x:Array>
+                    </d:ItemsControl.ItemsSource>
+                </ItemsControl>
             </Grid>
+
+            <Grid Grid.Row="2" Grid.ColumnSpan="3" Grid.Column="0" Width="24" HorizontalAlignment="Center" PreviewMouseDown="TatsDropDownOpenClose_PreviewMouseDown">
+                <fa:FontAwesomeImage Icon="SolidAnglesDown" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="10" Height="10" Margin="0,0,0,2" VerticalAlignment="Bottom" />
+            </Grid>
+
+            <ProgressBar Grid.Row="3" Grid.ColumnSpan="3" Grid.Column="0" Minimum="0" Maximum="100" Value="{Binding ToolTaskProgressBarValue, FallbackValue=0}" />
+
+            <Label Grid.Row="2" Grid.Column="2" x:Name="ApplicationUptimeLabel" HorizontalAlignment="Right" Margin="0,0,10,12" Style="{StaticResource HeaderStyle.Tracking.Content}" Content="00:00:00" />
         </Grid>
 
         <!-- Stats drop down -->

@@ -1,4 +1,4 @@
-using FontAwesome5;
+using DSaladin.FontAwesome.WPF;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using Microsoft.Win32;
@@ -990,7 +990,7 @@ public class MainWindowViewModel : BaseViewModel
             field = value;
 
             DamageMeterBindings.DamageMeterActivationToggleIcon =
-                field ? EFontAwesomeIcon.Solid_ToggleOn : EFontAwesomeIcon.Solid_ToggleOff;
+                field ? FontAwesomeIcon.SolidToggleOn : FontAwesomeIcon.SolidToggleOff;
 
             var colorOn = new SolidColorBrush((Color) Application.Current.Resources["Color.Accent.Blue.2"]!);
             var colorOff = new SolidColorBrush((Color) Application.Current.Resources["Color.Text.1"]!);

@@ -1,4 +1,4 @@
-using FontAwesome5;
+using DSaladin.FontAwesome.WPF;
 using Serilog;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
@@ -142,12 +142,12 @@ public partial class DashboardControl
         if (vm.DashboardBindings.KillDeathStatsVisibility == Visibility.Visible)
         {
             vm.DashboardBindings.KillDeathStatsVisibility = Visibility.Collapsed;
-            vm.DashboardBindings.KillDeathStatsToggleIcon = EFontAwesomeIcon.Solid_Plus;
+            vm.DashboardBindings.KillDeathStatsToggleIcon = FontAwesomeIcon.SolidPlus;
         }
         else
         {
             vm.DashboardBindings.KillDeathStatsVisibility = Visibility.Visible;
-            vm.DashboardBindings.KillDeathStatsToggleIcon = EFontAwesomeIcon.Solid_Minus;
+            vm.DashboardBindings.KillDeathStatsToggleIcon = FontAwesomeIcon.SolidMinus;
         }
     }
 
@@ -157,12 +157,12 @@ public partial class DashboardControl
         if (vm.DashboardBindings.TopKillLocationsVisibility == Visibility.Visible)
         {
             vm.DashboardBindings.TopKillLocationsVisibility = Visibility.Collapsed;
-            vm.DashboardBindings.TopKillLocationsToggleIcon = EFontAwesomeIcon.Solid_Plus;
+            vm.DashboardBindings.TopKillLocationsToggleIcon = FontAwesomeIcon.SolidPlus;
         }
         else
         {
             vm.DashboardBindings.TopKillLocationsVisibility = Visibility.Visible;
-            vm.DashboardBindings.TopKillLocationsToggleIcon = EFontAwesomeIcon.Solid_Minus;
+            vm.DashboardBindings.TopKillLocationsToggleIcon = FontAwesomeIcon.SolidMinus;
         }
     }
 
@@ -172,12 +172,12 @@ public partial class DashboardControl
         if (vm.DashboardBindings.TopDeathLocationsVisibility == Visibility.Visible)
         {
             vm.DashboardBindings.TopDeathLocationsVisibility = Visibility.Collapsed;
-            vm.DashboardBindings.TopDeathLocationsToggleIcon = EFontAwesomeIcon.Solid_Plus;
+            vm.DashboardBindings.TopDeathLocationsToggleIcon = FontAwesomeIcon.SolidPlus;
         }
         else
         {
             vm.DashboardBindings.TopDeathLocationsVisibility = Visibility.Visible;
-            vm.DashboardBindings.TopDeathLocationsToggleIcon = EFontAwesomeIcon.Solid_Minus;
+            vm.DashboardBindings.TopDeathLocationsToggleIcon = FontAwesomeIcon.SolidMinus;
         }
     }
 
@@ -187,12 +187,12 @@ public partial class DashboardControl
         if (vm.DashboardBindings.RecentKillsDeathsVisibility == Visibility.Visible)
         {
             vm.DashboardBindings.RecentKillsDeathsVisibility = Visibility.Collapsed;
-            vm.DashboardBindings.RecentKillsDeathsToggleIcon = EFontAwesomeIcon.Solid_Plus;
+            vm.DashboardBindings.RecentKillsDeathsToggleIcon = FontAwesomeIcon.SolidPlus;
         }
         else
         {
             vm.DashboardBindings.RecentKillsDeathsVisibility = Visibility.Visible;
-            vm.DashboardBindings.RecentKillsDeathsToggleIcon = EFontAwesomeIcon.Solid_Minus;
+            vm.DashboardBindings.RecentKillsDeathsToggleIcon = FontAwesomeIcon.SolidMinus;
         }
     }
 
@@ -202,12 +202,12 @@ public partial class DashboardControl
         if (vm.DashboardBindings.FactionSummaryVisibility == Visibility.Visible)
         {
             vm.DashboardBindings.FactionSummaryVisibility = Visibility.Collapsed;
-            vm.DashboardBindings.FactionSummaryToggleIcon = EFontAwesomeIcon.Solid_Plus;
+            vm.DashboardBindings.FactionSummaryToggleIcon = FontAwesomeIcon.SolidPlus;
         }
         else
         {
             vm.DashboardBindings.FactionSummaryVisibility = Visibility.Visible;
-            vm.DashboardBindings.FactionSummaryToggleIcon = EFontAwesomeIcon.Solid_Minus;
+            vm.DashboardBindings.FactionSummaryToggleIcon = FontAwesomeIcon.SolidMinus;
         }
     }
 
@@ -217,12 +217,12 @@ public partial class DashboardControl
         if (vm.DashboardBindings.ContentRankingVisibility == Visibility.Visible)
         {
             vm.DashboardBindings.ContentRankingVisibility = Visibility.Collapsed;
-            vm.DashboardBindings.ContentRankingToggleIcon = EFontAwesomeIcon.Solid_Plus;
+            vm.DashboardBindings.ContentRankingToggleIcon = FontAwesomeIcon.SolidPlus;
         }
         else
         {
             vm.DashboardBindings.ContentRankingVisibility = Visibility.Visible;
-            vm.DashboardBindings.ContentRankingToggleIcon = EFontAwesomeIcon.Solid_Minus;
+            vm.DashboardBindings.ContentRankingToggleIcon = FontAwesomeIcon.SolidMinus;
         }
     }
 
@@ -232,12 +232,12 @@ public partial class DashboardControl
         if (vm.DashboardBindings.LootedChestsStatsVisibility == Visibility.Visible)
         {
             vm.DashboardBindings.LootedChestsStatsVisibility = Visibility.Collapsed;
-            vm.DashboardBindings.LootedChestsStatsToggleIcon = EFontAwesomeIcon.Solid_Plus;
+            vm.DashboardBindings.LootedChestsStatsToggleIcon = FontAwesomeIcon.SolidPlus;
         }
         else
         {
             vm.DashboardBindings.LootedChestsStatsVisibility = Visibility.Visible;
-            vm.DashboardBindings.LootedChestsStatsToggleIcon = EFontAwesomeIcon.Solid_Minus;
+            vm.DashboardBindings.LootedChestsStatsToggleIcon = FontAwesomeIcon.SolidMinus;
         }
     }
 
@@ -247,12 +247,12 @@ public partial class DashboardControl
         if (vm.DashboardBindings.ReSpecStatsVisibility == Visibility.Visible)
         {
             vm.DashboardBindings.ReSpecStatsVisibility = Visibility.Collapsed;
-            vm.DashboardBindings.ReSpecStatsToggleIcon = EFontAwesomeIcon.Solid_Plus;
+            vm.DashboardBindings.ReSpecStatsToggleIcon = FontAwesomeIcon.SolidPlus;
         }
         else
         {
             vm.DashboardBindings.ReSpecStatsVisibility = Visibility.Visible;
-            vm.DashboardBindings.ReSpecStatsToggleIcon = EFontAwesomeIcon.Solid_Minus;
+            vm.DashboardBindings.ReSpecStatsToggleIcon = FontAwesomeIcon.SolidMinus;
         }
     }
 
@@ -262,12 +262,12 @@ public partial class DashboardControl
         if (vm.DashboardBindings.RepairCostsStatsVisibility == Visibility.Visible)
         {
             vm.DashboardBindings.RepairCostsStatsVisibility = Visibility.Collapsed;
-            vm.DashboardBindings.RepairCostsStatsToggleIcon = EFontAwesomeIcon.Solid_Plus;
+            vm.DashboardBindings.RepairCostsStatsToggleIcon = FontAwesomeIcon.SolidPlus;
         }
         else
         {
             vm.DashboardBindings.RepairCostsStatsVisibility = Visibility.Visible;
-            vm.DashboardBindings.RepairCostsStatsToggleIcon = EFontAwesomeIcon.Solid_Minus;
+            vm.DashboardBindings.RepairCostsStatsToggleIcon = FontAwesomeIcon.SolidMinus;
         }
     }
 
@@ -277,12 +277,12 @@ public partial class DashboardControl
         if (vm.DashboardBindings.ItemQualityRerollStatsVisibility == Visibility.Visible)
         {
             vm.DashboardBindings.ItemQualityRerollStatsVisibility = Visibility.Collapsed;
-            vm.DashboardBindings.ItemQualityRerollStatsToggleIcon = EFontAwesomeIcon.Solid_Plus;
+            vm.DashboardBindings.ItemQualityRerollStatsToggleIcon = FontAwesomeIcon.SolidPlus;
         }
         else
         {
             vm.DashboardBindings.ItemQualityRerollStatsVisibility = Visibility.Visible;
-            vm.DashboardBindings.ItemQualityRerollStatsToggleIcon = EFontAwesomeIcon.Solid_Minus;
+            vm.DashboardBindings.ItemQualityRerollStatsToggleIcon = FontAwesomeIcon.SolidMinus;
         }
     }
 
@@ -292,12 +292,12 @@ public partial class DashboardControl
         if (vm.DashboardBindings.AwakenedWeaponStatsVisibility == Visibility.Visible)
         {
             vm.DashboardBindings.AwakenedWeaponStatsVisibility = Visibility.Collapsed;
-            vm.DashboardBindings.AwakenedWeaponStatsToggleIcon = EFontAwesomeIcon.Solid_Plus;
+            vm.DashboardBindings.AwakenedWeaponStatsToggleIcon = FontAwesomeIcon.SolidPlus;
         }
         else
         {
             vm.DashboardBindings.AwakenedWeaponStatsVisibility = Visibility.Visible;
-            vm.DashboardBindings.AwakenedWeaponStatsToggleIcon = EFontAwesomeIcon.Solid_Minus;
+            vm.DashboardBindings.AwakenedWeaponStatsToggleIcon = FontAwesomeIcon.SolidMinus;
         }
     }
 
@@ -307,12 +307,12 @@ public partial class DashboardControl
         if (vm.DashboardBindings.ActivityChartVisibility == Visibility.Visible)
         {
             vm.DashboardBindings.ActivityChartVisibility = Visibility.Collapsed;
-            vm.DashboardBindings.ActivityChartToggleIcon = EFontAwesomeIcon.Solid_Plus;
+            vm.DashboardBindings.ActivityChartToggleIcon = FontAwesomeIcon.SolidPlus;
         }
         else
         {
             vm.DashboardBindings.ActivityChartVisibility = Visibility.Visible;
-            vm.DashboardBindings.ActivityChartToggleIcon = EFontAwesomeIcon.Solid_Minus;
+            vm.DashboardBindings.ActivityChartToggleIcon = FontAwesomeIcon.SolidMinus;
         }
     }
 

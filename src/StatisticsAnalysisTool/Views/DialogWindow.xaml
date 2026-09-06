@@ -1,9 +1,9 @@
-﻿<Window x:Class="StatisticsAnalysisTool.Views.DialogWindow"
+<Window x:Class="StatisticsAnalysisTool.Views.DialogWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:fa5="http://schemas.fontawesome.com/icons/"
+        xmlns:fa="clr-namespace:StatisticsAnalysisTool.Common.Controls"
         xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=viewModels:DialogWindowViewModel}"
@@ -21,15 +21,15 @@
             <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.2}" />
             <Grid Margin="10,3,0,0" Width="26" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" 
                   Visibility="{Binding YesNoVisibility}">
-                <fa5:ImageAwesome Icon="Solid_ExclamationTriangle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                <fa:FontAwesomeImage Icon="SolidTriangleExclamation" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
             </Grid>
             <Grid Margin="10,3,0,0" Width="26" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" 
                   Visibility="{Binding InfoTypeVisibility, FallbackValue=Collapsed}">
-                <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                <fa:FontAwesomeImage Icon="SolidCircleInfo" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
             </Grid>
             <Grid Margin="10,3,0,0" Width="26" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" 
                   Visibility="{Binding ErrorTypeVisibility, FallbackValue=Collapsed}">
-                <fa5:ImageAwesome Icon="Solid_ExclamationTriangle" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" />
+                <fa:FontAwesomeImage Icon="SolidTriangleExclamation" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" />
             </Grid>
             <Label Content="{Binding Title, FallbackValue=TITLE}" Margin="41,0,61,0" VerticalAlignment="Top" Height="33" FontSize="16" 
                    Foreground="{StaticResource SolidColorBrush.Text.1}" FontWeight="Bold" />

@@ -5,7 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
-             xmlns:fa5="http://schemas.fontawesome.com/icons/"
+             xmlns:fa="clr-namespace:StatisticsAnalysisTool.Common.Controls"
              xmlns:glob="clr-namespace:System.Globalization;assembly=System.Runtime"
              mc:Ignorable="d"
              d:DesignHeight="1200"
@@ -26,8 +26,8 @@
                     <TextBlock Grid.Column="1"
                                Text="{Binding DashboardBindings.TranslationImportantLoot, FallbackValue=IMPORTANT_LOOT}"
                                Style="{StaticResource Dashboard.SectionTitle}" />
-                    <fa5:ImageAwesome Grid.Column="2"
-                                      Icon="{Binding DashboardBindings.LootStatsToggleIcon, FallbackValue=Solid_Minus}"
+                    <fa:FontAwesomeImage Grid.Column="2"
+                                      Icon="{Binding DashboardBindings.LootStatsToggleIcon, FallbackValue=SolidMinus}"
                                       Style="{StaticResource Dashboard.SectionToggleIcon}" />
                 </Grid>
 
@@ -152,8 +152,8 @@
                         <TextBlock Grid.Column="1"
                                    Text="{Binding DashboardBindings.TranslationLootValueDistribution, FallbackValue=LOOT_VALUE_DISTRIBUTION}"
                                    Style="{StaticResource Dashboard.SectionTitle}" />
-                        <fa5:ImageAwesome Grid.Column="2"
-                                          Icon="{Binding DashboardBindings.LootValueDistributionToggleIcon, FallbackValue=Solid_Minus}"
+                        <fa:FontAwesomeImage Grid.Column="2"
+                                          Icon="{Binding DashboardBindings.LootValueDistributionToggleIcon, FallbackValue=SolidMinus}"
                                           Style="{StaticResource Dashboard.SectionToggleIcon}" />
                     </Grid>
 
@@ -214,8 +214,8 @@
                         <TextBlock Grid.Column="1"
                                    Text="{Binding DashboardBindings.TranslationLootByTierAndEnchantment, FallbackValue=LOOT_BY_TIER_AND_ENCHANTMENT}"
                                    Style="{StaticResource Dashboard.SectionTitle}" />
-                        <fa5:ImageAwesome Grid.Column="2"
-                                          Icon="{Binding DashboardBindings.LootTierEnchantmentToggleIcon, FallbackValue=Solid_Minus}"
+                        <fa:FontAwesomeImage Grid.Column="2"
+                                          Icon="{Binding DashboardBindings.LootTierEnchantmentToggleIcon, FallbackValue=SolidMinus}"
                                           Style="{StaticResource Dashboard.SectionToggleIcon}" />
                     </Grid>
 
@@ -268,8 +268,8 @@
                     <TextBlock Grid.Column="1"
                                Text="{Binding DashboardBindings.TranslationTopLootAreas, FallbackValue=TOP_LOOT_AREAS}"
                                Style="{StaticResource Dashboard.SectionTitle}" />
-                    <fa5:ImageAwesome Grid.Column="2"
-                                      Icon="{Binding DashboardBindings.TopLootAreasToggleIcon, FallbackValue=Solid_Minus}"
+                    <fa:FontAwesomeImage Grid.Column="2"
+                                      Icon="{Binding DashboardBindings.TopLootAreasToggleIcon, FallbackValue=SolidMinus}"
                                       Style="{StaticResource Dashboard.SectionToggleIcon}" />
                 </Grid>
 

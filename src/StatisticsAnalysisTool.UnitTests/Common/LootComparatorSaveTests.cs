@@ -141,8 +141,18 @@ public class LootComparatorSaveTests
             targetBindings.LootingPlayers.Single(player => player.PlayerName == "DefeatedPlayer").DeathCount.Should().Be(1);
             targetBindings.LootingPlayers.Should().NotContain(player => player.PlayerName == "OldLootPlayer");
             targetBindings.LootLogCombatEvents.Should().ContainSingle();
+            targetBindings.LootLogCombatEvents[0].DiedPlayerAlliance.Should().Be("Defeated Alliance");
+            targetBindings.LootLogCombatEvents[0].KilledByAlliance.Should().Be("Saved Alliance");
+            targetBindings.LootingPlayers.Single(player => player.PlayerName == "DefeatedPlayer").PlayerAlliance.Should().Be("Defeated Alliance");
+            var savedPlayer = targetBindings.LootingPlayers.Single(player => player.PlayerName == "SavedPlayer");
+            var defeatedPlayer = targetBindings.LootingPlayers.Single(player => player.PlayerName == "DefeatedPlayer");
+            savedPlayer.DisplayName.Should().Be("SavedPlayer (Saved Guild, Saved Alliance)");
+            defeatedPlayer.DisplayName.Should().Be("DefeatedPlayer (Defeated Guild, Defeated Alliance)");
             targetBindings.ChestLogCount.Should().Be(1);
             targetBindings.LootLogCount.Should().Be(1);
+
+            savedPlayer.PlayerAlliance = string.Empty;
+            savedPlayer.DisplayName.Should().Be("SavedPlayer (Saved Guild)");
         }
         finally
         {
@@ -294,8 +304,10 @@ public class LootComparatorSaveTests
             UtcTimestamp = new DateTime(2026, 7, 31, 19, 55, 0, DateTimeKind.Utc),
             DiedName = "DefeatedPlayer",
             DiedPlayerGuild = "Defeated Guild",
+            DiedPlayerAlliance = "Defeated Alliance",
             KilledByName = "SavedPlayer",
             KilledByGuild = "Saved Guild",
+            KilledByAlliance = "Saved Alliance",
             ClusterName = "Test Cluster"
         };
     }

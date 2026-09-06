@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:fa5="http://schemas.fontawesome.com/icons/">
+                    xmlns:fa="clr-namespace:StatisticsAnalysisTool.Common.Controls">
 
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
@@ -19,8 +19,8 @@
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
-                        <fa5:ImageAwesome x:Name="ToggleIcon"
-                                          Icon="Solid_AngleDoubleLeft"
+                        <fa:FontAwesomeImage x:Name="ToggleIcon"
+                                          Icon="SolidAnglesLeft"
                                           Width="16"
                                           Height="16"
                                           HorizontalAlignment="Center"
@@ -29,7 +29,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="False">
-                            <Setter TargetName="ToggleIcon" Property="Icon" Value="Solid_AngleDoubleRight" />
+                            <Setter TargetName="ToggleIcon" Property="Icon" Value="SolidAnglesRight" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Accent.Blue.Transparent.5}" />

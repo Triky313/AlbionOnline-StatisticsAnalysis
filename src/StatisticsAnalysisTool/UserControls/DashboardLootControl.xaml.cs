@@ -1,4 +1,4 @@
-using FontAwesome5;
+using DSaladin.FontAwesome.WPF;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Windows;
@@ -80,10 +80,10 @@ public partial class DashboardLootControl
     private static void ToggleSection(
         Visibility currentVisibility,
         Action<Visibility> setVisibility,
-        Action<EFontAwesomeIcon> setIcon)
+        Action<FontAwesomeIcon> setIcon)
     {
         var isVisible = currentVisibility == Visibility.Visible;
         setVisibility(isVisible ? Visibility.Collapsed : Visibility.Visible);
-        setIcon(isVisible ? EFontAwesomeIcon.Solid_Plus : EFontAwesomeIcon.Solid_Minus);
+        setIcon(isVisible ? FontAwesomeIcon.SolidPlus : FontAwesomeIcon.SolidMinus);
     }
 }

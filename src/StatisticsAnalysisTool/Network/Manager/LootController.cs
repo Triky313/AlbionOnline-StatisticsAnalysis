@@ -276,7 +276,8 @@ public class LootController : ILootController
         });
     }
 
-    public async Task AddKillDeathAsync(string died, string diedPlayerGuild, string killedBy, string killedByGuild, string clusterName)
+    public async Task AddKillDeathAsync(string died, string diedPlayerGuild, string diedPlayerAlliance,
+        string killedBy, string killedByGuild, string killedByAlliance, string clusterName)
     {
         var isLoggingTrackingActive = _mainWindowViewModel.LoggingBindings.IsLoggingTrackingActive;
         var isLootComparatorTrackingActive = _mainWindowViewModel.LoggingBindings.IsLootComparatorTrackingActive;
@@ -292,8 +293,10 @@ public class LootController : ILootController
             {
                 Died = died,
                 DiedPlayerGuild = diedPlayerGuild,
+                DiedPlayerAlliance = diedPlayerAlliance,
                 KilledBy = killedBy,
                 KilledByGuild = killedByGuild,
+                KilledByAlliance = killedByAlliance,
                 ClusterName = clusterName
             };
             utcTimestamp = lootLoggerObject.UtcPickupTime;
@@ -311,8 +314,10 @@ public class LootController : ILootController
                     UtcTimestamp = utcTimestamp,
                     DiedName = died,
                     DiedPlayerGuild = diedPlayerGuild,
+                    DiedPlayerAlliance = diedPlayerAlliance,
                     KilledByName = killedBy,
                     KilledByGuild = killedByGuild,
+                    KilledByAlliance = killedByAlliance,
                     ClusterName = clusterName
                 }));
         }
@@ -334,7 +339,7 @@ public class LootController : ILootController
     {
         try
         {
-            const string csvHeader = "timestamp_utc;looted_by__alliance;looted_by__guild;looted_by__name;item_id;item_name;quantity;looted_from__alliance;looted_from__guild;looted_from__name;died;died_player_guild;killed_by;killed_by_guild;average_est_market_value;cluster\n";
+            const string csvHeader = "timestamp_utc;looted_by__alliance;looted_by__guild;looted_by__name;item_id;item_name;quantity;looted_from__alliance;looted_from__guild;looted_from__name;died;died_player_guild;killed_by;killed_by_guild;average_est_market_value;cluster;died_player_alliance;killed_by_alliance\n";
             return csvHeader + string.Join(Environment.NewLine, _lootLoggerObjects.Select(loot => loot.CsvOutput).ToArray());
         }
         catch (Exception e)
@@ -676,8 +681,10 @@ public class LootController : ILootController
             await AddKillDeathAsync(
                 diedPlayer.Name,
                 diedPlayer.Guild,
+                diedPlayer.Alliance,
                 killerPlayer.Name,
                 killerPlayer.Guild,
+                killerPlayer.Alliance,
                 "Debug Cluster");
         }
     }
