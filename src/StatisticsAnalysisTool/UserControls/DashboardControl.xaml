@@ -6,6 +6,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:fa="clr-namespace:StatisticsAnalysisTool.Common.Controls"
+             xmlns:controls="clr-namespace:StatisticsAnalysisTool.Common.Controls"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
              xmlns:bindingModels="clr-namespace:StatisticsAnalysisTool.Models.BindingModel"
@@ -21,7 +22,7 @@
         <Grid Style="{StaticResource BackgroundImageGridStyle}" />
 
         <ScrollViewer x:Name="DashboardScrollViewer" Padding="15,10,15,15" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch">
-            <StackPanel MinWidth="1050" Width="{Binding ViewportWidth, ElementName=DashboardScrollViewer, Mode=OneWay}">
+            <StackPanel Width="{Binding ViewportWidth, ElementName=DashboardScrollViewer, Mode=OneWay}">
                 <Grid Margin="0,0,0,0">
                     <Border Style="{StaticResource App.TopFilterCard}" Margin="0,0,0,8">
                         <Grid>
@@ -108,8 +109,8 @@
                 <TabControl Style="{StaticResource Dashboard.ContentTabControl}" ItemContainerStyle="{StaticResource Dashboard.ContentTabItem}" SelectedIndex="0">
                     <TabItem Header="{Binding DashboardBindings.TranslationDashboardTitle, FallbackValue=DASHBOARD}">
                         <StackPanel Margin="0,8,0,0">
-                            <UniformGrid Rows="1" Columns="6" Margin="0,0,0,8">
-                                <Border Style="{StaticResource Dashboard.SummaryCard}">
+                            <controls:ResponsiveUniformGrid>
+                                <Border Style="{StaticResource Dashboard.SummaryCard}" Margin="0,0,6,8">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
@@ -124,7 +125,7 @@
                                     </Grid>
                                 </Border>
 
-                                <Border Style="{StaticResource Dashboard.SummaryCard}">
+                                <Border Style="{StaticResource Dashboard.SummaryCard}" Margin="0,0,6,8">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
@@ -138,7 +139,7 @@
                                     </Grid>
                                 </Border>
 
-                                <Border Style="{StaticResource Dashboard.SummaryCard}">
+                                <Border Style="{StaticResource Dashboard.SummaryCard}" Margin="0,0,6,8">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
@@ -152,7 +153,7 @@
                                     </Grid>
                                 </Border>
 
-                                <Border Style="{StaticResource Dashboard.SummaryCard}">
+                                <Border Style="{StaticResource Dashboard.SummaryCard}" Margin="0,0,6,8">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
@@ -166,7 +167,7 @@
                                     </Grid>
                                 </Border>
 
-                                <Border Style="{StaticResource Dashboard.SummaryCard}">
+                                <Border Style="{StaticResource Dashboard.SummaryCard}" Margin="0,0,6,8">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
@@ -180,7 +181,7 @@
                                     </Grid>
                                 </Border>
 
-                                <Border Style="{StaticResource Dashboard.SummaryCard}">
+                                <Border Style="{StaticResource Dashboard.SummaryCard}" Margin="0,0,6,8">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
@@ -193,7 +194,7 @@
                                         </StackPanel>
                                     </Grid>
                                 </Border>
-                            </UniformGrid>
+                            </controls:ResponsiveUniformGrid>
 
                             <Border Style="{StaticResource Dashboard.FactionSummaryCard}" Margin="0,0,0,8">
                                 <Grid>
