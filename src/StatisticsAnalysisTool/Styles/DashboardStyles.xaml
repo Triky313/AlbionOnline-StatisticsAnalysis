@@ -212,6 +212,7 @@
 
     <Style x:Key="Dashboard.SectionHeader" TargetType="{x:Type Grid}">
         <Setter Property="Height" Value="44" />
+        <Setter Property="Background" Value="Transparent" />
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
     </Style>

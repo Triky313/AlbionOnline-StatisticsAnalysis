@@ -117,6 +117,7 @@ public class DamageMeterBindings : BaseViewModel
         IsDamageMeterResetByMapChangeActive = SettingsController.CurrentSettings.IsDamageMeterResetByMapChangeActive;
         IsDamageMeterResetBeforeCombatActive = SettingsController.CurrentSettings.IsDamageMeterResetBeforeCombatActive;
         ShortDamageMeterToClipboard = SettingsController.CurrentSettings.ShortDamageMeterToClipboard;
+        OnlyDamageToPlayersCounts = SettingsController.CurrentSettings.OnlyDamageToPlayersCounts;
         RefreshContentFilters();
     }
 
