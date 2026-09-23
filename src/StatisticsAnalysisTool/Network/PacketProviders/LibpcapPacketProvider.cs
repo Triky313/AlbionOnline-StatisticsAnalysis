@@ -257,18 +257,11 @@ public class LibpcapPacketProvider : PacketProvider
             return;
         }
 
-        // L2 (Ethernet)
-        var ethReader = new BinaryFormatReader(packet.Data);
-        var eth = new L2EthernetFrameShape();
-        if (!ethReader.TryReadL2EthernetFrame(ref eth))
+        if (!TryReadNetworkLayer(pcap.DataLink, packet.Data, out ushort etherType, out ReadOnlySpan<byte> l3))
         {
             _captureDiagnostics.RecordMalformedPacket();
             return;
         }
-
-        ushort etherType = (ushort) ((packet.Data[12] << 8) | packet.Data[13]);
-
-        ReadOnlySpan<byte> l3 = eth.Payload;
 
         if (etherType == 0x0800) // IPv4
         {
@@ -319,6 +312,52 @@ public class LibpcapPacketProvider : PacketProvider
                 default:
                     return;
             }
+        }
+    }
+
+    internal static bool TryReadNetworkLayer(PcapDataLink dataLink, ReadOnlySpan<byte> data, out ushort etherType, out ReadOnlySpan<byte> payload)
+    {
+        etherType = 0;
+        payload = default;
+
+        switch (dataLink)
+        {
+            case PcapDataLink.DLT_EN10MB:
+                // L2 (Ethernet)
+                var ethReader = new BinaryFormatReader(data);
+                var eth = new L2EthernetFrameShape();
+                if (!ethReader.TryReadL2EthernetFrame(ref eth))
+                {
+                    return false;
+                }
+
+                etherType = BinaryPrimitives.ReadUInt16BigEndian(data.Slice(12, 2));
+                payload = eth.Payload;
+                return true;
+
+            case PcapDataLink.DLT_RAW:
+                if (data.IsEmpty)
+                {
+                    return false;
+                }
+
+                etherType = (data[0] >> 4) switch
+                {
+                    4 => 0x0800,
+                    6 => 0x86DD,
+                    _ => (ushort) 0
+                };
+
+                if (etherType == 0)
+                {
+                    return false;
+                }
+
+                payload = data;
+                return true;
+
+            default:
+                return false;
         }
     }
 
