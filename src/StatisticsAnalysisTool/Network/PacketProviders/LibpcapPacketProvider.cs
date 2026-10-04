@@ -257,68 +257,158 @@ public class LibpcapPacketProvider : PacketProvider
             return;
         }
 
-        // L2 (Ethernet)
-        var ethReader = new BinaryFormatReader(packet.Data);
-        var eth = new L2EthernetFrameShape();
-        if (!ethReader.TryReadL2EthernetFrame(ref eth))
+        // Not every adapter delivers Ethernet frames. Physical NICs do, but Npcap raw IP
+        // adapters (Wintun/VPN tunnels such as game accelerators) deliver bare IP packets,
+        // so the layout has to be chosen from the adapter's link-layer type.
+        if (GetLinkType(pcap) == PcapDataLink.DLT_EN10MB)
+        {
+            // L2 (Ethernet)
+            var ethReader = new BinaryFormatReader(packet.Data);
+            var eth = new L2EthernetFrameShape();
+            if (!ethReader.TryReadL2EthernetFrame(ref eth))
+            {
+                _captureDiagnostics.RecordMalformedPacket();
+                return;
+            }
+
+            ushort etherType = (ushort) ((packet.Data[12] << 8) | packet.Data[13]);
+
+            if (etherType == 0x0800) // IPv4
+            {
+                DispatchIPv4(eth.Payload, pcap);
+                return;
+            }
+
+            if (etherType == 0x86DD) // IPv6
+            {
+                DispatchIPv6(eth.Payload, pcap);
+            }
+
+            return;
+        }
+
+        DispatchRawIp(pcap, packet.Data);
+    }
+
+    private PcapDataLink GetLinkType(Pcap pcap)
+    {
+        try
+        {
+            return pcap.DataLink;
+        }
+        catch
+        {
+            // Older drivers may not report a link type; Ethernet stays the safe default.
+            return PcapDataLink.DLT_EN10MB;
+        }
+    }
+
+    /// <summary>
+    /// Handles adapters whose frames carry no Ethernet header (raw IP, loopback encapsulation).
+    /// </summary>
+    private void DispatchRawIp(Pcap pcap, ReadOnlySpan<byte> data)
+    {
+        switch (GetLinkType(pcap))
+        {
+            case PcapDataLink.DLT_IPV4:
+                DispatchIPv4(data, pcap);
+                return;
+
+            case PcapDataLink.DLT_IPV6:
+                DispatchIPv6(data, pcap);
+                return;
+
+            case PcapDataLink.DLT_NULL:
+            case PcapDataLink.DLT_LOOP:
+            {
+                // 4 byte address family header precedes the IP packet.
+                if (data.Length < 5)
+                {
+                    _captureDiagnostics.RecordMalformedPacket();
+                    return;
+                }
+
+                uint family = BinaryPrimitives.ReadUInt32LittleEndian(data);
+                DispatchRawIpVersion(family switch
+                {
+                    2 => 4,                          // AF_INET
+                    23 or 24 or 28 or 30 => 6,       // AF_INET6 across Windows/BSD/Linux
+                    _ => data[4] >> 4
+                }, data[4..], pcap);
+                return;
+            }
+        }
+
+        // DLT_RAW and other bare IP encapsulations: the IP version nibble identifies the payload.
+        if (data.Length == 0)
         {
             _captureDiagnostics.RecordMalformedPacket();
             return;
         }
 
-        ushort etherType = (ushort) ((packet.Data[12] << 8) | packet.Data[13]);
+        DispatchRawIpVersion(data[0] >> 4, data, pcap);
+    }
 
-        ReadOnlySpan<byte> l3 = eth.Payload;
-
-        if (etherType == 0x0800) // IPv4
+    private void DispatchRawIpVersion(int ipVersion, ReadOnlySpan<byte> data, Pcap pcap)
+    {
+        switch (ipVersion)
         {
-            if (TryHandleIPv4Fragment(l3, pcap))
-            {
+            case 4:
+                DispatchIPv4(data, pcap);
                 return;
-            }
 
-            var ipReader = new BinaryFormatReader(l3);
-            var ip4 = new IPv4PacketShape();
-            if (!ipReader.TryReadIPv4Packet(ref ip4))
-            {
+            case 6:
+                DispatchIPv6(data, pcap);
+                return;
+
+            default:
                 _captureDiagnostics.RecordMalformedPacket();
                 return;
-            }
+        }
+    }
 
-            switch ((ProtocolType) ip4.Protocol)
-            {
-                case ProtocolType.Udp:
-                    HandleUdp(ip4.Payload, pcap, GetIPv4SourceAddress(l3));
-                    return;
-
-                case ProtocolType.Tcp:
-                    return;
-
-                default:
-                    return;
-            }
+    private void DispatchIPv4(ReadOnlySpan<byte> l3, Pcap pcap)
+    {
+        if (TryHandleIPv4Fragment(l3, pcap))
+        {
+            return;
         }
 
-        if (etherType == 0x86DD) // IPv6
+        var ipReader = new BinaryFormatReader(l3);
+        var ip4 = new IPv4PacketShape();
+        if (!ipReader.TryReadIPv4Packet(ref ip4))
         {
-            if (!TryReadIPv6(l3, out byte nextHeader, out ReadOnlySpan<byte> ip6Payload))
-            {
-                _captureDiagnostics.RecordMalformedPacket();
+            _captureDiagnostics.RecordMalformedPacket();
+            return;
+        }
+
+        switch ((ProtocolType) ip4.Protocol)
+        {
+            case ProtocolType.Udp:
+                HandleUdp(ip4.Payload, pcap, GetIPv4SourceAddress(l3));
                 return;
-            }
 
-            switch ((ProtocolType) nextHeader)
-            {
-                case ProtocolType.Udp:
-                    HandleUdp(ip6Payload, pcap, GetIPv6SourceAddress(l3));
-                    return;
+            default:
+                return;
+        }
+    }
 
-                case ProtocolType.Tcp:
-                    return;
+    private void DispatchIPv6(ReadOnlySpan<byte> l3, Pcap pcap)
+    {
+        if (!TryReadIPv6(l3, out byte nextHeader, out ReadOnlySpan<byte> ip6Payload))
+        {
+            _captureDiagnostics.RecordMalformedPacket();
+            return;
+        }
 
-                default:
-                    return;
-            }
+        switch ((ProtocolType) nextHeader)
+        {
+            case ProtocolType.Udp:
+                HandleUdp(ip6Payload, pcap, GetIPv6SourceAddress(l3));
+                return;
+
+            default:
+                return;
         }
     }
 
