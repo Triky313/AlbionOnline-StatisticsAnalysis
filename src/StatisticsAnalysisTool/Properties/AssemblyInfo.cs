@@ -12,7 +12,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("StatisticsAnalysisTool")]
 [assembly: AssemblyProduct("StatisticsAnalysisTool")]
-[assembly: AssemblyCopyright("Copyright ©  2026")]
+[assembly: AssemblyCopyright("Copyright © 2026")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: SupportedOSPlatform("windows")]
@@ -54,5 +54,5 @@ using System.Runtime.CompilerServices;
 // indem Sie "*" wie unten gezeigt eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("10.0.0.0")]
-[assembly: AssemblyFileVersion("10.0.3.0")]
-[assembly: AssemblyInformationalVersion("10.0.3")]
+[assembly: AssemblyFileVersion("10.0.4.0")]
+[assembly: AssemblyInformationalVersion("10.0.4")]
