@@ -556,5 +556,7 @@ public enum OperationCodes
     EnterDragonAreaEntrance,
     SmartQueueRegionQueueInfo,
     SurveyCompleted,
-    GetSurveyLogs
+    GetSurveyLogs,
+    ClientFrametimeSpike,
+    RequestDebugMobInfo
 }

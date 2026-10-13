@@ -127,7 +127,6 @@ public enum EventCodes
     MatchUpdate,
     ActiveMatchUpdate,
     NewMob,
-    DebugAggroInfo,
     DebugVariablesInfo,
     DebugReputationInfo,
     DebugDiminishingReturnInfo,
@@ -714,5 +713,6 @@ public enum EventCodes
     ClusterSyncedStringValuesSnapshot,
     ClusterSyncedBoolValuesSnapshot,
     ClusterSyncedIntValuesSnapshot,
-    FixedRotationForcedMovementPositionUpdate
+    FixedRotationForcedMovementPositionUpdate,
+    InventoryFrozenSlotsUpdate
 }
