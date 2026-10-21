@@ -18,6 +18,10 @@
         {
           "lang": "fr-FR",
           "seg": "Windows et démarrage"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ウィンドウとスタートアップ"
         }
       ]
     },
@@ -39,6 +43,10 @@
         {
           "lang": "fr-FR",
           "seg": "Démarrer avec Windows"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Windows起動時に実行"
         }
       ]
     },
@@ -60,6 +68,10 @@
         {
           "lang": "fr-FR",
           "seg": "Lance automatiquement l'outil d'analyse statistique une fois que vous vous êtes connecté à Windows."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Windowsにサインインした際、Statistics Analysis Toolを自動的に開始します。"
         }
       ]
     },
@@ -81,6 +93,10 @@
         {
           "lang": "fr-FR",
           "seg": "Démarrer dans la zone de notification"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "システムトレイで起動"
         }
       ]
     },
@@ -102,6 +118,10 @@
         {
           "lang": "fr-FR",
           "seg": "Masque la fenêtre dans la zone de notification dès son lancement."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "起動直後にウィンドウを最小化してシステムトレイに格納します。"
         }
       ]
     },
@@ -123,6 +143,10 @@
         {
           "lang": "fr-FR",
           "seg": "Ouvrir avec le jeu"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ゲーム起動時に開く"
         }
       ]
     },
@@ -144,6 +168,10 @@
         {
           "lang": "fr-FR",
           "seg": "Rétablit la fenêtre dans la zone de notification au démarrage d'Albion Online."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Albion Onlineが起動した際、システムトレイからウィンドウを復元します。"
         }
       ]
     },
@@ -165,6 +193,10 @@
         {
           "lang": "fr-FR",
           "seg": "Masquer avec le jeu"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ゲーム終了時に非表示"
         }
       ]
     },
@@ -186,6 +218,10 @@
         {
           "lang": "fr-FR",
           "seg": "Masque la fenêtre dans la zone de notification lorsque Albion Online est fermé."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Albion Onlineが終了した際、ウィンドウをシステムトレイに格納します。"
         }
       ]
     },
@@ -207,6 +243,10 @@
         {
           "lang": "fr-FR",
           "seg": "Lancer le suivi avec le jeu"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ゲーム起動時にトラッキングを開始"
         }
       ]
     },
@@ -228,6 +268,10 @@
         {
           "lang": "fr-FR",
           "seg": "Lance automatiquement le suivi au démarrage d'Albion Online."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Albion Onlineが起動した際、自動的にトラッキングを開始します。"
         }
       ]
     },
@@ -249,6 +293,10 @@
         {
           "lang": "fr-FR",
           "seg": "Arrêter le suivi dans le jeu"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ゲーム終了時にトラッキングを停止"
         }
       ]
     },
@@ -270,6 +318,10 @@
         {
           "lang": "fr-FR",
           "seg": "Le suivi s'arrête automatiquement à la fermeture d'Albion Online."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Albion Onlineが終了した際、自動的にトラッキングを停止します。"
         }
       ]
     },
@@ -291,6 +343,10 @@
         {
           "lang": "fr-FR",
           "seg": "Impossible de mettre à jour les paramètres de démarrage de Windows. Veuillez réessayer."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Windowsのスタートアップ設定を更新できませんでした。もう一度お試しください。"
         }
       ]
     },
@@ -312,6 +368,10 @@
         {
           "lang": "fr-FR",
           "seg": "Cacher dans la zone de notification lorsqu'il est minimisé"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "最小化時にシステムトレイに格納"
         }
       ]
     },
@@ -333,6 +393,10 @@
         {
           "lang": "fr-FR",
           "seg": "Activer le suivi"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "トラッキングを有効化"
         }
       ]
     },
@@ -354,6 +418,10 @@
         {
           "lang": "fr-FR",
           "seg": "Désactiver le suivi"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "トラッキングを無効化"
         }
       ]
     },
@@ -375,6 +443,10 @@
         {
           "lang": "fr-FR",
           "seg": "Ouvrir"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "開く"
         }
       ]
     },
@@ -396,6 +468,10 @@
         {
           "lang": "fr-FR",
           "seg": "Sortir"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "終了"
         }
       ]
     },
@@ -417,6 +493,10 @@
         {
           "lang": "fr-FR",
           "seg": "Statistics Analysis Tool continue de fonctionner dans la zone de notification."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Statistics Analysis Tool はバックグラウンド（システムトレイ）で実行され続けます。"
         }
       ]
     },
@@ -450,10 +530,6 @@
         {
           "lang": "it-IT",
           "seg": "Lingua"
-        },
-        {
-          "lang": "ja-JA",
-          "seg": "言語"
         },
         {
           "lang": "ja-JP",
@@ -1101,7 +1177,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "購入価格ダウンタイム"
+          "seg": "売却価格ダウンタイム"
         },
         {
           "lang": "ko-KR",
@@ -1292,6 +1368,7 @@
         }
       ]
     },
+    
     {
       "tuid": "DIFFERENT_CALCULATION",
       "tuv": [
@@ -1366,7 +1443,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "ERROR: 価格が読み込めません"
+          "seg": "エラー: 価格が読み込めません"
         },
         {
           "lang": "ko-KR",
@@ -1419,7 +1496,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "ERROR: アイテム情報がありません"
+          "seg": "エラー: アイテム情報がありません"
         },
         {
           "lang": "ko-KR",
@@ -1472,7 +1549,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "ERROR:一般的なエラー"
+          "seg": "エラー:一般的なエラー"
         },
         {
           "lang": "ko-KR",
@@ -1525,7 +1602,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "Bought for"
+          "seg": "購入価格"
         },
         {
           "lang": "ko-KR",
@@ -1578,7 +1655,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "Sell for"
+          "seg": "売却価格"
         },
         {
           "lang": "ko-KR",
@@ -1843,7 +1920,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "エクセレントt"
+          "seg": "エクセレント"
         },
         {
           "lang": "ko-KR",
@@ -1949,7 +2026,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "Min Profit"
+          "seg": "最小利益"
         },
         {
           "lang": "ko-KR",
@@ -2161,7 +2238,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "Tier"
+          "seg": "ティア"
         },
         {
           "lang": "ko-KR",
@@ -2214,7 +2291,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "レベル"
+          "seg": "エンチャント"
         },
         {
           "lang": "ko-KR",
@@ -3274,7 +3351,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "Error"
+          "seg": "エラー"
         },
         {
           "lang": "ko-KR",
@@ -4387,7 +4464,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "遠征"
+          "seg": "探検"
         },
         {
           "lang": "ko-KR",
@@ -4486,6 +4563,10 @@
         {
           "lang": "es-ES",
           "seg": "Costos de fabricación"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "製造コスト"
         },
         {
           "lang": "fr-FR",
@@ -5467,6 +5548,10 @@
           "seg": "Statistiques"
         },
         {
+          "lang": "ja-JP",
+          "seg": "統計"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Статистика"
         },
@@ -5496,6 +5581,10 @@
           "seg": "Aperçu des transactions"
         },
         {
+          "lang": "ja-JP",
+          "seg": "取引概要"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Обзор торговли"
         },
@@ -5523,6 +5612,10 @@
         {
           "lang": "fr-FR",
           "seg": "Diagramme"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ダイアグラム"
         },
         {
           "lang": "ru-RU",
@@ -5767,7 +5860,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "NEW FEATURE - DAMAGE METER \n"
+          "seg": "新機能 - ダメージメーター \n"
         },
         {
           "lang": "ko-KR",
@@ -6085,7 +6178,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "Yes"
+          "seg": "はい"
         },
         {
           "lang": "ko-KR",
@@ -6138,7 +6231,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "Okay"
+          "seg": "OK"
         },
         {
           "lang": "ko-KR",
@@ -6191,7 +6284,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "No"
+          "seg": "いいえ"
         },
         {
           "lang": "ko-KR",
@@ -7993,7 +8086,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "Fishing Bait"
+          "seg": "釣り餌"
         },
         {
           "lang": "ko-KR",
@@ -8576,7 +8669,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "DecorationFurniture"
+          "seg": "装飾家具"
         },
         {
           "lang": "ko-KR",
@@ -8947,7 +9040,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "Unique"
+          "seg": "ユニーク"
         },
         {
           "lang": "ko-KR",
@@ -13822,6 +13915,10 @@
           "seg": "Arme"
         },
         {
+          "lang": "ja-JP",
+          "seg": "武器"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Оружие"
         },
@@ -15283,7 +15380,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "in"
+          "seg": "中"
         },
         {
           "lang": "ko-KR",
@@ -16078,7 +16175,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "You have"
+          "seg": "所有"
         },
         {
           "lang": "ko-KR",
@@ -17231,8 +17328,12 @@
           "seg": "Duo"
         },
         {
-          "lang": "es-ES",
-          "seg": "Dúo"
+          "lang": "en-US",
+          "seg": "Duo"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "デュオ"
         },
         {
           "lang": "fr-FR",
@@ -18903,6 +19004,10 @@
           "seg": "Ouvrir le répertoire UserData"
         },
         {
+          "lang": "ja-JP",
+          "seg": "ユーザーデータディレクトリを開く"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Откройте каталог пользовательских данных"
         },
@@ -18977,6 +19082,10 @@
           "seg": "Cerrar consola de depuración"
         },
         {
+          "lang": "ja-JP",
+          "seg": "デバッグコンソールを閉じる"
+        },
+        {
           "lang": "fr-FR",
           "seg": "Fermer la console de debug"
         },
@@ -19008,6 +19117,10 @@
         {
           "lang": "fr-FR",
           "seg": "Paramètres de la console de débogage"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "デバッグコンソールのパラメータ"
         },
         {
           "lang": "ru-RU",
@@ -19464,7 +19577,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "Safe"
+          "seg": "安全"
         },
         {
           "lang": "ko-KR",
@@ -20068,7 +20181,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "期限切れ"
+          "seg": "探検"
         },
         {
           "lang": "ko-KR",
@@ -20215,7 +20328,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "Average Respec"
+          "seg": "平均自動変換"
         },
         {
           "lang": "ko-KR",
@@ -20362,7 +20475,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "from"
+          "seg": "から"
         },
         {
           "lang": "ko-KR",
@@ -20411,7 +20524,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "Loot"
+          "seg": "戦利品"
         },
         {
           "lang": "ko-KR",
@@ -20998,6 +21111,10 @@
           "seg": "Ouvrir la fenêtre du tableau de bord étendu"
         },
         {
+          "lang": "ja-JP",
+          "seg": "拡張ダッシュボードウィンドウを開く"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Откройте расширенное окно панели мониторинга"
         },
@@ -21006,8 +21123,7 @@
           "seg": "打开新的数据统计窗口"
         }
       ]
-    },
-    {
+    },    {
       "tuid": "COPY_TO_CLIPBOARD",
       "tuv": [
         {
@@ -22056,6 +22172,10 @@
           "seg": "Exporter le butin dans un fichier JSON"
         },
         {
+          "lang": "ja-JP",
+          "seg": "戦利品をJSONファイルとしてエクスポート"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Экспорт лута в JSON файл"
         },
@@ -22064,8 +22184,7 @@
           "seg": "将战利品导出为 JSON"
         }
       ]
-    },
-    {
+    },    {
       "tuid": "TRACK_PARTY_LOOT_ONLY",
       "tuv": [
         {
@@ -22429,7 +22548,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "Usage fee %"
+          "seg": "使用料 %"
         },
         {
           "lang": "ko-KR",
@@ -24273,6 +24392,10 @@
           "seg": "Redémarrage requis"
         },
         {
+          "lang": "ja-JP",
+          "seg": "再起動が必要です"
+        },
+        {
           "lang": "ko-KR",
           "seg": "재시작이 필요합니다."
         },
@@ -24360,7 +24483,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "およそ"
+          "seg": "マイト"
         },
         {
           "lang": "ko-KR",
@@ -24409,7 +24532,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "マイト"
+          "seg": "好意"
         },
         {
           "lang": "ko-KR",
@@ -26855,7 +26978,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "to"
+          "seg": "へ"
         },
         {
           "lang": "ko-KR",
@@ -26953,7 +27076,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "Bank"
+          "seg": "銀行"
         },
         {
           "lang": "ko-KR",
@@ -28129,7 +28252,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "OR"
+          "seg": "または"
         },
         {
           "lang": "ko-KR",
@@ -28619,7 +28742,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "Killed Mammoths"
+          "seg": "殺したマンモス"
         },
         {
           "lang": "ko-KR",
@@ -28668,7 +28791,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "Killed Mobs"
+          "seg": "殺したMob"
         },
         {
           "lang": "ko-KR",
@@ -28717,7 +28840,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "All factions"
+          "seg": "全ての派閥"
         },
         {
           "lang": "ko-KR",
@@ -28766,7 +28889,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "Search mobs"
+          "seg": "Mobを探す"
         },
         {
           "lang": "ko-KR",
@@ -28815,7 +28938,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "Last kill"
+          "seg": "最後のキル"
         },
         {
           "lang": "ko-KR",
@@ -28864,7 +28987,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "Reset all"
+          "seg": "全てをリセット"
         },
         {
           "lang": "ko-KR",
@@ -31363,7 +31486,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "Thanks"
+          "seg": "感謝"
         },
         {
           "lang": "ko-KR",
@@ -31412,7 +31535,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "Thank You"
+          "seg": "ありがとう"
         },
         {
           "lang": "ko-KR",
@@ -33319,7 +33442,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "西サーバー(Albion West)"
+          "seg": "アメリカサーバー"
         },
         {
           "lang": "ko-KR",
@@ -33368,7 +33491,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "東サーバー(Albion East)"
+          "seg": "アジアサーバー"
         },
         {
           "lang": "ko-KR",
@@ -33416,6 +33539,10 @@
           "seg": "Serveur Europe"
         },
         {
+          "lang": "ja-JP",
+          "seg": "ヨーロッパサーバー"
+        },
+        {
           "lang": "pl-PL",
           "seg": "Europe Server"
         },
@@ -33450,7 +33577,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "アルビオン データ プロジェクト ベース URL WEST"
+          "seg": "アルビオンデータプロジェクトベースURLアメリカ"
         },
         {
           "lang": "ko-KR",
@@ -33499,7 +33626,7 @@
         },
         {
           "lang": "ja-JP",
-          "seg": "アルビオン データ プロジェクト ベース URL EAST"
+          "seg": "アルビオンデータプロジェクトベースURLアジア"
         },
         {
           "lang": "ko-KR",
@@ -33545,6 +33672,10 @@
         {
           "lang": "fr-FR",
           "seg": "URL du projet de données Albion EUROPE"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "アルビオンデータプロジェクトベースURLヨーロッパ"
         },
         {
           "lang": "pl-PL",
@@ -33774,6 +33905,10 @@
         {
           "lang": "fr-FR",
           "seg": "Définir le serveur"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "サーバーをセット"
         },
         {
           "lang": "pl-PL",
@@ -36367,6 +36502,10 @@
           "seg": "Chemin d'accès au répertoire de stockage de sauvegarde"
         },
         {
+          "lang": "ja-JP",
+          "seg": "バックアップ保存先フォルダパス"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Путь к каталогу хранилища резервных копий"
         },
@@ -36756,6 +36895,10 @@
           "seg": "Sélectionnez le dossier principal du jeu Albion Online"
         },
         {
+          "lang": "ja-JP",
+          "seg": "アルビオン・オンラインのメインゲームフォルダを選択してください"
+        },
+        {
           "lang": "ko-KR",
           "seg": "Albion Online 게임 폴더 선택"
         },
@@ -36795,6 +36938,10 @@
         {
           "lang": "fr-FR",
           "seg": "Veuillez sélectionner un dossier de jeu Albion Online valide"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "正しいAlbion Onlineメインゲームフォルダーを選択してください"
         },
         {
           "lang": "ko-KR",
@@ -36838,6 +36985,10 @@
           "seg": "Veuillez sélectionner un dossier correct"
         },
         {
+          "lang": "ja-JP",
+          "seg": "正しいフォルダーを選択してください"
+        },
+        {
           "lang": "ko-KR",
           "seg": "올바른 폴더를 선택하세요"
         },
@@ -36877,6 +37028,10 @@
         {
           "lang": "fr-FR",
           "seg": "Sélectionnez le dossier principal du jeu..."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "メインゲームフォルダーを選択..."
         },
         {
           "lang": "ko-KR",
@@ -36920,6 +37075,10 @@
           "seg": "Game folder path"
         },
         {
+          "lang": "ja-JP",
+          "seg": "ゲームフォルダのパス"
+        },
+        {
           "lang": "ko-KR",
           "seg": "Game folder path"
         },
@@ -36959,6 +37118,10 @@
         {
           "lang": "fr-FR",
           "seg": "Confirmer"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "確認"
         },
         {
           "lang": "ko-KR",
@@ -37002,6 +37165,10 @@
           "seg": "Pourcentage de soin excessif par rapport au soin totale"
         },
         {
+          "lang": "ja-JP",
+          "seg": "総回復量におけるオーバーヒール率"
+        },
+        {
           "lang": "ko-KR",
           "seg": "총 치유량 중 초과 치유량(Overheal) 비율"
         },
@@ -37041,6 +37208,10 @@
         {
           "lang": "fr-FR",
           "seg": "Soin sans soin excessif"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "オーバーヒールを除いた回復量"
         },
         {
           "lang": "ko-KR",
@@ -37127,6 +37298,10 @@
         {
           "lang": "fr-FR",
           "seg": "Chargement"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "読み込み中"
         },
         {
           "lang": "ko-KR",
@@ -37260,6 +37435,10 @@
           "seg": "Checkpoint"
         },
         {
+          "lang": "ja-JP",
+          "seg": "チェックポイント"
+        },
+        {
           "lang": "ko-KR",
           "seg": "Checkpoint"
         },
@@ -37346,6 +37525,10 @@
           "seg": "Type de cluster"
         },
         {
+          "lang": "ja-JP",
+          "seg": "クラスタータイプ"
+        },
+        {
           "lang": "ko-KR",
           "seg": "클러스터 타입"
         },
@@ -37387,6 +37570,10 @@
           "seg": "Coffre verrouillé"
         },
         {
+          "lang": "ja-JP",
+          "seg": "ロックされた宝箱"
+        },
+        {
           "lang": "ko-KR",
           "seg": "잠긴 상자"
         },
@@ -37426,6 +37613,10 @@
         {
           "lang": "fr-FR",
           "seg": "Durée"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "所要時間"
         },
         {
           "lang": "ko-KR",
@@ -37739,6 +37930,10 @@
           "seg": "Nombre de donjons"
         },
         {
+          "lang": "ja-JP",
+          "seg": "ダンジョン数"
+        },
+        {
           "lang": "ko-KR",
           "seg": "던전 숫자"
         },
@@ -37778,6 +37973,10 @@
         {
           "lang": "fr-FR",
           "seg": "Combats"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "戦闘"
         },
         {
           "lang": "ko-KR",
@@ -37821,6 +38020,10 @@
           "seg": "Changeforme"
         },
         {
+          "lang": "ja-JP",
+          "seg": "シェイプシフター"
+        },
+        {
           "lang": "ko-KR",
           "seg": "셰이프시프터"
         },
@@ -37860,6 +38063,10 @@
         {
           "lang": "fr-FR",
           "seg": "Outil de pistage"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "トラッキングツール"
         },
         {
           "lang": "ko-KR",
@@ -37948,6 +38155,10 @@
           "seg": "Le mois dernier"
         },
         {
+          "lang": "ja-JP",
+          "seg": "先月"
+        },
+        {
           "lang": "ko-KR",
           "seg": "지난달"
         },
@@ -37989,6 +38200,10 @@
           "seg": "Sélectionnez l'emplacement du serveur"
         },
         {
+          "lang": "ja-JP",
+          "seg": "サーバーロケーションを選択"
+        },
+        {
           "lang": "ko-KR",
           "seg": "서버 선택"
         },
@@ -38028,6 +38243,10 @@
         {
           "lang": "fr-FR",
           "seg": "Veuillez sélectionner un emplacement de serveur"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "サーバーロケーションを選択してください"
         },
         {
           "lang": "ko-KR",
@@ -38161,6 +38380,10 @@
           "seg": "Coût de réparation"
         },
         {
+          "lang": "ja-JP",
+          "seg": "修理費用"
+        },
+        {
           "lang": "ko-KR",
           "seg": "수리비"
         },
@@ -38202,6 +38425,10 @@
           "seg": "1. Sélectionnez d’abord le 3ème onglet sur le côté droit."
         },
         {
+          "lang": "ja-JP",
+          "seg": "1. まず右側の3番目のタブを選択します。"
+        },
+        {
           "lang": "ko-KR",
           "seg": "1. 먼저 오른쪽에 있는 세 번째 탭을 선택합니다."
         },
@@ -38237,6 +38464,10 @@
         {
           "lang": "fr-FR",
           "seg": "2. Sélectionnez l'énergie siphonnée dans la recherche"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "2. 検索で「サイフォンエネルギー」を選択します"
         },
         {
           "lang": "ko-KR",
@@ -38276,6 +38507,10 @@
           "seg": "3. Choisissez une heure pour suivre les entrées"
         },
         {
+          "lang": "ja-JP",
+          "seg": "3. 追跡するエントリー数を調整するために期間を選択します"
+        },
+        {
           "lang": "ko-KR",
           "seg": "3. 검색할 기간을 선택하세요."
         },
@@ -38311,6 +38546,10 @@
         {
           "lang": "fr-FR",
           "seg": "4. Chaque page doit être appelée individuellement afin de pouvoir être suivie."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "4. 追跡を行うには各ページを個別に開く必要があります。"
         },
         {
           "lang": "ko-KR",
@@ -38350,6 +38589,10 @@
           "seg": "Guilde"
         },
         {
+          "lang": "ja-JP",
+          "seg": "ギルド"
+        },
+        {
           "lang": "ko-KR",
           "seg": "길드"
         },
@@ -38385,6 +38628,10 @@
         {
           "lang": "fr-FR",
           "seg": "Supprimer les entrées sélectionnées"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "選択したエントリーを削除"
         },
         {
           "lang": "ko-KR",
@@ -38424,6 +38671,10 @@
           "seg": "Êtes-vous sûr de vouloir supprimer les entrées sélectionnées ?"
         },
         {
+          "lang": "ja-JP",
+          "seg": "選択したエントリーを本当に削除しますか？"
+        },
+        {
           "lang": "ko-KR",
           "seg": "선택한 항목을 삭제하시겠습니까?"
         },
@@ -38459,6 +38710,10 @@
         {
           "lang": "fr-FR",
           "seg": "Nom du personnage"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "キャラクター名"
         },
         {
           "lang": "ko-KR",
@@ -38498,6 +38753,10 @@
           "seg": "Quantité"
         },
         {
+          "lang": "ja-JP",
+          "seg": "数量"
+        },
+        {
           "lang": "ko-KR",
           "seg": "수량"
         },
@@ -38533,6 +38792,10 @@
         {
           "lang": "fr-FR",
           "seg": "Ajouter une entrée"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "エントリーを追加"
         },
         {
           "lang": "ko-KR",
@@ -38572,6 +38835,10 @@
           "seg": "Ajouter ou supprimer manuellement"
         },
         {
+          "lang": "ja-JP",
+          "seg": "手動で追加または削除"
+        },
+        {
           "lang": "ko-KR",
           "seg": "수동으로 추가 또는 제거"
         },
@@ -38607,6 +38874,10 @@
         {
           "lang": "fr-FR",
           "seg": "Sélectionnez pour désactiver"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "無効にするには選択してください"
         },
         {
           "lang": "ko-KR",
@@ -38646,6 +38917,10 @@
           "seg": "Énergie siphonnée"
         },
         {
+          "lang": "ja-JP",
+          "seg": "サイフォンエネルギー"
+        },
+        {
           "lang": "ko-KR",
           "seg": "착취한 에너지"
         },
@@ -38681,6 +38956,10 @@
         {
           "lang": "fr-FR",
           "seg": "Fournisseur de paquets"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "パケットプロバイダー"
         },
         {
           "lang": "ko-KR",
@@ -38720,6 +38999,10 @@
           "seg": "Interfaces réseau"
         },
         {
+          "lang": "ja-JP",
+          "seg": "ネットワークアダプター"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Сетевые адаптеры"
         },
@@ -38749,6 +39032,10 @@
           "seg": "Redémarrer le suivi du réseau"
         },
         {
+          "lang": "ja-JP",
+          "seg": "ネットワークトラッキングを再起動"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Перезапустить отслеживание сети"
         },
@@ -38776,6 +39063,10 @@
         {
           "lang": "fr-FR",
           "seg": "Le logiciel doit être exécuté en tant qu'administrateur"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ツールは管理者権限で実行する必要があります"
         },
         {
           "lang": "ko-KR",
@@ -38815,6 +39106,10 @@
           "seg": "Ajout d'une fabrication"
         },
         {
+          "lang": "ja-JP",
+          "seg": "追加された製作"
+        },
+        {
           "lang": "ko-KR",
           "seg": "채집 추가"
         },
@@ -38852,6 +39147,10 @@
           "seg": "Groupe"
         },
         {
+          "lang": "ja-JP",
+          "seg": "パーティ"
+        },
+        {
           "lang": "zh-CN",
           "seg": "队伍管理"
         },
@@ -38879,6 +39178,10 @@
         {
           "lang": "fr-FR",
           "seg": "Alerte de mort"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "死亡アラート"
         },
         {
           "lang": "zh-CN",
@@ -38910,6 +39213,10 @@
           "seg": "Sélectionnez pour l'alerte de mort"
         },
         {
+          "lang": "ja-JP",
+          "seg": "死亡アラート対象に選択"
+        },
+        {
           "lang": "zh-CN",
           "seg": "选择死亡警报"
         },
@@ -38937,6 +39244,10 @@
         {
           "lang": "fr-FR",
           "seg": "Son d'alerte de mort utilisé"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "使用する死亡アラート音"
         },
         {
           "lang": "zh-CN",
@@ -38968,6 +39279,10 @@
           "seg": "DÉGATS%"
         },
         {
+          "lang": "ja-JP",
+          "seg": "ダメージ%"
+        },
+        {
           "lang": "ru-RU",
           "seg": "DMG%"
         },
@@ -38995,6 +39310,10 @@
         {
           "lang": "fr-FR",
           "seg": "DÉGATS/SOINS"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ダメージ/回復"
         },
         {
           "lang": "ru-RU",
@@ -39026,6 +39345,10 @@
           "seg": "Ticks"
         },
         {
+          "lang": "ja-JP",
+          "seg": "ティック数"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Ticks"
         },
@@ -39053,6 +39376,10 @@
         {
           "lang": "fr-FR",
           "seg": "Attaque automatique"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "通常攻撃"
         },
         {
           "lang": "ru-RU",
@@ -39084,6 +39411,10 @@
           "seg": "Exporter les échanges en CSV"
         },
         {
+          "lang": "ja-JP",
+          "seg": "取引履歴をCSVとしてエクスポート"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Экспортные сделок в CSV"
         },
@@ -39111,6 +39442,10 @@
         {
           "lang": "fr-FR",
           "seg": "Validation d'événement"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "イベント検証"
         },
         {
           "lang": "ru-RU",
@@ -39142,6 +39477,10 @@
           "seg": "Ouvrir la validation d'événement"
         },
         {
+          "lang": "ja-JP",
+          "seg": "イベント検証を開く"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Открыть проверку событий"
         },
@@ -39169,6 +39508,10 @@
         {
           "lang": "fr-FR",
           "seg": "Dégâts subis"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "被ダメージ"
         },
         {
           "lang": "ru-RU",
@@ -39200,6 +39543,10 @@
           "seg": "Valeur marchande moyenne estimée"
         },
         {
+          "lang": "ja-JP",
+          "seg": "平均推定市場価値"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Средняя оценка. Рыночная стоимость"
         },
@@ -39227,6 +39574,10 @@
         {
           "lang": "fr-FR",
           "seg": "Application indépendante"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "スタンドアロンランチャー"
         },
         {
           "lang": "ru-RU",
@@ -39258,6 +39609,10 @@
           "seg": "Sélectionnez le dossier d'installation d'AlbionOnline. Par exemple, dans 'C:\\AlbionOnline'"
         },
         {
+          "lang": "ja-JP",
+          "seg": "インストールしたAlbionOnlineフォルダを選択してください。(例: 'C:\\AlbionOnline')"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Выберите папку AlbionOnline, в которую вы ее установили. Например, в разделе 'C:\\AlbionOnline'"
         },
@@ -39285,6 +39640,10 @@
         {
           "lang": "fr-FR",
           "seg": "Launcher Steam"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Steamランチャー"
         },
         {
           "lang": "ru-RU",
@@ -39316,6 +39675,10 @@
           "seg": "Sélectionnez le dossier AlbionOnline dans SteamApps. Il se trouve généralement dans 'C:\\Program Files\\Steam\\Steamapps\\common'"
         },
         {
+          "lang": "ja-JP",
+          "seg": "steamappsフォルダ内のAlbionOnlineフォルダを選択してください。(通常は 'C:\\Program Files\\Steam\\steamapps\\common' 配下にあります)"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Выберите папку AlbionOnline в steamapps. Обычно она находится в разделе 'C:\\Program Files\\Steam\\Steamapps\\common'."
         },
@@ -39343,6 +39706,10 @@
         {
           "lang": "fr-FR",
           "seg": "Répertoire de stockage de sauvegarde"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "バックアップ保存先ディレクトリパス"
         },
         {
           "lang": "ru-RU",
@@ -39374,6 +39741,10 @@
           "seg": "Coûts actuels des réparations"
         },
         {
+          "lang": "ja-JP",
+          "seg": "現在の修理費"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Текущие затраты на ремонт"
         },
@@ -39401,6 +39772,10 @@
         {
           "lang": "fr-FR",
           "seg": "Afficher les prix moyens totaux de l'objet"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "アイテムに合計平均価格を表示"
         },
         {
           "lang": "ru-RU",
@@ -39432,6 +39807,10 @@
           "seg": "Valeur totale du coffre"
         },
         {
+          "lang": "ja-JP",
+          "seg": "チェスト総価値"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Общая стоимость вкладки"
         },
@@ -39459,6 +39838,10 @@
         {
           "lang": "fr-FR",
           "seg": "Poids total"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "総重量"
         },
         {
           "lang": "ru-RU",
@@ -39490,6 +39873,10 @@
           "seg": "Valeur totale de la banque"
         },
         {
+          "lang": "ja-JP",
+          "seg": "銀行総価値"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Общая стоимость банка"
         },
@@ -39517,6 +39904,10 @@
         {
           "lang": "fr-FR",
           "seg": "Autres"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "その他"
         },
         {
           "lang": "ru-RU",
@@ -39548,6 +39939,10 @@
           "seg": "Perdu"
         },
         {
+          "lang": "ja-JP",
+          "seg": "損失"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Потерянный"
         },
@@ -39575,6 +39970,10 @@
         {
           "lang": "fr-FR",
           "seg": "Résolu"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "解決済み"
         },
         {
           "lang": "ru-RU",
@@ -39606,6 +40005,10 @@
           "seg": "Donné"
         },
         {
+          "lang": "ja-JP",
+          "seg": "寄付済み"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Пожертвованный"
         },
@@ -39633,6 +40036,10 @@
         {
           "lang": "fr-FR",
           "seg": "Comparateur de butin"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "戦利品比較ツール"
         },
         {
           "lang": "ru-RU",
@@ -39664,6 +40071,10 @@
           "seg": "Télécharger les données"
         },
         {
+          "lang": "ja-JP",
+          "seg": "チェストログ(ファイル)を読み込む"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Загрузить файлы журнал сундука"
         },
@@ -39691,6 +40102,10 @@
         {
           "lang": "fr-FR",
           "seg": "Ajouter des Chest Logs"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "チェストログ(テキスト)を読み込む"
         },
         {
           "lang": "ru-RU",
@@ -39722,6 +40137,10 @@
           "seg": "Collez ici le Chest Log"
         },
         {
+          "lang": "ja-JP",
+          "seg": "ここにチェストログのテキストを貼り付けてください"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Вставьте сюда логи сундука"
         },
@@ -39749,6 +40168,10 @@
         {
           "lang": "fr-FR",
           "seg": "{CHEST_COUNT} fichiers Chest | {LOOT_COUNT} fichiers Loot-log"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "{CHEST_COUNT} 件のチェストログ | {LOOT_COUNT} 件の戦利品ログ"
         },
         {
           "lang": "ru-RU",
@@ -39780,6 +40203,10 @@
           "seg": "Compte les fichiers Chest-Log chargés, ainsi que les importations de texte de coffres valides et les fichiers de Loot-Log contenant au moins une entrée de butin."
         },
         {
+          "lang": "ja-JP",
+          "seg": "読み込まれたチェストログファイル、有効なチェストテキストのインポート、および少なくとも1つの戦利品エントリが追加された戦利品ログファイルをカウントします。"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Подсчитывает количество загруженных файлов с логами сундуков, а также количество импортированных файлов с текстом сундуков и логов добычи, в которых есть хотя бы одна запись о добыче."
         },
@@ -39807,6 +40234,10 @@
         {
           "lang": "fr-FR",
           "seg": "Fichier de Chest-Log non valide ignoré: {FILE_NAME}"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "無効なチェストログファイルがスキップされました: {FILE_NAME}"
         },
         {
           "lang": "ru-RU",
@@ -39838,6 +40269,10 @@
           "seg": "Le texte du Chest-Log n'a pas pu être chargé."
         },
         {
+          "lang": "ja-JP",
+          "seg": "無効なチェストログテキストは読み込まれませんでした。"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Неверный текст в логе сундука."
         },
@@ -39865,6 +40300,10 @@
         {
           "lang": "fr-FR",
           "seg": "Le fichier Loot-Log non valide ignoré: {FILE_NAME}"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "無効な戦利品ログファイルがスキップされました: {FILE_NAME}"
         },
         {
           "lang": "ru-RU",
@@ -39896,6 +40335,10 @@
           "seg": "Ajout des journaux de butin"
         },
         {
+          "lang": "ja-JP",
+          "seg": "ルートログファイルを追加"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Добавить файлы журнала добычи"
         },
@@ -39923,6 +40366,10 @@
         {
           "lang": "fr-FR",
           "seg": "Sélectionner les fichiers journaux de coffre"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "チェストログファイルを選択"
         },
         {
           "lang": "ru-RU",
@@ -39954,6 +40401,10 @@
           "seg": "Sélectionner les fichiers des journaux de butin"
         },
         {
+          "lang": "ja-JP",
+          "seg": "ルートログファイルを選択"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Выбрать файлы журнала добычи"
         },
@@ -39981,6 +40432,10 @@
         {
           "lang": "fr-FR",
           "seg": "Statut"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ステータス"
         },
         {
           "lang": "ru-RU",
@@ -40012,6 +40467,10 @@
           "seg": "Tiers"
         },
         {
+          "lang": "ja-JP",
+          "seg": "ティア"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Уровнь"
         },
@@ -40039,6 +40498,10 @@
         {
           "lang": "fr-FR",
           "seg": "Type"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "タイプ"
         },
         {
           "lang": "ru-RU",
@@ -40070,6 +40533,10 @@
           "seg": "Tout"
         },
         {
+          "lang": "ja-JP",
+          "seg": "すべて"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Все"
         },
@@ -40097,6 +40564,10 @@
         {
           "lang": "fr-FR",
           "seg": "Aucun"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "なし"
         },
         {
           "lang": "ru-RU",
@@ -40128,6 +40599,10 @@
           "seg": "{COUNT} sélectionné(s)"
         },
         {
+          "lang": "ja-JP",
+          "seg": "{COUNT}件選択中"
+        },
+        {
           "lang": "ru-RU",
           "seg": "{COUNT} выбрано"
         },
@@ -40155,6 +40630,10 @@
         {
           "lang": "fr-FR",
           "seg": "Comparer les logs"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ログを比較"
         },
         {
           "lang": "ru-RU",
@@ -40186,6 +40665,10 @@
           "seg": "Supprimer les logs"
         },
         {
+          "lang": "ja-JP",
+          "seg": "チェストログを削除"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Удалить журналы сундука"
         },
@@ -40215,6 +40698,10 @@
           "seg": "Supprimer tous les logs"
         },
         {
+          "lang": "ja-JP",
+          "seg": "すべてのログを削除"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Удалить все журналы"
         },
@@ -40242,6 +40729,10 @@
         {
           "lang": "fr-FR",
           "seg": "Enregistrer l'état du comparateur"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "比較ツールの状態を保存"
         }
       ]
     },
@@ -40263,6 +40754,10 @@
         {
           "lang": "fr-FR",
           "seg": "Charger l'état du comparateur"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "比較ツールの状態を読み込み"
         }
       ]
     },
@@ -40284,6 +40779,10 @@
         {
           "lang": "fr-FR",
           "seg": "Nom de l'état de référence :"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "比較ツールの保存名:"
         }
       ]
     },
@@ -40305,6 +40804,10 @@
         {
           "lang": "fr-FR",
           "seg": "Les journaux actuellement chargés seront supprimés. Souhaitez-vous charger l'état sélectionné ?"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "現在読み込まれているログは破棄されます。選択した保存状態を読み込みますか？"
         }
       ]
     },
@@ -40326,6 +40829,10 @@
         {
           "lang": "fr-FR",
           "seg": "L'état du comparateur n'a pas pu être enregistré."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "比較ツールの状態を保存できませんでした。"
         }
       ]
     },
@@ -40347,6 +40854,10 @@
         {
           "lang": "fr-FR",
           "seg": "Impossible de charger l'état de référence. Les fichiers enregistrés sont peut-être corrompus."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "比較ツールの状態を読み込めませんでした。保存されたファイルが破損している可能性があります。"
         }
       ]
     },
@@ -40368,6 +40879,10 @@
         {
           "lang": "fr-FR",
           "seg": "Enregistrer"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "保存"
         }
       ]
     },
@@ -40389,6 +40904,10 @@
         {
           "lang": "fr-FR",
           "seg": "Annuler"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "キャンセル"
         }
       ]
     },
@@ -40410,6 +40929,10 @@
         {
           "lang": "fr-FR",
           "seg": "Supprimer l'état du comparateur sélectionné"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "選択した比較ツールの状態を削除"
         }
       ]
     },
@@ -40431,6 +40954,10 @@
         {
           "lang": "fr-FR",
           "seg": "Voulez-vous vraiment supprimer l'état du comparateur \"{SAVE_NAME}\"? Cette action ne peut pas être annulée."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "本当に比較ツールの状態 \"{SAVE_NAME}\" を削除しますか？この操作は取り消せません。"
         }
       ]
     },
@@ -40452,6 +40979,10 @@
         {
           "lang": "fr-FR",
           "seg": "L'état de comparaison n'a pas pu être supprimé."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "比較ツールの状態を削除できませんでした。"
         }
       ]
     },
@@ -40473,6 +41004,10 @@
         {
           "lang": "fr-FR",
           "seg": "Filtres"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "フィルター"
         }
       ]
     },
@@ -40494,6 +41029,10 @@
         {
           "lang": "fr-FR",
           "seg": "Saisie dans le journal de bord"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "チェストログ入力"
         }
       ]
     },
@@ -40515,6 +41054,10 @@
         {
           "lang": "fr-FR",
           "seg": "Comparaison"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "比較"
         }
       ]
     },
@@ -40536,6 +41079,10 @@
         {
           "lang": "fr-FR",
           "seg": "Action"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "アクション"
         }
       ]
     },
@@ -40557,6 +41104,10 @@
         {
           "lang": "fr-FR",
           "seg": "Comparateur enregistré"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "保存された比較データ:"
         }
       ]
     },
@@ -40578,6 +41129,10 @@
         {
           "lang": "fr-FR",
           "seg": "Retirer le joueur du comparateur de butin"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ルート比対器からプレイヤーを削除"
         },
         {
           "lang": "ru-RU",
@@ -40609,6 +41164,10 @@
           "seg": "Copier les journaux de butin de ce joueur"
         },
         {
+          "lang": "ja-JP",
+          "seg": "このプレイヤーのルートログをコピー"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Скопировать журнал добычи этого игрока"
         },
@@ -40636,6 +41195,10 @@
         {
           "lang": "fr-FR",
           "seg": "Gris"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "グレー"
         },
         {
           "lang": "ru-RU",
@@ -40667,6 +41230,10 @@
           "seg": "Vert"
         },
         {
+          "lang": "ja-JP",
+          "seg": "グリーン"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Зелёные"
         },
@@ -40694,6 +41261,10 @@
         {
           "lang": "fr-FR",
           "seg": "Bleu"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ブルー"
         },
         {
           "lang": "ru-RU",
@@ -40725,6 +41296,10 @@
           "seg": "Rouge"
         },
         {
+          "lang": "ja-JP",
+          "seg": "レッド"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Красные"
         },
@@ -40751,6 +41326,10 @@
         },
         {
           "lang": "fr-FR",
+          "seg": "T1 - T3"
+        },
+        {
+          "lang": "ja-JP",
           "seg": "T1 - T3"
         },
         {
@@ -40787,6 +41366,10 @@
           "seg": "Proxy"
         },
         {
+          "lang": "ja-JP",
+          "seg": "プロキシ"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Прокси"
         },
@@ -40814,6 +41397,10 @@
         {
           "lang": "fr-FR",
           "seg": "Le changement nécessite un redémarrage de l'application"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "変更を適用するにはツールの再起動が必要です"
         },
         {
           "lang": "ru-RU",
@@ -40845,6 +41432,10 @@
           "seg": "Les données d'achat et de vente directes sont chiffrés et ne peuvent actuellement pas être visualisées avec ce personnage."
         },
         {
+          "lang": "ja-JP",
+          "seg": "直接売買データは暗号化されているため、現在このキャラクターでは閲覧できません。"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Данные о прямых покупках и продажах зашифрованы и в настоящее время не могут быть просмотрены с помощью этого символа."
         },
@@ -40874,6 +41465,10 @@
           "seg": "Total des frais de trajet"
         },
         {
+          "lang": "ja-JP",
+          "seg": "輸送費用合計"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Общая плата за дистанцию"
         },
@@ -40901,6 +41496,10 @@
         {
           "lang": "fr-FR",
           "seg": "Revenu total sans déductions de taxes"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "控除前総収入"
         },
         {
           "lang": "ru-RU",
@@ -40938,6 +41537,10 @@
         {
           "lang": "zh-CN",
           "seg": "只计算对玩家造成的伤害"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "プレイヤーに与えたダメージのみがカウントされます"
         }
       ]
     },
@@ -40967,6 +41570,10 @@
         {
           "lang": "zh-CN",
           "seg": "税前总成本"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "税抜き合計コスト"
         }
       ]
     },
@@ -41010,7 +41617,7 @@
           "seg": "어비설 뎁스"
         },
         {
-          "lang": "ja-JA",
+          "lang": "ja-JP",
           "seg": "アビスの深淵"
         },
         {
@@ -41075,8 +41682,8 @@
           "seg": "Ancient Lands"
         },
         {
-          "lang": "ja-JA",
-          "seg": "Ancient Lands"
+          "lang": "ja-JP",
+          "seg": "古代の地"
         },
         {
           "lang": "id-ID",
@@ -41126,6 +41733,10 @@
         {
           "lang": "zh-CN",
           "seg": "操作人"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "オペレーター"
         }
       ]
     },
@@ -41155,6 +41766,10 @@
         {
           "lang": "zh-CN",
           "seg": "存入"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "預け入れ"
         }
       ]
     },
@@ -41184,6 +41799,10 @@
         {
           "lang": "zh-CN",
           "seg": "取出"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "引き出し"
         }
       ]
     },
@@ -41213,6 +41832,10 @@
         {
           "lang": "zh-CN",
           "seg": "导出为 CSV"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "CSVとしてエクスポート"
         }
       ]
     },
@@ -41242,6 +41865,10 @@
         {
           "lang": "zh-CN",
           "seg": "导出虹吸能量清单"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "サイフォンエネルギーのリストをエクスポート"
         }
       ]
     },
@@ -41271,6 +41898,10 @@
         {
           "lang": "zh-CN",
           "seg": "如何获取箱子日志？"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "チェストログはどのように取得しますか？"
         }
       ]
     },
@@ -41300,6 +41931,10 @@
         {
           "lang": "zh-CN",
           "seg": "要从游戏中获取箱子日志，请按照以下步骤操作："
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ゲームからチェストログを取得するには、以下の手順に従ってください："
         }
       ]
     },
@@ -41329,6 +41964,10 @@
         {
           "lang": "zh-CN",
           "seg": "1. 在公会仓库中点击\"Actions\"。"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "1. ギルド銀行で「Actions」をクリックします。"
         }
       ]
     },
@@ -41358,6 +41997,10 @@
         {
           "lang": "zh-CN",
           "seg": "2. 点击\"Manage\"。"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "2. 「Manage」をクリックします。"
         }
       ]
     },
@@ -41387,6 +42030,10 @@
         {
           "lang": "zh-CN",
           "seg": "3. 打开\"Chest Log\"。"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "3. 「Chest Log」を開きます。"
         }
       ]
     },
@@ -41416,6 +42063,10 @@
         {
           "lang": "zh-CN",
           "seg": "4. 点\"Copy to clipboard\"。"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "4. 「Copy to clipboard」をクリックします。"
         }
       ]
     },
@@ -41445,6 +42096,10 @@
         {
           "lang": "zh-CN",
           "seg": "将复制的箱子日志直接粘贴到箱子日志输入框中，然后点击添加箱子日志按钮。"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "コピーしたチェストログを「チェストログ入力」フィールドに直接貼り付け、「チェストログを追加」をクリックします。"
         }
       ]
     },
@@ -41474,6 +42129,10 @@
         {
           "lang": "zh-CN",
           "seg": "你也可以通过加载箱子日志文件按钮选择一个或多个 .csv 文件。支持从剪贴板复制的制表符分隔箱子日志和逗号分隔的 CSV 文件。不支持其他文件格式。"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "または、「チェストファイルをアップロード」を使用して1つ以上の.csvファイルを選択します。クリップボードからコピーされたタブ区切りカラムのチェストログ、およびカンマ区切りのCSVファイルに対応しています。その他のファイル形式はサポートされていません。"
         }
       ]
     },
@@ -41503,6 +42162,10 @@
         {
           "lang": "zh-CN",
           "seg": "战利品日志文件"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ルートログファイル"
         }
       ]
     },
@@ -41532,6 +42195,10 @@
         {
           "lang": "zh-CN",
           "seg": "在日志选项卡中使用绿色 CSV 按钮导出战利品日志。在战利品对比器中，通过添加战利品日志文件按钮加载一个或多个此类 .csv 文件。仅支持具有预期表头的分号分隔战利品日志 CSV 文件；不支持 JSON 和其他文件格式。然后点击比较日志。"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ロギングタブの緑色のCSVボタンを使用してルートログをエクスポートします。ルートコンパレーターでは、「ルートログファイルを追加」を使用して1つ以上の.csvファイルを読み込みます。期待されるヘッダーを持つセミコロン区切りのルートログCSVファイルに対応しています。JSONやその他のファイル形式はサポートされていません。その後、「ログを比較」をクリックします。"
         }
       ]
     },
@@ -41561,6 +42228,10 @@
         {
           "lang": "zh-CN",
           "seg": "物品槽位的颜色代表什么意思？"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "アイテムスロットの色は何を意味していますか？"
         }
       ]
     },
@@ -41590,6 +42261,10 @@
         {
           "lang": "zh-CN",
           "seg": "灰色物品表示已检测为丢失，或来自无法可靠匹配到较早战利品记录的箱子记录。丢失表示另一名玩家后来从最初拾取者身上拾取了相同物品。"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "灰色のアイテムは、ロストとして検出されたか、以前のルートログと確実に一致させることができなかったチェストログによるものです。ロストとは、元の獲得者から別のプレイヤーが後から同じアイテムを拾ったことを意味します。"
         }
       ]
     },
@@ -41619,6 +42294,10 @@
         {
           "lang": "zh-CN",
           "seg": "绿色物品表示该战利品记录已匹配到同一玩家之后存入箱子的相同物品和数量。"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "緑色のアイテムは、同じプレイヤーによる後からのチェストログ（同じアイテムおよび数量）と一致したルートログです。"
         }
       ]
     },
@@ -41648,6 +42327,10 @@
         {
           "lang": "zh-CN",
           "seg": "蓝色物品表示未找到匹配的较早战利品记录的正数箱子记录，工具会根据事件顺序将其归类为捐赠。"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "青色のアイテムは、一致する以前のルートログが見つからなかったプラスのチェストログであり、ツールのイベント順序に基づいて寄付として分類されたものです。"
         }
       ]
     },
@@ -41677,6 +42360,10 @@
         {
           "lang": "zh-CN",
           "seg": "红色物品表示尚未解析的战利品记录。未找到匹配的后续箱子记录或后续丢失记录。该颜色并不能证明玩家仍然拥有此物品。"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "赤色のアイテムは未解決のルートログです。一致する後からのチェストログやロストが見つかりませんでした。この色は、プレイヤーがまだアイテムを所有していることを証明するものではありません。"
         }
       ]
     },
@@ -41706,6 +42393,10 @@
         {
           "lang": "zh-CN",
           "seg": "数据已保存"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "データが保存されました"
         }
       ]
     },
@@ -41735,6 +42426,10 @@
         {
           "lang": "zh-CN",
           "seg": "所有工具数据均已保存"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "すべてのツールデータが保存されました。"
         }
       ]
     },
@@ -41764,6 +42459,10 @@
         {
           "lang": "zh-CN",
           "seg": "利润分析"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "利益分析"
         }
       ]
     },
@@ -41793,6 +42492,10 @@
         {
           "lang": "zh-CN",
           "seg": "保本价格"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "損益分岐価格"
         }
       ]
     },
@@ -41822,6 +42525,10 @@
         {
           "lang": "zh-CN",
           "seg": "投入产出比"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "投資収益率 (ROI)"
         }
       ]
     },
@@ -41851,6 +42558,10 @@
         {
           "lang": "zh-CN",
           "seg": "每件物品的利润"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "アイテムあたりの利益"
         }
       ]
     },
@@ -41880,6 +42591,10 @@
         {
           "lang": "zh-CN",
           "seg": "投资利润比"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "投資に対する利益率。"
         }
       ]
     },
@@ -41909,6 +42624,10 @@
         {
           "lang": "zh-CN",
           "seg": "单件利润"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "販売アイテム1点あたりの利益。"
         }
       ]
     },
@@ -41938,6 +42657,10 @@
         {
           "lang": "zh-CN",
           "seg": "不赚不赔的价格"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "損益が出ない（トントンとなる）価格。"
         }
       ]
     },
@@ -41959,6 +42682,10 @@
         {
           "lang": "fr-FR",
           "seg": "Ouvrir la console de debug au démarrage"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ツール起動時にデバッグコンソールを開く"
         },
         {
           "lang": "ru-RU",
@@ -41990,6 +42717,10 @@
           "seg": "Debug"
         },
         {
+          "lang": "ja-JP",
+          "seg": "デバッグ"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Отладка"
         },
@@ -42017,6 +42748,10 @@
         {
           "lang": "fr-FR",
           "seg": "Échec du démarrage du socket (code: {0}). Exécutez l'application en tant qu'administrateur ou passez à \"Npcap\" dans les paramètres."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ソケットの起動に失敗しました（コード: {0}）。アプリを管理者として実行するか、設定で「Npcap」に切り替えてください。"
         },
         {
           "lang": "ru-RU",
@@ -42048,6 +42783,10 @@
           "seg": "Veuillez exécuter l'application en tant qu'administrateur."
         },
         {
+          "lang": "ja-JP",
+          "seg": "アプリケーションを管理者として実行してください。"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Пожалуйста, запустите приложение от имени администратора."
         },
@@ -42075,6 +42814,10 @@
         {
           "lang": "fr-FR",
           "seg": "Impossible de trouver Npcap (wpcap.dll). Veuillez installer ou réparer Npcap (sans l'ancien WinPcap)."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Npcap (wpcap.dll) が見つかりませんでした。Npcap をインストールまたは修復してください（旧版 WinPcap 互換モードは無効にしてください）。"
         },
         {
           "lang": "ru-RU",
@@ -42106,6 +42849,10 @@
           "seg": "Npcap n'a pas pu ouvrir d'adaptateur. Vérifiez les droits d'administrateur, le pare-feu/VPN et l'adaptateur sélectionné."
         },
         {
+          "lang": "ja-JP",
+          "seg": "Npcap がアダプターを開けませんでした。管理者権限、ファイアウォール/VPN、選択したアダプターを確認してください。"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Npcap не удалось открыть адаптер. Проверьте права администратора, брандмауэр/VPN и выбранный адаптер."
         },
@@ -42135,6 +42882,10 @@
           "seg": "Impossible de démarrer la capture dans l'état actuel. Veuillez redémarrer l'application et vérifier les paramètres de l'adaptateur et/ou du filtre."
         },
         {
+          "lang": "ja-JP",
+          "seg": "現在の状態ではキャプチャを開始できませんでした。アプリを再起動し、アダプター/フィルターの設定を確認してください。"
+        },
+        {
           "lang": "ru-RU",
           "seg": "В текущем состоянии не удалось запустить захват. Пожалуйста, перезапустите приложение и проверьте настройки адаптера/фильтра."
         },
@@ -42162,6 +42913,10 @@
         {
           "lang": "fr-FR",
           "seg": "Impossible de démarrer le suivi. Veuillez vérifier l'installation et les paramètres."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "トラッキングを開始できませんでした。インストール状況と設定を確認してください。（Npcap が正しくインストールされているか確認してください！）"
         },
         {
           "lang": "ru-RU",
@@ -42246,6 +43001,10 @@
           "seg": "Aucune mise à jour n'est disponible pour le moment."
         },
         {
+          "lang": "ja-JP",
+          "seg": "現在利用可能なアップデートはありません。"
+        },
+        {
           "lang": "ru-RU",
           "seg": "На данный момент обновлений нет."
         },
@@ -42273,6 +43032,10 @@
         {
           "lang": "fr-FR",
           "seg": "Aucune mise à jour disponible"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "利用可能なアップデートはありません"
         },
         {
           "lang": "ru-RU",
@@ -42304,6 +43067,10 @@
           "seg": "Une nouvelle version {0} est disponible. Vous utilisez actuellement la version {1}. Cette mise à jour est requise. Appuyez sur OK pour lancer la mise à jour de l'application."
         },
         {
+          "lang": "ja-JP",
+          "seg": "新しいバージョン {0} が利用可能です。現在バージョン {1} を使用しています。このアップデートは必須です。OKを押してアップデートを開始してください。"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Доступна новая версия {0}. В настоящее время вы используете версию {1}. Требуется обновление. Нажмите «ОК», чтобы начать обновление приложения."
         },
@@ -42331,6 +43098,10 @@
         {
           "lang": "fr-FR",
           "seg": "Une nouvelle version {0} est disponible. Vous utilisez actuellement la version {1}. Voulez-vous mettre à jour l'application maintenant ?"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "新しいバージョン {0} が利用可能です。現在バージョン {1} を使用しています。今すぐアプリをアップデートしますか？"
         },
         {
           "lang": "ru-RU",
@@ -42362,6 +43133,10 @@
           "seg": "Mise à jour disponible"
         },
         {
+          "lang": "ja-JP",
+          "seg": "アップデートが利用可能です"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Доступно обновление"
         },
@@ -42389,6 +43164,10 @@
         {
           "lang": "fr-FR",
           "seg": "Mise a jour disponible pour {0}"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "{0} 件のアップデートが利用可能です"
         },
         {
           "lang": "ru-RU",
@@ -42420,6 +43199,10 @@
           "seg": "Me le rappeler plus tard"
         },
         {
+          "lang": "ja-JP",
+          "seg": "後で通知"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Напомнить позже"
         },
@@ -42447,6 +43230,10 @@
         {
           "lang": "fr-FR",
           "seg": "Telechargement et preparation de la mise a jour..."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "アップデートをダウンロードして準備中..."
         },
         {
           "lang": "ru-RU",
@@ -42478,6 +43265,10 @@
           "seg": "Telechargement..."
         },
         {
+          "lang": "ja-JP",
+          "seg": "ダウンロード中..."
+        },
+        {
           "lang": "ru-RU",
           "seg": "Загружается..."
         },
@@ -42505,6 +43296,10 @@
         {
           "lang": "fr-FR",
           "seg": "Téléchargement terminé. Installation de la mise à jour en cours..."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ダウンロード完了。アップデートをインストール中..."
         }
       ]
     },
@@ -42526,6 +43321,10 @@
         {
           "lang": "fr-FR",
           "seg": "Installation en cours..."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "インストール中..."
         }
       ]
     },
@@ -42534,7 +43333,7 @@
       "tuv": [
         {
           "lang": "de-DE",
-          "seg": "Das Update konnte nicht heruntergeladen werden. Bitte pr�fe deine Internet- oder Proxyverbindung und versuche es erneut."
+          "seg": "Das Update konnte nicht heruntergeladen werden. Bitte prfe deine Internet- oder Proxyverbindung und versuche es erneut."
         },
         {
           "lang": "en-US",
@@ -42547,6 +43346,10 @@
         {
           "lang": "fr-FR",
           "seg": "La mise à jour n'a pas pu être téléchargée. Veuillez vérifier votre connexion Internet ou votre proxy, puis réessayez."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "アップデートをダウンロードできませんでした。インターネットまたはプロキシ接続を確認して、もう一度お試しください。"
         }
       ]
     },
@@ -42568,6 +43371,10 @@
         {
           "lang": "fr-FR",
           "seg": "La mise à jour n'a pas pu être installée automatiquement. Veuillez réessayer ou l'installer manuellement."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "アップデートを自動的にインストールできませんでした。もう一度試すか、手動でインストールしてください。"
         }
       ]
     },
@@ -42589,6 +43396,10 @@
         {
           "lang": "fr-FR",
           "seg": "Impossible de joindre le serveur de mise à jour. Veuillez vérifier votre connexion Internet et réessayer plus tard."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "アップデートサーバーに接続できません。インターネット接続を確認して、後でもう一度お試しください。"
         },
         {
           "lang": "ru-RU",
@@ -42618,6 +43429,10 @@
         {
           "lang": "fr-FR",
           "seg": "Échec de la vérification des mises à jour"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "アップデートの確認に失敗しました"
         },
         {
           "lang": "ru-RU",
@@ -42755,6 +43570,10 @@
           "seg": "Fenêtre d'information de l'objet : la fenêtre d'information de l'objet peut être ouverte en double-cliquant directement sur l'objet dans la liste."
         },
         {
+          "lang": "ja-JP",
+          "seg": "アイテム情報ウィンドウ: リスト内のアイテムを直接ダブルクリックすると、アイテム情報ウィンドウを開くことができます。"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Окно с информацией о предмете: окно с информацией о предмете можно открыть, дважды щелкнув по нему в списке."
         },
@@ -42782,6 +43601,10 @@
         {
           "lang": "fr-FR",
           "seg": "Alerte d'objet : saisissez une valeur dans la colonne de sous-cotation, puis activez l'alerte dans la colonne indiquant si l'alarme est active."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "アイテムアラーム: 値下げ幅の列に値を入力し、アラーム有効列でアラームを有効にしてください。"
         },
         {
           "lang": "ru-RU",
@@ -42813,6 +43636,10 @@
           "seg": "Prix des objets : les prix affichés sous les noms d'objets dans la liste sont des valeurs moyennes issues directement du jeu et se mettent à jour lorsque les objets sont consultés en jeu."
         },
         {
+          "lang": "ja-JP",
+          "seg": "アイテム価格: リスト内のアイテム名の下にある価格はゲーム内から直接取得された平均値であり、ゲーム内でアイテムを確認した際に更新されます。"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Цены на предметы: цены под названиями предметов в списке — это средние значения, взятые непосредственно из игры. Они обновляются при просмотре предметов в игре."
         },
@@ -42840,6 +43667,10 @@
         {
           "lang": "fr-FR",
           "seg": "Supprimer toutes les entrées de l'historique de carte"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "すべてのマップ履歴エントリーを削除"
         },
         {
           "lang": "ru-RU",
@@ -42871,6 +43702,10 @@
           "seg": "Voulez-vous vraiment supprimer toutes les entrées de l'historique de carte ?"
         },
         {
+          "lang": "ja-JP",
+          "seg": "本当にすべてのマップ履歴エントリーを削除しますか？"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Вы уверены, что хотите удалить все записи в истории карт?"
         },
@@ -42898,6 +43733,10 @@
         {
           "lang": "fr-FR",
           "seg": "Temps"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "時間"
         },
         {
           "lang": "ru-RU",
@@ -42929,6 +43768,10 @@
           "seg": "Zone"
         },
         {
+          "lang": "ja-JP",
+          "seg": "ゾーン"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Локация"
         },
@@ -42956,6 +43799,10 @@
         {
           "lang": "fr-FR",
           "seg": "Nombre de ressources récoltées"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "採集したリソースの数"
         },
         {
           "lang": "ru-RU",
@@ -42987,6 +43834,10 @@
           "seg": "Valeur totale en argent des ressources"
         },
         {
+          "lang": "ja-JP",
+          "seg": "リソースの合計シルバー価値"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Общая стоимость ресурсов в серебре"
         },
@@ -43014,6 +43865,10 @@
         {
           "lang": "fr-FR",
           "seg": "Agrégation"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "集計"
         },
         {
           "lang": "ru-RU",
@@ -43045,6 +43900,10 @@
           "seg": "Auto"
         },
         {
+          "lang": "ja-JP",
+          "seg": "自動"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Авто"
         },
@@ -43072,6 +43931,10 @@
         {
           "lang": "fr-FR",
           "seg": "autosave"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "自動保存"
         },
         {
           "lang": "ru-RU",
@@ -43103,6 +43966,10 @@
           "seg": "Heure"
         },
         {
+          "lang": "ja-JP",
+          "seg": "時間"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Час"
         },
@@ -43130,6 +43997,10 @@
         {
           "lang": "fr-FR",
           "seg": "Profit au fils du temps"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "利益推移"
         },
         {
           "lang": "ru-RU",
@@ -43161,6 +44032,10 @@
           "seg": "Profit selon l'heure de la journée"
         },
         {
+          "lang": "ja-JP",
+          "seg": "時間帯別利益"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Прибыль в зависимости от времени суток"
         },
@@ -43188,6 +44063,10 @@
         {
           "lang": "fr-FR",
           "seg": "Afficher"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "表示"
         },
         {
           "lang": "ru-RU",
@@ -43219,6 +44098,10 @@
           "seg": "Système métrique"
         },
         {
+          "lang": "ja-JP",
+          "seg": "指標"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Метрика"
         },
@@ -43246,6 +44129,10 @@
         {
           "lang": "fr-FR",
           "seg": "Carte thermique"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ヒートマップ"
         },
         {
           "lang": "ru-RU",
@@ -43277,6 +44164,10 @@
           "seg": "Barres horaires"
         },
         {
+          "lang": "ja-JP",
+          "seg": "時間別バー"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Часовые столбцы"
         },
@@ -43304,6 +44195,10 @@
         {
           "lang": "fr-FR",
           "seg": "Profit moyen par transaction"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "取引あたりの平均利益"
         },
         {
           "lang": "ru-RU",
@@ -43335,6 +44230,10 @@
           "seg": "Nombre de transactions"
         },
         {
+          "lang": "ja-JP",
+          "seg": "取引数"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Количество сделок"
         },
@@ -43362,6 +44261,10 @@
         {
           "lang": "fr-FR",
           "seg": "Classement des articles les plus populaires"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "人気アイテムランキング"
         },
         {
           "lang": "ru-RU",
@@ -43393,6 +44296,10 @@
           "seg": "Meilleur transfert en termes de profit"
         },
         {
+          "lang": "ja-JP",
+          "seg": "利益順取引ランキング"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Максимальный Перемещения по прибыли"
         },
@@ -43420,6 +44327,10 @@
         {
           "lang": "fr-FR",
           "seg": "Meilleur transfert par perte"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "損失順取引ランキング"
         },
         {
           "lang": "ru-RU",
@@ -43451,6 +44362,10 @@
           "seg": "Meilleurs articles par ROI (Retour Sur Investissement)"
         },
         {
+          "lang": "ja-JP",
+          "seg": "ROI順アイテムランキング"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Лучшие товары по рентабельност (ROI)"
         },
@@ -43478,6 +44393,10 @@
         {
           "lang": "fr-FR",
           "seg": "Objets les plus vendus en volume"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "販売量順アイテムランキング"
         },
         {
           "lang": "ru-RU",
@@ -43509,6 +44428,10 @@
           "seg": "Objets les plus achetés en volume"
         },
         {
+          "lang": "ja-JP",
+          "seg": "購入量順アイテムランキング"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Самые популярные товары по объему покупок"
         },
@@ -43536,6 +44459,10 @@
         {
           "lang": "fr-FR",
           "seg": "ROI (Retour Sur Investissement)"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ROI（投資回収率）"
         },
         {
           "lang": "ru-RU",
@@ -43567,6 +44494,10 @@
           "seg": "Reçu"
         },
         {
+          "lang": "ja-JP",
+          "seg": "受取済"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Полученный"
         },
@@ -43594,6 +44525,10 @@
         {
           "lang": "fr-FR",
           "seg": "Donné"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "渡したアイテム"
         },
         {
           "lang": "ru-RU",
@@ -43625,6 +44560,10 @@
           "seg": "Identifier ses propres transactions"
         },
         {
+          "lang": "ja-JP",
+          "seg": "個人トレードの認識"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Распознавать личные сделки"
         },
@@ -43652,6 +44591,10 @@
         {
           "lang": "fr-FR",
           "seg": "Stats de Dégâts"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ダメージ統計"
         },
         {
           "lang": "ru-RU",
@@ -43683,6 +44626,10 @@
           "seg": "Live"
         },
         {
+          "lang": "ja-JP",
+          "seg": "ライブ"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Live"
         },
@@ -43710,6 +44657,10 @@
         {
           "lang": "fr-FR",
           "seg": "Compteur"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "メーター"
         },
         {
           "lang": "ru-RU",
@@ -43741,6 +44692,10 @@
           "seg": "Stats"
         },
         {
+          "lang": "ja-JP",
+          "seg": "統計"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Статистика"
         },
@@ -43768,6 +44723,10 @@
         {
           "lang": "fr-FR",
           "seg": "Top Stats"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "統計ランキング"
         },
         {
           "lang": "ru-RU",
@@ -43799,6 +44758,10 @@
           "seg": "Vos Stats"
         },
         {
+          "lang": "ja-JP",
+          "seg": "あなたの統計"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Ваша статистика"
         },
@@ -43826,6 +44789,10 @@
         {
           "lang": "fr-FR",
           "seg": "Aucune donnée locale sur les dégâts n'est disponible"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "利用可能なローカルダメージデータがありません"
         },
         {
           "lang": "ru-RU",
@@ -43857,6 +44824,10 @@
           "seg": "Total des dégâts"
         },
         {
+          "lang": "ja-JP",
+          "seg": "総ダメージ"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Общий урон"
         },
@@ -43884,6 +44855,10 @@
         {
           "lang": "fr-FR",
           "seg": "Dégâts"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ダメージ"
         },
         {
           "lang": "ru-RU",
@@ -43915,6 +44890,10 @@
           "seg": "Soins"
         },
         {
+          "lang": "ja-JP",
+          "seg": "回復"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Лечение"
         },
@@ -43942,6 +44921,10 @@
         {
           "lang": "fr-FR",
           "seg": "Défense"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "防御・受傷"
         },
         {
           "lang": "ru-RU",
@@ -43973,6 +44956,10 @@
           "seg": "Combat"
         },
         {
+          "lang": "ja-JP",
+          "seg": "戦闘"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Бой"
         },
@@ -44000,6 +44987,10 @@
         {
           "lang": "fr-FR",
           "seg": "Total DPS"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "合計DPS"
         },
         {
           "lang": "ru-RU",
@@ -44031,6 +45022,10 @@
           "seg": "Peak DPS 3s"
         },
         {
+          "lang": "ja-JP",
+          "seg": "3秒ピークDPS"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Пиковый DPS 3s"
         },
@@ -44058,6 +45053,10 @@
         {
           "lang": "fr-FR",
           "seg": "Peak DPS 5s"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "5秒ピークDPS"
         },
         {
           "lang": "ru-RU",
@@ -44089,6 +45088,10 @@
           "seg": "Peak DPS 10s"
         },
         {
+          "lang": "ja-JP",
+          "seg": "10秒ピークDPS"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Пиковый DPS 10s"
         },
@@ -44116,6 +45119,10 @@
         {
           "lang": "fr-FR",
           "seg": "Le plus gros coup"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "単次最高ダメージ"
         },
         {
           "lang": "ru-RU",
@@ -44147,6 +45154,10 @@
           "seg": "Total des Soins"
         },
         {
+          "lang": "ja-JP",
+          "seg": "総回復量"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Общее исцеление"
         },
@@ -44174,6 +45185,10 @@
         {
           "lang": "fr-FR",
           "seg": "Efficacité des Soins"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "有効回復量"
         },
         {
           "lang": "ru-RU",
@@ -44205,6 +45220,10 @@
           "seg": "Overheal %"
         },
         {
+          "lang": "ja-JP",
+          "seg": "オーバーヒール率"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Избыточное лечение %"
         },
@@ -44232,6 +45251,10 @@
         {
           "lang": "fr-FR",
           "seg": "Dégâts subis"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "受傷ダメージ"
         },
         {
           "lang": "ru-RU",
@@ -44263,6 +45286,10 @@
           "seg": "Dégâts les plus importants subis par un sort"
         },
         {
+          "lang": "ja-JP",
+          "seg": "スキル別最大受傷ダメージ"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Самый большой урон, наносимый заклинанием"
         },
@@ -44289,6 +45316,10 @@
         },
         {
           "lang": "fr-FR",
+          "seg": "DTPS"
+        },
+        {
+          "lang": "ja-JP",
           "seg": "DTPS"
         },
         {
@@ -44321,6 +45352,10 @@
           "seg": "Le DTPS correspond aux dégâts subis par seconde : dégâts subis / durée du combat."
         },
         {
+          "lang": "ja-JP",
+          "seg": "DTPSは1秒あたりの被ダメージ量です。計算式：被ダメージ ÷ アクティブ戦闘時間"
+        },
+        {
           "lang": "ru-RU",
           "seg": "DTPS - это получаемый урон в секунду: полученный урон / время активного боя."
         },
@@ -44348,6 +45383,10 @@
         {
           "lang": "fr-FR",
           "seg": "Nombre de combats"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "戦闘回数"
         },
         {
           "lang": "ru-RU",
@@ -44379,6 +45418,10 @@
           "seg": "Durée moyenne d'un combat"
         },
         {
+          "lang": "ja-JP",
+          "seg": "平均戦闘時間"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Средняя продолжительность боя"
         },
@@ -44406,6 +45449,10 @@
         {
           "lang": "fr-FR",
           "seg": "Dégâts PvE"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "PvEダメージ"
         },
         {
           "lang": "ru-RU",
@@ -44437,6 +45484,10 @@
           "seg": "Dégâts PvP"
         },
         {
+          "lang": "ja-JP",
+          "seg": "PvPダメージ"
+        },
+        {
           "lang": "ru-RU",
           "seg": "PvP Урон"
         },
@@ -44464,6 +45515,10 @@
         {
           "lang": "fr-FR",
           "seg": "Cibles de Soins"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "回復ターゲット"
         },
         {
           "lang": "ru-RU",
@@ -44495,6 +45550,10 @@
           "seg": "Le plus gros coup en une fois - TOP 5"
         },
         {
+          "lang": "ja-JP",
+          "seg": "単次最高ダメージ - TOP 5"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Самый большой единичный урон - TOP 5"
         },
@@ -44522,6 +45581,10 @@
         {
           "lang": "fr-FR",
           "seg": "Le plus gros soin en une fois - TOP 5"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "単次最高回復 - TOP 5"
         },
         {
           "lang": "ru-RU",
@@ -44553,6 +45616,10 @@
           "seg": "Dernier coup - TOP 5"
         },
         {
+          "lang": "ja-JP",
+          "seg": "トドメ（ラストヒット） - TOP 5"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Последний урон - TOP 5"
         },
@@ -44580,6 +45647,10 @@
         {
           "lang": "fr-FR",
           "seg": "Overheal - TOP 5"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "オーバーヒール - TOP 5"
         },
         {
           "lang": "ru-RU",
@@ -44611,6 +45682,10 @@
           "seg": "Dégâts subis - TOP 5"
         },
         {
+          "lang": "ja-JP",
+          "seg": "受傷ダメージ - TOP 5"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Нанесенный урон - TOP 5"
         },
@@ -44638,6 +45713,10 @@
         {
           "lang": "fr-FR",
           "seg": "Burst Damage 5 seconds - TOP 5"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "5秒バーストダメージ - TOP 5"
         },
         {
           "lang": "ru-RU",
@@ -44669,6 +45748,10 @@
           "seg": "Burst Damage 10 seconds - TOP 5"
         },
         {
+          "lang": "ja-JP",
+          "seg": "10秒バーストダメージ - TOP 5"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Мгновенный урон за 10 секунд - TOP 5"
         },
@@ -44696,6 +45779,10 @@
         {
           "lang": "fr-FR",
           "seg": "Monstres / Joueurs attaqués - TOP 5"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "攻撃したモブ / プレイヤー - TOP 5"
         },
         {
           "lang": "ru-RU",
@@ -44727,6 +45814,10 @@
           "seg": "Nombre de tours"
         },
         {
+          "lang": "ja-JP",
+          "seg": "周回数（ラン数）"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Количество запусков"
         },
@@ -44754,6 +45845,10 @@
         {
           "lang": "fr-FR",
           "seg": "Focalisation"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "フォーカス"
         },
         {
           "lang": "ru-RU",
@@ -44785,6 +45880,10 @@
           "seg": "Bonus Quotidien RRR"
         },
         {
+          "lang": "ja-JP",
+          "seg": "デイリーボーナス資源返還率（RRR）"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Ежедневный бонус RRR"
         },
@@ -44812,6 +45911,10 @@
         {
           "lang": "fr-FR",
           "seg": "Bonus Hideout (HO)"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "セーフハウス（アジト）ボーナス"
         },
         {
           "lang": "ru-RU",
@@ -44843,6 +45946,10 @@
           "seg": "Emplacement de fabrication"
         },
         {
+          "lang": "ja-JP",
+          "seg": "生産・クラフト場所"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Локация для крафта"
         },
@@ -44870,6 +45977,10 @@
         {
           "lang": "fr-FR",
           "seg": "Taux de retour %"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "資源返還率 %"
         },
         {
           "lang": "ru-RU",
@@ -44901,6 +46012,10 @@
           "seg": "Prix du marché"
         },
         {
+          "lang": "ja-JP",
+          "seg": "市場価格"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Рыночная цена"
         },
@@ -44928,6 +46043,10 @@
         {
           "lang": "fr-FR",
           "seg": "Frais de Station"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "施設利用料"
         },
         {
           "lang": "ru-RU",
@@ -44959,6 +46078,10 @@
           "seg": "Frais d'utilisation / 100 nourritures"
         },
         {
+          "lang": "ja-JP",
+          "seg": "利用料 / 食糧100"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Плата за использование / 100 еды"
         },
@@ -44986,6 +46109,10 @@
         {
           "lang": "fr-FR",
           "seg": "Taxe de ventes %"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "販売税 %"
         },
         {
           "lang": "ru-RU",
@@ -45017,6 +46144,10 @@
           "seg": "Prix de vente"
         },
         {
+          "lang": "ja-JP",
+          "seg": "販売価格"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Цена продажи"
         },
@@ -45044,6 +46175,10 @@
         {
           "lang": "fr-FR",
           "seg": "Nouveau"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "新規作成"
         },
         {
           "lang": "ru-RU",
@@ -45075,6 +46210,10 @@
           "seg": "Supprimer"
         },
         {
+          "lang": "ja-JP",
+          "seg": "削除"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Удалить"
         },
@@ -45102,6 +46241,10 @@
         {
           "lang": "fr-FR",
           "seg": "Prix"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "価格"
         },
         {
           "lang": "ru-RU",
@@ -45133,6 +46276,10 @@
           "seg": "Resources"
         },
         {
+          "lang": "ja-JP",
+          "seg": "素材"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Ресурсы"
         },
@@ -45160,6 +46307,10 @@
         {
           "lang": "fr-FR",
           "seg": "Brut"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "総数"
         },
         {
           "lang": "ru-RU",
@@ -45191,6 +46342,10 @@
           "seg": "Rendement attendu"
         },
         {
+          "lang": "ja-JP",
+          "seg": "予測返還量"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Ожидаемый возврат"
         },
@@ -45218,6 +46373,10 @@
         {
           "lang": "fr-FR",
           "seg": "Net"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "純数"
         },
         {
           "lang": "ru-RU",
@@ -45249,6 +46408,10 @@
           "seg": "Prix"
         },
         {
+          "lang": "ja-JP",
+          "seg": "価格"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Цена"
         },
@@ -45276,6 +46439,10 @@
         {
           "lang": "fr-FR",
           "seg": "Coût net"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "実質コスト"
         },
         {
           "lang": "ru-RU",
@@ -45307,6 +46474,10 @@
           "seg": "Affiche l'icone de la ressource."
         },
         {
+          "lang": "ja-JP",
+          "seg": "素材のアイコンを表示します。"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Показывает значок ресурса."
         },
@@ -45334,6 +46505,10 @@
         {
           "lang": "fr-FR",
           "seg": "Nom de la ressource requise."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "必要な素材の名前。"
         },
         {
           "lang": "ru-RU",
@@ -45365,6 +46540,10 @@
           "seg": "Type de ressource, par exemple retournable, non retournable ou speciale."
         },
         {
+          "lang": "ja-JP",
+          "seg": "素材タイプ（返還可能、返還不可、特殊素材など）。"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Тип ресурса, например возвращаемый, невозвращаемый или специальный ресурс."
         },
@@ -45392,6 +46571,10 @@
         {
           "lang": "fr-FR",
           "seg": "Besoin brut avant le retour des ressources."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "資源返還前の総必要数。"
         },
         {
           "lang": "ru-RU",
@@ -45423,6 +46606,10 @@
           "seg": "Retour attendu par le taux de retour des ressources."
         },
         {
+          "lang": "ja-JP",
+          "seg": "資源返還率に基づく予測返還量。"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Ожидаемая доходность от ресурса."
         },
@@ -45450,6 +46637,10 @@
         {
           "lang": "fr-FR",
           "seg": "Consommation nette apres le retour attendu."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "予測返還量を差し引いた実質消費量。"
         },
         {
           "lang": "ru-RU",
@@ -45481,6 +46672,10 @@
           "seg": "Prix en argent par unite de ressource."
         },
         {
+          "lang": "ja-JP",
+          "seg": "素材1個あたりのシルバー価格。"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Цена серебра за единицу ресурса."
         },
@@ -45508,6 +46703,10 @@
         {
           "lang": "fr-FR",
           "seg": "Cout en argent apres le retour attendu."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "予測返還量を差し引いた実質シルバーコスト。"
         },
         {
           "lang": "ru-RU",
@@ -45539,6 +46738,10 @@
           "seg": "Registres"
         },
         {
+          "lang": "ja-JP",
+          "seg": "日誌"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Журналы"
         },
@@ -45566,6 +46769,10 @@
         {
           "lang": "fr-FR",
           "seg": "Prix vide"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "空の日誌価格"
         },
         {
           "lang": "ru-RU",
@@ -45597,6 +46804,10 @@
           "seg": "Prix total"
         },
         {
+          "lang": "ja-JP",
+          "seg": "記入済み日誌価格"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Полная стоимость"
         },
@@ -45624,6 +46835,10 @@
         {
           "lang": "fr-FR",
           "seg": "Vide"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "空"
         },
         {
           "lang": "ru-RU",
@@ -45655,6 +46870,10 @@
           "seg": "Complet"
         },
         {
+          "lang": "ja-JP",
+          "seg": "記入済み"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Полный"
         },
@@ -45682,6 +46901,10 @@
         {
           "lang": "fr-FR",
           "seg": "Partiel"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "部分記入"
         },
         {
           "lang": "ru-RU",
@@ -45713,6 +46936,10 @@
           "seg": "Résultats"
         },
         {
+          "lang": "ja-JP",
+          "seg": "結果"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Результаты"
         },
@@ -45740,6 +46967,10 @@
         {
           "lang": "fr-FR",
           "seg": "Sortie"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "生産物"
         },
         {
           "lang": "ru-RU",
@@ -45771,6 +47002,10 @@
           "seg": "Chiffre d'affaires net"
         },
         {
+          "lang": "ja-JP",
+          "seg": "純売上高"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Фактитческий объем продаж"
         },
@@ -45798,6 +47033,10 @@
         {
           "lang": "fr-FR",
           "seg": "Matériau Brut"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "総素材コスト"
         },
         {
           "lang": "ru-RU",
@@ -45829,6 +47068,10 @@
           "seg": "Matériau Net"
         },
         {
+          "lang": "ja-JP",
+          "seg": "実質素材コスト"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Фактитческие материалы"
         },
@@ -45856,6 +47099,10 @@
         {
           "lang": "fr-FR",
           "seg": "Non retournable"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "返還不可"
         },
         {
           "lang": "ru-RU",
@@ -45887,6 +47134,10 @@
           "seg": "Station"
         },
         {
+          "lang": "ja-JP",
+          "seg": "施設"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Станок"
         },
@@ -45914,6 +47165,10 @@
         {
           "lang": "fr-FR",
           "seg": "Frais de registres"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "日誌コスト"
         },
         {
           "lang": "ru-RU",
@@ -45945,6 +47200,10 @@
           "seg": "Recette des registres"
         },
         {
+          "lang": "ja-JP",
+          "seg": "日誌収益"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Выручка журнала"
         },
@@ -45972,6 +47231,10 @@
         {
           "lang": "fr-FR",
           "seg": "Poids avant"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "生産前の重量"
         },
         {
           "lang": "ru-RU",
@@ -46003,6 +47266,10 @@
           "seg": "Poids après"
         },
         {
+          "lang": "ja-JP",
+          "seg": "生産後の重量"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Вес после"
         },
@@ -46030,6 +47297,10 @@
         {
           "lang": "fr-FR",
           "seg": "Frabrications enregistrées"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "保存された生産データ"
         },
         {
           "lang": "ru-RU",
@@ -46061,6 +47332,10 @@
           "seg": "Objet"
         },
         {
+          "lang": "ja-JP",
+          "seg": "アイテム"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Предмет"
         },
@@ -46088,6 +47363,10 @@
         {
           "lang": "fr-FR",
           "seg": "Détails"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "詳細"
         },
         {
           "lang": "ru-RU",
@@ -46119,6 +47398,10 @@
           "seg": "Coûts principaux"
         },
         {
+          "lang": "ja-JP",
+          "seg": "メインコスト"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Основные затраты"
         },
@@ -46146,6 +47429,10 @@
         {
           "lang": "fr-FR",
           "seg": "Modifié"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "変更済み"
         },
         {
           "lang": "ru-RU",
@@ -46177,6 +47464,10 @@
           "seg": "Aucun(e)"
         },
         {
+          "lang": "ja-JP",
+          "seg": "なし"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Ничто"
         },
@@ -46204,6 +47495,10 @@
         {
           "lang": "fr-FR",
           "seg": "Volume"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "音量"
         }
       ]
     },
@@ -46225,6 +47520,10 @@
         {
           "lang": "fr-FR",
           "seg": "Préécouter le son"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "サウンドをプレビュー"
         }
       ]
     },
@@ -46246,6 +47545,10 @@
         {
           "lang": "fr-FR",
           "seg": "RRR Prévu"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "予測返還率"
         },
         {
           "lang": "ru-RU",
@@ -46277,6 +47580,10 @@
           "seg": "Pas de focalisation"
         },
         {
+          "lang": "ja-JP",
+          "seg": "Focusなし"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Без фокусировки"
         },
@@ -46304,6 +47611,10 @@
         {
           "lang": "fr-FR",
           "seg": "Quotidien"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "デイリー"
         },
         {
           "lang": "ru-RU",
@@ -46335,6 +47646,10 @@
           "seg": "tours"
         },
         {
+          "lang": "ja-JP",
+          "seg": "回数"
+        },
+        {
           "lang": "ru-RU",
           "seg": "запусков"
         },
@@ -46362,6 +47677,10 @@
         {
           "lang": "fr-FR",
           "seg": "Sélectionnez un objet avant d'enregistrer."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "保存する前にアイテムを選択してください。"
         },
         {
           "lang": "ru-RU",
@@ -46393,6 +47712,10 @@
           "seg": "Fabrications enregistrées."
         },
         {
+          "lang": "ja-JP",
+          "seg": "生産データが保存されました。"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Крафт сохранен."
         },
@@ -46420,6 +47743,10 @@
         {
           "lang": "fr-FR",
           "seg": "Fabrications supprimées."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "生産データが削除されました。"
         },
         {
           "lang": "ru-RU",
@@ -46451,6 +47778,10 @@
           "seg": "Fabrications chargées."
         },
         {
+          "lang": "ja-JP",
+          "seg": "生産データが読み込まれました。"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Крафтинг загружен."
         },
@@ -46478,6 +47809,10 @@
         {
           "lang": "fr-FR",
           "seg": "Nouvelle fabrications lancée."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "新しい生産を開始しました。"
         },
         {
           "lang": "ru-RU",
@@ -46509,6 +47844,10 @@
           "seg": "Sélectionnez un objet avant d'afficher les prix."
         },
         {
+          "lang": "ja-JP",
+          "seg": "価格を読み込む前にアイテムを選択してください。"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Выберите товар перед загрузкой цен."
         },
@@ -46536,6 +47875,10 @@
         {
           "lang": "fr-FR",
           "seg": "Sélectionnez un objet avant d'afficher les prix."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "市場価格が読み込まれました。"
         },
         {
           "lang": "ru-RU",
@@ -46567,6 +47910,10 @@
           "seg": "Sélectionnez un objet avant d'afficher les prix."
         },
         {
+          "lang": "ja-JP",
+          "seg": "市場価格を読み込めませんでした。"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Рыночные цены не удалось загрузить."
         },
@@ -46594,6 +47941,10 @@
         {
           "lang": "fr-FR",
           "seg": "Standard"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "標準"
         },
         {
           "lang": "ru-RU",
@@ -46625,6 +47976,10 @@
           "seg": "Artefact"
         },
         {
+          "lang": "ja-JP",
+          "seg": "アーティファクト"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Артефакт"
         },
@@ -46652,6 +48007,10 @@
         {
           "lang": "fr-FR",
           "seg": "Alchimie"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "錬金術"
         },
         {
           "lang": "ru-RU",
@@ -46683,6 +48042,10 @@
           "seg": "Energie Avalonienne"
         },
         {
+          "lang": "ja-JP",
+          "seg": "アバロンのエネルギー"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Авалонская энергия"
         },
@@ -46710,6 +48073,10 @@
         {
           "lang": "fr-FR",
           "seg": "Livre de perspicacité"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "洞察の書"
         },
         {
           "lang": "ru-RU",
@@ -46741,6 +48108,10 @@
           "seg": "Essence"
         },
         {
+          "lang": "ja-JP",
+          "seg": "エッセンス"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Экстракт"
         },
@@ -46768,6 +48139,10 @@
         {
           "lang": "fr-FR",
           "seg": "Spéciale"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "特殊素材"
         },
         {
           "lang": "ru-RU",
@@ -46799,6 +48174,10 @@
           "seg": "Chiffre d'affaires brut"
         },
         {
+          "lang": "ja-JP",
+          "seg": "総売上高"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Валовой объем продаж"
         },
@@ -46826,6 +48205,10 @@
         {
           "lang": "fr-FR",
           "seg": "Taxe sur les ventes"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "販売税"
         },
         {
           "lang": "ru-RU",
@@ -46863,6 +48246,10 @@
         {
           "lang": "zh-CN",
           "seg": "输入制造次数后产出的物品数量"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "指定したクラフト回数によって生産されるアイテムの数量。"
         }
       ]
     },
@@ -46892,6 +48279,10 @@
         {
           "lang": "zh-CN",
           "seg": "扣除材料成本、站点成本、其他成本、税费及日志成本，并计入日志收入后的利润"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "材料費、施設利用料、その他の費用、税金、日誌費用を差し引き、日誌収益を加算した純利益。"
         }
       ]
     },
@@ -46921,6 +48312,10 @@
         {
           "lang": "zh-CN",
           "seg": "利润除以产出的数量"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "利益を生産数で割った1個あたりの利益。"
         }
       ]
     },
@@ -46950,6 +48345,10 @@
         {
           "lang": "zh-CN",
           "seg": "利润与总投入成本的比值"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "総投資コストに対する利益の割合（投資回収率）。"
         }
       ]
     },
@@ -46979,6 +48378,10 @@
         {
           "lang": "zh-CN",
           "seg": "盈亏平衡时的最低单品售价"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "損益がゼロ（トントン）になる1個あたりの最低販売価格。"
         }
       ]
     },
@@ -47008,6 +48411,10 @@
         {
           "lang": "zh-CN",
           "seg": "扣除销售税前的销售收入"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "販売税が差し引かれる前の売上高。"
         }
       ]
     },
@@ -47037,6 +48444,10 @@
         {
           "lang": "zh-CN",
           "seg": "从毛销售额中扣除的销售税"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "総売上高から差し引かれる販売税。"
         }
       ]
     },
@@ -47066,6 +48477,10 @@
         {
           "lang": "zh-CN",
           "seg": "销售收入减去销售税和建筑费后的净收入"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "販売税および注文作成手数料（Setup fee）控除後の手取り売上高。"
         }
       ]
     },
@@ -47095,6 +48510,10 @@
         {
           "lang": "zh-CN",
           "seg": "从毛销售额中扣除的建筑费"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "総売上高から差し引かれる注文作成手数料。"
         }
       ]
     },
@@ -47124,6 +48543,10 @@
         {
           "lang": "zh-CN",
           "seg": "总投资成本（包括净材料、建筑费用、日记成本及其他成本）"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "純材料費、施設利用料、日誌費用、その他の費用を合わせた総投資コスト。"
         }
       ]
     },
@@ -47153,6 +48576,10 @@
         {
           "lang": "zh-CN",
           "seg": "资源返还前的材料成本"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "資源返還率（RRR）が適用される前の総材料費。"
         }
       ]
     },
@@ -47182,6 +48609,10 @@
         {
           "lang": "zh-CN",
           "seg": "预期资源返还后的材料成本"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "予想される資源返還率（RRR）を考慮した後の実質材料費。"
         }
       ]
     },
@@ -47211,6 +48642,10 @@
         {
           "lang": "zh-CN",
           "seg": "即资源返还机制中，那些不被返还的资源的成本"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "資源返還の対象外（返還されない）となるリソースの費用。"
         }
       ]
     },
@@ -47240,6 +48675,10 @@
         {
           "lang": "zh-CN",
           "seg": "根据每100食物的使用费以及物品所消耗的食物量，计算出的制造站费用。"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "食事100あたりの利用料とアイテム消費栄養価から算出された施設利用料。"
         }
       ]
     },
@@ -47269,6 +48708,10 @@
         {
           "lang": "zh-CN",
           "seg": "手动输入的额外成本，已计入利润、投资回报率及保本价格中"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "手動で入力された追加費用（利益、ROI、損益分岐価格の計算に含まれます）。"
         }
       ]
     },
@@ -47298,6 +48741,10 @@
         {
           "lang": "zh-CN",
           "seg": "所需空白日记的成本"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "必要な空の日誌の購入費用。"
         }
       ]
     },
@@ -47327,6 +48774,10 @@
         {
           "lang": "zh-CN",
           "seg": "填满日记的预期收入"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "記入済みの日誌から見込まれる予想売上。"
         }
       ]
     },
@@ -47356,6 +48807,10 @@
         {
           "lang": "zh-CN",
           "seg": "制造前资源与日记的总重量"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "クラフト前のリソースと日誌の総重量。"
         }
       ]
     },
@@ -47385,6 +48840,10 @@
         {
           "lang": "zh-CN",
           "seg": "制造后物品和日记的总重量"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "クラフト後の作成されたアイテムと日誌の総重量。"
         }
       ]
     },
@@ -47414,6 +48873,10 @@
         {
           "lang": "zh-CN",
           "seg": "设置指南"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "設定ガイド"
         }
       ]
     },
@@ -47443,6 +48906,10 @@
         {
           "lang": "zh-CN",
           "seg": "设置指南"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "設定ガイド"
         }
       ]
     },
@@ -47472,6 +48939,10 @@
         {
           "lang": "zh-CN",
           "seg": "选择工具使用的语言"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ツールで使用する言語を選択してください。"
         }
       ]
     },
@@ -47501,6 +48972,10 @@
         {
           "lang": "zh-CN",
           "seg": "请选择语言"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "言語を選択してください。"
         }
       ]
     },
@@ -47530,6 +49005,10 @@
         {
           "lang": "zh-CN",
           "seg": "追踪模式"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "トラッキングモード"
         }
       ]
     },
@@ -47559,6 +49038,10 @@
         {
           "lang": "zh-CN",
           "seg": "选择工具捕获《阿尔比恩》网络流量的方式"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ツールがAlbion Onlineのネットワークトラフィックをキャプチャする方法を選択してください。"
         }
       ]
     },
@@ -47588,6 +49071,10 @@
         {
           "lang": "zh-CN",
           "seg": "NPCap 使用网络驱动程序，通常是大多数用户的首选。Socket 使用 Windows 原始套接字，不需要 NPCap，但工具必须以管理员身份启动。"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "NPCapはネットワークドライバを使用し、通常はほとんどのユーザーにとって最初の選択肢として最適です。SocketはWindowsのRawソケットを使用するためNPCapのインストールは不要ですが、ツールを管理者として実行する必要があります。"
         }
       ]
     },
@@ -47616,6 +49103,10 @@
         },
         {
           "lang": "zh-CN",
+          "seg": "NPCap"
+        },
+        {
+          "lang": "ja-JP",
           "seg": "NPCap"
         }
       ]
@@ -47646,6 +49137,10 @@
         {
           "lang": "zh-CN",
           "seg": "Socket"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Socket"
         }
       ]
     },
@@ -47675,6 +49170,10 @@
         {
           "lang": "zh-CN",
           "seg": "若要使用 NPCap，请安装 NPCap。"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "NPCapを使用するには、NPCapをインストールしてください。"
         }
       ]
     },
@@ -47704,6 +49203,10 @@
         {
           "lang": "zh-CN",
           "seg": "下载 NPCap"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "NPCapをダウンロード"
         }
       ]
     },
@@ -47733,6 +49236,10 @@
         {
           "lang": "zh-CN",
           "seg": "若要使用 Socket，请以管理员身份启动此工具。"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Socketを使用するには、このツールを管理者として起動してください。"
         }
       ]
     },
@@ -47762,6 +49269,10 @@
         {
           "lang": "zh-CN",
           "seg": "请选择追踪模式。"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "トラッキングモードを選択してください。"
         }
       ]
     },
@@ -47791,6 +49302,10 @@
         {
           "lang": "zh-CN",
           "seg": "选择您想要显示的导航选项卡。"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "表示したいナビゲーションタブを選択してください。"
         }
       ]
     },
@@ -47812,6 +49327,10 @@
         {
           "lang": "fr-FR",
           "seg": "Retour"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "戻る"
         },
         {
           "lang": "ru-RU",
@@ -47843,6 +49362,10 @@
           "seg": "Suivant"
         },
         {
+          "lang": "ja-JP",
+          "seg": "次へ"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Дальше"
         },
@@ -47870,6 +49393,10 @@
         {
           "lang": "fr-FR",
           "seg": "Terminer"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "完了"
         },
         {
           "lang": "ru-RU",
@@ -47950,6 +49477,10 @@
           "seg": "Loot Logger Stats"
         },
         {
+          "lang": "ja-JP",
+          "seg": "ルートロガー統計"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Статистика Логгера лута"
         },
@@ -47977,6 +49508,10 @@
         {
           "lang": "fr-FR",
           "seg": "Loot"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "戦利品"
         },
         {
           "lang": "ru-RU",
@@ -48008,6 +49543,10 @@
           "seg": "Argent"
         },
         {
+          "lang": "ja-JP",
+          "seg": "シルバー"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Серебро"
         },
@@ -48037,6 +49576,10 @@
           "seg": "Renommée"
         },
         {
+          "lang": "ja-JP",
+          "seg": "名声"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Слава"
         },
@@ -48064,6 +49607,10 @@
         {
           "lang": "fr-FR",
           "seg": "Faction"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "派閥"
         },
         {
           "lang": "ru-RU",
@@ -48144,6 +49691,10 @@
           "seg": "Valeur du butin par heure"
         },
         {
+          "lang": "ja-JP",
+          "seg": "時間あたりの戦利品価値"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Стоимость добычи в час"
         },
@@ -48171,6 +49722,10 @@
         {
           "lang": "fr-FR",
           "seg": "Renommée par Heure"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "時間あたりの獲得名声"
         },
         {
           "lang": "ru-RU",
@@ -48202,6 +49757,10 @@
           "seg": "Argent par Heure"
         },
         {
+          "lang": "ja-JP",
+          "seg": "時間あたりの獲得シルバー"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Серебро в час"
         },
@@ -48229,6 +49788,10 @@
         {
           "lang": "fr-FR",
           "seg": "Total des Points de Faction"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "総派閥ポイント"
         },
         {
           "lang": "ru-RU",
@@ -48260,6 +49823,10 @@
           "seg": "Points de Faction par Heure"
         },
         {
+          "lang": "ja-JP",
+          "seg": "時間あたりの獲得派閥ポイント"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Очки фракции в час"
         },
@@ -48287,6 +49854,10 @@
         {
           "lang": "fr-FR",
           "seg": "Meilleur Objet"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "最高価値の単一アイテム"
         },
         {
           "lang": "ru-RU",
@@ -48318,6 +49889,10 @@
           "seg": "Valeur maximale de butin"
         },
         {
+          "lang": "ja-JP",
+          "seg": "最高獲得戦利品価値"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Самая высокая залутанная ценность"
         },
@@ -48345,6 +49920,10 @@
         {
           "lang": "fr-FR",
           "seg": "Meilleurs Objets Obtenus"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "最多獲得アイテム"
         },
         {
           "lang": "ru-RU",
@@ -48376,6 +49955,10 @@
           "seg": "Le plus grand nombre de Kills"
         },
         {
+          "lang": "ja-JP",
+          "seg": "最多キル数"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Большинство убийств"
         },
@@ -48403,6 +49986,10 @@
         {
           "lang": "fr-FR",
           "seg": "Le plus grand nombre de Morts"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "最多デス数"
         },
         {
           "lang": "ru-RU",
@@ -48434,6 +50021,10 @@
           "seg": "Meilleur valeur de Kill"
         },
         {
+          "lang": "ja-JP",
+          "seg": "最高キル価値"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Самое большое число убийств"
         },
@@ -48461,6 +50052,10 @@
         {
           "lang": "fr-FR",
           "seg": "Tueur"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "キラー"
         },
         {
           "lang": "ru-RU",
@@ -48492,6 +50087,10 @@
           "seg": "Aucune statistique de Loot Logger n'est encore disponible."
         },
         {
+          "lang": "ja-JP",
+          "seg": "ルートロガーの統計はまだありません。"
+        },
+        {
           "lang": "ru-RU",
           "seg": "Статистика Логгера лута пока недоступна."
         },
@@ -48521,6 +50120,10 @@
           "seg": "Serveur de démarrage pour les données utilisateur de l'application"
         },
         {
+          "lang": "ja-JP",
+          "seg": "ユーザーデータ起動サーバー"
+        },
+        {
           "lang": "zh-CN",
           "seg": "用户所在服务器"
         }
@@ -48544,6 +50147,10 @@
         {
           "lang": "fr-FR",
           "seg": "Cette option permet de choisir quelles données de serveur sont chargées au démarrage de l'application, avant qu'Albion Online ne soit détecté à partir des paquets réseau. Pendant le jeu, le serveur est détecté automatiquement ; en cas de changement de serveur, les données actuelles sont d'abord enregistrées, puis les données du serveur correspondant sont chargées."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "この設定は、ネットワークパケットから『アルビオン・オンライン』が検出される前に、アプリ起動時にロードされるサーバーデータを制御します。プレイ中、サーバーは自動的に検出されます。サーバーが変更されると、現在のデータが先に保存された後、対応するサーバーデータがロードされます。"
         },
         {
           "lang": "zh-CN",
@@ -48571,6 +50178,10 @@
           "seg": "Démarrage du serveur de données"
         },
         {
+          "lang": "ja-JP",
+          "seg": "起動データサーバー"
+        },
+        {
           "lang": "zh-CN",
           "seg": "启动数据服务器"
         }
@@ -48596,6 +50207,10 @@
           "seg": "Choisissez les données de serveur à charger au démarrage de l'application, avant qu'Albion Online ne soit actif. Une fois que vous jouez, l'outil détecte automatiquement le serveur Albion à partir des paquets réseau et bascule automatiquement entre les ensembles de données si vous changez de serveur. Les données actuellement chargées sont enregistrées avant chaque changement."
         },
         {
+          "lang": "ja-JP",
+          "seg": "アプリ起動時に『アルビオン・オンライン』がまだアクティブでない場合に、ロードするサーバーデータを選択してください。プレイを開始すると、ツールはネットワークパケットからアルビオンのサーバーを自動的に検出し、サーバーを変更した場合はデータセットを自動で切り替えます。切り替えを行う前に、現在ロードされているデータが保存されます。"
+        },
+        {
           "lang": "zh-CN",
           "seg": "选择在应用启动且《阿尔比恩》尚未激活时，应加载哪个服务器的数据。开始游戏后，工具会通过网络数据包自动检测《阿尔比恩》服务器，若您更换服务器，数据集也会自动切换。每次切换前，当前加载的数据都会被保存"
         }
@@ -48619,6 +50234,10 @@
         {
           "lang": "fr-FR",
           "seg": "Veuillez sélectionner un serveur de données de démarrage."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "起動データサーバーを選択してください。"
         },
         {
           "lang": "zh-CN",
@@ -49704,7 +51323,7 @@
         }
       ]
     },
-    {
+{
       "tuid": "CONTENT",
       "tuv": [
         {
@@ -49722,6 +51341,10 @@
         {
           "lang": "fr-FR",
           "seg": "Sommaire"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "コンテンツ"
         }
       ]
     },
@@ -49743,6 +51366,10 @@
         {
           "lang": "fr-FR",
           "seg": "Session"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "セッション"
         }
       ]
     },
@@ -49764,6 +51391,10 @@
         {
           "lang": "fr-FR",
           "seg": "Tout le contenu"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "すべてのコンテンツ"
         }
       ]
     },
@@ -49785,6 +51416,10 @@
         {
           "lang": "fr-FR",
           "seg": "Toutes les Sessions"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "すべてのセッション"
         }
       ]
     },
@@ -49806,6 +51441,10 @@
         {
           "lang": "fr-FR",
           "seg": "Donjon corrompu"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "堕落したダンジョン"
         }
       ]
     },
@@ -49827,6 +51466,10 @@
         {
           "lang": "fr-FR",
           "seg": "Période"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "時間範囲"
         }
       ]
     },
@@ -49848,6 +51491,10 @@
         {
           "lang": "fr-FR",
           "seg": "Réinitialiser la session"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "セッションのリセット"
         }
       ]
     },
@@ -49869,6 +51516,10 @@
         {
           "lang": "fr-FR",
           "seg": "Réinitialiser la session lors d'un changement de map"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "マップ切り替え時にセッションをリセット"
         }
       ]
     },
@@ -49890,6 +51541,10 @@
         {
           "lang": "fr-FR",
           "seg": "Durée de la Session"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "セッション時間"
         }
       ]
     },
@@ -49911,6 +51566,10 @@
         {
           "lang": "fr-FR",
           "seg": "par rapport à l'heure précédente"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "前時間比"
         }
       ]
     },
@@ -49932,6 +51591,10 @@
         {
           "lang": "fr-FR",
           "seg": "par rapport au jour précédent"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "前日比"
         }
       ]
     },
@@ -49953,6 +51616,10 @@
         {
           "lang": "fr-FR",
           "seg": "par rapport aux minutes précédentes"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "直前数分比"
         }
       ]
     },
@@ -49974,6 +51641,10 @@
         {
           "lang": "fr-FR",
           "seg": "par rapport aux heures précédentes"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "直前数時間比"
         }
       ]
     },
@@ -49995,6 +51666,10 @@
         {
           "lang": "fr-FR",
           "seg": "par rapport aux jours précédents"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "直前数日比"
         }
       ]
     },
@@ -50016,6 +51691,10 @@
         {
           "lang": "fr-FR",
           "seg": "Combat"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "戦闘"
         }
       ]
     },
@@ -50037,6 +51716,10 @@
         {
           "lang": "fr-FR",
           "seg": "Economie"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "経済"
         }
       ]
     },
@@ -50058,6 +51741,10 @@
         {
           "lang": "fr-FR",
           "seg": "Supprimer la Session"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "セッションを削除"
         }
       ]
     },
@@ -50079,6 +51766,10 @@
         {
           "lang": "fr-FR",
           "seg": "Souhaitez-vous supprimer définitivement la session \"{0}\"?"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "セッション「{0}」を永久に削除しますか？"
         }
       ]
     },
@@ -50100,6 +51791,10 @@
         {
           "lang": "fr-FR",
           "seg": "Cette session ne peut pas être supprimée."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "セッションを削除できませんでした。"
         }
       ]
     },
@@ -50121,6 +51816,10 @@
         {
           "lang": "fr-FR",
           "seg": "Principales sources de Fame"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "主な名声（Fame）獲得源"
         }
       ]
     },
@@ -50142,6 +51841,10 @@
         {
           "lang": "fr-FR",
           "seg": "Principales sources de Silver"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "主なシルバー獲得源"
         }
       ]
     },
@@ -50163,6 +51866,10 @@
         {
           "lang": "fr-FR",
           "seg": "Silver dépensés en Respec"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "Respecに使用したシルバー"
         }
       ]
     },
@@ -50184,6 +51891,10 @@
         {
           "lang": "fr-FR",
           "seg": "Coût moyen en Silver d'une session de Respec"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "1セッションあたりの平均Respecシルバーコスト"
         }
       ]
     },
@@ -50205,6 +51916,10 @@
         {
           "lang": "fr-FR",
           "seg": "Points de Respec dépensés"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "消費したRespecポイント"
         }
       ]
     },
@@ -50226,6 +51941,10 @@
         {
           "lang": "fr-FR",
           "seg": "Coût moyen des réparations par session"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "1セッションあたりの平均修理費用"
         }
       ]
     },
@@ -50247,6 +51966,10 @@
         {
           "lang": "fr-FR",
           "seg": "Coût de réparation le plus élevé"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "最高修理費用"
         }
       ]
     },
@@ -50268,6 +51991,10 @@
         {
           "lang": "fr-FR",
           "seg": "Objets récemment pillés"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "最近獲得したルートアイテム"
         }
       ]
     },
@@ -50289,6 +52016,10 @@
         {
           "lang": "fr-FR",
           "seg": "Valeur moyenne du butin"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "平均ルート価値"
         }
       ]
     },
@@ -50310,6 +52041,10 @@
         {
           "lang": "fr-FR",
           "seg": "Meilleures cartes et zones de butin classées par valeur de butin"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ルート額別トップマップ・エリア"
         }
       ]
     },
@@ -50331,6 +52066,10 @@
         {
           "lang": "fr-FR",
           "seg": "Améliorer la qualité"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "品質洗練"
         }
       ]
     },
@@ -50352,6 +52091,10 @@
         {
           "lang": "fr-FR",
           "seg": "Silver dépensés pour des finitions de qualité"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "品質洗練に使用したシルバー"
         }
       ]
     },
@@ -50373,6 +52116,10 @@
         {
           "lang": "fr-FR",
           "seg": "Objets améliorés"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "アップグレードされたアイテム"
         }
       ]
     },
@@ -50394,6 +52141,10 @@
         {
           "lang": "fr-FR",
           "seg": "Arme éveillée"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "武器覚醒"
         }
       ]
     },
@@ -50415,6 +52166,10 @@
         {
           "lang": "fr-FR",
           "seg": "Silver dépensés pour les Armes éveillées"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "覚醒武器に使用したシルバー"
         }
       ]
     },
@@ -50436,6 +52191,10 @@
         {
           "lang": "fr-FR",
           "seg": "Caractéristiques améliorées"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "強化された特性"
         }
       ]
     },
@@ -50457,6 +52216,10 @@
         {
           "lang": "fr-FR",
           "seg": "Effets de renforcement"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "アップグレード発動回数"
         }
       ]
     },
@@ -50478,6 +52241,10 @@
         {
           "lang": "fr-FR",
           "seg": "Répartition du butin en fonction de la valeur des objets"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "アイテム価値別のルート分布"
         }
       ]
     },
@@ -50499,6 +52266,10 @@
         {
           "lang": "fr-FR",
           "seg": "Butin par niveau et enchantement"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ティア・エンチャント別ルート"
         }
       ]
     },
@@ -50520,6 +52291,10 @@
         {
           "lang": "fr-FR",
           "seg": "Catégorie de valeur (Silver)"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "価値クラス（シルバー）"
         }
       ]
     },
@@ -50541,6 +52316,10 @@
         {
           "lang": "fr-FR",
           "seg": "Objets"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "アイテム"
         }
       ]
     },
@@ -50562,6 +52341,10 @@
         {
           "lang": "fr-FR",
           "seg": "Part de la valeur totale"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "総価値における割合"
         }
       ]
     },
@@ -50583,6 +52366,10 @@
         {
           "lang": "fr-FR",
           "seg": "Répartition par niveaux"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ティア分布"
         }
       ]
     },
@@ -50604,6 +52391,10 @@
         {
           "lang": "fr-FR",
           "seg": "Enchantement"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "エンチャント"
         }
       ]
     },
@@ -50625,6 +52416,10 @@
         {
           "lang": "fr-FR",
           "seg": "Carte/Région"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "マップ／エリア"
         }
       ]
     },
@@ -50646,6 +52441,10 @@
         {
           "lang": "fr-FR",
           "seg": "Valeur du butin"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ルート額"
         }
       ]
     },
@@ -50667,6 +52466,10 @@
         {
           "lang": "fr-FR",
           "seg": "Butin/h"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ルート/時間"
         }
       ]
     },
@@ -50688,6 +52491,10 @@
         {
           "lang": "fr-FR",
           "seg": "Butin/map"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ルート/マップ"
         }
       ]
     },
@@ -50709,6 +52516,10 @@
         {
           "lang": "fr-FR",
           "seg": "Visites"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "訪問数"
         }
       ]
     },
@@ -50730,6 +52541,10 @@
         {
           "lang": "fr-FR",
           "seg": "Partager"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "割合"
         }
       ]
     },
@@ -50751,6 +52566,10 @@
         {
           "lang": "fr-FR",
           "seg": "En dessous de {0:N0}"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "{0:N0}未満"
         }
       ]
     },
@@ -50771,6 +52590,10 @@
         },
         {
           "lang": "fr-FR",
+          "seg": "{0:N0} - {1:N0}"
+        },
+        {
+          "lang": "ja-JP",
           "seg": "{0:N0} - {1:N0}"
         }
       ]
@@ -50793,6 +52616,10 @@
         {
           "lang": "fr-FR",
           "seg": "{0:N0} - {1:N0}"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "{0:N0} - {1:N0}"
         }
       ]
     },
@@ -50814,6 +52641,10 @@
         {
           "lang": "fr-FR",
           "seg": "Plus de {0:N0}"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "{0:N0}超"
         }
       ]
     },
@@ -50835,6 +52666,10 @@
         {
           "lang": "fr-FR",
           "seg": "Butin important"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "重要ルート"
         }
       ]
     },
@@ -50856,6 +52691,10 @@
         {
           "lang": "fr-FR",
           "seg": "Suivi"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "モニタリング"
         }
       ]
     },
@@ -50877,6 +52716,10 @@
         {
           "lang": "fr-FR",
           "seg": "Suivez cet article et recevez une notification unique lorsqu'une condition sera remplie."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "このアイテムを監視し、条件が満たされた際に一度だけ通知を受け取ります。"
         }
       ]
     },
@@ -50898,6 +52741,10 @@
         {
           "lang": "fr-FR",
           "seg": "Suivi des prix"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "価格監視"
         }
       ]
     },
@@ -50919,6 +52766,10 @@
         {
           "lang": "fr-FR",
           "seg": "Vous avertit lorsqu'une offre de vente en cours atteint ou passe en dessous du prix défini."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "現在の売り注文が設定された価格以下になると通知します。"
         }
       ]
     },
@@ -50940,6 +52791,10 @@
         {
           "lang": "fr-FR",
           "seg": "Plafond de prix"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "上限価格"
         }
       ]
     },
@@ -50961,6 +52816,10 @@
         {
           "lang": "fr-FR",
           "seg": "Disponibilité sur le marché"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "市場の在庫状況"
         }
       ]
     },
@@ -50982,6 +52841,10 @@
         {
           "lang": "fr-FR",
           "seg": "Vous avertit dès qu'une offre de vente en cours concernant cet article est signalée."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "このアイテムの売り注文が報告されるとすぐに通知します。"
         }
       ]
     },
@@ -51003,6 +52866,10 @@
         {
           "lang": "fr-FR",
           "seg": "Lire le son d'alerte"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "アラート音を再生"
         }
       ]
     },
@@ -51024,6 +52891,10 @@
         {
           "lang": "fr-FR",
           "seg": "Saisissez une limite de prix valide supérieure à 0."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "0より大きい有効な上限価格を入力してください。"
         }
       ]
     },
@@ -51045,6 +52916,10 @@
         {
           "lang": "fr-FR",
           "seg": "Il est possible de surveiller jusqu'à 10 éléments simultanément."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "同時に監視できるアイテムは最大10個までです。"
         }
       ]
     },
@@ -51066,6 +52941,10 @@
         {
           "lang": "fr-FR",
           "seg": "La surveillance n'a pas pu être activée pour cet élément."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "このアイテムの監視を有効にできませんでした。"
         }
       ]
     },
@@ -51087,6 +52966,10 @@
         {
           "lang": "fr-FR",
           "seg": "Offre trouvée sur le marché"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "市場に出品が見つかりました"
         }
       ]
     },
@@ -51108,6 +52991,10 @@
         {
           "lang": "fr-FR",
           "seg": "Une offre du marché pour"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "〜の売り注文："
         }
       ]
     },
@@ -51129,6 +53016,10 @@
         {
           "lang": "fr-FR",
           "seg": "a été retrouvé."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "が見つかりました。"
         }
       ]
     },
@@ -51150,6 +53041,10 @@
         {
           "lang": "fr-FR",
           "seg": "Âge maximal pour le prix"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "価格データの経過時間上限"
         }
       ]
     },
@@ -51171,6 +53066,10 @@
         {
           "lang": "fr-FR",
           "seg": "Seuls les prix dont la dernière mise à jour remonte à un nombre de minutes au plus égal à cette valeur peuvent déclencher une alerte."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "指定した分数以内に更新された価格のみがアラートを送信します。"
         }
       ]
     },
@@ -51192,6 +53091,10 @@
         {
           "lang": "fr-FR",
           "seg": "Indiquez une durée maximale de validité du prix d'au moins une minute."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "経過時間上限には1分以上の値を入力してください。"
         }
       ]
     },
@@ -51213,6 +53116,10 @@
         {
           "lang": "fr-FR",
           "seg": "Surveiller les ordres d'achat sur le marché noir"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ブラックマーケットの買い注文を監視"
         }
       ]
     },
@@ -51234,6 +53141,10 @@
         {
           "lang": "fr-FR",
           "seg": "Vous avertit lorsque l'ordre d'achat le plus élevé signalé sur le marché noir atteint ou dépasse le prix minimum spécifié."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ブラックマーケットで最高値の買い注文が指定した最低価格以上になると通知します。"
         }
       ]
     },
@@ -51255,6 +53166,10 @@
         {
           "lang": "fr-FR",
           "seg": "Prix minimum de l'ordre d'achat"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "買い注文の最低価格"
         }
       ]
     },
@@ -51276,6 +53191,10 @@
         {
           "lang": "fr-FR",
           "seg": "Cet objet ne peut pas être vendu au marché noir."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "このアイテムはブラックマーケットで売却できません。"
         }
       ]
     },
@@ -51297,6 +53216,10 @@
         {
           "lang": "fr-FR",
           "seg": "Ordre d'achat sur le marché noir reçu"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ブラックマーケットの買い注文が条件に達しました"
         }
       ]
     },
@@ -51318,6 +53241,10 @@
         {
           "lang": "fr-FR",
           "seg": "L'ordre d'achat le plus élevé sur le marché noir pour"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "最高額のブラックマーケット買い注文（"
         }
       ]
     },
@@ -51339,6 +53266,10 @@
         {
           "lang": "fr-FR",
           "seg": "a atteint ton prix minimum."
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "）が設定した最低価格に達しました。"
         }
       ]
     },
@@ -51360,6 +53291,10 @@
         {
           "lang": "fr-FR",
           "seg": "Rechercher"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "検索"
         }
       ]
     },
@@ -51381,6 +53316,10 @@
         {
           "lang": "fr-FR",
           "seg": "Lieux"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "場所"
         }
       ]
     },
@@ -51402,6 +53341,10 @@
         {
           "lang": "fr-FR",
           "seg": "Activité commerciale par lieu"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "場所別の取引アクティビティ"
         }
       ]
     },
@@ -51423,6 +53366,10 @@
         {
           "lang": "fr-FR",
           "seg": "Ventes"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "売上"
         }
       ]
     },
@@ -51444,6 +53391,10 @@
         {
           "lang": "fr-FR",
           "seg": "Achats"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "購入"
         }
       ]
     },
@@ -51465,6 +53416,10 @@
         {
           "lang": "fr-FR",
           "seg": "Nombre"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "件数"
         }
       ]
     },
@@ -51486,6 +53441,10 @@
         {
           "lang": "fr-FR",
           "seg": "Marge"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "利益率"
         }
       ]
     },
@@ -51507,6 +53466,10 @@
         {
           "lang": "fr-FR",
           "seg": "Taxes payées"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "支払済み税金"
         }
       ]
     },
@@ -51528,6 +53491,10 @@
         {
           "lang": "fr-FR",
           "seg": "Catégorie la plus vendue"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "最も取引されたカテゴリー"
         }
       ]
     },
@@ -51549,6 +53516,10 @@
         {
           "lang": "fr-FR",
           "seg": "Réinitialiser les filtres"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "フィルターをリセット"
         }
       ]
     },
@@ -51570,6 +53541,10 @@
         {
           "lang": "fr-FR",
           "seg": "Ventes totales"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "総売上"
         }
       ]
     },
@@ -51591,6 +53566,10 @@
         {
           "lang": "fr-FR",
           "seg": "Achats totaux"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "総購入額"
         }
       ]
     },
@@ -51612,6 +53591,10 @@
         {
           "lang": "fr-FR",
           "seg": "Volume des échanges"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "取引量"
         }
       ]
     },
@@ -51633,6 +53616,10 @@
         {
           "lang": "fr-FR",
           "seg": "Statistiques commerciales"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "取引統計"
         }
       ]
     },
@@ -51654,6 +53641,10 @@
         {
           "lang": "fr-FR",
           "seg": "Par rapport à la période précédente"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "前期間との比較"
         }
       ]
     },
@@ -51675,6 +53666,10 @@
         {
           "lang": "fr-FR",
           "seg": "Aperçu"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "概要"
         }
       ]
     },
@@ -51696,6 +53691,10 @@
         {
           "lang": "fr-FR",
           "seg": "Meilleure ressourcese"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "最高の資源"
         }
       ]
     },
@@ -51717,6 +53716,10 @@
         {
           "lang": "fr-FR",
           "seg": "Meilleure carte"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "トップマップ"
         }
       ]
     },
@@ -51738,6 +53741,10 @@
         {
           "lang": "fr-FR",
           "seg": "Types de ressources uniques"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "独自リソースの種類"
         }
       ]
     },
@@ -51759,6 +53766,10 @@
         {
           "lang": "fr-FR",
           "seg": "Meilleure carte de récolte"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "最高の採集マップ"
         }
       ]
     },
@@ -51780,6 +53791,10 @@
         {
           "lang": "fr-FR",
           "seg": "Ressources totales récoltées"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "総採集リソース"
         }
       ]
     },
@@ -51801,6 +53816,10 @@
         {
           "lang": "fr-FR",
           "seg": "Total des récoltes"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "総採集回数"
         }
       ]
     },
@@ -51822,6 +53841,10 @@
         {
           "lang": "fr-FR",
           "seg": "Valeur moyenne des ressources"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "平均リソース価値"
         }
       ]
     },
@@ -51843,6 +53866,10 @@
         {
           "lang": "fr-FR",
           "seg": "Meilleure récolte individuelle"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "単一採集の最高実績"
         }
       ]
     },
@@ -51864,6 +53891,10 @@
         {
           "lang": "fr-FR",
           "seg": "Temps total de récolte"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "採集回数"
         }
       ]
     },
@@ -51885,6 +53916,10 @@
         {
           "lang": "fr-FR",
           "seg": "Quantité totale"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "合計数量"
         }
       ]
     },
@@ -51906,6 +53941,10 @@
         {
           "lang": "fr-FR",
           "seg": "Valeur totale"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "推定価値合計"
         }
       ]
     },
@@ -51927,6 +53966,10 @@
         {
           "lang": "fr-FR",
           "seg": "Valeur moyenne par récolte"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "採集ごとの平均価値"
         }
       ]
     },
@@ -51948,6 +53991,10 @@
         {
           "lang": "fr-FR",
           "seg": "Temps de collecte"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "採集時間"
         }
       ]
     },
@@ -51969,6 +54016,10 @@
         {
           "lang": "fr-FR",
           "seg": "Valeur des ressources par type"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "タイプ別リソース価値"
         }
       ]
     },
@@ -51990,6 +54041,10 @@
         {
           "lang": "fr-FR",
           "seg": "Évolution de l'activité de récolte au fil du temps"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "時間経過による採集アクティビティ"
         }
       ]
     },
@@ -52011,6 +54066,10 @@
         {
           "lang": "fr-FR",
           "seg": "Activité de récolte par lieu"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "場所別採集アクティビティ"
         }
       ]
     },
@@ -52032,6 +54091,10 @@
         {
           "lang": "fr-FR",
           "seg": "Types de ressources récoltées"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "採集されたリソースタイプ"
         }
       ]
     },
@@ -52053,6 +54116,10 @@
         {
           "lang": "fr-FR",
           "seg": "Ressources les plus récoltées"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "最多採集リソース"
         }
       ]
     },
@@ -52074,6 +54141,10 @@
         {
           "lang": "fr-FR",
           "seg": "Récoltes récentes"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "最近の採集"
         }
       ]
     },
@@ -52095,6 +54166,10 @@
         {
           "lang": "fr-FR",
           "seg": "Type de la ressource"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "リソースタイプ"
         }
       ]
     },
@@ -52116,6 +54191,10 @@
         {
           "lang": "fr-FR",
           "seg": "Montant"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "数量"
         }
       ]
     },
@@ -52137,6 +54216,10 @@
         {
           "lang": "fr-FR",
           "seg": "% du total"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "全体の%"
         }
       ]
     },
@@ -52158,6 +54241,10 @@
         {
           "lang": "fr-FR",
           "seg": "Carte"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "マップ"
         }
       ]
     },
@@ -52179,6 +54266,10 @@
         {
           "lang": "fr-FR",
           "seg": "Pas de données"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "データなし"
         }
       ]
     },
@@ -52200,6 +54291,10 @@
         {
           "lang": "fr-FR",
           "seg": "Autres cartes"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "その他のマップ"
         }
       ]
     },
@@ -52221,6 +54316,10 @@
         {
           "lang": "fr-FR",
           "seg": "Efficacité de run"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ラン効率"
         }
       ]
     },
@@ -52242,6 +54341,10 @@
         {
           "lang": "fr-FR",
           "seg": "Nombre total de Run"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "合計ラン数"
         }
       ]
     },
@@ -52263,6 +54366,10 @@
         {
           "lang": "fr-FR",
           "seg": "Puissance totale"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "合計マイト"
         }
       ]
     },
@@ -52284,6 +54391,10 @@
         {
           "lang": "fr-FR",
           "seg": "Faveur totale"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "合計好意"
         }
       ]
     },
@@ -52305,6 +54416,10 @@
         {
           "lang": "fr-FR",
           "seg": "Morts en donjons"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ダンジョンでのデス数"
         }
       ]
     },
@@ -52326,6 +54441,10 @@
         {
           "lang": "fr-FR",
           "seg": "Durée moyenne de Run"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "平均ラン時間"
         }
       ]
     },
@@ -52347,6 +54466,10 @@
         {
           "lang": "fr-FR",
           "seg": "Tiers le plus rentable"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "最も収益性の高いティア"
         }
       ]
     },
@@ -52368,6 +54491,10 @@
         {
           "lang": "fr-FR",
           "seg": "Tiers le plus joué"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "最もプレイされたティア"
         }
       ]
     },
@@ -52389,6 +54516,10 @@
         {
           "lang": "fr-FR",
           "seg": "Meilleure carte de donjon"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "最高のダンジョンマップ"
         }
       ]
     },
@@ -52410,6 +54541,10 @@
         {
           "lang": "fr-FR",
           "seg": "Run le plus rapide"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "最速ラン"
         }
       ]
     },
@@ -52431,6 +54566,10 @@
         {
           "lang": "fr-FR",
           "seg": "Moyenne de coffre / Run"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ランあたりの平均宝箱数"
         }
       ]
     },
@@ -52452,6 +54591,10 @@
         {
           "lang": "fr-FR",
           "seg": "Moyenne de butins / Run"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ランあたりの平均ルート額"
         }
       ]
     },
@@ -52473,6 +54616,10 @@
         {
           "lang": "fr-FR",
           "seg": "Moyenne de Fame / Run"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ランあたりの平均名声"
         }
       ]
     },
@@ -52494,6 +54641,10 @@
         {
           "lang": "fr-FR",
           "seg": "Durée moyenne"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "平均所要時間"
         }
       ]
     },
@@ -52515,6 +54666,10 @@
         {
           "lang": "fr-FR",
           "seg": "Taille de la partie"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "パーティ人数"
         }
       ]
     },
@@ -52536,6 +54691,10 @@
         {
           "lang": "fr-FR",
           "seg": "Résumé des Runs"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "コンテンツラン"
         }
       ]
     },
@@ -52557,6 +54716,10 @@
         {
           "lang": "fr-FR",
           "seg": "{0} objets de butin"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "{0}件のルートエントリー"
         }
       ]
     },
@@ -52578,6 +54741,10 @@
         {
           "lang": "fr-FR",
           "seg": "Afficher le butin ramasé"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "獲得したルートを表示"
         }
       ]
     },
@@ -52599,6 +54766,10 @@
         {
           "lang": "fr-FR",
           "seg": "Cacher le butin ramassé"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "獲得したルートを非表示"
         }
       ]
     },
@@ -52620,6 +54791,10 @@
         {
           "lang": "fr-FR",
           "seg": "Avalon"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "アバロン"
         }
       ]
     },
@@ -52641,6 +54816,10 @@
         {
           "lang": "fr-FR",
           "seg": "Coffre inconnu"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "不明な宝箱"
         }
       ]
     },
@@ -52662,6 +54841,10 @@
         {
           "lang": "fr-FR",
           "seg": "Aperçu des donjons"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "ダンジョン概要"
         }
       ]
     },
@@ -52683,6 +54866,10 @@
         {
           "lang": "fr-FR",
           "seg": "Prendre en compte le butin des joueurs"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "プレイヤーのルートを含める"
         }
       ]
     },
@@ -52704,6 +54891,10 @@
         {
           "lang": "fr-FR",
           "seg": "Coffre"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "宝箱"
         }
       ]
     },
@@ -52725,6 +54916,10 @@
         {
           "lang": "fr-FR",
           "seg": "Monstre"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "モブ"
         }
       ]
     },
@@ -52746,6 +54941,10 @@
         {
           "lang": "fr-FR",
           "seg": "Joueur"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "プレイヤー"
         }
       ]
     },
@@ -52767,6 +54966,10 @@
         {
           "lang": "fr-FR",
           "seg": "Source inconnue"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "不明なソース"
         }
       ]
     },
@@ -52788,764 +54991,912 @@
         {
           "lang": "fr-FR",
           "seg": "Paramètres et Réinitialisation"
+        },
+        {
+          "lang": "ja-JP",
+          "seg": "設定とリセット"
         }
       ]
     },
     {
-      "tuid": "OTHER_LOOT",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Weitere Beute"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Other loot"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Otro botín"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Autre butin"
-        }
-      ]
-    },
-    {
-      "tuid": "MORE_CHESTS",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "+{0} weitere Truhen"
-        },
-        {
-          "lang": "en-US",
-          "seg": "+{0} more chests"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "+{0} cofres más"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "+{0} autres coffres"
-        }
-      ]
-    },
-    {
-      "tuid": "SHOW_FEWER_CHESTS",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Weniger anzeigen"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Show fewer"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Mostrar menos"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Afficher moins"
-        }
-      ]
-    },
-    {
-      "tuid": "BRECILIAN_STANDING",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Brecilien-Ansehen"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Brecilian standing"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Reputación de Brecilien"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Brecilien - Vue d'ensemble"
-        }
-      ]
-    },
-    {
-      "tuid": "PLAYERS",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Spieler"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Players"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Jugadores"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Joueurs"
-        }
-      ]
-    },
-    {
-      "tuid": "NORMAL_CHEST",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Normale Truhe"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Normal chest"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Cofre normal"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Coffre normal"
-        }
-      ]
-    },
-    {
-      "tuid": "MORE_ITEMS",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "+{0} weitere Items"
-        },
-        {
-          "lang": "en-US",
-          "seg": "+{0} more items"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "+{0} objetos más"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "+{0} autres objets"
-        }
-      ]
-    },
-    {
-      "tuid": "SHOW_FEWER_ITEMS",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Weniger Items anzeigen"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Show fewer items"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Mostrar menos objetos"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Monter moins d'objets"
-        }
-      ]
-    },
-    {
-      "tuid": "MORE_COMBAT_EVENTS",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "+{0} weitere Tötungen/Tode"
-        },
-        {
-          "lang": "en-US",
-          "seg": "+{0} more kills/deaths"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "+{0} asesinatos/muertes más"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "+{0} autres de victimes/morts"
-        }
-      ]
-    },
-    {
-      "tuid": "SHOW_FEWER_COMBAT_EVENTS",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Weniger Tötungen/Tode anzeigen"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Show fewer kills/deaths"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Mostrar menos asesinatos/muertes"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Afficher moins de victimes/morts"
-        }
-      ]
-    },
-    {
-      "tuid": "TOTAL_DAMAGE_TOP_5",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Gesamtschaden – TOP 5"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Total Damage – TOP 5"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Daño total – TOP 5"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Dommages totaux – TOP 5"
-        }
-      ]
-    },
-    {
-      "tuid": "EFFECTIVE_HEALING_TOP_5",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Effektive Heilung – TOP 5"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Effective Healing – TOP 5"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Curación efectiva – TOP 5"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Efficacité des Soins – TOP 5"
-        }
-      ]
-    },
-    {
-      "tuid": "TOP_MOB_KILL_CONTRIBUTION_TOP_5",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Beitrag zu Mob-Tötungen – TOP 5"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Top Mob Kill Contribution – TOP 5"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Mayor contribución a muertes de mobs – TOP 5"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Meilleures contibutions aux éliminations des monstres – TOP 5"
-        }
-      ]
-    },
-    {
-      "tuid": "TOP_HEALER",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Top-Heiler"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Top Healer"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Mejor sanador"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Top Healer"
-        }
-      ]
-    },
-    {
-      "tuid": "TOP_DAMAGE_TAKEN",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Höchster erlittener Schaden"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Top Damage Taken"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Mayor daño recibido"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Top Dégâts encaissés"
-        }
-      ]
-    },
-    {
-      "tuid": "DAMAGE_BY_TYPE",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Schaden nach Typ"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Damage by Type"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Daño por tipo"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Dégâts par type"
-        }
-      ]
-    },
-    {
-      "tuid": "DAMAGE_BY_ABILITY_TOP_10",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Schaden nach Fähigkeit – Top 10"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Damage by Ability – Top 10"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Daño por habilidad – Top 10"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Dégâts par capacités - Top 10"
-        }
-      ]
-    },
-    {
-      "tuid": "ABILITY",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Fähigkeit"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Ability"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Habilidad"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Capacités"
-        }
-      ]
-    },
-    {
-      "tuid": "PHYSICAL_DAMAGE",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Physischer Schaden"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Physical Damage"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Daño físico"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Dégâts physiques"
-        }
-      ]
-    },
-    {
-      "tuid": "MAGIC_DAMAGE",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Magischer Schaden"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Magic Damage"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Daño mágico"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Dégâts magiques"
-        }
-      ]
-    },
-    {
-      "tuid": "TRUE_DAMAGE",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Wahrer Schaden"
-        },
-        {
-          "lang": "en-US",
-          "seg": "True Damage"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Daño verdadero"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Dégâts réels"
-        }
-      ]
-    },
-    {
-      "tuid": "TOTAL_TRACKED_FIGHTS",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Erfasste Kämpfe insgesamt"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Total Tracked Fights"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Total de combates rastreados"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Nombre total de combats recensés"
-        }
-      ]
-    },
-    {
-      "tuid": "LOSS_EXPLORER",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Verlust-Explorer"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Loss Explorer"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Explorador de pérdidas"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Explorateur de pertes"
-        }
-      ]
-    },
-    {
-      "tuid": "EQUIPMENT",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Ausrüstung"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Equipment"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Equipamiento"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Equipment"
-        }
-      ]
-    },
-    {
-      "tuid": "INVENTORY",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Inventar"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Inventory"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Inventario"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Inventaire"
-        }
-      ]
-    },
-    {
-      "tuid": "LOSS_EXPLORER_LOADING_EVENTS",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Todesfälle werden geladen – Seite {0}"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Loading deaths – page {0}"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Cargando muertes – página {0}"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Chargement des morts – page {0}"
-        }
-      ]
-    },
-    {
-      "tuid": "LOSS_EXPLORER_LOADING_PRICES",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Marktwerte werden geladen – Paket {0} von {1}"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Loading market values – batch {0} of {1}"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Cargando valores de mercado – lote {0} de {1}"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Chargement des valeurs de marché – batch {0} of {1}"
-        }
-      ]
-    },
-    {
-      "tuid": "LOSS_EXPLORER_READY",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "{0:N0} von 7 Tagen gespeichert · Tagesdurchschnitt · aktualisiert {1:g}"
-        },
-        {
-          "lang": "en-US",
-          "seg": "{0:N0} of 7 days stored · daily average · updated {1:g}"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "{0:N0} de 7 días almacenados · promedio diario · actualizado {1:g}"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "{0:N0} sur 7 jours · moyenne quotidienne · mise à jour {1:g}"
-        }
-      ]
-    },
-    {
-      "tuid": "LOSS_EXPLORER_LOAD_HINT",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Verlustdaten werden alle 10 Minuten aktualisiert und bis zu 7 Tage gespeichert."
-        },
-        {
-          "lang": "en-US",
-          "seg": "Loss data is updated every 10 minutes and stored for up to 7 days."
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Los datos de pérdidas se actualizan cada 10 minutos y se almacenan hasta por 7 días."
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Les données relatives aux pertes sont mises à jour toutes les 10 minutes et conservées pendant 7 jours maximum."
-        }
-      ]
-    },
-    {
-      "tuid": "LOSS_EXPLORER_LOAD_ERROR",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Die Verlustdaten konnten nicht vollständig geladen werden. Der nächste automatische Abgleich versucht es erneut."
-        },
-        {
-          "lang": "en-US",
-          "seg": "Loss data could not be loaded completely. The next automatic refresh will retry."
-        },
-        {
-          "lang": "es-ES",
-          "seg": "No se pudieron cargar completamente los datos de pérdidas. La próxima actualización automática volverá a intentarlo."
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Les données relatives aux pertes n'ont pas pu être chargées dans leur intégralité. La prochaine synchronisation automatique effectuera une nouvelle tentative."
-        }
-      ]
-    },
-    {
-      "tuid": "LOSS_EXPLORER_SERVER_UNAVAILABLE",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Für den Loss Explorer muss ein Albion-Server aktiv sein."
-        },
-        {
-          "lang": "en-US",
-          "seg": "An Albion server must be active to use the Loss Explorer."
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Debe haber un servidor de Albion activo para usar el Explorador de pérdidas."
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Pour utiliser l'Explorateur de pertes, un serveur Albion doit être actif."
-        }
-      ]
-    },
-    {
-      "tuid": "LOSS_EXPLORER_STORED_EVENTS",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "{0:N0} Events gespeichert"
-        },
-        {
-          "lang": "en-US",
-          "seg": "{0:N0} events stored"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "{0:N0} eventos almacenados"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "{0:N0} événements enregistrés"
-        }
-      ]
-    },
-    {
-      "tuid": "LOSS_EXPLORER_VALUE_PER_DAY",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "{0:N0} / Tag"
-        },
-        {
-          "lang": "en-US",
-          "seg": "{0:N0} / day"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "{0:N0} / día"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "{0:N0} / jour"
-        }
-      ]
-    },
-    {
-      "tuid": "LOSS_EXPLORER_UNIT_VALUE",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "({0:N0} je Item)"
-        },
-        {
-          "lang": "en-US",
-          "seg": "({0:N0} per item)"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "({0:N0} por objeto)"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "{0:N0} par objet"
-        }
-      ]
-    },
-    {
-      "tuid": "LOSS_EXPLORER_AMOUNT_PER_DAY",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "{0:N0} verlorene Items / Tag"
-        },
-        {
-          "lang": "en-US",
-          "seg": "{0:N0} lost items / day"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "{0:N0} objetos perdidos / día"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "{0:N0} objets perdus / jour"
-        }
-      ]
-    },
-    {
-      "tuid": "SERVER_TYPE",
-      "tuv": [
-        {
-          "lang": "de-DE",
-          "seg": "Servertyp"
-        },
-        {
-          "lang": "en-US",
-          "seg": "Server Type"
-        },
-        {
-          "lang": "es-ES",
-          "seg": "Tipo de servidor"
-        },
-        {
-          "lang": "fr-FR",
-          "seg": "Type de serveur"
-        }
-      ]
-    }
-  ]
+    "tuid": "OTHER_LOOT",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Weitere Beute"
+      },
+      {
+        "lang": "en-US",
+        "seg": "Other loot"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "Otro botín"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Autre butin"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "その他の戦利品"
+      }
+    ]
+  },
+  {
+    "tuid": "MORE_CHESTS",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "+{0} weitere Truhen"
+      },
+      {
+        "lang": "en-US",
+        "seg": "+{0} more chests"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "+{0} cofres más"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "+{0} autres coffres"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "他 +{0} 個の宝箱"
+      }
+    ]
+  },
+  {
+    "tuid": "SHOW_FEWER_CHESTS",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Weniger anzeigen"
+      },
+      {
+        "lang": "en-US",
+        "seg": "Show fewer"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "Mostrar menos"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Afficher moins"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "表示を減らす"
+      }
+    ]
+  },
+  {
+    "tuid": "BRECILIAN_STANDING",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Brecilien-Ansehen"
+      },
+      {
+        "lang": "en-US",
+        "seg": "Brecilian standing"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "Reputación de Brecilien"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Brecilien - Vue d'ensemble"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "ブリシリエンの評判"
+      }
+    ]
+  },
+  {
+    "tuid": "PLAYERS",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Spieler"
+      },
+      {
+        "lang": "en-US",
+        "seg": "Players"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "Jugadores"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Joueurs"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "プレイヤー"
+      }
+    ]
+  },
+  {
+    "tuid": "NORMAL_CHEST",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Normale Truhe"
+      },
+      {
+        "lang": "en-US",
+        "seg": "Normal chest"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "Cofre normal"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Coffre normal"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "通常の宝箱"
+      }
+    ]
+  },
+  {
+    "tuid": "MORE_ITEMS",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "+{0} weitere Items"
+      },
+      {
+        "lang": "en-US",
+        "seg": "+{0} more items"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "+{0} objetos más"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "+{0} autres objets"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "他 +{0} 個のアイテム"
+      }
+    ]
+  },
+  {
+    "tuid": "SHOW_FEWER_ITEMS",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Weniger Items anzeigen"
+      },
+      {
+        "lang": "en-US",
+        "seg": "Show fewer items"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "Mostrar menos objetos"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Monter moins d'objets"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "表示するアイテムを減らす"
+      }
+    ]
+  },
+  {
+    "tuid": "MORE_COMBAT_EVENTS",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "+{0} weitere Tötungen/Tode"
+      },
+      {
+        "lang": "en-US",
+        "seg": "+{0} more kills/deaths"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "+{0} asesinatos/muertes más"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "+{0} autres de victimes/morts"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "他 +{0} 件のキル/デス"
+      }
+    ]
+  },
+  {
+    "tuid": "SHOW_FEWER_COMBAT_EVENTS",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Weniger Tötungen/Tode anzeigen"
+      },
+      {
+        "lang": "en-US",
+        "seg": "Show fewer kills/deaths"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "Mostrar menos asesinatos/muertes"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Afficher moins de victimes/morts"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "キル/デスの表示を減らす"
+      }
+    ]
+  },
+  {
+    "tuid": "TOTAL_DAMAGE_TOP_5",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Gesamtschaden – TOP 5"
+      },
+      {
+        "lang": "en-US",
+        "seg": "Total Damage – TOP 5"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "Daño total – TOP 5"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Dommages totaux – TOP 5"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "総ダメージ – TOP 5"
+      }
+    ]
+  },
+  {
+    "tuid": "EFFECTIVE_HEALING_TOP_5",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Effektive Heilung – TOP 5"
+      },
+      {
+        "lang": "en-US",
+        "seg": "Effective Healing – TOP 5"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "Curación efectiva – TOP 5"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Efficacité des Soins – TOP 5"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "有効回復量 – TOP 5"
+      }
+    ]
+  },
+  {
+    "tuid": "TOP_MOB_KILL_CONTRIBUTION_TOP_5",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Beitrag zu Mob-Tötungen – TOP 5"
+      },
+      {
+        "lang": "en-US",
+        "seg": "Top Mob Kill Contribution – TOP 5"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "Mayor contribución a muertes de mobs – TOP 5"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Meilleures contibutions aux éliminations des monstres – TOP 5"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "モブキル貢献度 – TOP 5"
+      }
+    ]
+  },
+  {
+    "tuid": "TOP_HEALER",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Top-Heiler"
+      },
+      {
+        "lang": "en-US",
+        "seg": "Top Healer"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "Mejor sanador"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Top Healer"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "トップヒーラー"
+      }
+    ]
+  },
+  {
+    "tuid": "TOP_DAMAGE_TAKEN",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Höchster erlittener Schaden"
+      },
+      {
+        "lang": "en-US",
+        "seg": "Top Damage Taken"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "Mayor daño recibido"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Top Dégâts encaissés"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "最大被ダメージ"
+      }
+    ]
+  },
+  {
+    "tuid": "DAMAGE_BY_TYPE",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Schaden nach Typ"
+      },
+      {
+        "lang": "en-US",
+        "seg": "Damage by Type"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "Daño por tipo"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Dégâts par type"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "タイプ別ダメージ"
+      }
+    ]
+  },
+  {
+    "tuid": "DAMAGE_BY_ABILITY_TOP_10",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Schaden nach Fähigkeit – Top 10"
+      },
+      {
+        "lang": "en-US",
+        "seg": "Damage by Ability – Top 10"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "Daño por habilidad – Top 10"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Dégâts par capacités - Top 10"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "アビリティ別ダメージ – Top 10"
+      }
+    ]
+  },
+  {
+    "tuid": "ABILITY",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Fähigkeit"
+      },
+      {
+        "lang": "en-US",
+        "seg": "Ability"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "Habilidad"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Capacités"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "アビリティ"
+      }
+    ]
+  },
+  {
+    "tuid": "PHYSICAL_DAMAGE",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Physischer Schaden"
+      },
+      {
+        "lang": "en-US",
+        "seg": "Physical Damage"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "Daño físico"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Dégâts physiques"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "物理ダメージ"
+      }
+    ]
+  },
+  {
+    "tuid": "MAGIC_DAMAGE",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Magischer Schaden"
+      },
+      {
+        "lang": "en-US",
+        "seg": "Magic Damage"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "Daño mágico"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Dégâts magiques"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "魔法ダメージ"
+      }
+    ]
+  },
+  {
+    "tuid": "TRUE_DAMAGE",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Wahrer Schaden"
+      },
+      {
+        "lang": "en-US",
+        "seg": "True Damage"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "Daño verdadero"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Dégâts réels"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "トゥルーダメージ"
+      }
+    ]
+  },
+  {
+    "tuid": "TOTAL_TRACKED_FIGHTS",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Erfasste Kämpfe insgesamt"
+      },
+      {
+        "lang": "en-US",
+        "seg": "Total Tracked Fights"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "Total de combates rastreados"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Nombre total de combats recensés"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "記録された総戦闘数"
+      }
+    ]
+  },
+  {
+    "tuid": "LOSS_EXPLORER",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Verlust-Explorer"
+      },
+      {
+        "lang": "en-US",
+        "seg": "Loss Explorer"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "Explorador de pérdidas"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Explorateur de pertes"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "損失エクスプローラー"
+      }
+    ]
+  },
+  {
+    "tuid": "EQUIPMENT",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Ausrüstung"
+      },
+      {
+        "lang": "en-US",
+        "seg": "Equipment"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "Equipamiento"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Equipment"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "装備"
+      }
+    ]
+  },
+  {
+    "tuid": "INVENTORY",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Inventar"
+      },
+      {
+        "lang": "en-US",
+        "seg": "Inventory"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "Inventario"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Inventaire"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "インベンタリ"
+      }
+    ]
+  },
+  {
+    "tuid": "LOSS_EXPLORER_LOADING_EVENTS",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Todesfälle werden geladen – Seite {0}"
+      },
+      {
+        "lang": "en-US",
+        "seg": "Loading deaths – page {0}"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "Cargando muertes – página {0}"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Chargement des morts – page {0}"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "死亡データを読み込み中 – ページ {0}"
+      }
+    ]
+  },
+  {
+    "tuid": "LOSS_EXPLORER_LOADING_PRICES",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Marktwerte werden geladen – Paket {0} von {1}"
+      },
+      {
+        "lang": "en-US",
+        "seg": "Loading market values – batch {0} of {1}"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "Cargando valores de mercado – lote {0} de {1}"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Chargement des valeurs de marché – batch {0} of {1}"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "市場価格を読み込み中 – バッチ {0} / {1}"
+      }
+    ]
+  },
+  {
+    "tuid": "LOSS_EXPLORER_READY",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "{0:N0} von 7 Tagen gespeichert · Tagesdurchschnitt · aktualisiert {1:g}"
+      },
+      {
+        "lang": "en-US",
+        "seg": "{0:N0} of 7 days stored · daily average · updated {1:g}"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "{0:N0} de 7 días almacenados · promedio diario · actualizado {1:g}"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "{0:N0} sur 7 jours · moyenne quotidienne · mise à jour {1:g}"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "7日中 {0:N0} 日分保存済み · 1日平均 · 更新日時 {1:g}"
+      }
+    ]
+  },
+  {
+    "tuid": "LOSS_EXPLORER_LOAD_HINT",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Verlustdaten werden alle 10 Minuten aktualisiert und bis zu 7 Tage gespeichert."
+      },
+      {
+        "lang": "en-US",
+        "seg": "Loss data is updated every 10 minutes and stored for up to 7 days."
+      },
+      {
+        "lang": "es-ES",
+        "seg": "Los datos de pérdidas se actualizan cada 10 minutos y se almacenan hasta por 7 días."
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Les données relatives aux pertes sont mises à jour toutes les 10 minutes et conservées pendant 7 jours maximum."
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "損失データは10分ごとに更新され、最大7日間保存されます。"
+      }
+    ]
+  },
+  {
+    "tuid": "LOSS_EXPLORER_LOAD_ERROR",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Die Verlustdaten konnten nicht vollständig geladen werden. Der nächste automatische Abgleich versucht es erneut."
+      },
+      {
+        "lang": "en-US",
+        "seg": "Loss data could not be loaded completely. The next automatic refresh will retry."
+      },
+      {
+        "lang": "es-ES",
+        "seg": "No se pudieron cargar completamente los datos de pérdidas. La próxima actualización automática volverá a intentarlo."
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Les données relatives aux pertes n'ont pas pu être chargées dans leur intégralité. La prochaine synchronisation automatique effectuera une nouvelle tentative."
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "損失データを完全に読み込めませんでした。次回の自動更新時に再試行されます。"
+      }
+    ]
+  },
+  {
+    "tuid": "LOSS_EXPLORER_SERVER_UNAVAILABLE",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Für den Loss Explorer muss ein Albion-Server aktiv sein."
+      },
+      {
+        "lang": "en-US",
+        "seg": "An Albion server must be active to use the Loss Explorer."
+      },
+      {
+        "lang": "es-ES",
+        "seg": "Debe haber un servidor de Albion activo para usar el Explorador de pérdidas."
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Pour utiliser l'Explorateur de pertes, un serveur Albion doit être actif."
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "損失エクスプローラーを使用するには、アクティブなAlbionサーバーが必要です。"
+      }
+    ]
+  },
+  {
+    "tuid": "LOSS_EXPLORER_STORED_EVENTS",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "{0:N0} Events gespeichert"
+      },
+      {
+        "lang": "en-US",
+        "seg": "{0:N0} events stored"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "{0:N0} eventos almacenados"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "{0:N0} événements enregistrés"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "{0:N0} 件のイベントを保存済み"
+      }
+    ]
+  },
+  {
+    "tuid": "LOSS_EXPLORER_VALUE_PER_DAY",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "{0:N0} / Tag"
+      },
+      {
+        "lang": "en-US",
+        "seg": "{0:N0} / day"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "{0:N0} / día"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "{0:N0} / jour"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "{0:N0} / 日"
+      }
+    ]
+  },
+  {
+    "tuid": "LOSS_EXPLORER_UNIT_VALUE",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "({0:N0} je Item)"
+      },
+      {
+        "lang": "en-US",
+        "seg": "({0:N0} per item)"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "({0:N0} por objeto)"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "{0:N0} par objet"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "(1アイテムあたり {0:N0})"
+      }
+    ]
+  },
+  {
+    "tuid": "LOSS_EXPLORER_AMOUNT_PER_DAY",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "{0:N0} verlorene Items / Tag"
+      },
+      {
+        "lang": "en-US",
+        "seg": "{0:N0} lost items / day"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "{0:N0} objetos perdidos / día"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "{0:N0} objets perdus / jour"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "損失アイテム数 {0:N0} 個 / 日"
+      }
+    ]
+  },
+  {
+    "tuid": "SERVER_TYPE",
+    "tuv": [
+      {
+        "lang": "de-DE",
+        "seg": "Servertyp"
+      },
+      {
+        "lang": "en-US",
+        "seg": "Server Type"
+      },
+      {
+        "lang": "es-ES",
+        "seg": "Tipo de servidor"
+      },
+      {
+        "lang": "fr-FR",
+        "seg": "Type de serveur"
+      },
+      {
+        "lang": "ja-JP",
+        "seg": "サーバータイプ"
+      }
+    ]
+  }
+]
 }
