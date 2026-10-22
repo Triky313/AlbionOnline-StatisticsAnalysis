@@ -8,7 +8,6 @@ using StatisticsAnalysisTool.Views;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using System;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -86,9 +85,7 @@ public partial class DashboardControl
             return;
         }
 
-        var confirmationMessage = string.Format(
-            CultureInfo.CurrentCulture,
-            LocalizationController.Translation("DELETE_SESSION_CONFIRMATION"),
+        var confirmationMessage = LocalizationController.FormatTranslation("DELETE_SESSION_CONFIRMATION",
             sessionFilter.Name);
         var confirmationWindow = new DialogWindow(
             LocalizationController.Translation("DELETE_SESSION"),

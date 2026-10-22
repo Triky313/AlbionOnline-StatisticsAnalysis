@@ -8,7 +8,6 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -145,7 +144,7 @@ public sealed class LossExplorerBindings : BaseViewModel, IDisposable
 
     public long StoredEventCount => _cache?.DailyEventCounts?.Sum(x => x.EventCount) ?? 0;
 
-    public string StoredEventCountText => string.Format(CultureInfo.CurrentCulture, TranslationStoredEvents, StoredEventCount);
+    public string StoredEventCountText => LocalizationController.FormatTranslation("LOSS_EXPLORER_STORED_EVENTS", StoredEventCount);
 
     public bool HasEquipmentItems => EquipmentItems.Count > 0;
 
@@ -164,14 +163,6 @@ public sealed class LossExplorerBindings : BaseViewModel, IDisposable
     public static string TranslationQuality => LocalizationController.Translation("QUALITY");
 
     public static string TranslationNoData => LocalizationController.Translation("NO_DATA");
-
-    private static string TranslationLoadingEvents => LocalizationController.Translation("LOSS_EXPLORER_LOADING_EVENTS");
-
-    private static string TranslationLoadingPrices => LocalizationController.Translation("LOSS_EXPLORER_LOADING_PRICES");
-
-    private static string TranslationReady => LocalizationController.Translation("LOSS_EXPLORER_READY");
-
-    private static string TranslationStoredEvents => LocalizationController.Translation("LOSS_EXPLORER_STORED_EVENTS");
 
     private static string TranslationLoadHint => LocalizationController.Translation("LOSS_EXPLORER_LOAD_HINT");
 
@@ -282,7 +273,7 @@ public sealed class LossExplorerBindings : BaseViewModel, IDisposable
             if (showProgress)
             {
                 SetIsBusy(true);
-                SetStatusText(string.Format(CultureInfo.CurrentCulture, TranslationLoadingEvents, 0));
+                SetStatusText(LocalizationController.FormatTranslation("LOSS_EXPLORER_LOADING_EVENTS", 0));
             }
 
             var requestedCachePath = _cacheFilePath;
@@ -296,14 +287,14 @@ public sealed class LossExplorerBindings : BaseViewModel, IDisposable
                 {
                     if (showProgress)
                     {
-                        SetStatusText(string.Format(CultureInfo.CurrentCulture, TranslationLoadingEvents, pageCount));
+                        SetStatusText(LocalizationController.FormatTranslation("LOSS_EXPLORER_LOADING_EVENTS", pageCount));
                     }
                 },
                 (batch, total) =>
                 {
                     if (showProgress)
                     {
-                        SetStatusText(string.Format(CultureInfo.CurrentCulture, TranslationLoadingPrices, batch, total));
+                        SetStatusText(LocalizationController.FormatTranslation("LOSS_EXPLORER_LOADING_PRICES", batch, total));
                     }
                 },
                 cancellationToken).ConfigureAwait(false);
@@ -577,9 +568,7 @@ public sealed class LossExplorerBindings : BaseViewModel, IDisposable
 
     private string CreateReadyStatusText()
     {
-        return string.Format(
-            CultureInfo.CurrentCulture,
-            TranslationReady,
+        return LocalizationController.FormatTranslation("LOSS_EXPLORER_READY",
             _cache?.ObservedDays?.Count ?? 0,
             (_cache?.LastSuccessfulSyncUtc > DateTime.MinValue
                 ? _cache.LastSuccessfulSyncUtc

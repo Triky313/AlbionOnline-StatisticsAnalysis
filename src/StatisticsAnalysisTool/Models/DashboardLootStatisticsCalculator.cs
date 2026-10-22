@@ -1,7 +1,6 @@
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Localization;
 using System.Collections.Generic;
-using System.Globalization;
 
 namespace StatisticsAnalysisTool.Models;
 
@@ -43,13 +42,12 @@ public static class DashboardLootStatisticsCalculator
         IReadOnlyList<double> totalValues,
         double totalLootValue)
     {
-        var culture = CultureInfo.CurrentCulture;
         var names = new[]
         {
-            string.Format(culture, LocalizationController.Translation("LOOT_VALUE_UNDER_10000"), 10_000),
-            string.Format(culture, LocalizationController.Translation("LOOT_VALUE_10000_TO_100000"), 10_000, 100_000),
-            string.Format(culture, LocalizationController.Translation("LOOT_VALUE_100000_TO_500000"), 100_000, 500_000),
-            string.Format(culture, LocalizationController.Translation("LOOT_VALUE_OVER_500000"), 500_000)
+            LocalizationController.FormatTranslation("LOOT_VALUE_UNDER_10000", 10_000),
+            LocalizationController.FormatTranslation("LOOT_VALUE_10000_TO_100000", 10_000, 100_000),
+            LocalizationController.FormatTranslation("LOOT_VALUE_100000_TO_500000", 100_000, 500_000),
+            LocalizationController.FormatTranslation("LOOT_VALUE_OVER_500000", 500_000)
         };
         var result = new DashboardLootBreakdownItem[names.Length];
 

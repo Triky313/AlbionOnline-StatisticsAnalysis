@@ -3,7 +3,6 @@ using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using System;
-using System.Globalization;
 using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Crafting;
@@ -55,19 +54,13 @@ public sealed class LossExplorerItemRow : BaseViewModel
         _ => LocalizationController.Translation("UNKNOWN")
     };
 
-    public string TotalValueText => string.Format(
-        CultureInfo.CurrentCulture,
-        LocalizationController.Translation("LOSS_EXPLORER_VALUE_PER_DAY"),
+    public string TotalValueText => LocalizationController.FormatTranslation("LOSS_EXPLORER_VALUE_PER_DAY",
         TotalValue);
 
-    public string UnitValueText => string.Format(
-        CultureInfo.CurrentCulture,
-        LocalizationController.Translation("LOSS_EXPLORER_UNIT_VALUE"),
+    public string UnitValueText => LocalizationController.FormatTranslation("LOSS_EXPLORER_UNIT_VALUE",
         UnitValue);
 
-    public string QuantityText => string.Format(
-        CultureInfo.CurrentCulture,
-        LocalizationController.Translation("LOSS_EXPLORER_AMOUNT_PER_DAY"),
+    public string QuantityText => LocalizationController.FormatTranslation("LOSS_EXPLORER_AMOUNT_PER_DAY",
         decimal.Round(Quantity, 0, MidpointRounding.AwayFromZero));
 
     public BitmapImage Icon => ImageController.GetItemImageWithQuality(ItemUniqueName, QualityLevel);

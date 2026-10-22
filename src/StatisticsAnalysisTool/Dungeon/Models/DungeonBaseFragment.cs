@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -453,7 +452,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
 
     public IEnumerable<Loot> VisibleLoot => Loot.Where(IsLootVisible);
     public Visibility HasLootVisibility => VisibleLoot.Any() ? Visibility.Visible : Visibility.Collapsed;
-    public string LootSummaryText => string.Format(CultureInfo.CurrentCulture, TranslationLootEntries, VisibleLoot.Count());
+    public string LootSummaryText => LocalizationController.FormatTranslation("LOOT_ENTRIES", VisibleLoot.Count());
     public string LootToggleToolTip => ItemsContainerVisibility == Visibility.Visible ? TranslationHideCollectedLoot : TranslationShowCollectedLoot;
 
     public int TotalRunTimeInSeconds
@@ -764,7 +763,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
 
     public string AdditionalCombatEventsToggleText => AreAdditionalCombatEventsVisible
         ? TranslationShowFewerCombatEvents
-        : string.Format(CultureInfo.CurrentCulture, TranslationMoreCombatEvents, HiddenCombatEventCount);
+        : LocalizationController.FormatTranslation("MORE_COMBAT_EVENTS", HiddenCombatEventCount);
 
     public int FloorCount => this switch
     {
@@ -811,7 +810,7 @@ public abstract class DungeonBaseFragment : BaseViewModel
 
     public string AdditionalChestToggleText => AreAdditionalChestsVisible
         ? TranslationShowFewerChests
-        : string.Format(CultureInfo.CurrentCulture, TranslationMoreChests, HiddenChestCount);
+        : LocalizationController.FormatTranslation("MORE_CHESTS", HiddenChestCount);
 
     public void AddCombatEvent(KillStatus status, string diedName, string killedBy)
     {

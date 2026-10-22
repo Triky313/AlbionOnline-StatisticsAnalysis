@@ -201,7 +201,7 @@ public class TrackingController : ITrackingController
 
         if (ex is SocketException se)
         {
-            return string.Format(LocalizationController.Translation("ERR_SOCKET_FAILED_WITH_CODE"), se.SocketErrorCode);
+            return LocalizationController.FormatTranslation("ERR_SOCKET_FAILED_WITH_CODE", se.SocketErrorCode);
         }
 
         if (ex is UnauthorizedAccessException)
