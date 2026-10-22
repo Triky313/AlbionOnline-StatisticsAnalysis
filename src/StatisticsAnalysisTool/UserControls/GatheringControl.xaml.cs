@@ -8,7 +8,6 @@ using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
-using System.Globalization;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
@@ -77,9 +76,7 @@ public partial class GatheringControl
             return;
         }
 
-        var confirmationMessage = string.Format(
-            CultureInfo.CurrentCulture,
-            LocalizationController.Translation("DELETE_SESSION_CONFIRMATION"),
+        var confirmationMessage = LocalizationController.FormatTranslation("DELETE_SESSION_CONFIRMATION",
             sessionFilter.Name);
         var confirmationWindow = new DialogWindow(
             LocalizationController.Translation("DELETE_SESSION"),

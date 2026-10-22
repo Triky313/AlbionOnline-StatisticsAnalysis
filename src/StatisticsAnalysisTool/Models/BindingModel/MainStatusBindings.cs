@@ -125,7 +125,7 @@ public class MainStatusBindings : BaseViewModel
         _serverLocation = serverLocation;
         IsServerDetected = IsKnownServerLocation(serverLocation);
         ServerStatusText = IsServerDetected
-            ? string.Format(LocalizationController.Translation("STATUS_SERVER_DETECTED_FORMAT"), GetServerStatusName(serverLocation))
+            ? LocalizationController.FormatTranslation("STATUS_SERVER_DETECTED_FORMAT", GetServerStatusName(serverLocation))
             : LocalizationController.Translation("STATUS_SERVER_UNDETECTED");
     }
 
@@ -134,7 +134,7 @@ public class MainStatusBindings : BaseViewModel
         _characterName = characterName ?? string.Empty;
         IsCharacterDetected = !string.IsNullOrWhiteSpace(_characterName);
         CharacterStatusText = IsCharacterDetected
-            ? string.Format(LocalizationController.Translation("STATUS_CHARACTER_DETECTED_FORMAT"), _characterName)
+            ? LocalizationController.FormatTranslation("STATUS_CHARACTER_DETECTED_FORMAT", _characterName)
             : LocalizationController.Translation("STATUS_CHARACTER_UNDETECTED");
     }
 

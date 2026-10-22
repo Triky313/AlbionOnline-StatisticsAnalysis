@@ -68,7 +68,7 @@ public sealed class DungeonLootGroup : BaseViewModel
         : IsOpened
             ? $"{RarityText} · {ChestTypeText}"
             : ChestTypeText;
-    public string AdditionalItemsToggleText => IsExpanded ? LocalizationController.Translation("SHOW_FEWER_ITEMS") : string.Format(LocalizationController.Translation("MORE_ITEMS"), HiddenItemCount);
+    public string AdditionalItemsToggleText => IsExpanded ? LocalizationController.Translation("SHOW_FEWER_ITEMS") : LocalizationController.FormatTranslation("MORE_ITEMS", HiddenItemCount);
 
     public bool IsExpanded
     {

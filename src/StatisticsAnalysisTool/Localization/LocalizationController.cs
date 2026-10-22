@@ -109,6 +109,16 @@ public class LocalizationController
         return Translation(key, null, null);
     }
 
+    public static string FormatTranslation(string key, params object[] arguments)
+    {
+        return LocalizedTextFormatter.Format(
+            key,
+            Translation(key),
+            TranslationForCulture(key, EnglishCultureName),
+            CultureInfo.CurrentCulture,
+            arguments);
+    }
+
     public static string TranslationForCulture(string key, string culture)
     {
         if (string.IsNullOrEmpty(key))

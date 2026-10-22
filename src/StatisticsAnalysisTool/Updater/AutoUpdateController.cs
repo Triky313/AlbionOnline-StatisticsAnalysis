@@ -361,13 +361,9 @@ public static class AutoUpdateController
 
         return new UpdateWindowViewModel(
             LocalizationController.Translation("UPDATE_AVAILABLE_TITLE"),
-            string.Format(
-                CultureInfo.CurrentCulture,
-                LocalizationController.Translation("UPDATE_AVAILABLE_HEADLINE"),
+            LocalizationController.FormatTranslation("UPDATE_AVAILABLE_HEADLINE",
                 GetProductTitle()),
-            string.Format(
-                CultureInfo.CurrentCulture,
-                LocalizationController.Translation("UPDATE_AVAILABLE_OPTIONAL_MESSAGE"),
+            LocalizationController.FormatTranslation("UPDATE_AVAILABLE_OPTIONAL_MESSAGE",
                 updateVersion,
                 currentVersionText),
             releaseTitle,
