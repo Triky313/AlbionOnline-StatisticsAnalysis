@@ -59467,7 +59467,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "{0:N0} gününüzden {7} gün · günlük ortalama · güncellendi {1:g}"
+          "seg": "7 günün {0:N0} günü kaydedildi · günlük ortalama · güncellendi {1:g}"
         }
       ]
     },
