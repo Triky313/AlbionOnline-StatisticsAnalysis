@@ -4457,7 +4457,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Taşra(Outlands)"
+          "seg": "Dış Diyarlar(Outlands)"
         },
         {
           "lang": "zh-CN",
@@ -12547,7 +12547,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "İplik"
+          "seg": "Lif"
         },
         {
           "lang": "zh-CN",
@@ -12600,7 +12600,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Post"
+          "seg": "Kürk"
         },
         {
           "lang": "zh-CN",
@@ -12759,7 +12759,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Maden"
+          "seg": "Cevher"
         },
         {
           "lang": "zh-CN",
@@ -13554,7 +13554,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "İplik Ganimeti"
+          "seg": "Lif Ganimeti"
         },
         {
           "lang": "zh-CN",
@@ -16294,7 +16294,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Sizde olan"
+          "seg": "Ödül olarak"
         },
         {
           "lang": "zh-CN",
@@ -16400,7 +16400,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "kazanılan."
+          "seg": "kazandın."
         },
         {
           "lang": "zh-CN",
@@ -16453,7 +16453,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Harita değiştiğinde sıfırlama"
+          "seg": "Harita değiştiğinde sıfırlansın"
         },
         {
           "lang": "zh-CN",
@@ -16506,7 +16506,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Toplam Fame"
+          "seg": "Toplam Nam(Fame)"
         },
         {
           "lang": "zh-CN",
@@ -16612,7 +16612,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Toplam Yeniden Puanlama"
+          "seg": "Toplam Yeniden Dağıtma(Savaş Nam Kredisi)"
         },
         {
           "lang": "zh-CN",
@@ -16718,7 +16718,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Dakikalar"
+          "seg": "Dakika"
         },
         {
           "lang": "zh-CN",
@@ -16824,7 +16824,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Saatler"
+          "seg": "Saat"
         },
         {
           "lang": "zh-CN",
@@ -16877,7 +16877,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Günler"
+          "seg": "Gün"
         },
         {
           "lang": "zh-CN",
@@ -17195,7 +17195,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Adım"
+          "seg": "Ada"
         },
         {
           "lang": "zh-CN",
@@ -19879,7 +19879,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Zindan İzleyiciy'i sıfırlamak istediğinizden emin misiniz?"
+          "seg": "Zindan İzleyici'yi sıfırlamak istediğinizden emin misiniz?"
         },
         {
           "lang": "zh-CN",
@@ -19932,7 +19932,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Kuleyi Kaldır"
+          "seg": "Zindanı Kaldır"
         },
         {
           "lang": "zh-CN",
@@ -19985,7 +19985,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Makine굴레: Emin misiniz? Dungeon'u kaldırmak istediğinize emin misiniz?"
+          "seg": "Zindan'ı kaldırmak istediğinize emin misiniz?"
         },
         {
           "lang": "zh-CN",
@@ -20038,7 +20038,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "İzinsiz Kullanıma Geçiş"
+          "seg": "Yeniden Dağıtım"
         },
         {
           "lang": "zh-CN",
@@ -20091,7 +20091,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Tek Şeyrek Çoğu Odası"
+          "seg": "Tek Kişilik Zindan"
         },
         {
           "lang": "zh-CN",
@@ -20144,7 +20144,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Standart Kaya"
+          "seg": "Standart Zindan"
         },
         {
           "lang": "zh-CN",
@@ -20250,7 +20250,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Avalyonlu Korku Labirenti"
+          "seg": "Avalon Zindanı"
         },
         {
           "lang": "zh-CN",
@@ -20409,7 +20409,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Corrupted"
+          "seg": "Yozlaşmış(Corrupted)"
         },
         {
           "lang": "zh-CN",
@@ -20462,7 +20462,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Ortalama Şöhret"
+          "seg": "Ortalama Nam"
         },
         {
           "lang": "zh-CN",
@@ -20515,7 +20515,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Ortalama Tekrarla"
+          "seg": "Ortalama Yeniden Dağıtım"
         },
         {
           "lang": "zh-CN",
@@ -20621,7 +20621,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "hıpkalana"
+          "seg": "topladı"
         },
         {
           "lang": "zh-CN",
@@ -20674,7 +20674,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "tanımak için"
+          "seg": "kişiden alındı"
         },
         {
           "lang": "zh-CN",
@@ -20727,7 +20727,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Göreliyat"
+          "seg": "Ganimet"
         },
         {
           "lang": "zh-CN",
@@ -20780,7 +20780,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Cep Telefonu"
+          "seg": "yaratıktan"
         },
         {
           "lang": "zh-CN",
@@ -20939,7 +20939,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Araç Kazancı"
+          "seg": "Ekipman Ganimeti"
         },
         {
           "lang": "zh-CN",
@@ -20992,7 +20992,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Tüketicili Güçlük"
+          "seg": "Tüketilebilir Ganimeti"
         },
         {
           "lang": "zh-CN",
@@ -21045,7 +21045,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Basit Güçlük"
+          "seg": "Basit Ganimet"
         },
         {
           "lang": "zh-CN",
@@ -21098,7 +21098,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Bilinmeyen ŞarjÖğesi"
+          "seg": "Bilinmeye Ganimet"
         },
         {
           "lang": "zh-CN",
@@ -21310,7 +21310,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Genişletilmiş hasar metni penceresini aç"
+          "seg": "Genişletilmiş hasar ölçer penceresini aç"
         },
         {
           "lang": "zh-CN",
@@ -21400,7 +21400,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Panoya kopyala"
+          "seg": "Panoya(clipboard) kopyala"
         },
         {
           "lang": "zh-CN",
@@ -21506,7 +21506,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Hasar Çizgisi - AÇIK/KAPALI"
+          "seg": "Hasar Ölçer - AÇIK/KAPALI"
         },
         {
           "lang": "zh-CN",
@@ -21612,7 +21612,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Seçilen donjonları sil"
+          "seg": "Seçilen zindanları sil"
         },
         {
           "lang": "zh-CN",
@@ -22195,7 +22195,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "7. Eğer takipci hala tüm önemli bilgileri sahip değilse, wifi simgesi sarıdır. Bu simgeye yeşil geçmesi için karakteriniz oyun içinde en az bir harita değiştirmelisiniz. (örn.: Martlock Eldon Dağı'na)"
+          "seg": "7. Eğer izleme hala tüm önemli bilgileri sahip değilse, wifi simgesi sarıdır. Bu simgeye yeşil geçmesi için karakteriniz oyun içinde en az bir harita değiştirmelisiniz. (örn.: Martlock Eldon Dağı'na)"
         },
         {
           "lang": "zh-CN",
@@ -22248,7 +22248,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "8. Eğer wifi simgesi yeşil ve karakter adınız görünebiliyorsa, takipci tam olarak işlevsel - Tamam!"
+          "seg": "8. Eğer wifi simgesi yeşil ve karakter adınız görünebiliyorsa, izleme tam olarak işlevsel - Tamam!"
         },
         {
           "lang": "zh-CN",
@@ -22550,7 +22550,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Sadece grubun hazinesini izle"
+          "seg": "Sadece grubun ganimetini izle"
         },
         {
           "lang": "zh-CN",
@@ -22656,7 +22656,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Birim satış fiyatı"
+          "seg": "Eşya satış fiyatı"
         },
         {
           "lang": "zh-CN",
@@ -23769,7 +23769,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Kurulum ücreti"
+          "seg": "İşlem ücreti"
         },
         {
           "lang": "zh-CN",
@@ -24405,7 +24405,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Göçümargenteri"
+          "seg": "Gümüşleri izle"
         },
         {
           "lang": "zh-CN",
@@ -24458,7 +24458,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "İpucu popülariyesi"
+          "seg": "Namı izle"
         },
         {
           "lang": "zh-CN",
@@ -24515,7 +24515,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Ürün Arama"
+          "seg": "Eşya Arama"
         },
         {
           "lang": "zh-CN",
@@ -24568,7 +24568,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Donemler"
+          "seg": "Zindanlar"
         },
         {
           "lang": "zh-CN",
@@ -24674,7 +24674,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Girişgünlüğü"
+          "seg": "Günlük Kayıtları"
         },
         {
           "lang": "zh-CN",
@@ -24727,7 +24727,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "İpucu etkinizedir"
+          "seg": "İzleme etkin"
         },
         {
           "lang": "zh-CN",
@@ -24780,7 +24780,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Takip kısmen etkin (Lütfen bölgeyi değiştirin!)"
+          "seg": "İzleme kısmen etkin (Lütfen bölgeyi değiştirin!)"
         },
         {
           "lang": "zh-CN",
@@ -24955,7 +24955,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Panorama"
+          "seg": "Genel Bakış"
         },
         {
           "lang": "zh-CN",
@@ -25008,7 +25008,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Olası"
+          "seg": "Kudret"
         },
         {
           "lang": "zh-CN",
@@ -25061,7 +25061,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Favori"
+          "seg": "Şeref Nişanı"
         },
         {
           "lang": "zh-CN",
@@ -25167,7 +25167,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Gruptan loyhiyi göster"
+          "seg": "Yaratıklardan alınan ganimeti göster"
         },
         {
           "lang": "zh-CN",
@@ -25220,7 +25220,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "İpucu mob kazançları"
+          "seg": "Yaratıklardan gelen ganimeti izle"
         },
         {
           "lang": "zh-CN",
@@ -25273,7 +25273,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Takipçi oyuncu kazanımlarını izle"
+          "seg": "Oyuncu ganimetlerini izle"
         },
         {
           "lang": "zh-CN",
@@ -25326,7 +25326,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "İpucu vuruşları"
+          "seg": "Öldürmeler takip ediliyor"
         },
         {
           "lang": "zh-CN",
@@ -25697,7 +25697,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Dungeon tekrar belirle"
+          "seg": "Zindan Yeniden Dağıtımı"
         },
         {
           "lang": "zh-CN",
@@ -25856,7 +25856,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Dungeon tekrar yapısızlandırma her saatte"
+          "seg": "Saatlik zindan yeniden dağıtım kredisi"
         },
         {
           "lang": "zh-CN",
@@ -26439,7 +26439,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "öldürüldü由系统生成的回答需要进行调整以符合要求： \n\nöldürüldü"
+          "seg": "tarafından öldürüldü"
         },
         {
           "lang": "zh-CN",
@@ -27287,7 +27287,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Soldan"
+          "seg": "Satıldı"
         },
         {
           "lang": "zh-CN",
@@ -27340,7 +27340,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Birim için maliyet"
+          "seg": "Eşya için maliyet"
         },
         {
           "lang": "zh-CN",
@@ -27707,7 +27707,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "to"
+          "seg": "tarihleri arasında"
         },
         {
           "lang": "zh-CN",
@@ -27972,7 +27972,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Takas"
+          "seg": "Bağış Yap"
         },
         {
           "lang": "zh-CN",
@@ -29085,7 +29085,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "OR"
+          "seg": "VEYA"
         },
         {
           "lang": "zh-CN",
@@ -29138,7 +29138,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Kısa hasar metni panosunu剪切板中"
+          "seg": "Hasar ölçeri panoya(clipboard) kaydet"
         },
         {
           "lang": "zh-CN",
@@ -29297,7 +29297,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Seç / Seçimi Kaldır All"
+          "seg": "Hepsini Seç / Seçimden Kaldır"
         },
         {
           "lang": "zh-CN",
@@ -29350,7 +29350,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Hırsızlanan kâğıtçıklar"
+          "seg": "Alınan Sandıklar"
         },
         {
           "lang": "zh-CN",
@@ -29403,7 +29403,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Dinamik donduklar"
+          "seg": "Sabit Zindanlar"
         },
         {
           "lang": "zh-CN",
@@ -29456,7 +29456,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Avalyonlu yollar"
+          "seg": "Avalon yolları"
         },
         {
           "lang": "zh-CN",
@@ -29562,7 +29562,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Dünya Açın"
+          "seg": "Açık Dünya"
         },
         {
           "lang": "zh-CN",
@@ -29668,7 +29668,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Öldürulan Çiftçiler"
+          "seg": "Öldürulan Yaratıklar"
         },
         {
           "lang": "zh-CN",
@@ -29774,7 +29774,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Arama moblari"
+          "seg": "Yaratıkları Arama"
         },
         {
           "lang": "zh-CN",
@@ -30198,7 +30198,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Ekran Görüntüsü"
+          "seg": "Anlık kayıt"
         },
         {
           "lang": "zh-CN",
@@ -30251,7 +30251,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Seçilen önbelleği sil"
+          "seg": "Seçilen anlık kaydı sil"
         },
         {
           "lang": "zh-CN",
@@ -30304,7 +30304,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Gereceğin ekran görüntüsünü al ve görsel bölümde görüntüle"
+          "seg": "Hasar ölçerin anlık  al ve görsel bölümde görüntüle"
         },
         {
           "lang": "zh-CN",
@@ -30463,7 +30463,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Harita değişikliği sonrası ekran görüntüsü"
+          "seg": "Harita değişikliği sonrası anlık kayıt alsın"
         },
         {
           "lang": "zh-CN",
@@ -30622,7 +30622,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Ödendiği Bu Oturum için ReSpec'e Gümüş Ödeme Yapıldı"
+          "seg": "Bu Oturumda Yeniden Dağıtma'ya Harcanan Gümüş"
         },
         {
           "lang": "zh-CN",
@@ -30675,7 +30675,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Ödeme Silver için ReSpec başına saatlik olarak"
+          "seg": "Yeniden Dağıtma için saat başına ödenen gümüş"
         },
         {
           "lang": "zh-CN",
@@ -30728,7 +30728,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Bugunun donemlerini sıfırla"
+          "seg": "Bugüne ait zindanları sıfırla"
         },
         {
           "lang": "zh-CN",
@@ -30940,7 +30940,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Chest Statistikleri"
+          "seg": "Sandık İstatistikleri"
         },
         {
           "lang": "zh-CN",
@@ -31099,7 +31099,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Kitap Çuvalı Statistikleri"
+          "seg": "Kitap Sandığı İstatistikleri"
         },
         {
           "lang": "zh-CN",
@@ -31205,7 +31205,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Toplam kazanılan değer"
+          "seg": "Toplam ganimet değeri"
         },
         {
           "lang": "zh-CN",
@@ -31417,7 +31417,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Sil 0 fama donemleri"
+          "seg": "0 nam kazandıran zindanları sil"
         },
         {
           "lang": "zh-CN",
@@ -31894,7 +31894,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Kurulum vergisi"
+          "seg": "İşlem vergisi"
         },
         {
           "lang": "zh-CN",
@@ -32106,7 +32106,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Elekmehanisi kurulum ücreti ve vergiler, pazarda bir ürün satmak istediğinizde oyun içinde bulunabilir."
+          "seg": "Pazaryeri işlem ücreti ve vergiler, pazarda bir ürün satmak istediğinizde oyun içinde görülebilir."
         },
         {
           "lang": "zh-CN",
@@ -32212,7 +32212,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Gizler"
+          "seg": "Sisli Diyar(Mist)"
         },
         {
           "lang": "zh-CN",
@@ -32424,7 +32424,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Savaş öncesi sıfırla"
+          "seg": "Savaş öncesi sıfırlansın"
         },
         {
           "lang": "zh-CN",
@@ -32742,7 +32742,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Saldırı Andan Satın Al"
+          "seg": "Hızlı sat"
         },
         {
           "lang": "zh-CN",
@@ -32795,7 +32795,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Sıradan satın al"
+          "seg": "Hızlı al"
         },
         {
           "lang": "zh-CN",
@@ -32901,7 +32901,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Takip edilen imalat maliyetleri"
+          "seg": "İmalat maliyetlerini izle"
         },
         {
           "lang": "zh-CN",
@@ -34010,7 +34010,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Genellikle"
+          "seg": "Genel"
         },
         {
           "lang": "zh-CN",
@@ -34993,7 +34993,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Tüm ekran görüntülerini sil"
+          "seg": "Tüm anlık kayıtları sil"
         },
         {
           "lang": "zh-CN",
@@ -35046,7 +35046,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Tüm ekran görüntülerini silmek istediğinize emin misiniz?"
+          "seg": "Tüm anlık kayıtları silmek istediğinize emin misiniz?"
         },
         {
           "lang": "zh-CN",
@@ -36147,7 +36147,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Takip etmeyi bırak"
+          "seg": "İzlemeyi bırak"
         },
         {
           "lang": "zh-CN",
@@ -37040,7 +37040,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Eğer Hasar Sayaçı'nda doğru silahlar gösterilmiyorsa, bu genellikle ItemList.json ve Items.json dosyalarının güncel olmamasından kaynaklanır. El ile program klasöründen dosyaları silin ve aracı yeniden başlatın, ardından en son versiyonlar indirilecek ve her şey olağan şekilde çalışmalıdır."
+          "seg": "Eğer Hasar Ölçer'de doğru silahlar gösterilmiyorsa, bu genellikle ItemList.json ve Items.json dosyalarının güncel olmamasından kaynaklanır. El ile program klasöründen dosyaları silin ve aracı yeniden başlatın, ardından en son versiyonlar indirilecek ve her şey olağan şekilde çalışmalıdır."
         },
         {
           "lang": "zh-CN",
@@ -39184,7 +39184,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Kilitli kese"
+          "seg": "Kilitli Sandıklar"
         },
         {
           "lang": "zh-CN",
@@ -40197,7 +40197,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "3. Daha fazla veya daha az Özümlenmiş Enerji kaydını takip etmek için bir zaman aralığı seçin"
+          "seg": "3. Daha fazla veya daha az Özümlenmiş Enerji kaydını izlemek için bir zaman aralığı seçin"
         },
         {
           "lang": "zh-CN",
@@ -42155,7 +42155,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Geçersiz  Sandık günlüğü metni yüklenemedi."
+          "seg": "Geçersiz Sandık günlüğü metni yüklenemedi."
         },
         {
           "lang": "zh-CN",
@@ -43581,7 +43581,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Sadece oyunculara olan hasarı say"
+          "seg": "Sadece oyunculara olan hasar sayılsın"
         },
         {
           "lang": "zh-CN",
@@ -43785,7 +43785,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Operatör"
+          "seg": "İşlem"
         },
         {
           "lang": "zh-CN",
@@ -43970,7 +43970,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Nasıl sandık kayıtlarını alabilirim?"
+          "seg": "Sandık kayıtlarını nasıl alabilirim?"
         },
         {
           "lang": "zh-CN",
@@ -44007,7 +44007,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Oyunlardan sandık günlüklerini almak için bu adımları takip edin:"
+          "seg": "Oyundan sandık günlüklerini almak için bu adımları takip edin:"
         },
         {
           "lang": "zh-CN",
@@ -44155,7 +44155,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "4. \"Panoya Yapıştır\"'a tıklayın."
+          "seg": "4. \"Panoya(clipboard) Yapıştır\"'a tıklayın."
         },
         {
           "lang": "zh-CN",
@@ -48430,7 +48430,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Günlük bnous Beklenen Kaynak İade Oranı (RRR)"
+          "seg": "Günlük bonus Beklenen Kaynak İade Oranı (RRR)"
         },
         {
           "lang": "zh-CN",
@@ -50412,7 +50412,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "çalışır"
+          "seg": "rotasyon"
         },
         {
           "lang": "zh-CN",
@@ -50856,7 +50856,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Avalonian Enerjisi"
+          "seg": "Avalon Enerjisi"
         },
         {
           "lang": "zh-CN",
@@ -51333,7 +51333,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Satınalma vergisi ve kurulum ücreti dahil olmak üzere satış geliri."
+          "seg": "Satınalma vergisi ve işlem ücreti dahil olmak üzere satış geliri."
         },
         {
           "lang": "zh-CN",
@@ -51925,7 +51925,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Takip modu"
+          "seg": "İzleme modu"
         },
         {
           "lang": "zh-CN",
@@ -55059,7 +55059,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Her bir oturunda ortalama yeniden dağıtma gümüş maliyeti"
+          "seg": "Her bir oturumda ortalama yeniden dağıtma gümüş maliyeti"
         }
       ]
     },
@@ -55610,7 +55610,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Seviye dağılımı"
+          "seg": "Kademeye göre dağılımı"
         }
       ]
     },
@@ -55639,7 +55639,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Yükseltme"
+          "seg": "Efsun"
         }
       ]
     },
@@ -57350,7 +57350,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "En iyi tek seferde toplama"
+          "seg": "En iyi tek seferde toplayıcılık"
         }
       ]
     },
@@ -57379,7 +57379,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Kere toplandı"
+          "seg": "Toplama seferi"
         }
       ]
     },
@@ -57466,7 +57466,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Toplama başına ortalama değer"
+          "seg": "Toplayıcılık başına ortalama değer"
         }
       ]
     },
@@ -57495,7 +57495,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Toplama zamanı"
+          "seg": "Toplayıcılık süresi"
         }
       ]
     },
@@ -57582,7 +57582,7 @@
         },
         {
           "lang": "tr-TR",
-          "seg": "Lokasyona göre toplama etkinliği"
+          "seg": "Lokasyona göre toplayıcılık etkinliği"
         }
       ]
     },
