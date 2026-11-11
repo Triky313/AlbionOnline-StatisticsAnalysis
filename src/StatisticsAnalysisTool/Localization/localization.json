@@ -26,6 +26,10 @@
         {
           "lang": "tr-TR",
           "seg": "Pencere yönetimi ve sistem ile otomatik başlama"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "通知与启动"
         }
       ]
     },
@@ -55,6 +59,10 @@
         {
           "lang": "tr-TR",
           "seg": "Windows ile otomatik başla"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "开机自启动"
         }
       ]
     },
@@ -84,6 +92,10 @@
         {
           "lang": "tr-TR",
           "seg": "Windows'e giriş yaptıktan sonra otomatik olarak Starts Statistics Analysis Tool'u başlatır."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "打开电脑后自动启动 Statistics Analysis Tool。"
         }
       ]
     },
@@ -113,6 +125,10 @@
         {
           "lang": "tr-TR",
           "seg": "Windows sistem tepsisinde başla"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "在通知区域启动"
         }
       ]
     },
@@ -142,6 +158,10 @@
         {
           "lang": "tr-TR",
           "seg": "Windows sistem tepsisinde olan pencereyi başlatıldıktan sonra anında gizler."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "启动后立即将窗口隐藏到通知区域。"
         }
       ]
     },
@@ -171,6 +191,10 @@
         {
           "lang": "tr-TR",
           "seg": "Oyunla birlike açılsın"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "随游戏打开"
         }
       ]
     },
@@ -200,6 +224,10 @@
         {
           "lang": "tr-TR",
           "seg": "Albion Online başladığında program penceresini geri getir."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "当 Albion Online 启动时，从通知区域恢复窗口。"
         }
       ]
     },
@@ -229,6 +257,10 @@
         {
           "lang": "tr-TR",
           "seg": "Program penceresini oyunun başlaması ile gizle"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "随游戏隐藏"
         }
       ]
     },
@@ -258,6 +290,10 @@
         {
           "lang": "tr-TR",
           "seg": "Albion Online kapanıncaya kadar uygulamayı Windows sistem tepsisine gizler."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "当 Albion Online 关闭时，将窗口隐藏到通知区域。"
         }
       ]
     },
@@ -287,6 +323,10 @@
         {
           "lang": "tr-TR",
           "seg": "Oyun başlamasıyla birlikte takip etmeyi başlatın"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "随游戏开始追踪"
         }
       ]
     },
@@ -316,6 +356,10 @@
         {
           "lang": "tr-TR",
           "seg": "Albion Online başladığında otomatik olarak takip etmeyi başlatır."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "当 Albion Online 启动时自动开始追踪。"
         }
       ]
     },
@@ -345,6 +389,10 @@
         {
           "lang": "tr-TR",
           "seg": "Oyunla takip etmeyi durdurun"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "随游戏停止追踪"
         }
       ]
     },
@@ -374,6 +422,10 @@
         {
           "lang": "tr-TR",
           "seg": "Albion Online kapanınca otomatik olarak izlemeyi durur."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "当 Albion Online 关闭时自动停止追踪。"
         }
       ]
     },
@@ -403,6 +455,10 @@
         {
           "lang": "tr-TR",
           "seg": "Otomatik başlatma ayarları güncellenemedi. Lütfen tekrar deneyin."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "无法更新 Windows 启动设置。请重试。"
         }
       ]
     },
@@ -432,6 +488,10 @@
         {
           "lang": "tr-TR",
           "seg": "Uygulama penceresi küçültüldüğünde Windows sistem tepsisine gizle"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "最小化时隐藏到通知区域"
         }
       ]
     },
@@ -461,6 +521,10 @@
         {
           "lang": "tr-TR",
           "seg": "Takip etmeyi aktifleştir"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "启用追踪"
         }
       ]
     },
@@ -490,6 +554,10 @@
         {
           "lang": "tr-TR",
           "seg": "İzleme devre dışı bırak"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "禁用追踪"
         }
       ]
     },
@@ -519,6 +587,10 @@
         {
           "lang": "tr-TR",
           "seg": "Uygulamayı aç"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "打开"
         }
       ]
     },
@@ -548,6 +620,10 @@
         {
           "lang": "tr-TR",
           "seg": "Uygulamadan çık"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "退出"
         }
       ]
     },
@@ -577,6 +653,10 @@
         {
           "lang": "tr-TR",
           "seg": "Statistics Analysis Tool hala bildirim altyapısında çalışmaktadır."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "Statistics Analysis Tool 将继续在通知区域运行。"
         }
       ]
     },
@@ -3719,7 +3799,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "平均IP"
+          "seg": "平均物品强度（IP）"
         },
         {
           "lang": "zh-TW",
@@ -4514,7 +4594,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "地狱之门"
+          "seg": "炼狱之门"
         },
         {
           "lang": "zh-TW",
@@ -4654,6 +4734,10 @@
         {
           "lang": "tr-TR",
           "seg": "Malzemelerin maliyetleri"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "制造成本"
         }
       ]
     },
@@ -6350,7 +6434,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "Okay"
+          "seg": "好的"
         },
         {
           "lang": "zh-TW",
@@ -6986,7 +7070,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "布帽"
+          "seg": "布头"
         },
         {
           "lang": "zh-TW",
@@ -7145,7 +7229,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "皮帽"
+          "seg": "皮头"
         },
         {
           "lang": "zh-TW",
@@ -7304,7 +7388,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "板甲头盔"
+          "seg": "板头"
         },
         {
           "lang": "zh-TW",
@@ -7357,7 +7441,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "板甲长靴"
+          "seg": "板鞋"
         },
         {
           "lang": "zh-TW",
@@ -9318,7 +9402,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "收割工作鞋"
+          "seg": "收割工作靴"
         },
         {
           "lang": "zh-TW",
@@ -9371,7 +9455,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "收割双肩包"
+          "seg": "收割工双肩包"
         },
         {
           "lang": "zh-TW",
@@ -9530,7 +9614,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "渔夫靴子"
+          "seg": "渔夫工作靴"
         },
         {
           "lang": "zh-TW",
@@ -9583,7 +9667,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "渔夫双肩包"
+          "seg": "渔夫工双肩包"
         },
         {
           "lang": "zh-TW",
@@ -9795,7 +9879,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "剥皮双肩包"
+          "seg": "剥皮工双肩包"
         },
         {
           "lang": "zh-TW",
@@ -10007,7 +10091,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "采矿双肩包"
+          "seg": "采矿工双肩包"
         },
         {
           "lang": "zh-TW",
@@ -10219,7 +10303,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "采石双肩包"
+          "seg": "采石工双肩包"
         },
         {
           "lang": "zh-TW",
@@ -10431,7 +10515,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "伐木双肩包"
+          "seg": "伐木工双肩包"
         },
         {
           "lang": "zh-TW",
@@ -17445,6 +17529,10 @@
         {
           "lang": "tr-TR",
           "seg": "Duo"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "双人"
         }
       ]
     },
@@ -22199,7 +22287,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "7. 如果追踪器没有显示所有重要信息，并且  wifi 图标为黄色，则你的角色必须在游戏中改变一次地图，直到图标变成绿色。（例如 Martlock 到 Eldon Hill）"
+          "seg": "7. 如果追踪器没有显示所有重要信息，并且 wifi 图标为黄色，则你的角色必须在游戏中改变一次地图，直到图标变成绿色。（例如 Martlock 到 Eldon Hill）"
         },
         {
           "lang": "zh-TW",
@@ -26019,7 +26107,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "阵营点数"
+          "seg": "阵营声望"
         },
         {
           "lang": "zh-TW",
@@ -28347,7 +28435,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "打赏排行"
+          "seg": "捐赠排行"
         },
         {
           "lang": "zh-TW",
@@ -38649,7 +38737,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "Game folder path"
+          "seg": "游戏文件夹路径"
         }
       ]
     },
@@ -40111,7 +40199,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "1. 首先选中右边的第三栏；"
+          "seg": "1. 首先选中右侧的第三个标签页。"
         },
         {
           "lang": "ru-RU",
@@ -40156,7 +40244,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "2. 在搜索选项中选择虹吸能量；"
+          "seg": "2. 在搜索栏中选择“虹吸能量”。"
         },
         {
           "lang": "ru-RU",
@@ -40201,7 +40289,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "3. 选择要追踪的时间来决定追踪的虹吸条目多少；"
+          "seg": "3. 选择时间范围以追踪更多或更少的条目。"
         },
         {
           "lang": "ru-RU",
@@ -40246,7 +40334,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "4. 每一页都要被打开一次才能被全部追踪到。"
+          "seg": "4. 每一页都需要单独打开一次才能被完整追踪。"
         },
         {
           "lang": "ru-RU",
@@ -42670,6 +42758,10 @@
         {
           "lang": "tr-TR",
           "seg": "Karşılaştırıcı durumunu kaydet"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "保存比对器状态"
         }
       ]
     },
@@ -42699,6 +42791,10 @@
         {
           "lang": "tr-TR",
           "seg": "Karşılaştırıcı durumunu yükleyin"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "加载比对器状态"
         }
       ]
     },
@@ -42728,6 +42824,10 @@
         {
           "lang": "tr-TR",
           "seg": "Karşılaştırıcı durumu adı:"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "比对器状态名称："
         }
       ]
     },
@@ -42757,6 +42857,10 @@
         {
           "lang": "tr-TR",
           "seg": "Şu an yüklenen günlükler silinecektir. Seçili durumu yüklemek istiyor musunuz?"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "当前加载的日志将被移除。是否加载所选状态？"
         }
       ]
     },
@@ -42786,6 +42890,10 @@
         {
           "lang": "tr-TR",
           "seg": "Karşılaştırma durumu kaydedilemedi."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "无法保存比对器状态。"
         }
       ]
     },
@@ -42815,6 +42923,10 @@
         {
           "lang": "tr-TR",
           "seg": "Karşılaştırma durumu yüklenemedi. Kaydedilen dosyalar bozulmuş olabilir."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "无法加载比对器状态。保存的文件可能已损坏。"
         }
       ]
     },
@@ -42844,6 +42956,10 @@
         {
           "lang": "tr-TR",
           "seg": "Kaydet"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "保存"
         }
       ]
     },
@@ -42873,6 +42989,10 @@
         {
           "lang": "tr-TR",
           "seg": "İptal"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "取消"
         }
       ]
     },
@@ -42902,6 +43022,10 @@
         {
           "lang": "tr-TR",
           "seg": "Seçilen karşılaştırıcı durumunu sil"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "删除所选比对器状态"
         }
       ]
     },
@@ -42931,6 +43055,10 @@
         {
           "lang": "tr-TR",
           "seg": "Karşılaştırma durumunu gerçekten silmek istiyor musun \"{SAVE_NAME}\"? Bu eylem geri alınamaz!"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "确定要删除比对器状态\"{SAVE_NAME}\"吗？此操作无法撤销。"
         }
       ]
     },
@@ -42960,6 +43088,10 @@
         {
           "lang": "tr-TR",
           "seg": "Karşılaştırma durumu silinemedi."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "无法删除比对器状态。"
         }
       ]
     },
@@ -42989,6 +43121,10 @@
         {
           "lang": "tr-TR",
           "seg": "Filtreler"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "过滤器"
         }
       ]
     },
@@ -43018,6 +43154,10 @@
         {
           "lang": "tr-TR",
           "seg": "Sandık(Chest) kayıt girişi"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "宝箱日志输入"
         }
       ]
     },
@@ -43047,6 +43187,10 @@
         {
           "lang": "tr-TR",
           "seg": "Karşılaştır"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "对比"
         }
       ]
     },
@@ -43076,6 +43220,10 @@
         {
           "lang": "tr-TR",
           "seg": "Eylemler"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "操作"
         }
       ]
     },
@@ -43105,6 +43253,10 @@
         {
           "lang": "tr-TR",
           "seg": "Kaydedilen karşılaştırıcı:"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "已保存的比对器："
         }
       ]
     },
@@ -43744,7 +43896,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "Ancient Lands"
+          "seg": "远古之地"
         },
         {
           "lang": "zh-TW",
@@ -44048,7 +44200,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "1. 在公会仓库中点击\"Actions\"。"
+          "seg": "1. 在公会仓库中点击“行动”。"
         },
         {
           "lang": "ja-JP",
@@ -44085,7 +44237,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "2. 点击\"Manage\"。"
+          "seg": "2.点击“管理”。"
         },
         {
           "lang": "ja-JP",
@@ -44122,7 +44274,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "3. 打开\"Chest Log\"。"
+          "seg": "3.打开“宝箱记录”。"
         },
         {
           "lang": "ja-JP",
@@ -44159,7 +44311,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "4. 点\"Copy to clipboard\"。"
+          "seg": "4.点击“复制到剪贴板”。"
         },
         {
           "lang": "ja-JP",
@@ -44196,7 +44348,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "将复制的箱子日志直接粘贴到箱子日志输入框中，然后点击添加箱子日志按钮。"
+          "seg": "将复制的宝箱日志直接粘贴到“宝箱日志输入”框中，然后点击“添加宝箱日志”按钮。"
         },
         {
           "lang": "ja-JP",
@@ -44307,7 +44459,7 @@
         },
         {
           "lang": "zh-CN",
-          "seg": "在日志选项卡中使用绿色 CSV 按钮导出战利品日志。在战利品对比器中，通过添加战利品日志文件按钮加载一个或多个此类 .csv 文件。仅支持具有预期表头的分号分隔战利品日志 CSV 文件；不支持 JSON 和其他文件格式。然后点击比较日志。"
+          "seg": "在日志选项卡中使用绿色 CSV 按钮导出战利品日志。在战利品对比器中，通过添加战利品日志文件按钮加载一个或多个此类 CSV文件。仅支持具有预期表头的分号分隔战利品日志 CSV 文件；不支持 JSON 和其他文件格式。然后点击比较日志。"
         },
         {
           "lang": "ja-JP",
@@ -45541,6 +45693,10 @@
         {
           "lang": "tr-TR",
           "seg": "İndirme tamamlandı. Güncellenme yükleniyor...."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "下载完成。正在安装更新……"
         }
       ]
     },
@@ -45570,6 +45726,10 @@
         {
           "lang": "tr-TR",
           "seg": "Yükleniyor..."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "正在安装……"
         }
       ]
     },
@@ -45599,6 +45759,10 @@
         {
           "lang": "tr-TR",
           "seg": "Güncelleme indirilemiyor. Lütfen internet bağlantınızı veya proxy bağlantınızı kontrol edip tekrar deneyin."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "无法下载更新。请检查网络或代理连接后重试。"
         }
       ]
     },
@@ -45628,6 +45792,10 @@
         {
           "lang": "tr-TR",
           "seg": "Güncelleme otomatik olarak yüklenemedi. Lütfen tekrar deneyin veya manuel olarak yükleyin."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "无法自动安装更新。请重试或手动安装。"
         }
       ]
     },
@@ -50240,6 +50408,10 @@
         {
           "lang": "tr-TR",
           "seg": "Ses Seviyesi"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "音量"
         }
       ]
     },
@@ -50269,6 +50441,10 @@
         {
           "lang": "tr-TR",
           "seg": "Sesi test et"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "试听音效"
         }
       ]
     },
@@ -54422,6 +54598,10 @@
         {
           "lang": "tr-TR",
           "seg": "İçerik"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "内容"
         }
       ]
     },
@@ -54451,6 +54631,10 @@
         {
           "lang": "tr-TR",
           "seg": "Oturum"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "会话"
         }
       ]
     },
@@ -54480,6 +54664,10 @@
         {
           "lang": "tr-TR",
           "seg": "Tüm içerik"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "所有内容类型"
         }
       ]
     },
@@ -54509,6 +54697,10 @@
         {
           "lang": "tr-TR",
           "seg": "Tüm oturumlar"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "所有会话"
         }
       ]
     },
@@ -54538,6 +54730,10 @@
         {
           "lang": "tr-TR",
           "seg": "Yozlaşmış Zindanlar"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "腐蚀地下城"
         }
       ]
     },
@@ -54567,6 +54763,10 @@
         {
           "lang": "tr-TR",
           "seg": "Zaman aralığı"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "时间范围"
         }
       ]
     },
@@ -54596,6 +54796,10 @@
         {
           "lang": "tr-TR",
           "seg": "Oturumu sıfırla"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "重置会话"
         }
       ]
     },
@@ -54625,6 +54829,10 @@
         {
           "lang": "tr-TR",
           "seg": "Harita değişikliğinde oturumu sıfırla"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "过图时重置会话"
         }
       ]
     },
@@ -54654,6 +54862,10 @@
         {
           "lang": "tr-TR",
           "seg": "Oturum süresi"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "会话时长"
         }
       ]
     },
@@ -54683,6 +54895,10 @@
         {
           "lang": "tr-TR",
           "seg": "önceki saat kıyasla"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "较上一小时"
         }
       ]
     },
@@ -54712,6 +54928,10 @@
         {
           "lang": "tr-TR",
           "seg": "geçen güne kıyasla"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "较前一天"
         }
       ]
     },
@@ -54741,6 +54961,10 @@
         {
           "lang": "tr-TR",
           "seg": "önceki dakikalara kıyasla"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "较前几分钟"
         }
       ]
     },
@@ -54770,6 +54994,10 @@
         {
           "lang": "tr-TR",
           "seg": "önceki saatlere kıyasla"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "较前几小时"
         }
       ]
     },
@@ -54799,6 +55027,10 @@
         {
           "lang": "tr-TR",
           "seg": "geçmiş günlere kıyasla"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "较前几天"
         }
       ]
     },
@@ -54828,6 +55060,10 @@
         {
           "lang": "tr-TR",
           "seg": "Savaş"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "战斗"
         }
       ]
     },
@@ -54857,6 +55093,10 @@
         {
           "lang": "tr-TR",
           "seg": "Ekonomi"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "经济"
         }
       ]
     },
@@ -54886,6 +55126,10 @@
         {
           "lang": "tr-TR",
           "seg": "Oturumu Sil"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "删除会话"
         }
       ]
     },
@@ -54915,6 +55159,10 @@
         {
           "lang": "tr-TR",
           "seg": "\"{0}\" oturumu kalıcı olarak silmek istediğinize emin misiniz?"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "确定要永久删除会话\"{0}\"吗？"
         }
       ]
     },
@@ -54944,6 +55192,10 @@
         {
           "lang": "tr-TR",
           "seg": "Oturum silinemedi."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "无法删除会话。"
         }
       ]
     },
@@ -54973,6 +55225,10 @@
         {
           "lang": "tr-TR",
           "seg": "En iyi nam kaynakları"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "主要声望来源"
         }
       ]
     },
@@ -55002,6 +55258,10 @@
         {
           "lang": "tr-TR",
           "seg": "Toplam gümüş kaynakları"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "主要银币来源"
         }
       ]
     },
@@ -55031,6 +55291,10 @@
         {
           "lang": "tr-TR",
           "seg": "Yeniden dağıtmaya harcanan gümüş"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "用于自动专攻的银币"
         }
       ]
     },
@@ -55060,6 +55324,10 @@
         {
           "lang": "tr-TR",
           "seg": "Her bir oturunda ortalama yeniden dağıtma gümüş maliyeti"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "每次会话自动专攻平均银币消耗"
         }
       ]
     },
@@ -55089,6 +55357,10 @@
         {
           "lang": "tr-TR",
           "seg": "Yeniden dağıtma puanı harcanmış"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "已消耗战斗声望点（万能点）"
         }
       ]
     },
@@ -55118,6 +55390,10 @@
         {
           "lang": "tr-TR",
           "seg": "Her oturumun ortalama tamir maliyeti"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "每次会话平均修理费用"
         }
       ]
     },
@@ -55147,6 +55423,10 @@
         {
           "lang": "tr-TR",
           "seg": "En yüksek onarım maliyeti"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "最高修理费用"
         }
       ]
     },
@@ -55176,6 +55456,10 @@
         {
           "lang": "tr-TR",
           "seg": "Son kazanılan ganimetler"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "最近拾取的战利品"
         }
       ]
     },
@@ -55205,6 +55489,10 @@
         {
           "lang": "tr-TR",
           "seg": "Ortalama ganimet değeri"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "平均战利品价值"
         }
       ]
     },
@@ -55234,6 +55522,10 @@
         {
           "lang": "tr-TR",
           "seg": "Para değeriye göre en iyi haritalar ve alanları"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "按战利品价值排序的顶级地图与区域"
         }
       ]
     },
@@ -55263,6 +55555,10 @@
         {
           "lang": "tr-TR",
           "seg": "Kalite yükseltme"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "精炼物品品质"
         }
       ]
     },
@@ -55292,6 +55588,10 @@
         {
           "lang": "tr-TR",
           "seg": "Eşya kalitesini yükseltmek için harcanan gümüş"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "用于精炼物品品质的银币"
         }
       ]
     },
@@ -55321,6 +55621,10 @@
         {
           "lang": "tr-TR",
           "seg": "Yükseltilen eşyalar"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "已升级物品"
         }
       ]
     },
@@ -55350,6 +55654,10 @@
         {
           "lang": "tr-TR",
           "seg": "Uyandırılmış silah"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "觉醒武器"
         }
       ]
     },
@@ -55379,6 +55687,10 @@
         {
           "lang": "tr-TR",
           "seg": "Uyandırılmış silahlara harcanan gümüş"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "用于觉醒武器的银币"
         }
       ]
     },
@@ -55408,6 +55720,10 @@
         {
           "lang": "tr-TR",
           "seg": "Özellikler yükseltildi"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "已升级特性"
         }
       ]
     },
@@ -55437,6 +55753,10 @@
         {
           "lang": "tr-TR",
           "seg": "Yükseltme tetiklenmeleri"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "特性升级触发次数"
         }
       ]
     },
@@ -55466,6 +55786,10 @@
         {
           "lang": "tr-TR",
           "seg": "Ganimetin eşya değerine göre dağıtımı"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "按物品价值统计的战利品分布"
         }
       ]
     },
@@ -55495,6 +55819,10 @@
         {
           "lang": "tr-TR",
           "seg": "Ganimetin seviye ve yükseltmeye göre"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "按阶级与附魔等级统计的战利品"
         }
       ]
     },
@@ -55524,6 +55852,10 @@
         {
           "lang": "tr-TR",
           "seg": "Değer sınıfı (gümüş)"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "价值区间（银币）"
         }
       ]
     },
@@ -55553,6 +55885,10 @@
         {
           "lang": "tr-TR",
           "seg": "Eşyalar"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "物品"
         }
       ]
     },
@@ -55582,6 +55918,10 @@
         {
           "lang": "tr-TR",
           "seg": "Toplam değerin payı"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "占总价值比例"
         }
       ]
     },
@@ -55611,6 +55951,10 @@
         {
           "lang": "tr-TR",
           "seg": "Seviye dağılımı"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "阶级分布"
         }
       ]
     },
@@ -55640,6 +55984,10 @@
         {
           "lang": "tr-TR",
           "seg": "Yükseltme"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "附魔等级"
         }
       ]
     },
@@ -55669,6 +56017,10 @@
         {
           "lang": "tr-TR",
           "seg": "Harita/Alan"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "地图/区域"
         }
       ]
     },
@@ -55698,6 +56050,10 @@
         {
           "lang": "tr-TR",
           "seg": "Ganimet Değeri"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "战利品价值"
         }
       ]
     },
@@ -55727,6 +56083,10 @@
         {
           "lang": "tr-TR",
           "seg": "Ganiment/Saat"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "战利品/小时"
         }
       ]
     },
@@ -55756,6 +56116,10 @@
         {
           "lang": "tr-TR",
           "seg": "Ganimet/Harita"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "战利品/地图"
         }
       ]
     },
@@ -55785,6 +56149,10 @@
         {
           "lang": "tr-TR",
           "seg": "Ziyaretler"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "访问次数"
         }
       ]
     },
@@ -55814,6 +56182,10 @@
         {
           "lang": "tr-TR",
           "seg": "Paylaş"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "占比"
         }
       ]
     },
@@ -55843,6 +56215,10 @@
         {
           "lang": "tr-TR",
           "seg": "Altı {0:N0}"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "低于 {0:N0}"
         }
       ]
     },
@@ -55871,6 +56247,10 @@
         },
         {
           "lang": "tr-TR",
+          "seg": "{0:N0} - {1:N0}"
+        },
+        {
+          "lang": "zh-CN",
           "seg": "{0:N0} - {1:N0}"
         }
       ]
@@ -55901,6 +56281,10 @@
         {
           "lang": "tr-TR",
           "seg": "{0:N0} - {1:N0}"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "{0:N0} - {1:N0}"
         }
       ]
     },
@@ -55930,6 +56314,10 @@
         {
           "lang": "tr-TR",
           "seg": "Üzerinde {0:N0}"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "高于 {0:N0}"
         }
       ]
     },
@@ -55959,6 +56347,10 @@
         {
           "lang": "tr-TR",
           "seg": "Önemli Ganimet"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "重要战利品"
         }
       ]
     },
@@ -55988,6 +56380,10 @@
         {
           "lang": "tr-TR",
           "seg": "İzleme"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "监控"
         }
       ]
     },
@@ -56017,6 +56413,10 @@
         {
           "lang": "tr-TR",
           "seg": "Bu eşyayı izleyin ve koşul sağlanınca tek seferlik bir bildirim alın."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "监控此物品，并在满足条件时收到一次性通知。"
         }
       ]
     },
@@ -56046,6 +56446,10 @@
         {
           "lang": "tr-TR",
           "seg": "Fiyat izleme"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "价格监控"
         }
       ]
     },
@@ -56075,6 +56479,10 @@
         {
           "lang": "tr-TR",
           "seg": "Mevcut satış teklifinin yapılandırılan fiyatın altına düştüğünde veya ulaşması durumunda bilgilendirir."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "当前卖单低于设定价格时通知你。"
         }
       ]
     },
@@ -56104,6 +56512,10 @@
         {
           "lang": "tr-TR",
           "seg": "Fiyat sınırı"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "价格上限"
         }
       ]
     },
@@ -56133,6 +56545,10 @@
         {
           "lang": "tr-TR",
           "seg": "Market mevcutluğu"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "市场可购性"
         }
       ]
     },
@@ -56162,6 +56578,10 @@
         {
           "lang": "tr-TR",
           "seg": "Bu eşyanın mevcut bir satış teklifi bildirildiğinde size bildirir."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "当此物品出现当前卖单时立即通知你。"
         }
       ]
     },
@@ -56191,6 +56611,10 @@
         {
           "lang": "tr-TR",
           "seg": "Bildirimi sesini oynat"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "播放警报声"
         }
       ]
     },
@@ -56220,6 +56644,10 @@
         {
           "lang": "tr-TR",
           "seg": "Geçerli bir fiyat sınırı girin (0'dan büyük)."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "请输入大于 0 的有效价格上限。"
         }
       ]
     },
@@ -56249,6 +56677,10 @@
         {
           "lang": "tr-TR",
           "seg": "Bir kerede en fazla 10 öğe izlenebilir."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "最多只能同时监控 10 件物品。"
         }
       ]
     },
@@ -56278,6 +56710,10 @@
         {
           "lang": "tr-TR",
           "seg": "Bu öğe için izleme aktive edilemedi."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "无法为此物品启用监控。"
         }
       ]
     },
@@ -56307,6 +56743,10 @@
         {
           "lang": "tr-TR",
           "seg": "Piyasa teklifi bulunmuştur"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "发现市场卖单"
         }
       ]
     },
@@ -56336,6 +56776,10 @@
         {
           "lang": "tr-TR",
           "seg": "Bir pazar teklifi için"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "以下物品的市场卖单"
         }
       ]
     },
@@ -56365,6 +56809,10 @@
         {
           "lang": "tr-TR",
           "seg": "bulundu."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "已被找到。"
         }
       ]
     },
@@ -56394,6 +56842,10 @@
         {
           "lang": "tr-TR",
           "seg": "Maksimum fiyat süresi"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "价格数据最大时效"
         }
       ]
     },
@@ -56423,6 +56875,10 @@
         {
           "lang": "tr-TR",
           "seg": "Yalnızca bu kadar dakika içinde bildirilen fiyatlar bir uyarı tetikleyebilir."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "只有在此分钟数内报告的价格才能触发警报。"
         }
       ]
     },
@@ -56452,6 +56908,10 @@
         {
           "lang": "tr-TR",
           "seg": "Maksimum fiyat yaşını en az bir dakika olarak girin."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "请输入至少 1 分钟的最大价格时效。"
         }
       ]
     },
@@ -56481,6 +56941,10 @@
         {
           "lang": "tr-TR",
           "seg": "Karaborsa alım emrini takip et"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "监控黑市收购订单"
         }
       ]
     },
@@ -56510,6 +56974,10 @@
         {
           "lang": "tr-TR",
           "seg": "En yüksek bildirilen Karaborsa satış emrinin belirtilen minimum fiyatınla eşit olması veya aşıldığı durumda bildirir."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "当黑市的最高收购订单达到设定最低收购单价格时通知你。"
         }
       ]
     },
@@ -56539,6 +57007,10 @@
         {
           "lang": "tr-TR",
           "seg": "Minimum alım emri fiyatı"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "最低收购订单价格"
         }
       ]
     },
@@ -56568,6 +57040,10 @@
         {
           "lang": "tr-TR",
           "seg": "Bu öğe Karaborsoya satılamaz."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "此物品无法在黑市出售。"
         }
       ]
     },
@@ -56597,6 +57073,10 @@
         {
           "lang": "tr-TR",
           "seg": "Karaborsa satın emri ulaştı"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "黑市收购订单已达到"
         }
       ]
     },
@@ -56626,6 +57106,10 @@
         {
           "lang": "tr-TR",
           "seg": "En yüksek Karaborsa alış emri için"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "以下物品的最高黑市收购订单"
         }
       ]
     },
@@ -56655,6 +57139,10 @@
         {
           "lang": "tr-TR",
           "seg": "Minimum fiyatınıza ulaşmıştır."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "已达到你的最低价格。"
         }
       ]
     },
@@ -56684,6 +57172,10 @@
         {
           "lang": "tr-TR",
           "seg": "Ara"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "搜索"
         }
       ]
     },
@@ -56713,6 +57205,10 @@
         {
           "lang": "tr-TR",
           "seg": "Lokasyonlar"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "地点"
         }
       ]
     },
@@ -56742,6 +57238,10 @@
         {
           "lang": "tr-TR",
           "seg": "Lokasyona göre Ticari Etkinlikler"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "按地点统计的交易活动"
         }
       ]
     },
@@ -56771,6 +57271,10 @@
         {
           "lang": "tr-TR",
           "seg": "Satış"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "销售"
         }
       ]
     },
@@ -56800,6 +57304,10 @@
         {
           "lang": "tr-TR",
           "seg": "Satın almalar"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "购买"
         }
       ]
     },
@@ -56829,6 +57337,10 @@
         {
           "lang": "tr-TR",
           "seg": "Sayı"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "数量"
         }
       ]
     },
@@ -56858,6 +57370,10 @@
         {
           "lang": "tr-TR",
           "seg": "Pay"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "利润率"
         }
       ]
     },
@@ -56887,6 +57403,10 @@
         {
           "lang": "tr-TR",
           "seg": "Ödenen vergi"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "已付税费"
         }
       ]
     },
@@ -56916,6 +57436,10 @@
         {
           "lang": "tr-TR",
           "seg": "En çok ticaretin olduğu kategori"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "交易最多的类别"
         }
       ]
     },
@@ -56945,6 +57469,10 @@
         {
           "lang": "tr-TR",
           "seg": "Filtreleri sıfırla"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "重置过滤器"
         }
       ]
     },
@@ -56974,6 +57502,10 @@
         {
           "lang": "tr-TR",
           "seg": "Toplam satış"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "总销售额"
         }
       ]
     },
@@ -57003,6 +57535,10 @@
         {
           "lang": "tr-TR",
           "seg": "Toplam satın alma"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "总购买额"
         }
       ]
     },
@@ -57032,6 +57568,10 @@
         {
           "lang": "tr-TR",
           "seg": "Ticaret hacmi"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "交易量"
         }
       ]
     },
@@ -57061,6 +57601,10 @@
         {
           "lang": "tr-TR",
           "seg": "Ticaret istatistikleri"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "交易统计"
         }
       ]
     },
@@ -57090,6 +57634,10 @@
         {
           "lang": "tr-TR",
           "seg": "Önceki dönemle karşılaştırılarak"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "与上一周期相比"
         }
       ]
     },
@@ -57119,6 +57667,10 @@
         {
           "lang": "tr-TR",
           "seg": "Genel Bakış"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "概览"
         }
       ]
     },
@@ -57148,6 +57700,10 @@
         {
           "lang": "tr-TR",
           "seg": "En iyi kaynak"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "最佳资源"
         }
       ]
     },
@@ -57177,6 +57733,10 @@
         {
           "lang": "tr-TR",
           "seg": "En iyi harita"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "最佳地图"
         }
       ]
     },
@@ -57206,6 +57766,10 @@
         {
           "lang": "tr-TR",
           "seg": "Birbirinden farklı kaynak türleri"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "不同资源类型"
         }
       ]
     },
@@ -57235,6 +57799,10 @@
         {
           "lang": "tr-TR",
           "seg": "En iyi toplama haritası"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "最佳采集地图"
         }
       ]
     },
@@ -57264,6 +57832,10 @@
         {
           "lang": "tr-TR",
           "seg": "Toplam kaynak toplandı"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "采集资源总量"
         }
       ]
     },
@@ -57293,6 +57865,10 @@
         {
           "lang": "tr-TR",
           "seg": "Toplam toplama süreçleri"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "采集次数总计"
         }
       ]
     },
@@ -57322,6 +57898,10 @@
         {
           "lang": "tr-TR",
           "seg": "Ortalama kaynak değeri"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "平均资源价值"
         }
       ]
     },
@@ -57351,6 +57931,10 @@
         {
           "lang": "tr-TR",
           "seg": "En iyi tek seferde toplama"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "最佳单次采集"
         }
       ]
     },
@@ -57380,6 +57964,10 @@
         {
           "lang": "tr-TR",
           "seg": "Kere toplandı"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "采集次数"
         }
       ]
     },
@@ -57409,6 +57997,10 @@
         {
           "lang": "tr-TR",
           "seg": "Toplam adet"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "总数量"
         }
       ]
     },
@@ -57438,6 +58030,10 @@
         {
           "lang": "tr-TR",
           "seg": "Toplam değeri"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "总价值"
         }
       ]
     },
@@ -57467,6 +58063,10 @@
         {
           "lang": "tr-TR",
           "seg": "Toplama başına ortalama değer"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "每次采集平均价值"
         }
       ]
     },
@@ -57496,6 +58096,10 @@
         {
           "lang": "tr-TR",
           "seg": "Toplama zamanı"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "采集时间"
         }
       ]
     },
@@ -57525,6 +58129,10 @@
         {
           "lang": "tr-TR",
           "seg": "Çeşide göre kaynak değeri"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "按类型统计的资源价值"
         }
       ]
     },
@@ -57554,6 +58162,10 @@
         {
           "lang": "tr-TR",
           "seg": "Zaman içindeki toplayıcılık aktivitesi"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "采集活动随时间变化"
         }
       ]
     },
@@ -57583,6 +58195,10 @@
         {
           "lang": "tr-TR",
           "seg": "Lokasyona göre toplama etkinliği"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "按地点统计的采集活动"
         }
       ]
     },
@@ -57612,6 +58228,10 @@
         {
           "lang": "tr-TR",
           "seg": "Kaynak türleri toplandı"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "已采集资源类型"
         }
       ]
     },
@@ -57641,6 +58261,10 @@
         {
           "lang": "tr-TR",
           "seg": "En yüksek toplanan kaynaklar"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "采集最多的资源"
         }
       ]
     },
@@ -57670,6 +58294,10 @@
         {
           "lang": "tr-TR",
           "seg": "Son toplayıcılıklar"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "最近采集"
         }
       ]
     },
@@ -57699,6 +58327,10 @@
         {
           "lang": "tr-TR",
           "seg": "Kaynak türü"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "资源类型"
         }
       ]
     },
@@ -57728,6 +58360,10 @@
         {
           "lang": "tr-TR",
           "seg": "Miktar"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "数量"
         }
       ]
     },
@@ -57757,6 +58393,10 @@
         {
           "lang": "tr-TR",
           "seg": "Toplamın %'si"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "占总计百分比"
         }
       ]
     },
@@ -57786,6 +58426,10 @@
         {
           "lang": "tr-TR",
           "seg": "Harita"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "地图"
         }
       ]
     },
@@ -57815,6 +58459,10 @@
         {
           "lang": "tr-TR",
           "seg": "Veri yok"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "无数据"
         }
       ]
     },
@@ -57844,6 +58492,10 @@
         {
           "lang": "tr-TR",
           "seg": "Diğer haritalar"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "其他地图"
         }
       ]
     },
@@ -57873,6 +58525,10 @@
         {
           "lang": "tr-TR",
           "seg": "Rotasyon kârlılığı"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "路线效率"
         }
       ]
     },
@@ -57902,6 +58558,10 @@
         {
           "lang": "tr-TR",
           "seg": "Toplam rotasyon"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "总次数"
         }
       ]
     },
@@ -57931,6 +58591,10 @@
         {
           "lang": "tr-TR",
           "seg": "Toplam Kudret(Might)"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "总力量点"
         }
       ]
     },
@@ -57960,6 +58624,10 @@
         {
           "lang": "tr-TR",
           "seg": "Toplam Lütuf(Favor)"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "总恩惠点"
         }
       ]
     },
@@ -57989,6 +58657,10 @@
         {
           "lang": "tr-TR",
           "seg": "Zindan ölüm sayıları"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "副本死亡次数"
         }
       ]
     },
@@ -58018,6 +58690,10 @@
         {
           "lang": "tr-TR",
           "seg": "Ortalama rotasyon süresi"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "平均用时"
         }
       ]
     },
@@ -58047,6 +58723,10 @@
         {
           "lang": "tr-TR",
           "seg": "En kazançlı kademe"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "最赚钱阶级"
         }
       ]
     },
@@ -58076,6 +58756,10 @@
         {
           "lang": "tr-TR",
           "seg": "En çok oynanan kademe"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "最常玩阶级"
         }
       ]
     },
@@ -58105,6 +58789,10 @@
         {
           "lang": "tr-TR",
           "seg": "En iyi Zindan haritası"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "最佳副本地图"
         }
       ]
     },
@@ -58134,6 +58822,10 @@
         {
           "lang": "tr-TR",
           "seg": "En hızlı Rotasyon"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "最快完成"
         }
       ]
     },
@@ -58163,6 +58855,10 @@
         {
           "lang": "tr-TR",
           "seg": "Ortalama Sandık / Rotasyon"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "每次平均宝箱数"
         }
       ]
     },
@@ -58192,6 +58888,10 @@
         {
           "lang": "tr-TR",
           "seg": "Ortalama Ganimet / Rotasyon"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "每次平均战利品"
         }
       ]
     },
@@ -58221,6 +58921,10 @@
         {
           "lang": "tr-TR",
           "seg": "Ortalama Nam / Rotasyon"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "每次平均声望"
         }
       ]
     },
@@ -58250,6 +58954,10 @@
         {
           "lang": "tr-TR",
           "seg": "Ortalama süre"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "平均时长"
         }
       ]
     },
@@ -58279,6 +58987,10 @@
         {
           "lang": "tr-TR",
           "seg": "Grup üye sayısı"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "队伍人数"
         }
       ]
     },
@@ -58308,6 +59020,10 @@
         {
           "lang": "tr-TR",
           "seg": "Yapılan Rotasyon"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "内容完成次数"
         }
       ]
     },
@@ -58337,6 +59053,10 @@
         {
           "lang": "tr-TR",
           "seg": "{0} ganimet kaydı"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "{0} 条战利品记录"
         }
       ]
     },
@@ -58366,6 +59086,10 @@
         {
           "lang": "tr-TR",
           "seg": "Toplanan ganimeti göster"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "显示已拾取战利品"
         }
       ]
     },
@@ -58395,6 +59119,10 @@
         {
           "lang": "tr-TR",
           "seg": "Toplamış olan ganimeti gizle"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "隐藏已拾取战利品"
         }
       ]
     },
@@ -58424,6 +59152,10 @@
         {
           "lang": "tr-TR",
           "seg": "Avalon"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "阿瓦隆"
         }
       ]
     },
@@ -58453,6 +59185,10 @@
         {
           "lang": "tr-TR",
           "seg": "Bilinmeyen sandık"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "未知宝箱"
         }
       ]
     },
@@ -58482,6 +59218,10 @@
         {
           "lang": "tr-TR",
           "seg": "Zindan Özet"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "副本概览"
         }
       ]
     },
@@ -58511,6 +59251,10 @@
         {
           "lang": "tr-TR",
           "seg": "Oyuncu ganimetini dahil et"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "包含玩家战利品"
         }
       ]
     },
@@ -58540,6 +59284,10 @@
         {
           "lang": "tr-TR",
           "seg": "Sandık"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "宝箱"
         }
       ]
     },
@@ -58569,6 +59317,10 @@
         {
           "lang": "tr-TR",
           "seg": "Yaratık"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "怪物"
         }
       ]
     },
@@ -58598,6 +59350,10 @@
         {
           "lang": "tr-TR",
           "seg": "Oyuncu"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "玩家"
         }
       ]
     },
@@ -58627,6 +59383,10 @@
         {
           "lang": "tr-TR",
           "seg": "Bilinmeyen kaynak"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "未知来源"
         }
       ]
     },
@@ -58656,6 +59416,10 @@
         {
           "lang": "tr-TR",
           "seg": "Ayarlar ve Sıfırlama"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "设置与重置"
         }
       ]
     },
@@ -58685,6 +59449,10 @@
         {
           "lang": "tr-TR",
           "seg": "Diğer ganimetler"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "其他战利品"
         }
       ]
     },
@@ -58714,6 +59482,10 @@
         {
           "lang": "tr-TR",
           "seg": "+{0} daha fazla sandık"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "+{0} 个更多宝箱"
         }
       ]
     },
@@ -58743,6 +59515,10 @@
         {
           "lang": "tr-TR",
           "seg": "Görünümde daha az göster"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "显示更少"
         }
       ]
     },
@@ -58772,6 +59548,10 @@
         {
           "lang": "tr-TR",
           "seg": "Brecilian duruyor"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "迷雾城声望"
         }
       ]
     },
@@ -58801,6 +59581,10 @@
         {
           "lang": "tr-TR",
           "seg": "Oyuncular"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "玩家"
         }
       ]
     },
@@ -58830,6 +59614,10 @@
         {
           "lang": "tr-TR",
           "seg": "Normal sandık"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "普通宝箱"
         }
       ]
     },
@@ -58859,6 +59647,10 @@
         {
           "lang": "tr-TR",
           "seg": "+{0} daha fazla eşya"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "+{0} 个更多物品"
         }
       ]
     },
@@ -58888,6 +59680,10 @@
         {
           "lang": "tr-TR",
           "seg": "Görünümde daha az eşya göster"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "显示更少物品"
         }
       ]
     },
@@ -58917,6 +59713,10 @@
         {
           "lang": "tr-TR",
           "seg": "+{0} daha fazla ölürme/ölüm"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "+{0} 更多击杀/死亡"
         }
       ]
     },
@@ -58946,6 +59746,10 @@
         {
           "lang": "tr-TR",
           "seg": "Daha az öldürme/ölüm göster"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "显示更少击杀/死亡"
         }
       ]
     },
@@ -58975,6 +59779,10 @@
         {
           "lang": "tr-TR",
           "seg": "Toplam Hasar – İlk 5"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "总伤害 – TOP 5"
         }
       ]
     },
@@ -59004,6 +59812,10 @@
         {
           "lang": "tr-TR",
           "seg": "Etkin İyileştirme – İlk 5"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "有效治疗 – TOP 5"
         }
       ]
     },
@@ -59033,6 +59845,10 @@
         {
           "lang": "tr-TR",
           "seg": "En yüksek yaratık öldürme katkısı– İlk 5"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "怪物击杀贡献 – TOP 5"
         }
       ]
     },
@@ -59062,6 +59878,10 @@
         {
           "lang": "tr-TR",
           "seg": "En İyi Şifacı"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "最佳治疗"
         }
       ]
     },
@@ -59091,6 +59911,10 @@
         {
           "lang": "tr-TR",
           "seg": "En yüksek alınan hasar"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "最高承受伤害"
         }
       ]
     },
@@ -59120,6 +59944,10 @@
         {
           "lang": "tr-TR",
           "seg": "Hasar türüne göre"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "按类型统计的伤害"
         }
       ]
     },
@@ -59149,6 +59977,10 @@
         {
           "lang": "tr-TR",
           "seg": "Yetenek ile Hasar – En yüksek 10"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "按技能统计的伤害 – Top 10"
         }
       ]
     },
@@ -59178,6 +60010,10 @@
         {
           "lang": "tr-TR",
           "seg": "Büyü/Yetenek"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "技能"
         }
       ]
     },
@@ -59207,6 +60043,10 @@
         {
           "lang": "tr-TR",
           "seg": "Fiziksel Hasar"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "物理伤害"
         }
       ]
     },
@@ -59236,6 +60076,10 @@
         {
           "lang": "tr-TR",
           "seg": "Büyü Hasarı"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "魔法伤害"
         }
       ]
     },
@@ -59265,6 +60109,10 @@
         {
           "lang": "tr-TR",
           "seg": "Gerçek Hasar"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "真实伤害"
         }
       ]
     },
@@ -59294,6 +60142,10 @@
         {
           "lang": "tr-TR",
           "seg": "Toplam İzlenen Savaşlar"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "追踪的战斗总数"
         }
       ]
     },
@@ -59323,6 +60175,10 @@
         {
           "lang": "tr-TR",
           "seg": "Kayıp Gezgini"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "损失探索器"
         }
       ]
     },
@@ -59352,6 +60208,10 @@
         {
           "lang": "tr-TR",
           "seg": "Ekipman"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "装备"
         }
       ]
     },
@@ -59381,6 +60241,10 @@
         {
           "lang": "tr-TR",
           "seg": "Envanter"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "背包"
         }
       ]
     },
@@ -59410,6 +60274,10 @@
         {
           "lang": "tr-TR",
           "seg": "Ölümler yükleniyor – sayfa {0}"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "正在加载死亡记录 – 第 {0} 页"
         }
       ]
     },
@@ -59439,6 +60307,10 @@
         {
           "lang": "tr-TR",
           "seg": "Pazar fiyatları yükleniyor – dizi {0}/{1}"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "正在加载市场价值 – 第 {0} 批，共 {1} 批"
         }
       ]
     },
@@ -59468,6 +60340,10 @@
         {
           "lang": "tr-TR",
           "seg": "7 günün {0:N0} günü kaydedildi · günlük ortalama · güncellendi {1:g}"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "已存储 7 天中的 {0:N0} 天 · 日均 · 更新于 {1:g}"
         }
       ]
     },
@@ -59497,6 +60373,10 @@
         {
           "lang": "tr-TR",
           "seg": "Kayıp veriler her 10 dakikada güncellenir ve 7 gün kadar saklanır."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "损失数据每 10 分钟更新一次，最多保存 7 天。"
         }
       ]
     },
@@ -59526,6 +60406,10 @@
         {
           "lang": "tr-TR",
           "seg": "Kayıp veri tam olarak yüklenemedi. Bir sonraki otomatik yenilemede tekrar deneyecek."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "损失数据未能完整加载。下次自动刷新将重试。"
         }
       ]
     },
@@ -59555,6 +60439,10 @@
         {
           "lang": "tr-TR",
           "seg": "Kayıp Gezgini kullanmak için bir Albion sunucusu aktif olmalı."
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "使用损失探索器需要激活的 Albion 服务器。"
         }
       ]
     },
@@ -59584,6 +60472,10 @@
         {
           "lang": "tr-TR",
           "seg": "{0:N0} olay saklanmıştır"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "已存储 {0:N0} 个事件"
         }
       ]
     },
@@ -59613,6 +60505,10 @@
         {
           "lang": "tr-TR",
           "seg": "{0:N0} / gün"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "{0:N0} / 天"
         }
       ]
     },
@@ -59642,6 +60538,10 @@
         {
           "lang": "tr-TR",
           "seg": "({0:N0} per item)"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "（每件 {0:N0}）"
         }
       ]
     },
@@ -59671,6 +60571,10 @@
         {
           "lang": "tr-TR",
           "seg": "{0:N0} kayıp öğe / gün"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "每天损失 {0:N0} 件物品"
         }
       ]
     },
@@ -59700,6 +60604,10 @@
         {
           "lang": "tr-TR",
           "seg": "Sunucu Türü"
+        },
+        {
+          "lang": "zh-CN",
+          "seg": "服务器类型"
         }
       ]
     }
