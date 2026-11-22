@@ -70,10 +70,23 @@
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Row="0"
-                                                   Grid.ColumnSpan="3"
-                                                   Text="{Binding GuildBindings.TranslationTotalOverview, FallbackValue=TOTAL_OVERVIEW}"
-                                                   Style="{StaticResource Dashboard.SectionTitle}" />
+                                        <DockPanel Grid.Row="0" Grid.ColumnSpan="3">
+                                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Translation.Name, FallbackValue=NAME}" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                                <TextBox x:Name="OverviewNameFilter" Width="140" VerticalContentAlignment="Center"
+                                                         AutomationProperties.Name="{Binding Translation.Name}"
+                                                         Text="{Binding GuildBindings.OverviewNameFilter, UpdateSourceTrigger=PropertyChanged}" />
+                                                <Button Width="32" Height="32" Margin="6,0,0,0" Padding="0"
+                                                        Style="{StaticResource Style.Button.Neutral}"
+                                                        ToolTip="{Binding Translation.ResetFilters}" AutomationProperties.Name="{Binding Translation.ResetFilters}"
+                                                        Click="ResetOverviewNameFilter_Click">
+                                                    <fa:FontAwesomeImage Icon="SolidRotateRight" Width="14" Height="14" IsHitTestVisible="False"
+                                                                         Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                                </Button>
+                                            </StackPanel>
+                                            <TextBlock Text="{Binding GuildBindings.TranslationTotalOverview, FallbackValue=TOTAL_OVERVIEW}"
+                                                       VerticalAlignment="Center" Style="{StaticResource Dashboard.SectionTitle}" />
+                                        </DockPanel>
 
                                         <StackPanel Grid.Row="1"
                                                     Grid.Column="0"
@@ -111,7 +124,7 @@
 
                                     <vwp:VirtualizingItemsControl Grid.Row="2"
                                                               Margin="0,20,0,0"
-                                                              ItemsSource="{Binding GuildBindings.SiphonedEnergyOverviewList, IsAsync=True, Mode=OneWay}"
+                                                              ItemsSource="{Binding GuildBindings.SiphonedEnergyOverviewView, Mode=OneWay}"
                                                               ItemTemplate="{StaticResource SiphonedEnergyOverviewItemTemplate}"
                                                               Background="{StaticResource SolidColorBrush.Accent.Blue.Transparent.5}"
                                                               VirtualizingPanel.CacheLengthUnit="Item"
@@ -136,9 +149,23 @@
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
 
-                                        <TextBlock Grid.Row="0"
-                                                   Text="{Binding GuildBindings.TranslationDetails, FallbackValue=DETAILS}"
-                                                   Style="{StaticResource Dashboard.SectionTitle}" />
+                                        <DockPanel Grid.Row="0">
+                                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Translation.Name, FallbackValue=NAME}" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                                <TextBox x:Name="DetailsNameFilter" Width="140" VerticalContentAlignment="Center"
+                                                         AutomationProperties.Name="{Binding Translation.Name}"
+                                                         Text="{Binding GuildBindings.DetailsNameFilter, UpdateSourceTrigger=PropertyChanged}" />
+                                                <Button Width="32" Height="32" Margin="6,0,0,0" Padding="0"
+                                                        Style="{StaticResource Style.Button.Neutral}"
+                                                        ToolTip="{Binding Translation.ResetFilters}" AutomationProperties.Name="{Binding Translation.ResetFilters}"
+                                                        Click="ResetDetailsNameFilter_Click">
+                                                    <fa:FontAwesomeImage Icon="SolidRotateRight" Width="14" Height="14" IsHitTestVisible="False"
+                                                                         Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                                </Button>
+                                            </StackPanel>
+                                            <TextBlock Text="{Binding GuildBindings.TranslationDetails, FallbackValue=DETAILS}"
+                                                       VerticalAlignment="Center" Style="{StaticResource Dashboard.SectionTitle}" />
+                                        </DockPanel>
                                         <StackPanel Grid.Row="1" Margin="0,8,0,0" Orientation="Horizontal" HorizontalAlignment="Right">
                                             <Button Content="{Binding GuildBindings.TranslationDeleteSelectedEntries, FallbackValue=DELETE__SELECTED__ENTRIES}"
                                                     ContentTemplate="{StaticResource Template.Button.Content.Spacious}"
@@ -163,7 +190,7 @@
 
                                     <vwp:VirtualizingItemsControl Grid.Row="1"
                                                           Margin="0,8,0,0"
-                                                          ItemsSource="{Binding GuildBindings.SiphonedEnergyCollectionView, IsAsync=True, Mode=OneWay}"
+                                                          ItemsSource="{Binding GuildBindings.SiphonedEnergyCollectionView, Mode=OneWay}"
                                                           ItemTemplate="{StaticResource SiphonedEnergyItemTemplate}"
                                                           d:ItemsSource="{d:SampleData ItemCount=10}"
                                                           VirtualizingPanel.CacheLengthUnit="Item"
