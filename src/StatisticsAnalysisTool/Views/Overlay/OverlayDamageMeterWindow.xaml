@@ -1,0 +1,44 @@
+﻿<overlay:OverlayWindowBase x:Class="StatisticsAnalysisTool.Views.Overlay.OverlayDamageMeterWindow"
+                           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                           xmlns:overlay="clr-namespace:StatisticsAnalysisTool.Views.Overlay"
+                           xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
+                           mc:Ignorable="d"
+                           d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}"
+                           Foreground="{StaticResource SolidColorBrush.Text.1}"
+                           Title="SAT Overlay - DPS">
+    <Window.Resources>
+        <ResourceDictionary Source="OverlayStyles.xaml" />
+    </Window.Resources>
+
+    <Border Style="{StaticResource Overlay.Card}" Padding="6,6,6,4" MinWidth="560">
+        <StackPanel>
+            <!-- Header doubles as drag handle (clicking a player row expands its spells, like in the program) -->
+            <Grid Margin="4,0,4,4">
+                <TextBlock Text="{x:Static overlay:OverlayTranslation.GroupDpsTitle}" Style="{StaticResource Overlay.Title}" FontSize="15" Margin="0" />
+                <TextBlock HorizontalAlignment="Right" Style="{StaticResource Overlay.Sub}" FontSize="14"
+                           ><Run Text="{x:Static overlay:OverlayTranslation.YourDps}" /><Run Text=" " /><Run Text="{Binding DamageMeterBindings.CurrentYourStats.TotalDps, Mode=OneWay, FallbackValue=0}" /></TextBlock>
+            </Grid>
+
+            <TextBlock Text="{x:Static overlay:OverlayTranslation.NoCombatYet}" Margin="4,2,4,6" FontSize="14" FontStyle="Italic" Foreground="{StaticResource Overlay.TextMuted}">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DamageMeterBindings.DamageMeter.Count}" Value="0">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+            <ScrollViewer MaxHeight="560" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+                <ItemsControl ItemsSource="{Binding DamageMeterBindings.DamageMeter, IsAsync=True, Mode=OneWay}"
+                              ItemTemplate="{StaticResource DamageMeterFragmentTemplate}" />
+            </ScrollViewer>
+        </StackPanel>
+    </Border>
+</overlay:OverlayWindowBase>

@@ -10,6 +10,7 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
              xmlns:bindingModels="clr-namespace:StatisticsAnalysisTool.Models.BindingModel"
+             xmlns:overlay="clr-namespace:StatisticsAnalysisTool.Views.Overlay"
              xmlns:userControls="clr-namespace:StatisticsAnalysisTool.UserControls"
              xmlns:wpf="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              xmlns:glob="clr-namespace:System.Globalization;assembly=System.Runtime"
@@ -100,6 +101,10 @@
                                 <Border Width="32" Height="32" Margin="8,0,0,0" Cursor="Hand" CornerRadius="4" Background="{StaticResource SolidColorBrush.Background.2}" 
                                         BorderBrush="{StaticResource SolidColorBrush.Text.6}" BorderThickness="1" Visibility="{Binding ShowOpenWindowButton, ElementName=DashboardRoot, Converter={StaticResource BooleanToVisibilityConverter}}" ToolTip="{Binding Translation.OpenExtendedDashboardWindow, FallbackValue=OPEN_EXTENDED_DASHBOARD_WINDOW}" MouseUp="OpenDashboardWindow_MouseUp">
                                     <fa:FontAwesomeImage Icon="SolidExpand" Width="16" Height="16" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                </Border>
+                                <Border Width="32" Height="32" Margin="8,0,0,0" Cursor="Hand" CornerRadius="4" Background="{StaticResource SolidColorBrush.Background.2}"
+                                        BorderBrush="{StaticResource SolidColorBrush.Text.6}" BorderThickness="1" ToolTip="{x:Static overlay:OverlayTranslation.ToggleTooltip}" MouseUp="OpenOverlayWindow_MouseUp">
+                                    <fa:FontAwesomeImage Icon="SolidBolt" Width="16" Height="16" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 </Border>
                             </StackPanel>
                         </Grid>

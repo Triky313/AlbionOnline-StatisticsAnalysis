@@ -97,6 +97,15 @@ public class SettingsWindowViewModel : BaseViewModel
         IsStopTrackingWithGameActive = SettingsController.CurrentSettings.IsStopTrackingWithGameActive;
         IsMinimizeToSystemTrayActive = SettingsController.CurrentSettings.IsMinimizeToSystemTrayActive;
 
+        // Overlay
+        IsOverlayStatsEnabled = SettingsController.CurrentSettings.IsOverlayStatsEnabled;
+        IsOverlayDamageMeterEnabled = SettingsController.CurrentSettings.IsOverlayDamageMeterEnabled;
+        IsOverlayGatheringEnabled = SettingsController.CurrentSettings.IsOverlayGatheringEnabled;
+        IsOverlayClickThroughActive = SettingsController.CurrentSettings.IsOverlayClickThroughActive;
+        IsOverlayAutoHideActive = SettingsController.CurrentSettings.IsOverlayAutoHideActive;
+        OverlayBackgroundOpacityPercentage = SettingsController.CurrentSettings.OverlayBackgroundOpacityPercentage;
+        OverlayScalePercentage = SettingsController.CurrentSettings.OverlayScalePercentage;
+
         // Info window
         ShowInfoWindowOnStartChecked = SettingsController.CurrentSettings.IsInfoWindowShownOnStart;
 
@@ -154,6 +163,15 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.IsStopTrackingWithGameActive = IsStopTrackingWithGameActive;
         SettingsController.CurrentSettings.IsMinimizeToSystemTrayActive = IsMinimizeToSystemTrayActive;
         SettingsController.CurrentSettings.ExactMatchPlayerNamesLineNumber = PlayerSelectionWithSameNameInDb;
+
+        SettingsController.CurrentSettings.IsOverlayStatsEnabled = IsOverlayStatsEnabled;
+        SettingsController.CurrentSettings.IsOverlayDamageMeterEnabled = IsOverlayDamageMeterEnabled;
+        SettingsController.CurrentSettings.IsOverlayGatheringEnabled = IsOverlayGatheringEnabled;
+        SettingsController.CurrentSettings.IsOverlayClickThroughActive = IsOverlayClickThroughActive;
+        SettingsController.CurrentSettings.IsOverlayAutoHideActive = IsOverlayAutoHideActive;
+        SettingsController.CurrentSettings.OverlayBackgroundOpacityPercentage = OverlayBackgroundOpacityPercentage;
+        SettingsController.CurrentSettings.OverlayScalePercentage = OverlayScalePercentage;
+        StatisticsAnalysisTool.Views.Overlay.OverlayManager.ApplySettings(mainWindowViewModel);
 
         SetBackupStorageDirPath();
         SetNaviTabVisibilities(mainWindowViewModel);
@@ -1259,6 +1277,80 @@ public class SettingsWindowViewModel : BaseViewModel
             OnPropertyChanged();
         }
     }
+
+    #region Overlay
+
+    public bool IsOverlayStatsEnabled
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsOverlayDamageMeterEnabled
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsOverlayGatheringEnabled
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsOverlayAutoHideActive
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsOverlayClickThroughActive
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double OverlayBackgroundOpacityPercentage
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double OverlayScalePercentage
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    #endregion
 
     public bool IsStartTrackingWithGameActive
     {

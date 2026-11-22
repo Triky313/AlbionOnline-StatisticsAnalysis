@@ -59702,6 +59702,357 @@
           "seg": "Sunucu Türü"
         }
       ]
+    },
+    {
+      "tuid": "OVERLAY_SETTINGS_TITLE",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "In-game overlay"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Overlay (encima del juego)"
+        }
+      ]
+    },
+    {
+      "tuid": "OVERLAY_SESSION_ENABLE",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Session (fame, silver, loot, respec, might, favor, faction)"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Sesión (fama, plata, botín, respec, poderío, favor, facción)"
+        }
+      ]
+    },
+    {
+      "tuid": "OVERLAY_SESSION_ENABLE_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Per hour and session total. Shortcut to show/hide all overlays: Ctrl+Shift+O."
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Por hora y total de la sesión. Atajo para mostrar/ocultar todos los overlays: Ctrl+Shift+O."
+        }
+      ]
+    },
+    {
+      "tuid": "OVERLAY_DAMAGE_METER_ENABLE",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Group damage meter"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "DPS del grupo"
+        }
+      ]
+    },
+    {
+      "tuid": "OVERLAY_DAMAGE_METER_ENABLE_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "The damage meter list, same as in the tool."
+        },
+        {
+          "lang": "es-ES",
+          "seg": "La lista del medidor de daño, igual que en el programa."
+        }
+      ]
+    },
+    {
+      "tuid": "OVERLAY_GATHERING_ENABLE_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Silver per hour and per resource type."
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Plata por hora y por tipo de recurso."
+        }
+      ]
+    },
+    {
+      "tuid": "OVERLAY_AUTO_HIDE",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Only show while Albion is in the foreground"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Mostrar solo cuando Albion está en primer plano"
+        }
+      ]
+    },
+    {
+      "tuid": "OVERLAY_AUTO_HIDE_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Overlays hide automatically when you switch to another window (browser, Discord, ...)."
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Los overlays se ocultan solos al cambiar a otra ventana (navegador, Discord, ...)."
+        }
+      ]
+    },
+    {
+      "tuid": "OVERLAY_CLICK_THROUGH",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Lock overlays (clicks go through to the game)"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Bloquear overlays (los clics pasan al juego)"
+        }
+      ]
+    },
+    {
+      "tuid": "OVERLAY_CLICK_THROUGH_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "They cannot be moved or closed with the mouse; use Ctrl+Shift+O or the lightning button on the dashboard."
+        },
+        {
+          "lang": "es-ES",
+          "seg": "No se pueden mover ni cerrar con el ratón; usa Ctrl+Shift+O o el botón del rayo en el Dashboard."
+        }
+      ]
+    },
+    {
+      "tuid": "OVERLAY_BACKGROUND_OPACITY",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Background opacity"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Opacidad del fondo"
+        }
+      ]
+    },
+    {
+      "tuid": "OVERLAY_SIZE",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Size"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Tamaño"
+        }
+      ]
+    },
+    {
+      "tuid": "OVERLAY_TOGGLE_TOOLTIP",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Show / hide overlays (Ctrl+Shift+O). Configure them in Settings \u003e In-game overlay."
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Mostrar / ocultar overlays (Ctrl+Shift+O). Se configuran en Configuración \u003e Overlay."
+        }
+      ]
+    },
+    {
+      "tuid": "OVERLAY_DRAG_HINT",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Drag to move, right-click to close"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Arrastrar para mover, clic derecho para cerrar"
+        }
+      ]
+    },
+    {
+      "tuid": "OVERLAY_SESSION_TITLE",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "SESSION"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "SESIÓN"
+        }
+      ]
+    },
+    {
+      "tuid": "OVERLAY_PER_HOUR",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "per hour"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "por hora"
+        }
+      ]
+    },
+    {
+      "tuid": "OVERLAY_TOTAL",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "total"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "total"
+        }
+      ]
+    },
+    {
+      "tuid": "OVERLAY_RESET_SESSION_HINT",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Reset session (click twice)"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Reiniciar sesión (clic dos veces)"
+        }
+      ]
+    },
+    {
+      "tuid": "OVERLAY_RESET_SESSION_CONFIRM",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Click again to reset the session"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Clic otra vez para reiniciar la sesión"
+        }
+      ]
+    },
+    {
+      "tuid": "OVERLAY_NO_GAINS_YET",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "No gains in this session yet."
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Aún no hay ganancias en esta sesión."
+        }
+      ]
+    },
+    {
+      "tuid": "OVERLAY_LOOT_TOOLTIP",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Estimated market value of the items you picked up"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Valor estimado de mercado de los objetos que recogiste"
+        }
+      ]
+    },
+    {
+      "tuid": "OVERLAY_GROUP_DPS_TITLE",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "GROUP DPS"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "DPS DEL GRUPO"
+        }
+      ]
+    },
+    {
+      "tuid": "OVERLAY_YOUR_DPS",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "your DPS:"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "tu DPS:"
+        }
+      ]
+    },
+    {
+      "tuid": "OVERLAY_NO_COMBAT_YET",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "No combat yet. Your group\u0027s damage will show up here."
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Aún no hay combate. El daño del grupo aparecerá aquí."
+        }
+      ]
+    },
+    {
+      "tuid": "OVERLAY_GATHERING_TITLE",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "GATHERING"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "RECOLECCIÓN"
+        }
+      ]
+    },
+    {
+      "tuid": "OVERLAY_TOTAL_SILVER",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "total silver"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "plata total"
+        }
+      ]
+    },
+    {
+      "tuid": "OVERLAY_GATHERING_TRACKING_OFF",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Tracking is off: turn it on in the tool\u0027s Gathering tab."
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Seguimiento apagado: actívalo en la pestaña Recolección del programa."
+        }
+      ]
     }
   ]
 }

@@ -362,6 +362,9 @@ public class StatisticController
             MarkSessionDirtyInternal(session.Id);
         }
 
+        // Session loot value / per hour for the overlay
+        _trackingController.LiveStatsTracker?.Add(ValueType.LootValue, totalValue);
+
         UpdateDailyChart();
     }
 

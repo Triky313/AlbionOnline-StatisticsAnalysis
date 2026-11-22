@@ -88,6 +88,7 @@ public class LiveStatsTracker
     private readonly SlidingWindow _favorWin = new();
     private readonly SlidingWindow _respecCostWin = new();
     private readonly SlidingWindow _factionPointsWin = new();
+    private readonly SlidingWindow _lootValueWin = new();
 
     private double _totalGainedFameInSession;
     private double _totalGainedReSpecInSession;
@@ -96,6 +97,8 @@ public class LiveStatsTracker
     private double _totalGainedFavorInSession;
     private double _totalPaidSilverForReSpecInSession;
     private double _totalGainedFactionPointsInSession;
+    private double _totalLootValueInSession;
+    private DateTime? _sessionStartedUtc;
 
     private CityFaction _currentCityFaction = CityFaction.Unknown;
 
@@ -149,12 +152,18 @@ public class LiveStatsTracker
                 _favorWin.Add(value, now);
                 break;
 
+            case ValueType.LootValue:
+                _totalLootValueInSession += value;
+                _lootValueWin.Add(value, now);
+                break;
+
             case ValueType.PaidSilverForReSpec:
                 _totalPaidSilverForReSpecInSession += value;
                 _respecCostWin.Add(value, now);
                 break;
         }
 
+        _sessionStartedUtc ??= now;
         Start();
     }
 
@@ -183,6 +192,9 @@ public class LiveStatsTracker
         _favorWin.Clear();
         _respecCostWin.Clear();
         _factionPointsWin.Clear();
+        _lootValueWin.Clear();
+        _totalLootValueInSession = 0;
+        _sessionStartedUtc = null;
 
         _totalGainedFameInSession = 0;
         _totalGainedReSpecInSession = 0;
@@ -217,6 +229,10 @@ public class LiveStatsTracker
         _mainWindowViewModel.DashboardBindings.TotalGainedMightInSession = _totalGainedMightInSession;
         _mainWindowViewModel.DashboardBindings.TotalGainedFavorInSession = _totalGainedFavorInSession;
         _mainWindowViewModel.DashboardBindings.TotalSilverCostForReSpecInSession = _totalPaidSilverForReSpecInSession;
+        _mainWindowViewModel.DashboardBindings.TotalLootValueInSession = _totalLootValueInSession;
+        _mainWindowViewModel.DashboardBindings.SessionDurationText = _sessionStartedUtc.HasValue
+            ? (now - _sessionStartedUtc.Value).ToString(@"hh\:mm\:ss")
+            : "00:00:00";
 
         // Sliding Window
         var (fameSum, fameSec) = _fameWin.Snapshot(now);
@@ -226,6 +242,7 @@ public class LiveStatsTracker
         var (favorSum, favorSec) = _favorWin.Snapshot(now);
         var (respecCostSum, respecCostSec) = _respecCostWin.Snapshot(now);
         var (factionSum, factionSec) = _factionPointsWin.Snapshot(now);
+        var (lootSum, lootSec) = _lootValueWin.Snapshot(now);
 
         // Per hour
         _mainWindowViewModel.DashboardBindings.FamePerHour = fameSum * 3600.0 / fameSec;
@@ -234,6 +251,7 @@ public class LiveStatsTracker
         _mainWindowViewModel.DashboardBindings.MightPerHour = mightSum * 3600.0 / mightSec;
         _mainWindowViewModel.DashboardBindings.FavorPerHour = favorSum * 3600.0 / favorSec;
         _mainWindowViewModel.DashboardBindings.SilverCostForReSpecHour = respecCostSum * 3600.0 / respecCostSec;
+        _mainWindowViewModel.DashboardBindings.LootValuePerHour = lootSec > 0 ? lootSum * 3600.0 / lootSec : 0;
 
         var factionPointStat = _mainWindowViewModel.FactionPointStats.FirstOrDefault();
         if (factionPointStat != null)

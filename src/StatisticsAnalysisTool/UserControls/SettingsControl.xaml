@@ -6,6 +6,7 @@
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:common="clr-namespace:StatisticsAnalysisTool.Common"
              xmlns:validation="clr-namespace:StatisticsAnalysisTool.Common.Validation"
+             xmlns:overlay="clr-namespace:StatisticsAnalysisTool.Views.Overlay"
              mc:Ignorable="d"
              d:DesignHeight="1400"
              d:DesignWidth="1100"
@@ -206,6 +207,81 @@
                                         <TextBlock Text="{Binding Translation.StopTrackingWithGameDescription, FallbackValue=STOP__TRACKING__WITH__GAME__DESCRIPTION}" Style="{StaticResource Settings.DescriptionText}" />
                                     </StackPanel>
                                 </CheckBox>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Overlay -->
+                <Border Style="{StaticResource Settings.Card}">
+                    <StackPanel>
+                        <Border Style="{StaticResource Settings.CardHeader}">
+                            <TextBlock Text="{x:Static overlay:OverlayTranslation.SettingsTitle}" Style="{StaticResource Settings.CardTitle}" />
+                        </Border>
+
+                        <Grid Margin="14,12,14,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="16" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <CheckBox IsChecked="{Binding IsOverlayStatsEnabled}" Margin="0,0,0,14" Style="{StaticResource Settings.OptionCheckBox}">
+                                    <StackPanel>
+                                        <TextBlock Text="{x:Static overlay:OverlayTranslation.SessionEnable}" Style="{StaticResource Settings.OptionTitle}" />
+                                        <TextBlock Text="{x:Static overlay:OverlayTranslation.SessionEnableDescription}" Style="{StaticResource Settings.DescriptionText}" />
+                                    </StackPanel>
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding IsOverlayDamageMeterEnabled}" Margin="0,0,0,14" Style="{StaticResource Settings.OptionCheckBox}">
+                                    <StackPanel>
+                                        <TextBlock Text="{x:Static overlay:OverlayTranslation.DamageMeterEnable}" Style="{StaticResource Settings.OptionTitle}" />
+                                        <TextBlock Text="{x:Static overlay:OverlayTranslation.DamageMeterEnableDescription}" Style="{StaticResource Settings.DescriptionText}" />
+                                    </StackPanel>
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding IsOverlayGatheringEnabled}" Margin="0,0,0,14" Style="{StaticResource Settings.OptionCheckBox}">
+                                    <StackPanel>
+                                        <TextBlock Text="{x:Static overlay:OverlayTranslation.Gathering}" Style="{StaticResource Settings.OptionTitle}" />
+                                        <TextBlock Text="{x:Static overlay:OverlayTranslation.GatheringEnableDescription}" Style="{StaticResource Settings.DescriptionText}" />
+                                    </StackPanel>
+                                </CheckBox>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <CheckBox IsChecked="{Binding IsOverlayAutoHideActive}" Margin="0,0,0,14" Style="{StaticResource Settings.OptionCheckBox}">
+                                    <StackPanel>
+                                        <TextBlock Text="{x:Static overlay:OverlayTranslation.AutoHide}" Style="{StaticResource Settings.OptionTitle}" />
+                                        <TextBlock Text="{x:Static overlay:OverlayTranslation.AutoHideDescription}" Style="{StaticResource Settings.DescriptionText}" />
+                                    </StackPanel>
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding IsOverlayClickThroughActive}" Margin="0,0,0,14" Style="{StaticResource Settings.OptionCheckBox}">
+                                    <StackPanel>
+                                        <TextBlock Text="{x:Static overlay:OverlayTranslation.ClickThrough}" Style="{StaticResource Settings.OptionTitle}" />
+                                        <TextBlock Text="{x:Static overlay:OverlayTranslation.ClickThroughDescription}" Style="{StaticResource Settings.DescriptionText}" />
+                                    </StackPanel>
+                                </CheckBox>
+                                <StackPanel Style="{StaticResource Settings.Field}">
+                                    <TextBlock Text="{x:Static overlay:OverlayTranslation.BackgroundOpacity}" Style="{StaticResource Settings.FieldLabel}" />
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="48" />
+                                        </Grid.ColumnDefinitions>
+                                        <Slider Value="{Binding OverlayBackgroundOpacityPercentage}" Minimum="0" Maximum="100" TickFrequency="5" IsSnapToTickEnabled="True" VerticalAlignment="Center" />
+                                        <TextBlock Grid.Column="1" Text="{Binding OverlayBackgroundOpacityPercentage, StringFormat={}{0:N0}%}" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" TextAlignment="Right" />
+                                    </Grid>
+                                </StackPanel>
+                                <StackPanel Style="{StaticResource Settings.Field}">
+                                    <TextBlock Text="{x:Static overlay:OverlayTranslation.Size}" Style="{StaticResource Settings.FieldLabel}" />
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="48" />
+                                        </Grid.ColumnDefinitions>
+                                        <Slider Value="{Binding OverlayScalePercentage}" Minimum="60" Maximum="160" TickFrequency="5" IsSnapToTickEnabled="True" VerticalAlignment="Center" />
+                                        <TextBlock Grid.Column="1" Text="{Binding OverlayScalePercentage, StringFormat={}{0:N0}%}" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" TextAlignment="Right" />
+                                    </Grid>
+                                </StackPanel>
                             </StackPanel>
                         </Grid>
                     </StackPanel>

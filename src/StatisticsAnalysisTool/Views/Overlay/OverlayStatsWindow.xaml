@@ -1,0 +1,186 @@
+﻿<overlay:OverlayWindowBase x:Class="StatisticsAnalysisTool.Views.Overlay.OverlayStatsWindow"
+                           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                           xmlns:overlay="clr-namespace:StatisticsAnalysisTool.Views.Overlay"
+                           xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
+                           xmlns:enums="clr-namespace:StatisticsAnalysisTool.Enumerations"
+                           xmlns:glob="clr-namespace:System.Globalization;assembly=System.Runtime"
+                           xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+                           xmlns:fa="clr-namespace:StatisticsAnalysisTool.Common.Controls"
+                           mc:Ignorable="d"
+                           d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}"
+                           Title="SAT Overlay - Sesion">
+    <Window.Resources>
+        <ResourceDictionary Source="OverlayStyles.xaml" />
+    </Window.Resources>
+
+    <Border Style="{StaticResource Overlay.Card}">
+        <StackPanel>
+            <!-- Header -->
+            <Grid Margin="0,0,0,2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{x:Static overlay:OverlayTranslation.SessionTitle}" Style="{StaticResource Overlay.Title}" Margin="0" VerticalAlignment="Center" />
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="10,0,0,0" VerticalAlignment="Center" ToolTip="{x:Static overlay:OverlayTranslation.SessionTime}">
+                    <fa:FontAwesomeImage Icon="RegularClock" Width="11" Height="11" Foreground="{StaticResource Overlay.TextMuted}" Margin="0,0,4,0" />
+                    <TextBlock Text="{Binding DashboardBindings.SessionDurationText, FallbackValue=00:00:00}" Style="{StaticResource Overlay.Sub}" FontSize="12" />
+                </StackPanel>
+                <!-- Reset session: first click arms it (turns red), second click within 3 s resets -->
+                <Border x:Name="ResetButton" Grid.Column="2" Width="22" Height="20" CornerRadius="4" Cursor="Hand" Background="#1FFFFFFF"
+                        ToolTip="{x:Static overlay:OverlayTranslation.ResetSessionHint}" MouseLeftButtonDown="ResetButton_MouseLeftButtonDown">
+                    <fa:FontAwesomeImage x:Name="ResetIcon" Icon="SolidArrowsRotate" Width="11" Height="11" Foreground="{StaticResource Overlay.TextMuted}" />
+                </Border>
+            </Grid>
+            <TextBlock HorizontalAlignment="Right" Style="{StaticResource Overlay.Hint}" Margin="0,0,0,2">
+                <Run Text="{x:Static overlay:OverlayTranslation.PerHour}" /><Run Text="      " /><Run Text="{x:Static overlay:OverlayTranslation.Total}" />
+            </TextBlock>
+
+            <!-- Shown until something has been earned in this session -->
+            <TextBlock Text="{x:Static overlay:OverlayTranslation.NoGainsYet}">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource Overlay.Empty}">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding DashboardBindings.TotalGainedFameInSession}"><Condition.Value><sys:Double>0</sys:Double></Condition.Value></Condition>
+                                    <Condition Binding="{Binding DashboardBindings.TotalGainedSilverInSession}"><Condition.Value><sys:Double>0</sys:Double></Condition.Value></Condition>
+                                    <Condition Binding="{Binding DashboardBindings.TotalGainedReSpecPointsInSession}"><Condition.Value><sys:Double>0</sys:Double></Condition.Value></Condition>
+                                    <Condition Binding="{Binding DashboardBindings.TotalGainedMightInSession}"><Condition.Value><sys:Double>0</sys:Double></Condition.Value></Condition>
+                                    <Condition Binding="{Binding DashboardBindings.TotalGainedFavorInSession}"><Condition.Value><sys:Double>0</sys:Double></Condition.Value></Condition>
+                                    <Condition Binding="{Binding DashboardBindings.TotalLootValueInSession}"><Condition.Value><sys:Double>0</sys:Double></Condition.Value></Condition>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Visible" />
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+                <Grid Style="{StaticResource Overlay.HideWhenZero}" Tag="{Binding DashboardBindings.TotalGainedFameInSession}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="24" />
+                        <ColumnDefinition Width="66" />
+                        <ColumnDefinition Width="78" />
+                        <ColumnDefinition Width="64" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="pack://application:,,,/Resources/fame.png" Width="18" Height="18" HorizontalAlignment="Left" />
+                    <TextBlock Grid.Column="1" Text="{x:Static overlay:OverlayTranslation.Fame}" Style="{StaticResource Overlay.Label}" Foreground="#FFE8B86A" />
+                    <TextBlock Grid.Column="2" Style="{StaticResource Overlay.Value}" FontSize="14" HorizontalAlignment="Right"
+                               Text="{Binding DashboardBindings.FamePerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, StringFormat={}{0}/h, FallbackValue=0/h}" />
+                    <TextBlock Grid.Column="3" Style="{StaticResource Overlay.Sub}" HorizontalAlignment="Right"
+                               Text="{Binding DashboardBindings.TotalGainedFameInSession, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" />
+                </Grid>
+                <Grid Style="{StaticResource Overlay.HideWhenZero}" Tag="{Binding DashboardBindings.TotalGainedSilverInSession}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="24" />
+                        <ColumnDefinition Width="66" />
+                        <ColumnDefinition Width="78" />
+                        <ColumnDefinition Width="64" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="pack://application:,,,/Resources/silver.png" Width="18" Height="18" HorizontalAlignment="Left" />
+                    <TextBlock Grid.Column="1" Text="{x:Static overlay:OverlayTranslation.Silver}" Style="{StaticResource Overlay.Label}" Foreground="#FFD9DEE5" />
+                    <TextBlock Grid.Column="2" Style="{StaticResource Overlay.Value}" FontSize="14" HorizontalAlignment="Right"
+                               Text="{Binding DashboardBindings.SilverPerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, StringFormat={}{0}/h, FallbackValue=0/h}" />
+                    <TextBlock Grid.Column="3" Style="{StaticResource Overlay.Sub}" HorizontalAlignment="Right"
+                               Text="{Binding DashboardBindings.TotalGainedSilverInSession, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" />
+                </Grid>
+
+                <!-- Loot: estimated market value of the items you picked up -->
+                <Grid Style="{StaticResource Overlay.HideWhenZero}" Tag="{Binding DashboardBindings.TotalLootValueInSession}"
+                      ToolTip="{x:Static overlay:OverlayTranslation.LootTooltip}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="24" />
+                        <ColumnDefinition Width="66" />
+                        <ColumnDefinition Width="78" />
+                        <ColumnDefinition Width="64" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="pack://application:,,,/Assets/bag.png" Width="18" Height="18" HorizontalAlignment="Left" />
+                    <TextBlock Grid.Column="1" Text="{x:Static overlay:OverlayTranslation.Loot}" Style="{StaticResource Overlay.Label}" Foreground="#FF7CD6B4" />
+                    <TextBlock Grid.Column="2" Style="{StaticResource Overlay.Value}" FontSize="14" HorizontalAlignment="Right"
+                               Text="{Binding DashboardBindings.LootValuePerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, StringFormat={}{0}/h, FallbackValue=0/h}" />
+                    <TextBlock Grid.Column="3" Style="{StaticResource Overlay.Sub}" HorizontalAlignment="Right"
+                               Text="{Binding DashboardBindings.TotalLootValueInSession, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" />
+                </Grid>
+                <Grid Style="{StaticResource Overlay.HideWhenZero}" Tag="{Binding DashboardBindings.TotalGainedReSpecPointsInSession}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="24" />
+                        <ColumnDefinition Width="66" />
+                        <ColumnDefinition Width="78" />
+                        <ColumnDefinition Width="64" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="pack://application:,,,/Resources/respec.png" Width="18" Height="18" HorizontalAlignment="Left" />
+                    <TextBlock Grid.Column="1" Text="{x:Static overlay:OverlayTranslation.ReSpec}" Style="{StaticResource Overlay.Label}" Foreground="#FFF2A65A" />
+                    <TextBlock Grid.Column="2" Style="{StaticResource Overlay.Value}" FontSize="14" HorizontalAlignment="Right"
+                               Text="{Binding DashboardBindings.ReSpecPointsPerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, StringFormat={}{0}/h, FallbackValue=0/h}" />
+                    <TextBlock Grid.Column="3" Style="{StaticResource Overlay.Sub}" HorizontalAlignment="Right"
+                               Text="{Binding DashboardBindings.TotalGainedReSpecPointsInSession, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" />
+                </Grid>
+                <Grid Style="{StaticResource Overlay.HideWhenZero}" Tag="{Binding DashboardBindings.TotalGainedMightInSession}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="24" />
+                        <ColumnDefinition Width="66" />
+                        <ColumnDefinition Width="78" />
+                        <ColumnDefinition Width="64" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="pack://application:,,,/Resources/might.png" Width="18" Height="18" HorizontalAlignment="Left" />
+                    <TextBlock Grid.Column="1" Text="{x:Static overlay:OverlayTranslation.Might}" Style="{StaticResource Overlay.Label}" Foreground="#FF8FB8E8" />
+                    <TextBlock Grid.Column="2" Style="{StaticResource Overlay.Value}" FontSize="14" HorizontalAlignment="Right"
+                               Text="{Binding DashboardBindings.MightPerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, StringFormat={}{0}/h, FallbackValue=0/h}" />
+                    <TextBlock Grid.Column="3" Style="{StaticResource Overlay.Sub}" HorizontalAlignment="Right"
+                               Text="{Binding DashboardBindings.TotalGainedMightInSession, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" />
+                </Grid>
+                <Grid Style="{StaticResource Overlay.HideWhenZero}" Tag="{Binding DashboardBindings.TotalGainedFavorInSession}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="24" />
+                        <ColumnDefinition Width="66" />
+                        <ColumnDefinition Width="78" />
+                        <ColumnDefinition Width="64" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="pack://application:,,,/Resources/favor.png" Width="18" Height="18" HorizontalAlignment="Left" />
+                    <TextBlock Grid.Column="1" Text="{x:Static overlay:OverlayTranslation.Favor}" Style="{StaticResource Overlay.Label}" Foreground="#FFB79BE8" />
+                    <TextBlock Grid.Column="2" Style="{StaticResource Overlay.Value}" FontSize="14" HorizontalAlignment="Right"
+                               Text="{Binding DashboardBindings.FavorPerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, StringFormat={}{0}/h, FallbackValue=0/h}" />
+                    <TextBlock Grid.Column="3" Style="{StaticResource Overlay.Sub}" HorizontalAlignment="Right"
+                               Text="{Binding DashboardBindings.TotalGainedFavorInSession, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" />
+                </Grid>
+            <!-- Faction points: one row per city faction, only when points were earned -->
+            <ItemsControl ItemsSource="{Binding FactionPointStats}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Style="{StaticResource Overlay.HideWhenZero}" Tag="{Binding Value}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="24" />
+                        <ColumnDefinition Width="66" />
+                        <ColumnDefinition Width="78" />
+                        <ColumnDefinition Width="64" />
+                    </Grid.ColumnDefinitions>
+                            <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}" Width="18" Height="18" HorizontalAlignment="Left" />
+                            <TextBlock Grid.Column="1" Foreground="#FFE8D27A">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource Overlay.Label}">
+                                        <Setter Property="Text" Value="{Binding CityFaction}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding CityFaction}" Value="{x:Static enums:CityFaction.FortSterling}">
+                                                <Setter Property="Text" Value="Fort Sterling" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                            <TextBlock Grid.Column="2" Style="{StaticResource Overlay.Value}" FontSize="14" HorizontalAlignment="Right"
+                                       Text="{Binding ValuePerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, StringFormat={}{0}/h, FallbackValue=0/h}" />
+                            <TextBlock Grid.Column="3" Style="{StaticResource Overlay.Sub}" HorizontalAlignment="Right"
+                                       Text="{Binding Value, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" />
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </Border>
+</overlay:OverlayWindowBase>

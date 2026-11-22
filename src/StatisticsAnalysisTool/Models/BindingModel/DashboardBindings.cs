@@ -504,8 +504,48 @@ public class DashboardBindings : BaseViewModel
         TotalGainedReSpecPointsInSession = 0;
         TotalGainedMightInSession = 0;
         TotalGainedFavorInSession = 0;
+        TotalLootValueInSession = 0;
+        LootValuePerHour = 0;
+        SessionDurationText = "00:00:00";
         Mobs.ResetStatistics();
     }
+
+    #region Overlay session values
+
+    /// <summary>Estimated market value of the items you looted in this session.</summary>
+    public double TotalLootValueInSession
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    /// <summary>Loot value per hour over the last hour (same sliding window as fame / silver).</summary>
+    public double LootValuePerHour
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    /// <summary>Active time since the first gain of this session (hh:mm:ss).</summary>
+    public string SessionDurationText
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = "00:00:00";
+
+    #endregion
 
     #region Per hour values
 

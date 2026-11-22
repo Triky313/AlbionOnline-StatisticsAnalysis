@@ -91,6 +91,7 @@ public partial class MainWindow
     private void MainWindow_OnLoaded(object sender, RoutedEventArgs eventArgs)
     {
         Loaded -= MainWindow_OnLoaded;
+        Overlay.OverlayManager.RegisterHotkey(this, _mainWindowViewModel);
 
         var settings = SettingsController.CurrentSettings;
         _albionGameProcessMonitor.SetMonitoringEnabled(AlbionGameProcessMonitor.IsMonitoringRequired(settings));

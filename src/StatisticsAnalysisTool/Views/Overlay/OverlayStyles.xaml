@@ -1,0 +1,88 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:overlay="clr-namespace:StatisticsAnalysisTool.Views.Overlay"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+
+    <SolidColorBrush x:Key="Overlay.Text" Color="#FFF2F2F2" />
+    <SolidColorBrush x:Key="Overlay.TextMuted" Color="#A6F2F2F2" />
+    <SolidColorBrush x:Key="Overlay.Border" Color="#33FFFFFF" />
+    <SolidColorBrush x:Key="Overlay.Track" Color="#26FFFFFF" />
+
+    <Style x:Key="Overlay.Card" TargetType="Border">
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Padding" Value="10,8" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{StaticResource Overlay.Border}" />
+        <Setter Property="Background" Value="{Binding OverlayBackground, RelativeSource={RelativeSource AncestorType=overlay:OverlayWindowBase}}" />
+        <Setter Property="ToolTip" Value="{x:Static overlay:OverlayTranslation.DragHint}" />
+    </Style>
+
+    <Style x:Key="Overlay.Title" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="{StaticResource Overlay.TextMuted}" />
+        <Setter Property="Margin" Value="0,0,0,6" />
+    </Style>
+
+    <Style x:Key="Overlay.Value" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource Overlay.Text}" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="Overlay.Sub" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource Overlay.TextMuted}" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="Overlay.Label" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Foreground" Value="{StaticResource Overlay.TextMuted}" />
+    </Style>
+
+    <Style x:Key="Overlay.Hint" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="Foreground" Value="#73F2F2F2" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="Overlay.Empty" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontStyle" Value="Italic" />
+        <Setter Property="Foreground" Value="{StaticResource Overlay.TextMuted}" />
+        <Setter Property="Margin" Value="0,2,0,2" />
+    </Style>
+
+    <!-- A row whose Tag (the session total) is null / 0 is collapsed: only what you are earning is shown -->
+    <Style x:Key="Overlay.HideWhenZero" TargetType="Grid">
+        <Setter Property="Height" Value="24" />
+        <Style.Triggers>
+            <Trigger Property="Tag" Value="{x:Null}">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </Trigger>
+            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource Self}}">
+                <DataTrigger.Value>
+                    <sys:Double>0</sys:Double>
+                </DataTrigger.Value>
+                <Setter Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource Self}}">
+                <DataTrigger.Value>
+                    <sys:Int64>0</sys:Int64>
+                </DataTrigger.Value>
+                <Setter Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="Overlay.ShareBar" TargetType="ProgressBar">
+        <Setter Property="Height" Value="3" />
+        <Setter Property="Minimum" Value="0" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="{StaticResource Overlay.Track}" />
+    </Style>
+</ResourceDictionary>

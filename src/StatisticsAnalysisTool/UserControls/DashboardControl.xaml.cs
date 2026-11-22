@@ -133,6 +133,19 @@ public partial class DashboardControl
         OpenDashboardWindow();
     }
 
+    private void OpenOverlayWindow_MouseUp(object sender, MouseButtonEventArgs e)
+    {
+        try
+        {
+            StatisticsAnalysisTool.Views.Overlay.OverlayManager.Toggle((MainWindowViewModel) DataContext);
+        }
+        catch (Exception ex)
+        {
+            DebugConsole.WriteError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+            Log.Error(ex, "{Message}", MethodBase.GetCurrentMethod()?.DeclaringType);
+        }
+    }
+
     private void KillDeathToggle_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         var vm = (MainWindowViewModel) DataContext;

@@ -150,4 +150,22 @@ public class SettingsObject
     public bool IsNpcapInfoDialogShownOnStart { get; set; } = true;
     public bool LossExplorer { get; set; } = false;
     public bool Bm { get; set; } = false;
+
+    #region Overlay
+
+    public bool IsOverlayStatsEnabled { get; set; } = true;
+    public bool IsOverlayDamageMeterEnabled { get; set; } = true;
+    public bool IsOverlayGatheringEnabled { get; set; } = true;
+    public bool IsOverlayClickThroughActive { get; set; } = false;
+    public bool IsOverlayAutoHideActive { get; set; } = true;
+    public double OverlayBackgroundOpacityPercentage { get; set; } = 60;
+    public double OverlayScalePercentage { get; set; } = 100;
+    public double OverlayStatsLeft { get; set; } = 20;
+    public double OverlayStatsTop { get; set; } = 180;
+    public double OverlayDamageMeterLeft { get; set; } = 20;
+    public double OverlayDamageMeterTop { get; set; } = 300;
+    public double OverlayGatheringLeft { get; set; } = 20;
+    public double OverlayGatheringTop { get; set; } = 560;
+
+    #endregion
 }
