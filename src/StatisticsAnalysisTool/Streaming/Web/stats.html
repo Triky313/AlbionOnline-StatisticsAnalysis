@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Statistics Analysis Tool - Stream view</title>
+<style>
+  /* Same look as the session bar at the top of the tool (MainWindow "Stats drop down"):
+     background Background.3, 1px border Text.7, 22px icons, 16px text in Text.1 */
+  :root {
+    --scale: 1;
+    --bg-alpha: 0.6;
+    --text-1: #f3f6f8;
+    --text-4: #a2afba;
+    --text-5: #71808d;
+    --border: #343d45;
+    --track: #10151a;
+    --damage: #e23b3e;
+  }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    color: var(--text-1);
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-size: calc(16px * var(--scale));
+    overflow: hidden;
+  }
+  #root { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 0.5em; padding: 0.3em; }
+  .panel {
+    background: rgba(20, 25, 31, var(--bg-alpha));
+    border: 1px solid rgba(52, 61, 69, max(var(--bg-alpha), 0.35));
+    padding: 0.62em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+  }
+
+  /* Columns: icon, total, per hour */
+  .columns { display: flex; justify-content: center; }
+  .column { display: flex; flex-direction: column; align-items: center; margin: 0 0.62em; line-height: 1.3; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .column img { width: 1.375em; height: 1.375em; margin-bottom: 0.1em; }
+  .column .no-icon { width: 1.375em; height: 1.375em; margin-bottom: 0.1em; }
+  .column.summary { padding-right: 0.9em; margin-right: 0.3em; border-right: 1px solid rgba(52, 61, 69, 0.9); }
+
+  /* Damage meter */
+  .players { display: flex; flex-direction: column; gap: 0.35em; min-width: 19em; }
+  .player { display: grid; grid-template-columns: 2em 1fr auto auto; column-gap: 0.6em; row-gap: 0.15em; align-items: center; }
+  .player img { width: 2em; height: 2em; grid-row: span 2; }
+  .player-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .player-dps { text-align: right; font-variant-numeric: tabular-nums; }
+  .player-share { text-align: right; color: var(--text-4); font-variant-numeric: tabular-nums; min-width: 2.6em; }
+  .bar { grid-column: 2 / -1; height: 0.35em; background: var(--track); }
+  .bar > div { height: 100%; background: var(--damage); }
+
+  .empty { color: var(--text-5); font-style: italic; font-size: 0.85em; padding: 0 0.3em; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div id="root">
+  <section class="panel hidden" id="session"><div class="columns" id="session-columns"></div></section>
+  <section class="panel hidden" id="gathering"><div class="columns" id="gathering-columns"></div></section>
+  <section class="panel hidden" id="damage"><div class="players" id="damage-rows"></div><div class="empty hidden" id="damage-empty"></div></section>
+</div>
+<script>
+  "use strict";
+  // Each part has its own address so it can be its own OBS source:
+  //   /session  /dps (or /damage)  /gathering  — and /stats shows every part enabled in the tool.
+  const routes = { session: "session", damage: "damage", dps: "damage", gathering: "gathering" };
+  const route = location.pathname.replace(/\/+$/, "").split("/").pop().toLowerCase();
+  const view = routes[route] || "stats";
+  const isDemo = new URLSearchParams(location.search).has("demo");
+  const el = (id) => document.getElementById(id);
+
+  function node(tag, className, content) {
+    const element = document.createElement(tag);
+    if (className) element.className = className;
+    if (content !== undefined) element.textContent = content;
+    return element;
+  }
+
+  function icon(name, title) {
+    if (!name) return node("span", "no-icon");
+    const image = document.createElement("img");
+    image.src = "/img/" + name + ".png";
+    image.alt = "";
+    image.title = title || "";
+    return image;
+  }
+
+  // One column of the bar: icon, total, per hour
+  function column(stat, extraClass) {
+    const element = node("div", "column" + (extraClass ? " " + extraClass : ""));
+    element.append(icon(stat.icon, stat.label), node("span", null, stat.totalText), node("span", null, stat.perHourText));
+    return element;
+  }
+
+  const isEarning = (stat) => stat.total !== 0 || stat.perHour !== 0;
+
+  function show(id, visible) { el(id).classList.toggle("hidden", !visible); }
+
+  function isWanted(part, enabledInTool) {
+    return view === "stats" ? enabledInTool : view === part;
+  }
+
+  function renderSession(data) {
+    // Only what you are earning; with nothing yet, the same five columns the tool always shows
+    let stats = data.session.stats.filter(isEarning);
+    if (stats.length === 0) {
+      stats = data.session.stats.filter((s) => ["fame", "silver", "respec", "might", "favor"].includes(s.key));
+    }
+    el("session-columns").replaceChildren(...stats.map((s) => column(s)));
+  }
+
+  function renderGathering(data) {
+    const g = data.gathering;
+    const columns = [];
+    if (g.summary) columns.push(column(g.summary, "summary"));
+    for (const r of g.resources.filter((x) => x.total > 0)) columns.push(column(r));
+    el("gathering-columns").replaceChildren(...columns);
+  }
+
+  function renderDamage(data) {
+    const rows = data.damageMeter.map((p) => {
+      const row = node("div", "player");
+      const weapon = document.createElement("img");
+      weapon.alt = "";
+      if (p.weaponUniqueName) {
+        weapon.src = "https://render.albiononline.com/v1/item/" + encodeURIComponent(p.weaponUniqueName) + ".png?size=64";
+      } else {
+        weapon.style.visibility = "hidden";
+      }
+      const fill = node("div");
+      fill.style.width = Math.max(0, Math.min(100, p.damageBarPercentage)) + "%";
+      const bar = node("div", "bar");
+      bar.append(fill);
+      row.append(weapon, node("span", "player-name", p.name), node("span", "player-dps", p.damageText + " (" + p.dpsText + " DPS)"), node("span", "player-share", Math.round(p.damagePercentage) + "%"), bar);
+      return row;
+    });
+    el("damage-rows").replaceChildren(...rows);
+    el("damage-empty").textContent = data.labels.noData;
+    show("damage-empty", rows.length === 0);
+  }
+
+  function render(data) {
+    const config = data.config;
+    document.documentElement.style.setProperty("--scale", config.fontSizePercentage / 100);
+    document.documentElement.style.setProperty("--bg-alpha", config.backgroundOpacityPercentage / 100);
+
+    const wantSession = isWanted("session", config.showSession);
+    const wantGathering = isWanted("gathering", config.showGathering) && (view === "gathering" || data.gathering.totalSilver > 0);
+    const wantDamage = isWanted("damage", config.showDamageMeter);
+    show("session", wantSession);
+    show("gathering", wantGathering);
+    show("damage", wantDamage);
+    if (wantSession) renderSession(data);
+    if (wantGathering) renderGathering(data);
+    if (wantDamage) renderDamage(data);
+  }
+
+  // ?demo fills the page with example values, to set up the OBS scene without playing
+  const locale = navigator.language;
+  const shortText = (v) => new Intl.NumberFormat(locale, { notation: "compact", maximumFractionDigits: 2 }).format(v);
+  const perHourText = (v) => new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(v) + "/h";
+  function setDemo(stat, perHour, total) {
+    Object.assign(stat, { perHour, total, totalText: shortText(total), perHourText: perHourText(perHour) });
+  }
+
+  function addDemoData(data) {
+    const demoStats = { fame: [1541676, 5000], silver: [186420, 552000], respec: [1107248, 2050], might: [5120, 15300], favor: [3410, 10200], faction: [12500, 37500], loot: [940000, 2.8e6] };
+    for (const stat of data.session.stats) {
+      const values = demoStats[stat.key];
+      if (values) setDemo(stat, values[0], values[1]);
+      if (stat.key === "faction" && !stat.icon) stat.icon = "faction-martlock";
+    }
+    data.damageMeter = [
+      ["Player One", "T8_2H_HOLYSTAFF", 2.41e6, 1840, 34, 100],
+      ["Player Two", "T8_MAIN_FIRESTAFF", 1.97e6, 1505, 28, 82],
+      ["Player Three", "T8_2H_BOW", 1.52e6, 1160, 21, 63],
+      ["Player Four", "T8_2H_CLAYMORE", 1.18e6, 900, 17, 49]
+    ].slice(0, data.config.maxPlayers).map(([name, weapon, damage, dps, share, barWidth]) => ({
+      name, weaponUniqueName: weapon, damage, damageText: shortText(damage), dps, dpsText: new Intl.NumberFormat(locale).format(dps),
+      damagePercentage: share, damageBarPercentage: barWidth, heal: 0, hps: 0
+    }));
+    const demoResources = { wood: [182000, 455000], ore: [96000, 240000], fiber: [41000, 102000] };
+    for (const r of data.gathering.resources) {
+      const values = demoResources[r.key];
+      if (values) setDemo(r, values[0], values[1]);
+    }
+    if (data.gathering.summary) setDemo(data.gathering.summary, 319000, 797000);
+    data.gathering.totalSilver = 797000;
+    return data;
+  }
+
+  async function refresh() {
+    try {
+      const response = await fetch("/api/stats", { cache: "no-store" });
+      if (!response.ok) throw new Error(response.status);
+      const data = await response.json();
+      render(isDemo ? addDemoData(data) : data);
+    } catch {
+      // Tool closed or streaming turned off: show nothing on stream, keep retrying
+      for (const id of ["session", "damage", "gathering"]) show(id, false);
+    } finally {
+      setTimeout(refresh, 1000);
+    }
+  }
+
+  refresh();
+</script>
+</body>
+</html>

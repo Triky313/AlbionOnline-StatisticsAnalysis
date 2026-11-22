@@ -43,6 +43,30 @@ public partial class SettingsControl
         OpenDirectory(_settingsWindowViewModel.ToolDirectory);
     }
 
+    private void OpenStreamingPage_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            Process.Start(new ProcessStartInfo(_settingsWindowViewModel.StreamingUrl) { UseShellExecute = true });
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Streaming page could not be opened");
+        }
+    }
+
+    private void CopyStreamingUrl_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            Clipboard.SetText(_settingsWindowViewModel.StreamingUrl);
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Streaming URL could not be copied");
+        }
+    }
+
     private void OpenUserDataDirectory_Click(object sender, RoutedEventArgs e)
     {
         OpenDirectory(_settingsWindowViewModel.UserDataDirectory);

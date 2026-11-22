@@ -211,6 +211,102 @@
                     </StackPanel>
                 </Border>
 
+                <!-- Streaming (OBS browser source) -->
+                <Border Style="{StaticResource Settings.Card}">
+                    <StackPanel>
+                        <Border Style="{StaticResource Settings.CardHeader}">
+                            <TextBlock Text="{Binding Translation.Streaming, FallbackValue=STREAMING}" Style="{StaticResource Settings.CardTitle}" />
+                        </Border>
+
+                        <Grid Margin="14,12,14,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="16" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <CheckBox IsChecked="{Binding IsStreamingServerActive}" Margin="0,0,0,14" Style="{StaticResource Settings.OptionCheckBox}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Translation.StreamingServerActive, FallbackValue=STREAMING_SERVER_ACTIVE}" Style="{StaticResource Settings.OptionTitle}" />
+                                        <TextBlock Text="{Binding Translation.StreamingServerActiveDescription, FallbackValue=STREAMING_SERVER_ACTIVE_DESCRIPTION}" Style="{StaticResource Settings.DescriptionText}" />
+                                    </StackPanel>
+                                </CheckBox>
+
+                                <StackPanel Style="{StaticResource Settings.Field}">
+                                    <TextBlock Text="{Binding Translation.StreamingUrl, FallbackValue=STREAMING_URL}" Style="{StaticResource Settings.FieldLabel}" />
+                                    <TextBox Text="{Binding StreamingUrl, Mode=OneWay}" IsReadOnly="True" TextWrapping="NoWrap" Style="{StaticResource Settings.TextBox}" />
+                                    <TextBlock Text="{Binding Translation.StreamingUrlDescription, FallbackValue=STREAMING_URL_DESCRIPTION}" Margin="0,4,0,0" Style="{StaticResource Settings.DescriptionText}" />
+                                </StackPanel>
+
+                                <WrapPanel Margin="0,0,0,10">
+                                    <Button Content="{Binding Translation.StreamingOpenInBrowser, FallbackValue=STREAMING_OPEN_IN_BROWSER}"
+                                            Margin="0,0,6,6"
+                                            Style="{StaticResource Settings.Button}"
+                                            Click="OpenStreamingPage_Click" />
+                                    <Button Content="{Binding Translation.StreamingCopyUrl, FallbackValue=STREAMING_COPY_URL}"
+                                            Margin="0,0,6,6"
+                                            Style="{StaticResource Settings.Button}"
+                                            Click="CopyStreamingUrl_Click" />
+                                </WrapPanel>
+
+                                <StackPanel Style="{StaticResource Settings.Field}">
+                                    <TextBlock Text="{Binding Translation.StreamingPort, FallbackValue=STREAMING_PORT}" Style="{StaticResource Settings.FieldLabel}" />
+                                    <TextBox Text="{Binding StreamingServerPort, UpdateSourceTrigger=LostFocus}" MaxLength="5" Width="90" HorizontalAlignment="Left" Style="{StaticResource Settings.TextBox}" />
+                                </StackPanel>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <CheckBox IsChecked="{Binding IsStreamingSessionShown}" Margin="0,0,0,10" Style="{StaticResource Settings.OptionCheckBox}">
+                                    <TextBlock Text="{Binding Translation.StreamingShowSession, FallbackValue=STREAMING_SHOW_SESSION}" Style="{StaticResource Settings.OptionTitle}" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding IsStreamingDamageMeterShown}" Margin="0,0,0,10" Style="{StaticResource Settings.OptionCheckBox}">
+                                    <TextBlock Text="{Binding Translation.StreamingShowDamageMeter, FallbackValue=STREAMING_SHOW_DAMAGE_METER}" Style="{StaticResource Settings.OptionTitle}" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding IsStreamingGatheringShown}" Margin="0,0,0,14" Style="{StaticResource Settings.OptionCheckBox}">
+                                    <TextBlock Text="{Binding Translation.StreamingShowGathering, FallbackValue=STREAMING_SHOW_GATHERING}" Style="{StaticResource Settings.OptionTitle}" />
+                                </CheckBox>
+
+                                <StackPanel Style="{StaticResource Settings.Field}">
+                                    <TextBlock Text="{Binding Translation.StreamingMaxPlayers, FallbackValue=STREAMING_MAX_PLAYERS}" Style="{StaticResource Settings.FieldLabel}" />
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="48" />
+                                        </Grid.ColumnDefinitions>
+                                        <Slider Value="{Binding StreamingDamageMeterMaxPlayers}" Minimum="1" Maximum="20" TickFrequency="1" IsSnapToTickEnabled="True" VerticalAlignment="Center" />
+                                        <TextBlock Grid.Column="1" Text="{Binding StreamingDamageMeterMaxPlayers}" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{StaticResource Settings.DescriptionText}" />
+                                    </Grid>
+                                </StackPanel>
+
+                                <StackPanel Style="{StaticResource Settings.Field}">
+                                    <TextBlock Text="{Binding Translation.StreamingFontSize, FallbackValue=STREAMING_FONT_SIZE}" Style="{StaticResource Settings.FieldLabel}" />
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="48" />
+                                        </Grid.ColumnDefinitions>
+                                        <Slider Value="{Binding StreamingFontSizePercentage}" Minimum="50" Maximum="300" TickFrequency="10" IsSnapToTickEnabled="True" VerticalAlignment="Center" />
+                                        <TextBlock Grid.Column="1" Text="{Binding StreamingFontSizePercentage, StringFormat={}{0:0}%}" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{StaticResource Settings.DescriptionText}" />
+                                    </Grid>
+                                </StackPanel>
+
+                                <StackPanel Style="{StaticResource Settings.Field}">
+                                    <TextBlock Text="{Binding Translation.StreamingBackgroundOpacity, FallbackValue=STREAMING_BACKGROUND_OPACITY}" Style="{StaticResource Settings.FieldLabel}" />
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="48" />
+                                        </Grid.ColumnDefinitions>
+                                        <Slider Value="{Binding StreamingBackgroundOpacityPercentage}" Minimum="0" Maximum="100" TickFrequency="5" IsSnapToTickEnabled="True" VerticalAlignment="Center" />
+                                        <TextBlock Grid.Column="1" Text="{Binding StreamingBackgroundOpacityPercentage, StringFormat={}{0:0}%}" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{StaticResource Settings.DescriptionText}" />
+                                    </Grid>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
                 <!-- Server -->
                 <Border Style="{StaticResource Settings.Card}">
                     <StackPanel>

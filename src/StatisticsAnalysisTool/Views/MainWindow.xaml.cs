@@ -79,6 +79,7 @@ public partial class MainWindow
         var windowStateForPersistence = _systemTrayService.WindowStateForPersistence;
         Loaded -= MainWindow_OnLoaded;
         _applicationUptimeTimer.Stop();
+        Streaming.StreamingServer.Stop();
         _albionGameProcessMonitor.GameStarted -= AlbionGameProcessMonitor_OnGameStarted;
         _albionGameProcessMonitor.GameStopped -= AlbionGameProcessMonitor_OnGameStopped;
         _albionGameProcessMonitor.Dispose();
@@ -93,6 +94,7 @@ public partial class MainWindow
         Loaded -= MainWindow_OnLoaded;
 
         var settings = SettingsController.CurrentSettings;
+        Streaming.StreamingServer.ApplySettings(_mainWindowViewModel);
         _albionGameProcessMonitor.SetMonitoringEnabled(AlbionGameProcessMonitor.IsMonitoringRequired(settings));
         var shouldRemainVisibleForRunningGame = settings.IsOpenWithGameActive
                                                 && _albionGameProcessMonitor.IsGameRunning;

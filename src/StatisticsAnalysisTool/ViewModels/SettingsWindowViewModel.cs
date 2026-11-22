@@ -108,6 +108,16 @@ public class SettingsWindowViewModel : BaseViewModel
 
         // Another app to start
         SetIconSourceToAnotherAppToStart();
+
+        // Streaming (OBS browser source)
+        IsStreamingServerActive = SettingsController.CurrentSettings.IsStreamingServerActive;
+        StreamingServerPort = SettingsController.CurrentSettings.StreamingServerPort;
+        IsStreamingSessionShown = SettingsController.CurrentSettings.IsStreamingSessionShown;
+        IsStreamingDamageMeterShown = SettingsController.CurrentSettings.IsStreamingDamageMeterShown;
+        IsStreamingGatheringShown = SettingsController.CurrentSettings.IsStreamingGatheringShown;
+        StreamingDamageMeterMaxPlayers = SettingsController.CurrentSettings.StreamingDamageMeterMaxPlayers;
+        StreamingFontSizePercentage = SettingsController.CurrentSettings.StreamingFontSizePercentage;
+        StreamingBackgroundOpacityPercentage = SettingsController.CurrentSettings.StreamingBackgroundOpacityPercentage;
     }
 
     public async Task SaveSettingsAsync()
@@ -154,6 +164,16 @@ public class SettingsWindowViewModel : BaseViewModel
         SettingsController.CurrentSettings.IsStopTrackingWithGameActive = IsStopTrackingWithGameActive;
         SettingsController.CurrentSettings.IsMinimizeToSystemTrayActive = IsMinimizeToSystemTrayActive;
         SettingsController.CurrentSettings.ExactMatchPlayerNamesLineNumber = PlayerSelectionWithSameNameInDb;
+
+        SettingsController.CurrentSettings.IsStreamingServerActive = IsStreamingServerActive;
+        SettingsController.CurrentSettings.StreamingServerPort = StreamingServerPort;
+        SettingsController.CurrentSettings.IsStreamingSessionShown = IsStreamingSessionShown;
+        SettingsController.CurrentSettings.IsStreamingDamageMeterShown = IsStreamingDamageMeterShown;
+        SettingsController.CurrentSettings.IsStreamingGatheringShown = IsStreamingGatheringShown;
+        SettingsController.CurrentSettings.StreamingDamageMeterMaxPlayers = StreamingDamageMeterMaxPlayers;
+        SettingsController.CurrentSettings.StreamingFontSizePercentage = StreamingFontSizePercentage;
+        SettingsController.CurrentSettings.StreamingBackgroundOpacityPercentage = StreamingBackgroundOpacityPercentage;
+        Streaming.StreamingServer.ApplySettings(mainWindowViewModel);
 
         SetBackupStorageDirPath();
         SetNaviTabVisibilities(mainWindowViewModel);
@@ -1159,6 +1179,93 @@ public class SettingsWindowViewModel : BaseViewModel
             OnPropertyChanged();
         }
     }
+
+    #region Streaming (OBS browser source)
+
+    public bool IsStreamingServerActive
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int StreamingServerPort
+    {
+        get;
+        set
+        {
+            field = Math.Clamp(value, 1024, 65535);
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(StreamingUrl));
+        }
+    }
+
+    public string StreamingUrl => Streaming.StreamingServer.GetUrl(StreamingServerPort);
+
+    public bool IsStreamingSessionShown
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsStreamingDamageMeterShown
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsStreamingGatheringShown
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int StreamingDamageMeterMaxPlayers
+    {
+        get;
+        set
+        {
+            field = Math.Clamp(value, 1, 20);
+            OnPropertyChanged();
+        }
+    }
+
+    public double StreamingFontSizePercentage
+    {
+        get;
+        set
+        {
+            field = Math.Clamp(value, 50, 300);
+            OnPropertyChanged();
+        }
+    }
+
+    public double StreamingBackgroundOpacityPercentage
+    {
+        get;
+        set
+        {
+            field = Math.Clamp(value, 0, 100);
+            OnPropertyChanged();
+        }
+    }
+
+    #endregion
 
     public bool IsOpenDebugConsoleWhenStartingTheToolChecked
     {
