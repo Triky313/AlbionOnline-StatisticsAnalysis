@@ -150,4 +150,17 @@ public class SettingsObject
     public bool IsNpcapInfoDialogShownOnStart { get; set; } = true;
     public bool LossExplorer { get; set; } = false;
     public bool Bm { get; set; } = false;
+
+    #region Streaming (OBS browser source)
+
+    public bool IsStreamingServerActive { get; set; } = false;
+    public int StreamingServerPort { get; set; } = 8484;
+    public bool IsStreamingSessionShown { get; set; } = true;
+    public bool IsStreamingDamageMeterShown { get; set; } = true;
+    public bool IsStreamingGatheringShown { get; set; } = true;
+    public int StreamingDamageMeterMaxPlayers { get; set; } = 5;
+    public double StreamingFontSizePercentage { get; set; } = 100;
+    public double StreamingBackgroundOpacityPercentage { get; set; } = 60;
+
+    #endregion
 }

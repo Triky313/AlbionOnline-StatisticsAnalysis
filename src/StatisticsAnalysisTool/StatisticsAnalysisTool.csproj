@@ -118,6 +118,8 @@
     <Content Include="Localization\localization.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Remove="Streaming\Web\stats.html" />
+    <EmbeddedResource Include="Streaming\Web\stats.html" LogicalName="StatisticsAnalysisTool.Streaming.Web.stats.html" />
     <Content Include="sat-icon.ico">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>

@@ -59702,6 +59702,214 @@
           "seg": "Sunucu Türü"
         }
       ]
+    },
+    {
+      "tuid": "STREAMING",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Streaming (OBS)"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Streaming (OBS)"
+        }
+      ]
+    },
+    {
+      "tuid": "STREAMING_SERVER_ACTIVE",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Enable stream view for OBS"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Activar vista para OBS"
+        }
+      ]
+    },
+    {
+      "tuid": "STREAMING_SERVER_ACTIVE_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Starts a small local webpage you can add to OBS as a Browser Source. Only reachable from this PC. Nothing is shown over the game."
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Inicia una pequeña página web local que puedes añadir a OBS como fuente de navegador. Solo accesible desde este PC. No se muestra nada encima del juego."
+        }
+      ]
+    },
+    {
+      "tuid": "STREAMING_PORT",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Port"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Puerto"
+        }
+      ]
+    },
+    {
+      "tuid": "STREAMING_URL",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Browser Source URL"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "URL para la fuente de navegador"
+        }
+      ]
+    },
+    {
+      "tuid": "STREAMING_URL_DESCRIPTION",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Use /session, /dps or /gathering instead of /stats to show only one part, each as its own OBS source. Add ?demo to see example values."
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Usa /session, /dps o /gathering en lugar de /stats para mostrar solo una parte, cada una como su propia fuente en OBS. Añade ?demo para ver valores de ejemplo."
+        }
+      ]
+    },
+    {
+      "tuid": "STREAMING_OPEN_IN_BROWSER",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Open in browser"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Abrir en el navegador"
+        }
+      ]
+    },
+    {
+      "tuid": "STREAMING_COPY_URL",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Copy URL"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Copiar URL"
+        }
+      ]
+    },
+    {
+      "tuid": "STREAMING_SHOW_SESSION",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Session (fame, silver, loot, respec, might, favor, faction)"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Sesión (fama, plata, botín, respec, poderío, favor, facción)"
+        }
+      ]
+    },
+    {
+      "tuid": "STREAMING_SHOW_DAMAGE_METER",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Damage meter"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Medidor de daño"
+        }
+      ]
+    },
+    {
+      "tuid": "STREAMING_SHOW_GATHERING",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Gathering"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Recolección"
+        }
+      ]
+    },
+    {
+      "tuid": "STREAMING_MAX_PLAYERS",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Players in damage meter"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Jugadores en el medidor de daño"
+        }
+      ]
+    },
+    {
+      "tuid": "STREAMING_FONT_SIZE",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Text size"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Tamaño del texto"
+        }
+      ]
+    },
+    {
+      "tuid": "STREAMING_BACKGROUND_OPACITY",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "Background opacity (0% = transparent)"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Opacidad del fondo (0% = transparente)"
+        }
+      ]
+    },
+    {
+      "tuid": "STREAMING_PER_HOUR",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "per hour"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "por hora"
+        }
+      ]
+    },
+    {
+      "tuid": "STREAMING_NO_DATA",
+      "tuv": [
+        {
+          "lang": "en-US",
+          "seg": "No data yet"
+        },
+        {
+          "lang": "es-ES",
+          "seg": "Aún no hay datos"
+        }
+      ]
     }
   ]
 }
