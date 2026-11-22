@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Threading.Tasks;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Localization;
 using StatisticsAnalysisTool.Network.Manager;
@@ -7,7 +6,6 @@ using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System.Windows;
 using System.Windows.Input;
-using StatisticsAnalysisTool.Guild;
 
 namespace StatisticsAnalysisTool.UserControls;
 
@@ -39,15 +37,25 @@ public partial class GuildControl
         {
             var trackingController = ServiceLocator.Resolve<TrackingController>();
 
-            var selectedEntries = mainWindowViewModel.GuildBindings.SiphonedEnergyCollectionView?.Cast<SiphonedEnergyItem>()
-                .ToList()
+            var selectedEntries = mainWindowViewModel.GuildBindings.SiphonedEnergyList
                 .Where(x => x?.IsSelectedForDeletion ?? false)
-                .Select(x => x.GetHashCode());
+                .Select(x => x.GetHashCode())
+                .ToList();
 
             mainWindowViewModel.GuildBindings.IsDeleteEntriesButtonEnabled = false;
             await trackingController?.GuildController?.RemoveTradesByIdsAsync(selectedEntries)!;
             mainWindowViewModel.GuildBindings.IsDeleteEntriesButtonEnabled = true;
         }
+    }
+
+    private void ResetOverviewNameFilter_Click(object sender, RoutedEventArgs e)
+    {
+        OverviewNameFilter.Clear();
+    }
+
+    private void ResetDetailsNameFilter_Click(object sender, RoutedEventArgs e)
+    {
+        DetailsNameFilter.Clear();
     }
 
     private void OpenSiphonedEnergyInfoPopup_MouseEnter(object sender, MouseEventArgs e)

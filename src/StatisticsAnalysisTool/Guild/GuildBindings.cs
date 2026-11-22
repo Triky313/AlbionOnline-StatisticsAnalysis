@@ -10,11 +10,12 @@ namespace StatisticsAnalysisTool.Guild;
 
 public class GuildBindings : BaseViewModel
 {
-    public ListCollectionView SiphonedEnergyCollectionView { get; set; }
+    public ListCollectionView SiphonedEnergyCollectionView { get; }
+    public ListCollectionView SiphonedEnergyOverviewView { get; }
     private ManuallySiphonedEnergy _manuallySiphonedEnergy;
     private GridLength _gridSplitterPosition;
-    private ObservableRangeCollection<SiphonedEnergyItem> _siphonedEnergyList = new();
-    private ObservableRangeCollection<SiphonedEnergyItem> _siphonedEnergyOverviewList = new();
+    private string _overviewNameFilter = string.Empty;
+    private string _detailsNameFilter = string.Empty;
     private Visibility _guildPopupVisibility = Visibility.Collapsed;
     private bool _isDeleteEntriesButtonEnabled = true;
     private DateTime _siphonedEnergyLastUpdate;
@@ -24,38 +25,49 @@ public class GuildBindings : BaseViewModel
 
     public GuildBindings()
     {
-        SiphonedEnergyCollectionView = CollectionViewSource.GetDefaultView(SiphonedEnergyList) as ListCollectionView;
-
-        if (SiphonedEnergyCollectionView != null)
+        SiphonedEnergyCollectionView = new ListCollectionView(SiphonedEnergyList)
         {
-            SiphonedEnergyCollectionView.IsLiveSorting = true;
-            SiphonedEnergyCollectionView.IsLiveFiltering = true;
-            SiphonedEnergyCollectionView.CustomSort = new SiphonedEnergyItemComparer();
-
-            SiphonedEnergyCollectionView?.Refresh();
-        }
+            IsLiveSorting = true,
+            CustomSort = new SiphonedEnergyItemComparer(),
+            Filter = item => MatchesCharacterName(item, DetailsNameFilter)
+        };
+        SiphonedEnergyOverviewView = new ListCollectionView(SiphonedEnergyOverviewList)
+        {
+            Filter = item => MatchesCharacterName(item, OverviewNameFilter)
+        };
 
         ManuallySiphonedEnergy = new ManuallySiphonedEnergy();
     }
 
-    public ObservableRangeCollection<SiphonedEnergyItem> SiphonedEnergyList
+    public ObservableRangeCollection<SiphonedEnergyItem> SiphonedEnergyList { get; } = new();
+    public ObservableRangeCollection<SiphonedEnergyItem> SiphonedEnergyOverviewList { get; } = new();
+
+    public string OverviewNameFilter
     {
-        get => _siphonedEnergyList;
+        get => _overviewNameFilter;
         set
         {
-            _siphonedEnergyList = value;
+            _overviewNameFilter = value;
+            SiphonedEnergyOverviewView.Refresh();
             OnPropertyChanged();
         }
     }
 
-    public ObservableRangeCollection<SiphonedEnergyItem> SiphonedEnergyOverviewList
+    public string DetailsNameFilter
     {
-        get => _siphonedEnergyOverviewList;
+        get => _detailsNameFilter;
         set
         {
-            _siphonedEnergyOverviewList = value;
+            _detailsNameFilter = value;
+            SiphonedEnergyCollectionView.Refresh();
             OnPropertyChanged();
         }
+    }
+
+    private static bool MatchesCharacterName(object item, string filter)
+    {
+        return string.IsNullOrWhiteSpace(filter)
+               || (item as SiphonedEnergyItem)?.CharacterName?.Contains(filter.Trim(), StringComparison.OrdinalIgnoreCase) == true;
     }
 
     public GridLength GridSplitterPosition

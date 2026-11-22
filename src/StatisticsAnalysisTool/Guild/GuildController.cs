@@ -11,7 +11,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Data;
 
 namespace StatisticsAnalysisTool.Guild;
 
@@ -98,7 +97,7 @@ public class GuildController
 
         RunOnUiThread(() =>
         {
-            _mainWindowViewModel.GuildBindings.SiphonedEnergyOverviewList = new ObservableRangeCollection<SiphonedEnergyItem>(grouped);
+            _mainWindowViewModel.GuildBindings.SiphonedEnergyOverviewList.ReplaceRange(grouped);
             _mainWindowViewModel.GuildBindings.TotalSiphonedEnergyQuantity = grouped.Sum(x => x.Quantity.IntegerValue);
         });
     }
@@ -140,9 +139,7 @@ public class GuildController
     private void UpdateSiphonedEnergyList(IEnumerable<SiphonedEnergyItem> updatedList)
     {
         var guildBindings = _mainWindowViewModel.GuildBindings;
-        guildBindings.SiphonedEnergyList.Clear();
-        guildBindings.SiphonedEnergyList.AddRange(updatedList);
-        guildBindings.SiphonedEnergyCollectionView = CollectionViewSource.GetDefaultView(guildBindings.SiphonedEnergyList) as ListCollectionView;
+        guildBindings.SiphonedEnergyList.ReplaceRange(updatedList);
 
         UpdateSiphonedEnergyOverview();
     }
