@@ -24,6 +24,12 @@ public static class AlbionServerRegistry
         },
         new()
         {
+            ServerLocation = ServerLocation.America,
+            Name = "Americas",
+            IpPrefix = "85.234.70"
+        },
+        new()
+        {
             ServerLocation = ServerLocation.Asia,
             Name = "Asia",
             IpPrefix = "5.45.187"
